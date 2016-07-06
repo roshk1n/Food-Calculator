@@ -50,6 +50,8 @@ public class LoginActivity extends Activity {
      //   profilePictureView = (ProfilePictureView) findViewById(R.id.ProfilePhotoFac);
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
+
+            
             public void onClick(View view) {
                 Firebase refFire = new Firebase("https://food-calculator.firebaseio.com/");
               //  firebase.child("condition").setValue("Do you have data? You'll love Firebase.");
