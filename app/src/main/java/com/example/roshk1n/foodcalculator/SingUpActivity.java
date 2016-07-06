@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class SingUpActivity extends Activity {
     private EditText surname;
     private EditText email;
     private EditText password;
+    private EditText confirmPassword;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
@@ -36,20 +38,7 @@ public class SingUpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() { //перевірка авторизації при старті
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
 
-                    Log.d("MyLog", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-
-                    Log.d("MyLog", "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
         myFirebaseRef = new Firebase("https://food-calculator.firebaseio.com/");
     }
     @Override
@@ -59,15 +48,14 @@ public class SingUpActivity extends Activity {
         surname = (EditText) findViewById(R.id.edit_text_username);
         email = (EditText) findViewById(R.id.edit_text_new_email);
         password = (EditText) findViewById(R.id.edit_text_new_password);
+        confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar_sign_up);
-        mAuth.addAuthStateListener(mAuthListener);
+
     }
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+
     }
 
     protected void setUpUser(){
@@ -80,19 +68,38 @@ public class SingUpActivity extends Activity {
 
     public void onSignUpClicked (View view) //реєстрація користувача в firebase
     {
-        setUpUser();
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("MyLog", "createUserWithEmail:onComplete:" + task.getException()+ task.isSuccessful());
+        if(password.getText().toString().equals(confirmPassword.getText().toString())) {
+            if(surname.getText().toString()!=("")||email.getText().toString()!=""||password.getText().toString()!="") {
+                setUpUser();
+                progressBar.setVisibility(View.VISIBLE);
+                mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("MyLog", "createUserWithEmail:onComplete:"+ task.isSuccessful());
 
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(SingUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                                if (!task.isSuccessful()) {
+
+                                        Toast.makeText(SingUpActivity.this, task.getException().getMessage().toString(),
+                                                Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    startActivity(new Intent(SingUpActivity.this,MainActivity.class));
+                                }
+                            }
+                        });
+            }
+            else
+            {
+                Toast.makeText(SingUpActivity.this, "Enter all fields please.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(SingUpActivity.this, "Your passwords don`t match.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
