@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FoodCalculator</string>
+    <string name="food_calculator">Food Calculator</string>
+    <string name="log_in">Log In</string>
+    <string name="or">OR</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="facebook_app_id">724657607672906</string>
+    <string name="sing_up"><u>Sing up</u></string>
+
+</resources>

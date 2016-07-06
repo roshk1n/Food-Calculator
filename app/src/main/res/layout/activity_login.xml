@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    tools:context=".LoginActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/food_calculator"
+            android:textSize="35sp"
+            android:gravity="bottom"
+            android:id="@+id/info"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="20dp"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:inputType="textPersonName"
+            android:ems="14"
+            android:id="@+id/etLogin"
+            android:hint="@string/login" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="14"
+            android:id="@+id/etPassword"
+            android:hint="@string/password"
+            />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="100dp"
+                android:id="@+id/btnLogin"
+                android:text="Log In" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/or"
+            android:layout_marginBottom="10dp"
+            android:textSize="25sp"
+            android:id="@+id/tbOR" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.facebook.login.widget.LoginButton
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:width="10dp"
+                android:height="20dp"
+                android:id="@+id/btnLogInFacebook"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+   <!--     <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/ProfilePhotoFac"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />-->
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onGoSingInActivityClicked"
+        android:textSize="20sp"
+        android:clickable="true"
+       android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/com_facebook_blue"
+        android:layout_marginBottom="20dp"
+        android:text="@string/sing_up"/>
+
+</RelativeLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.roshk1n.foodcalculator.SingUpActivity">
+    <ProgressBar
+        android:id="@+id/progress_bar_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Enter your data"
+        android:textSize="40sp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center|top"/>
+    <LinearLayout
+        android:id="@+id/email_sign_up_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="20dp" />
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:hint="User name"
+            android:inputType="textPersonName" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="20dp" />
+        <EditText
+            android:id="@+id/edit_text_new_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="20dp" />
+
+        <EditText
+            android:id="@+id/edit_text_new_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:inputType="textPassword" />
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="20dp" />
+
+        <EditText
+            android:id="@+id/edit_text_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm password"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:inputType="textPassword" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="50dp" />
+        <Button
+            android:id="@+id/button_user_sign_up"
+            style="?android:textAppearanceSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSignUpClicked"
+            android:background="@color/colorPrimary"
+            android:text="Sign Up Now"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
