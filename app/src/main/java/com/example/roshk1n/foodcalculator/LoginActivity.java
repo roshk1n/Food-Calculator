@@ -130,23 +130,31 @@ public class LoginActivity extends Activity {
     }
     public void onLogIn(View view) // кнопка логіну користувача через email/password
     {
+        if(etLogin.getText().toString().equals("")||etPassword.getText().toString().equals(""))
+        {
+            Toast.makeText(LoginActivity.this, "Enter all the fields.",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
         mAuth.signInWithEmailAndPassword(etLogin.getText().toString(),etPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                if (!task.isSuccessful()) {
-                    Log.w(TAG, "signInWithEmail", task.getException());
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                }
-            }
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed. Try again please!",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        }
+                    }
 
-        });
+                });
+        }
+
 
     }
 
