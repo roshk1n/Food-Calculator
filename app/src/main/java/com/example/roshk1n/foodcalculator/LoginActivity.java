@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Map;
 
@@ -76,9 +78,6 @@ public class LoginActivity extends Activity {
                 }
             }
         };
-
-     //   profilePictureView = (ProfilePictureView) findViewById(R.id.ProfilePhotoFac);
-
         btnLogInFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() { //login via facebook
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -87,9 +86,10 @@ public class LoginActivity extends Activity {
                                 + loginResult.getAccessToken().getUserId()
                                 + "\n"
                 );*/
+
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
-               // profilePictureView.setProfileId(loginResult.getAccessToken().getUserId());
+                // profilePictureView.setProfileId(loginResult.getAccessToken().getUserId());
             }
             @Override
             public void onCancel() {
@@ -102,11 +102,15 @@ public class LoginActivity extends Activity {
             }
         });
 
+     //   profilePictureView = (ProfilePictureView) findViewById(R.id.ProfilePhotoFac);
+
+
        /* Firebase.setAndroidContext(this);
         firebase = new Firebase("https://food-calculator.firebaseio.com/");
         firebase.child("condition").setValue("Do you have data? You'll love Firebase.");*/
 
     }
+
     public void onStop()
     {
         super.onStop();
@@ -146,15 +150,19 @@ public class LoginActivity extends Activity {
                             Log.w(TAG, "signInWithEmail", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed. Try again please!",Toast.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        }
                     }
 
                 });
         }
 
+
+    }
+
+    public void  onLogInApi(View view)
+    {
+        User user = new User("11","Vova","vova@gmail.com","132132132","https://firebasestorage.googleapis.com/v0/b/food-calculator.appspot.com/o/images%2Fprofle_default.png?alt=media&token=812c2e4f-45e0-4c41-bbaf-a5b94e1b95c7");
+        user.saveUser();
+       // Firebase ref = new Firebase("https://food-calculator.firebaseio.com/users/");
 
     }
 

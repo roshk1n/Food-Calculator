@@ -1,5 +1,7 @@
 package com.example.roshk1n.foodcalculator;
 
+import android.icu.text.LocaleDisplayNames;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,12 +16,28 @@ import java.util.Map;
 public class User {
 
     private String id;
-    private String username;
+    private String fullname;
     private String email;
     private String password;
+    private String photoUrl;
 
 
     public User() {
+    }
+
+    public User(String id, String fullname, String email, String password, String photoUrl) {
+        this.id = id;
+        this.fullname = fullname;
+        this.email = email;
+        this.password = password;
+        this.photoUrl = photoUrl;
+    }
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getId() {
@@ -30,12 +48,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return username;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getEmail() {
@@ -56,8 +74,10 @@ public class User {
 
     public void saveUser() {
         Firebase myFirebaseRef = new Firebase("https://food-calculator.firebaseio.com/");
-        myFirebaseRef = myFirebaseRef.child("users").child(getId());
-        myFirebaseRef.setValue(this);
+        myFirebaseRef = myFirebaseRef.child("users");
+        Firebase firebasepush = myFirebaseRef.push();
+        firebasepush.setValue(this);
+        Log.d("MyLog",firebasepush.getKey());
     }
 
 }

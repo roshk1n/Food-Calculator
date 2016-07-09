@@ -34,5 +34,8 @@
     <string name="reminders">Reminders</string>
     <string name="setting">Setting</string>
     <string name="log_out">Log Out</string>
-
+    <array name="photo">
+        <item>Choose from Gallery</item>
+        <item>Take a picture</item>
+    </array>
 </resources>

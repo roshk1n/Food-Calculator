@@ -13,18 +13,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-
-
         >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/food_in_blue"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/food_calculator"
-            android:textSize="35sp"
-            android:gravity="bottom"
             android:id="@+id/info"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginBottom="20dp"
             />
         <EditText
             android:layout_width="wrap_content"
@@ -33,7 +31,7 @@
             android:inputType="textPersonName"
             android:ems="14"
             android:id="@+id/etLogin"
-            android:hint="@string/login" />
+            android:hint="Email" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -43,13 +41,28 @@
             android:id="@+id/etPassword"
             android:hint="@string/password"
             />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="150dp"
+            android:onClick="onLogInApi"
+            android:id="@+id/btnLoginApi"
+            android:text="LogIn With Api" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
                 android:onClick="onLogIn"
                 android:id="@+id/btnLogin"
-                android:text="Log In" />
+                android:text="LogIn" />
+
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

@@ -8,45 +8,33 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.roshk1n.foodcalculator.SingUpActivity">
-    <ProgressBar
-        android:id="@+id/progress_bar_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
 
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Enter your data"
-        android:textSize="40sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorPrimary"
-        android:gravity="center|top"/>
     <LinearLayout
         android:id="@+id/email_sign_up_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="20dp" />
+        <com.example.roshk1n.foodcalculator.CustomImageView
+            android:id="@+id/ivUser"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
+            android:onClick="onChoosePhoto"
+            android:src="@drawable/profle"
+            />
         <EditText
             android:id="@+id/edit_text_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:hint="User name"
+            android:hint="Full name"
             android:inputType="textPersonName" />
 
         <Space
             android:layout_width="1dp"
-            android:layout_height="20dp" />
+            android:layout_height="15dp" />
         <EditText
             android:id="@+id/edit_text_new_email"
             android:layout_width="match_parent"
@@ -57,7 +45,7 @@
             android:inputType="textEmailAddress" />
         <Space
             android:layout_width="1dp"
-            android:layout_height="20dp" />
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/edit_text_new_password"
@@ -69,7 +57,7 @@
             android:inputType="textPassword" />
         <Space
             android:layout_width="1dp"
-            android:layout_height="20dp" />
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/edit_text_confirm_password"
@@ -85,7 +73,6 @@
             android:layout_height="50dp" />
         <Button
             android:id="@+id/button_user_sign_up"
-            style="?android:textAppearanceSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:onClick="onSignUpClicked"
@@ -93,9 +80,21 @@
             android:text="Sign Up Now"
             android:textStyle="bold"
             />
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="10dp" />
+        <Button
+            android:id="@+id/button_user_sign_up_API"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSignUpAPIClicked"
+            android:background="@color/colorPrimary"
+            android:text="Sing up with API"
+            android:textStyle="bold"
+            />
+
+
 
     </LinearLayout>
-
-
 
 </RelativeLayout>
