@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
+    useLibrary  'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.example.roshk1n.foodcalculator"
@@ -36,5 +37,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:design:24.0.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+
 }
 apply plugin: 'com.google.gms.google-services'
