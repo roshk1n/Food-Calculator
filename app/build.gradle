@@ -38,6 +38,6 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
 }
 apply plugin: 'com.google.gms.google-services'
