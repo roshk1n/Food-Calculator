@@ -15,6 +15,12 @@ import retrofit.client.Response;
  * Created by roshk1n on 7/10/2016.
  */
 public  class ManageLoginAPI {
+
+    private static RestAdapter restAdapter = new RestAdapter.Builder()
+            .setEndpoint("http://146.185.180.39:4020")
+            .build();
+    private static API_LOGIN service = restAdapter.create(API_LOGIN.class);
+
     public static String registerUser(String first_name,String last_name,String email,String password,String role) {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
@@ -35,11 +41,6 @@ public  class ManageLoginAPI {
 
     public static String verifyUser(String email) {
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://146.185.180.39:4020")
-                .build();
-        API_LOGIN service = restAdapter.create(API_LOGIN.class);
-
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("u_email", email);
 
@@ -48,11 +49,6 @@ public  class ManageLoginAPI {
     }
 
     public static String activationUser(String code,String email) {
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://146.185.180.39:4020")
-                .build();
-        API_LOGIN service = restAdapter.create(API_LOGIN.class);
 
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("v_code",code);
@@ -65,11 +61,6 @@ public  class ManageLoginAPI {
 
     public static String login(String email,String password) {
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://146.185.180.39:4020")
-                .build();
-        API_LOGIN service = restAdapter.create(API_LOGIN.class);
-
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("u_email",email);
         parameters.put("u_password", password);
@@ -79,11 +70,6 @@ public  class ManageLoginAPI {
     }
 
     public static String logout(String email,String access_token) {
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://146.185.180.39:4020")
-                .build();
-        API_LOGIN service = restAdapter.create(API_LOGIN.class);
 
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("u_email",email);
