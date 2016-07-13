@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "600692827674",
+    "firebase_url": "https://food-calculator.firebaseio.com",
+    "project_id": "food-calculator",
+    "storage_bucket": "food-calculator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600692827674:android:66b9227c8d7ca65c",
+        "android_client_info": {
+          "package_name": "com.example.roshk1n.foodcalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600692827674-v6be9dblm9p5711h6vk03ure6nqgittf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsUAllx672w0AZj9BWKSpkx_Z0sPDPHxY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
