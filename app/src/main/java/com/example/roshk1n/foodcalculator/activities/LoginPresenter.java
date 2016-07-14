@@ -3,11 +3,11 @@ package com.example.roshk1n.foodcalculator.activities;
 /**
  * Created by Mykhailo Nester on 7/13/16.
  */
-public class LoginPreseter {
+public class LoginPresenter {
 
     private LoginView loginView;
 
-    public LoginPreseter() {}
+    public LoginPresenter() {}
 
     public void setView(LoginView loginView) {
         this.loginView = loginView;

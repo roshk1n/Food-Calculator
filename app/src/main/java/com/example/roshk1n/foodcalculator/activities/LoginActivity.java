@@ -32,23 +32,20 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends Activity implements LoginView {
 
+//    TODO: format fields, add access type (private)
+//    TODO: rename fields and methods, follow code convention guidelines
     private static String TAG = "MyLog";
     private Firebase firebase;
     LoginButton btnLogInFacebook;
     Button btnLogIn;
     TextView info;
-
-    @InjectView(R.id.btnLogInFacebook)
-    EditText etLogin;
-
-    @Inject
-    Presenter re;
-
     EditText etPassword;
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner;
     ProfilePictureView profilePictureView;
+    private LoginPresenter loginPresenter;
+    private EditText etLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +56,9 @@ public class LoginActivity extends Activity implements LoginView {
         initUi();
         mAuth = FirebaseAuth.getInstance(); // перевірка статусу логіну
 
-        LoginPreseter loginPreseter = new LoginPreseter();
-        loginPreseter.setView(this);
+//        TODO: continue work on presenter
+        loginPresenter = new LoginPresenter();
+        loginPresenter.setView(this);
 
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -180,6 +178,7 @@ public class LoginActivity extends Activity implements LoginView {
 //-------------------------------------------------------------------------------------------------------------
 // API API API
 
+//    TODO: delete asyncTask use only Retrofit
 
     private class HttpAsyncTask extends AsyncTask<Void, Void, String> {
         @Override

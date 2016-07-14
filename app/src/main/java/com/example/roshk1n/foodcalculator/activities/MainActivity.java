@@ -24,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+//    TODO: format code
     private static String TAG = "MyLog";
     CustomImageView userIco;
     TextView tvName;
