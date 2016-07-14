@@ -1,14 +1,8 @@
 package com.example.roshk1n.foodcalculator;
 
-import android.icu.text.LocaleDisplayNames;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
-import java.util.Map;
 
 /**
  * Created by AndroidBash on 11/05/16

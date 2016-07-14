@@ -2,10 +2,8 @@ package com.example.roshk1n.foodcalculator;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -176,7 +174,7 @@ public class LoginActivity extends Activity {
         user.saveUser();*//**//*
        // Firebase ref = new Firebase("https://food-calculator.firebaseio.com/users/");*/
 
-           ManageLoginAPI.registerUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
+           ManageLoginApi.registerUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
     }
 
 }

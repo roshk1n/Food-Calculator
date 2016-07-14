@@ -51,9 +51,9 @@ public class LoginPresenterImpl implements LoginPresenter, LoginPresenter.OnLogi
         com.example.roshk1n.foodcalculator.rest.model.User user = new com.example.roshk1n.foodcalculator.rest.model.User("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
         RestClient restClient = new RestClient();
 
-        restClient.getLoginApi().registrationUser(user, new Callback<ResponeRegister>() {
+        restClient.getLoginApi().registrationUser(user, new Callback<RegistrationResponse>() {
             @Override
-            public void success(ResponeRegister responeRegister, Response response) {
+            public void success(RegistrationResponse responeRegister, Response response) {
 
             }
             @Override

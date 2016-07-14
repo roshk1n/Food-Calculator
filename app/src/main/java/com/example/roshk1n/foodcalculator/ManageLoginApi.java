@@ -3,38 +3,37 @@ package com.example.roshk1n.foodcalculator;
 import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.rest.RestClient;
-import com.example.roshk1n.foodcalculator.rest.model.ResponeRegister;
-import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
+import com.example.roshk1n.foodcalculator.rest.model.RegistrationResponse;
 import com.example.roshk1n.foodcalculator.rest.model.User;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
  * Created by roshk1n on 7/10/2016.
  */
-public  class ManageLoginAPI {
+public  class ManageLoginApi {
 
     public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
         User user = new User(f_namem,l_name,u_email,u_password);
         RestClient restClient = new RestClient();
 
-        restClient.getLoginApi().registrationUser(user, new Callback<ResponeRegister>() {
+        restClient.getLoginApi().registrationUser(user, new Callback<RegistrationResponse>() {
             @Override
-            public void success(ResponeRegister responeRegister, Response response) {
+            public void success(RegistrationResponse registrationResponse, Response response) {
+//                TODO: add code
+                registrationResponse.getSucceeded();
+//                or
+                registrationResponse.getData();
 
+
+                Log.d("TAG", "success");
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.d("TAG", "fail");
             }
         });
     }

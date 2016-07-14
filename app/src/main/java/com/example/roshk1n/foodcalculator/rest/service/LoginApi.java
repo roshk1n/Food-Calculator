@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.rest.service;
 
-import com.example.roshk1n.foodcalculator.rest.model.ResponeRegister;
+import com.example.roshk1n.foodcalculator.rest.model.RegistrationResponse;
 import com.example.roshk1n.foodcalculator.rest.model.User;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import retrofit.http.PUT;
 public interface LoginApi {
 
     @POST("/registration")
-    void registrationUser(@Body User user, Callback<ResponeRegister> Callback);
+    void registrationUser(@Body User user, Callback<RegistrationResponse> Callback);
 
     @POST("/users/verify")
     Response verifyUser(@Body Map<String, String> parameters);
