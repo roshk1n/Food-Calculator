@@ -1,5 +1,9 @@
 package com.example.roshk1n.foodcalculator;
 
+
+
+import android.support.v4.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +24,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,11 +35,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static String TAG = "MyLog";
-    CustomImageView userIco;
+    CircleImageView userIco;
     TextView tvName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +56,14 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("Main");
         setSupportActionBar(toolbar);
 
-        userIco = (CustomImageView) header.findViewById(R.id.imageView);
+        userIco = (CircleImageView) header.findViewById(R.id.imageView);
         tvName = (TextView) header.findViewById(R.id.tvNameDrawer);
 
         FirebaseUser dbuser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         tvName.setText(dbuser.getDisplayName());
 
-        new DownloadImageTask(userIco)
-                .execute(dbuser.getPhotoUrl().toString());
+        Glide.with(this).load(dbuser.getPhotoUrl().toString()).into(userIco);
 
 //        Log.d(TAG,dbuser.getDisplayName());
         StorageReference storageReference = storage.getReferenceFromUrl("gs://food-calculator.appspot.com");

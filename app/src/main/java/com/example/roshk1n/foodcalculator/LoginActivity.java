@@ -41,11 +41,14 @@ public class LoginActivity extends Activity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner;
 
-
     ProfilePictureView profilePictureView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MyApplication myApplication= (MyApplication) getApplicationContext();
+        Log.d("My",myApplication.getCount()+"");
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
@@ -60,12 +63,11 @@ public class LoginActivity extends Activity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user !=null){
+                if(user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                }
-                else
-                {
+
+                } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
@@ -126,7 +128,6 @@ public class LoginActivity extends Activity {
     }
     public void onLogIn(View view) // кнопка логіну користувача через email/password
     {
-       // Log.d(TAG,"{\nv_code:a7f370f6411aa7a21ac4d9c84ab196841f1cff86,\nu_email:\"roshk1n.ua@gmail.com\"");
         if(etLogin.getText().toString().equals("")||etPassword.getText().toString().equals(""))
         {
             Toast.makeText(LoginActivity.this, "Enter all the fields.",Toast.LENGTH_SHORT).show();
@@ -147,20 +148,12 @@ public class LoginActivity extends Activity {
 
                 });
         }
-
-
     }
 
 
-//-------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------
-// API API API
 
 
-    private class HttpAsyncTask extends AsyncTask<Void, Void, String> {
+/*    private class HttpAsyncTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... voids) {
             //return ManageLoginAPI.registerUser("Test","Test","roshk1n.ua@gmail.com","132132132","0"); /реєстрація
@@ -175,14 +168,15 @@ public class LoginActivity extends Activity {
             Toast.makeText(getBaseContext(), "Data Sent!" + result, Toast.LENGTH_LONG).show();
             Log.d(TAG,result);
         }
-    }
+    } */
     public void  onLogInApi(View view) {
-        new HttpAsyncTask().execute();
+       /* new HttpAsyncTask().execute();
 
-    /*    User user = new User("11","Vova","vova@gmail.com","132132132","https://firebasestorage.googleapis.com/v0/b/food-calculator.appspot.com/o/images%2Fprofle_default.png?alt=media&token=812c2e4f-45e0-4c41-bbaf-a5b94e1b95c7");
-        user.saveUser();*/
-       // Firebase ref = new Firebase("https://food-calculator.firebaseio.com/users/");
+    *//**//*    User user = new User("11","Vova","vova@gmail.com","132132132","https://firebasestorage.googleapis.com/v0/b/food-calculator.appspot.com/o/images%2Fprofle_default.png?alt=media&token=812c2e4f-45e0-4c41-bbaf-a5b94e1b95c7");
+        user.saveUser();*//**//*
+       // Firebase ref = new Firebase("https://food-calculator.firebaseio.com/users/");*/
 
+           ManageLoginAPI.registerUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
     }
 
 }

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,4 +12,74 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.roshk1n.foodcalculator.MainActivity"
     tools:showIn="@layout/app_bar_main">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/frgmCont"></FrameLayout>
+    <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textColor="@android:color/background_dark"
+            android:layout_gravity="right"
+            android:elevation="1dp"
+            android:text="247"
+            android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/t_view_meal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_facebook_button_login_silver_background_color_pressed"
+                android:elevation="4dp"
+                android:padding="10dp"
+                android:textColor="@android:color/background_dark"
+                android:text="Breakfast"
+                android:textSize="25sp" />
+
+
+
+            <TextView
+                android:id="@+id/t_view_food_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/t_view_meal"
+                android:padding="10dp"
+                android:text="Картопля по селянськи"
+                android:textColor="@android:color/background_dark"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/t_view_food_name"
+                android:layout_alignParentRight="true"
+                android:paddingRight="15sp"
+                android:text="247"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/t_view_food_name"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:text="100 g."
+
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+-->
+
+
 </RelativeLayout>

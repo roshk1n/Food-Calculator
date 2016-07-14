@@ -11,12 +11,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.example.roshk1n.foodcalculator.CustomImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:scaleType="centerCrop" />
-
+        android:src="@drawable/profle" />
     <TextView
         android:id="@+id/tvNameDrawer"
         android:layout_width="wrap_content"

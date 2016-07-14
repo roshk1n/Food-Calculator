@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -30,9 +29,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SingUpActivity extends Activity {
 
@@ -46,7 +46,7 @@ public class SingUpActivity extends Activity {
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
-    private CustomImageView ivUser;
+    private CircleImageView ivUser;
 
     private FirebaseAuth mAuth;
     private StorageReference storageRef;
@@ -58,6 +58,9 @@ public class SingUpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
         mAuth = FirebaseAuth.getInstance();
+        MyApplication myApplication= (MyApplication) getApplicationContext();
+        myApplication.setCount(myApplication.getCount()+1);
+        Log.d("My",myApplication.getCount()+"");
         user = new User();
         myFirebaseRef = new Firebase("https://food-calculator.firebaseio.com/");
     }
@@ -69,7 +72,7 @@ public class SingUpActivity extends Activity {
         email = (EditText) findViewById(R.id.edit_text_new_email);
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
-        ivUser = (CustomImageView) findViewById(R.id.ivUser);
+        ivUser = (CircleImageView) findViewById(R.id.ivUser);
 
 
     }

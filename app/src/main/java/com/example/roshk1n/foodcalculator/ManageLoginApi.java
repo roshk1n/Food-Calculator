@@ -2,13 +2,19 @@ package com.example.roshk1n.foodcalculator;
 
 import android.util.Log;
 
+import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.example.roshk1n.foodcalculator.rest.model.ResponeRegister;
+import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
+import com.example.roshk1n.foodcalculator.rest.model.User;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
@@ -16,29 +22,41 @@ import retrofit.client.Response;
  */
 public  class ManageLoginAPI {
 
-    private static RestAdapter restAdapter = new RestAdapter.Builder()
+    public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
+        User user = new User(f_namem,l_name,u_email,u_password);
+        RestClient restClient = new RestClient();
+
+        restClient.getLoginApi().registrationUser(user, new Callback<ResponeRegister>() {
+            @Override
+            public void success(ResponeRegister responeRegister, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+
+/*    private static RestAdapter restAdapter = new RestAdapter.Builder()
             .setEndpoint("http://146.185.180.39:4020")
             .build();
-    private static API_LOGIN service = restAdapter.create(API_LOGIN.class);
+    private static LoginApi service = restAdapter.create(LoginApi.class);*/
 
-    public static String registerUser(String first_name,String last_name,String email,String password,String role) {
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://146.185.180.39:4020")
-                .build();
-        API_LOGIN service = restAdapter.create(API_LOGIN.class);
-
-        Map<String, String> parameters = new HashMap<String, String>();
+ /*       Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("f_name", first_name);
         parameters.put("l_name", last_name);
         parameters.put("u_email", email);
         parameters.put("u_password", password);
         parameters.put("role", role);
-
-        Response response  = service.registrationUser(parameters);
-        return  stringFromResponse(response);
-    }
-
+*/
+//        Response response  = service.registrationUser(parameters);
+//        return  stringFromResponse(response);
+//    }
+/*
     public static String verifyUser(String email) {
 
         Map<String, String> parameters = new HashMap<String, String>();
@@ -97,8 +115,8 @@ public  class ManageLoginAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String result = sb.toString();
         return result;
-    }
+    }*/
+
 }
