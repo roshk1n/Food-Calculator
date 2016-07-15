@@ -3,8 +3,16 @@ package com.example.roshk1n.foodcalculator;
 import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.ActivateUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.LoginUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.LogoutUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.VerifyUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.ActivateResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LogoutResponse;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.RegistrationResponse;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.VerifyResponse;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -15,16 +23,20 @@ import retrofit.client.Response;
  */
 public  class ManageLoginApi {
 
+    private static RestClient restClient;
+
+    public ManageLoginApi() {
+        restClient = new RestClient();
+    }
+
     public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
         RegistrationUser registrationUser = new RegistrationUser(f_namem,l_name,u_email,u_password);
-        RestClient restClient = new RestClient();
 
         restClient.getLoginApi().registrationUser(registrationUser, new Callback<RegistrationResponse>() {
             @Override
             public void success(RegistrationResponse registrationResponse, Response response) {
-//                TODO: add code
                 registrationResponse.getSucceeded();
-//                or
+
                 registrationResponse.getDataRegistration();
 
 
@@ -37,85 +49,66 @@ public  class ManageLoginApi {
             }
         });
     }
+    public static void verifyUser(String email) {
+        VerifyUser verifyUser = new VerifyUser(email);
 
-
-/*    private static RestAdapter restAdapter = new RestAdapter.Builder()
-            .setEndpoint("http://146.185.180.39:4020")
-            .build();
-    private static LoginApi service = restAdapter.create(LoginApi.class);*/
-
-
- /*       Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("f_name", first_name);
-        parameters.put("l_name", last_name);
-        parameters.put("u_email", email);
-        parameters.put("u_password", password);
-        parameters.put("role", role);
-*/
-//        Response response  = service.registrationUser(parameters);
-//        return  stringFromResponse(response);
-//    }
-/*
-    public static String verifyUser(String email) {
-
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("u_email", email);
-
-        Response response  = service.verifyUser(parameters);
-        return  stringFromResponse(response);
-    }
-
-    public static String activationUser(String code,String email) {
-
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("v_code",code);
-        parameters.put("u_email", email);
-
-        Response response  = service.activationUser(parameters);
-        return  stringFromResponse(response);
-    }
-
-
-    public static String login(String email,String password) {
-
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("u_email",email);
-        parameters.put("u_password", password);
-
-        Response response  = service.login(parameters);
-        return  stringFromResponse(response);
-    }
-
-    public static String logout(String email,String access_token) {
-
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("u_email",email);
-        parameters.put("a_token", access_token);
-
-        Response response  = service.logout(parameters);
-        return  stringFromResponse(response);
-    }
-    private static String stringFromResponse(Response response){
-        BufferedReader reader = null;
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(
-                    response.getBody().in()));
-            String line;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        restClient.getLoginApi().verifyUser(verifyUser, new Callback<VerifyResponse>() {
+            @Override
+            public void success(VerifyResponse verifyResponse, Response response) {
+                verifyResponse.getData();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String result = sb.toString();
-        return result;
-    }*/
+            @Override
+            public void failure(RetrofitError error) {
 
+            }
+        });
+    }
+
+    public static void activationUser(String code,String email) {
+        ActivateUser activateUser = new ActivateUser(code,email);
+
+        restClient.getLoginApi().activationUser(activateUser, new Callback<ActivateResponse>() {
+            @Override
+            public void success(ActivateResponse activateResponse, Response response) {
+                activateResponse.getData();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public static void login(String email,String password) {
+        LoginUser loginUser = new LoginUser(email,password);
+
+        restClient.getLoginApi().login(loginUser, new Callback<LoginResponse>() {
+            @Override
+            public void success(LoginResponse loginResponse, Response response) {
+                loginResponse.getData();
+            }
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public static void logout(String email,String access_token) {
+        LogoutUser logoutUser = new LogoutUser(email,access_token);
+
+        restClient.getLoginApi().logout(logoutUser, new Callback<LogoutResponse>() {
+            @Override
+            public void success(LogoutResponse logoutResponse, Response response) {
+                logoutResponse.getData();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
 }

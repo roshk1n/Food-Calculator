@@ -9,6 +9,11 @@ public class LoginUser {
 
     public LoginUser() {}
 
+    public LoginUser(String u_email, String u_password) {
+        this.u_email = u_email;
+        this.u_password = u_password;
+    }
+
     public String getU_email() {
         return u_email;
     }

@@ -12,7 +12,7 @@ public interface LoginPresenter {
 
     void setView(LoginView view);
 
-    void login(String login, String password);
+    void loginWithApi(String login, String password);
 
     void checkLogin();
 

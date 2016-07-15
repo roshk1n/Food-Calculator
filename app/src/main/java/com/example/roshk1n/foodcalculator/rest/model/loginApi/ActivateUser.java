@@ -13,6 +13,11 @@ public class ActivateUser {
         return u_email;
     }
 
+    public ActivateUser(String v_code, String u_email) {
+        this.v_code = v_code;
+        this.u_email = u_email;
+    }
+
     public void setU_email(String u_email) {
         this.u_email = u_email;
     }

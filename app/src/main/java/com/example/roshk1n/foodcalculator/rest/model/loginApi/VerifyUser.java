@@ -6,6 +6,10 @@ public class VerifyUser {
 
     public VerifyUser() {}
 
+    public VerifyUser(String u_email) {
+        this.u_email = u_email;
+    }
+
     public String getU_email() {
         return u_email;
     }

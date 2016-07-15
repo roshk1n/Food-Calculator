@@ -6,9 +6,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.example.roshk1n.foodcalculator.ManageLoginApi;
+import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.activities.views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
+import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginPresenterImpl implements LoginPresenter{
 
     private static String TAG = "MyLog";
+    private MyApplication myApplication;
     private LoginView loginVew;
+
+    public LoginPresenterImpl() {}
 
     @Override
     public void setView(LoginView view) {
@@ -28,7 +34,7 @@ public class LoginPresenterImpl implements LoginPresenter{
     }
 
     @Override
-    public void login(String email, String password) {
+    public void loginWithApi(String email, String password) {
         boolean error = false;
         if(loginVew != null) {
             if (TextUtils.isEmpty(email)) {
@@ -42,7 +48,7 @@ public class LoginPresenterImpl implements LoginPresenter{
             }
 
             if (!error){
-                //loginVew.navigateToHome();
+                ManageLoginApi.login("roshk1n.ua@gmail.com", "132132132");
             }
         }
     }
@@ -56,7 +62,6 @@ public class LoginPresenterImpl implements LoginPresenter{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
                     loginVew.navigateToHome();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 }
             }
         });
@@ -81,6 +86,9 @@ public class LoginPresenterImpl implements LoginPresenter{
                 OnCompleteListener onCompleteListener = new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+                        if(!task.isSuccessful()) {
+                            loginVew.failedAuth();
+                        }
                         Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
                     }
                 };
