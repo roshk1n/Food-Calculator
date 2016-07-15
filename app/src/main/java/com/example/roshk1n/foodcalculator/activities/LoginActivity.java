@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,12 +11,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.ManageLoginApi;
+import com.example.roshk1n.foodcalculator.MyApplication;
+import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.activities.presenters.LoginPresenterImpl;
+import com.example.roshk1n.foodcalculator.activities.views.LoginView;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+
 import com.facebook.login.widget.ProfilePictureView;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,37 +31,63 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements LoginView {
 
     private static String TAG = "MyLog";
-    Firebase firebase;
-    LoginButton btnLogInFacebook;
-    Button btnLogIn;
-    TextView info;
-    EditText etLogin;
-    EditText etPassword;
-    private CallbackManager callbackManager;
+    private Firebase firebase;
+   // private LoginButton btnLogInFacebook;
+    private Button btnLogIn;
+    private TextView info;
+    private EditText etEmail;
+    private EditText etPassword;
+    //private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner;
+
+    private LoginPresenterImpl loginPresenter;
+
 
     ProfilePictureView profilePictureView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        loginPresenter = new LoginPresenterImpl();
+        loginPresenter.setView(this);
 
         MyApplication myApplication= (MyApplication) getApplicationContext();
         Log.d("My",myApplication.getCount()+"");
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.activity_login);
-        btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
+
+        // callbackManager = CallbackManager.Factory.create();
+
+      //btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
         btnLogIn = (Button)  findViewById(R.id.btnLogin);
-        etLogin = (EditText) findViewById(R.id.etLogin);
+        etEmail = (EditText) findViewById(R.id.etLogin);
         etPassword = (EditText) findViewById(R.id.etPassword);
         info = (TextView) findViewById(R.id.info);
+        //mAuth = FirebaseAuth.getInstance(); // перевірка статусу логіну
 
-        mAuth = FirebaseAuth.getInstance(); // перевірка статусу логіну
+/*
+        FirebaseHelper.setmAuth(FirebaseAuth.getInstance());
+        FirebaseHelper.setmAuthListner(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null) {
+                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
+                } else {
+
+                }
+            }
+        });
+*/
+
+        loginPresenter.checkLogin();
+/*
+
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -70,14 +101,17 @@ public class LoginActivity extends Activity {
                 }
             }
         };
-        btnLogInFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() { //login via facebook
+*/
+
+       /* btnLogInFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() { //login via facebook
             @Override
             public void onSuccess(LoginResult loginResult) {
-  /*              info.setText(
-                        "User ID: "
+           info.setText(
+                        "RegistrationUser ID: "
                                 + loginResult.getAccessToken().getUserId()
                                 + "\n"
-                );*/
+                );
+
 
                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
@@ -92,7 +126,7 @@ public class LoginActivity extends Activity {
             public void onError(FacebookException error) {
                 info.setText("Login attempt failed.");
             }
-        });
+        });*/
 
      //   profilePictureView = (ProfilePictureView) findViewById(R.id.ProfilePhotoFac);
 
@@ -106,18 +140,25 @@ public class LoginActivity extends Activity {
     public void onStop()
     {
         super.onStop();
-        if (mAuthListner != null) {
+  /*      if (mAuthListner != null) {
             mAuth.removeAuthStateListener(mAuthListner);
+            }*/
+
+        if(FirebaseHelper.getmAuthListner() != null) {
+            FirebaseHelper.removeListner();
         }
+
+
     }
     public void onStart()
     {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListner);
+        //mAuth.addAuthStateListener(mAuthListner);
+        FirebaseHelper.addListner();
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+       // callbackManager.onActivityResult(requestCode,resultCode,data);
 
     }
     public void onGoSingInActivityClicked(View view) {
@@ -126,13 +167,9 @@ public class LoginActivity extends Activity {
     }
     public void onLogIn(View view) // кнопка логіну користувача через email/password
     {
-        if(etLogin.getText().toString().equals("")||etPassword.getText().toString().equals(""))
-        {
-            Toast.makeText(LoginActivity.this, "Enter all the fields.",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-        mAuth.signInWithEmailAndPassword(etLogin.getText().toString(),etPassword.getText().toString())
+
+        loginPresenter.loginWithEmail(etEmail.getText().toString(),etPassword.getText().toString());
+        /*mAuth.signInWithEmailAndPassword(etEmail.getText().toString(),etPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -144,8 +181,8 @@ public class LoginActivity extends Activity {
                         }
                     }
 
-                });
-        }
+               });*/
+
     }
 
 
@@ -163,18 +200,38 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Data Sent!" + result, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "DataRegistration Sent!" + result, Toast.LENGTH_LONG).show();
             Log.d(TAG,result);
         }
     } */
     public void  onLogInApi(View view) {
        /* new HttpAsyncTask().execute();
 
-    *//**//*    User user = new User("11","Vova","vova@gmail.com","132132132","https://firebasestorage.googleapis.com/v0/b/food-calculator.appspot.com/o/images%2Fprofle_default.png?alt=media&token=812c2e4f-45e0-4c41-bbaf-a5b94e1b95c7");
+    *//**//*    RegistrationUser user = new RegistrationUser("11","Vova","vova@gmail.com","132132132","https://firebasestorage.googleapis.com/v0/b/food-calculator.appspot.com/o/images%2Fprofle_default.png?alt=media&token=812c2e4f-45e0-4c41-bbaf-a5b94e1b95c7");
         user.saveUser();*//**//*
        // Firebase ref = new Firebase("https://food-calculator.firebaseio.com/users/");*/
 
-           ManageLoginApi.registerUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
+           //ManageLoginApi.registerUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
+        loginPresenter.login(etEmail.getText().toString(),etPassword.getText().toString());
     }
 
+    @Override
+    public void setEmailError() {
+        etEmail.setError("Enter email please");
+    }
+
+    @Override
+    public void setPasswordError() {
+        etPassword.setError("Enter password please");
+    }
+
+    @Override
+    public void navigateToHome() {
+        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+    }
+
+    @Override
+    public void failedAuth() {
+
+    }
 }

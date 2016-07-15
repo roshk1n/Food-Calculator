@@ -30,7 +30,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         }
     }
 
-    RecyclerSearchAdapter(ArrayList<Food> foods)
+    public RecyclerSearchAdapter(ArrayList<Food> foods)
     {
         this.foods = foods;
     }

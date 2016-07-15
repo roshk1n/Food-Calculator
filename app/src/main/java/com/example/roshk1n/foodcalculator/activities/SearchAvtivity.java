@@ -1,17 +1,15 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.activities;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
+import com.example.roshk1n.foodcalculator.Food;
+import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.RecyclerSearchAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchAvtivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;

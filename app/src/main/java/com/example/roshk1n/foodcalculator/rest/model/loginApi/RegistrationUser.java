@@ -1,15 +1,15 @@
-package com.example.roshk1n.foodcalculator.rest.model;
+package com.example.roshk1n.foodcalculator.rest.model.loginApi;
 
 /**
  * Created by roshk1n on 7/14/2016.
  */
-public class User {
+public class RegistrationUser {
     private String f_name;
     private String l_name;
     private String u_email;
     private String u_password;
 
-    public User(String f_name, String l_name, String u_email, String u_password) {
+    public RegistrationUser(String f_name, String l_name, String u_email, String u_password) {
         this.f_name = f_name;
         this.l_name = l_name;
         this.u_email = u_email;

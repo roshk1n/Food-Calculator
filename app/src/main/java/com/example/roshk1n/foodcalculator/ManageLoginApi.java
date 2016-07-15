@@ -3,8 +3,8 @@ package com.example.roshk1n.foodcalculator;
 import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.rest.RestClient;
-import com.example.roshk1n.foodcalculator.rest.model.RegistrationResponse;
-import com.example.roshk1n.foodcalculator.rest.model.User;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.RegistrationResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -16,16 +16,16 @@ import retrofit.client.Response;
 public  class ManageLoginApi {
 
     public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
-        User user = new User(f_namem,l_name,u_email,u_password);
+        RegistrationUser registrationUser = new RegistrationUser(f_namem,l_name,u_email,u_password);
         RestClient restClient = new RestClient();
 
-        restClient.getLoginApi().registrationUser(user, new Callback<RegistrationResponse>() {
+        restClient.getLoginApi().registrationUser(registrationUser, new Callback<RegistrationResponse>() {
             @Override
             public void success(RegistrationResponse registrationResponse, Response response) {
 //                TODO: add code
                 registrationResponse.getSucceeded();
 //                or
-                registrationResponse.getData();
+                registrationResponse.getDataRegistration();
 
 
                 Log.d("TAG", "success");

@@ -36,6 +36,18 @@ public class Food {
         this.valuePer = valuePer;
     }
 
+    public Food(String name, String group, String description, int energy, float protein, float fat, float sugar, float carbohydrate, float valuePer) {
+
+        this.name = name;
+        this.group = group;
+        this.description = description;
+        this.energy = energy;
+        this.protein = protein;
+        this.fat = fat;
+        this.sugar = sugar;
+        this.carbohydrate = carbohydrate;
+        this.valuePer = valuePer;
+    }
     public String getDescription() {
         return description;
     }
@@ -92,16 +104,5 @@ public class Food {
         this.valuePer = valuePer;
     }
 
-    public Food(String name, String group, String description, int energy, float protein, float fat, float sugar, float carbohydrate, float valuePer) {
 
-        this.name = name;
-        this.group = group;
-        this.description = description;
-        this.energy = energy;
-        this.protein = protein;
-        this.fat = fat;
-        this.sugar = sugar;
-        this.carbohydrate = carbohydrate;
-        this.valuePer = valuePer;
-    }
 }

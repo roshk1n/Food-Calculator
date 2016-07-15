@@ -1,17 +1,9 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.activities;
 
 
-
-import android.support.v4.app.FragmentTransaction;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,19 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
+import com.example.roshk1n.foodcalculator.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

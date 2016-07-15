@@ -1,12 +1,17 @@
 package com.example.roshk1n.foodcalculator.rest.service;
 
-import com.example.roshk1n.foodcalculator.rest.model.RegistrationResponse;
-import com.example.roshk1n.foodcalculator.rest.model.User;
-
-import java.util.Map;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.ActivateUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.LogoutUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.ActivateResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.LoginUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LogoutResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.RegistrationResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.VerifyResponse;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.VerifyUser;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.POST;
 import retrofit.http.PUT;
@@ -14,18 +19,18 @@ import retrofit.http.PUT;
 public interface LoginApi {
 
     @POST("/registration")
-    void registrationUser(@Body User user, Callback<RegistrationResponse> Callback);
+    void registrationUser(@Body RegistrationUser registrationUser, Callback<RegistrationResponse> Callback);
 
     @POST("/users/verify")
-    Response verifyUser(@Body Map<String, String> parameters);
+    void verifyUser(@Body VerifyUser verifyUser, Callback<VerifyResponse> Callback);
 
     @POST("/login/email")
-    Response login(@Body Map<String, String> parameters);
+    void login(@Body LoginUser loginUser, Callback<LoginResponse> Callbak);
 
     @POST("/login/logout")
-    Response logout(@Body Map<String, String> parameters);
+    void logout(@Body LogoutUser logoutUserm, Callback<LogoutResponse> Callback);
 
     @PUT("/users/activate")
-    Response activationUser(@Body Map<String, String> parameters);
+    void activationUser(@Body ActivateUser activateUser, Callback<ActivateResponse> Callback);
 
 }

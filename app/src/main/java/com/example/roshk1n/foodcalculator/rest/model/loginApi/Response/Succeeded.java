@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.rest.model;
+package com.example.roshk1n.foodcalculator.rest.model.loginApi.response;
 
 /**
  *  Created by Mykhailo Nester on 7/14/16.

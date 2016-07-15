@@ -1,22 +1,20 @@
-package com.example.roshk1n.foodcalculator.rest.model;
+package com.example.roshk1n.foodcalculator.rest.model.loginApi.response;
 
 /**
  *  Created by roshk1n on 7/14/2016.
  */
 public class RegistrationResponse {
-
-//    TODO: objects should be separated not inner classes.
     private  Succeeded succeeded;
-    private  Data data;
+    private DataRegistration dataRegistration;
 
     public RegistrationResponse() {}
 
-    public Data getData() {
-        return data;
+    public DataRegistration getDataRegistration() {
+        return dataRegistration;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setDataRegistration(DataRegistration dataRegistration) {
+        this.dataRegistration = dataRegistration;
     }
 
     public Succeeded getSucceeded() {

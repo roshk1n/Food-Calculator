@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.MyApplication;
+import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.User;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,8 +76,6 @@ public class SingUpActivity extends Activity {
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         ivUser = (CircleImageView) findViewById(R.id.ivUser);
-
-
     }
     @Override
     public void onStop() {
@@ -94,7 +95,7 @@ public class SingUpActivity extends Activity {
             try {
                 InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
                  mIcon = BitmapFactory.decodeStream(inputStream);
-                 //Log.d(TAG,data.getData().getPath().toString());
+                 //Log.d(TAG,data.getDataRegistration().getPath().toString());
                  ivUser.setImageBitmap(mIcon);
 
                 Uri file = Uri.fromFile(new File(data.getData().getPath()));
@@ -202,7 +203,7 @@ public class SingUpActivity extends Activity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful())
                                             {
-                                                Log.w(TAG, "User profile update");
+                                                Log.w(TAG, "RegistrationUser profile update");
                                                 startActivity(new Intent(SingUpActivity.this,LoginActivity.class));
                                             }
                                         }

@@ -1,14 +1,14 @@
-package com.example.roshk1n.foodcalculator.rest.model;
+package com.example.roshk1n.foodcalculator.rest.model.loginApi.response;
 
 /**
  *  Created by Mykhailo Nester on 7/14/16.
  */
-public class Data {
+public class DataRegistration {
 
     private String verified;
     private String u_email;
 
-    public Data() {}
+    public DataRegistration() {}
 
     public String getVerified() {
         return verified;
