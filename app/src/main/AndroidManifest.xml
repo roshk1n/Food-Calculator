@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SingUpActivity"
+            android:name=".singup.SingUpActivity"
             android:label="Sign Up" />
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=

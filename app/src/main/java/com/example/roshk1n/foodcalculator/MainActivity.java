@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         FirebaseStorage storage = FirebaseStorage.getInstance();
         tvName.setText(dbuser.getDisplayName());
 
-        Glide.with(this).load(dbuser.getPhotoUrl().toString()).into(userIco);
+       Glide.with(this).load(dbuser.getPhotoUrl().toString()).into(userIco);
 
 //        Log.d(TAG,dbuser.getDisplayName());
         StorageReference storageReference = storage.getReferenceFromUrl("gs://food-calculator.appspot.com");

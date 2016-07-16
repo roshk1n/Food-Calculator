@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

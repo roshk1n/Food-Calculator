@@ -9,7 +9,6 @@ import com.firebase.client.Firebase;
  */
 public class User {
 
-    private String id;
     private String fullname;
     private String email;
     private String password;
@@ -19,27 +18,19 @@ public class User {
     public User() {
     }
 
-    public User(String id, String fullname, String email, String password, String photoUrl) {
-        this.id = id;
+    public User(String fullname, String email, String password, String photoUrl) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
         this.photoUrl = photoUrl;
     }
+
     public String getPhotoUrl() {
         return photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFullname() {
