@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.LoginActivity"
+    tools:context=".login.LoginActivity"
     android:orientation="vertical">
 
     <LinearLayout

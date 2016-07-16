@@ -22,7 +22,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SingUpActivity"
+            android:name=".SingUpActivity"
             android:label="Sign Up" />
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
@@ -38,10 +38,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.SearchAvtivity">
+        <activity android:name=".SearchAvtivity">
 
         </activity>
     </application>

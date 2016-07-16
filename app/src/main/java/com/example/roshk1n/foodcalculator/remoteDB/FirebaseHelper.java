@@ -1,15 +1,7 @@
 package com.example.roshk1n.foodcalculator.remoteDB;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.example.roshk1n.foodcalculator.activities.LoginActivity;
-import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by roshk1n on 7/14/2016.
@@ -34,9 +26,6 @@ public class FirebaseHelper {
         FirebaseHelper.mAuthListner = mAuthListner;
     }
 
-    public FirebaseHelper() {
-    }
-
     public static void removeListner() {
         mAuth.removeAuthStateListener(mAuthListner);
     }
@@ -45,10 +34,7 @@ public class FirebaseHelper {
         mAuth.addAuthStateListener(mAuthListner);
     }
 
-    public static void logInWhithEmail(String email, String password, OnCompleteListener listner)
-    {
+    public static void logInWhithEmail(String email, String password, OnCompleteListener listner) {
          mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(listner);
     }
-
-
 }

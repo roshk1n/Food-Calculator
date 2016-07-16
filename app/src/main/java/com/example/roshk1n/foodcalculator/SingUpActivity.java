@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.activities;
+package com.example.roshk1n.foodcalculator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,9 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.roshk1n.foodcalculator.MyApplication;
-import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.User;
+import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

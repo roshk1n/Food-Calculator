@@ -1,10 +1,6 @@
-package com.example.roshk1n.foodcalculator.activities.presenters;
+package com.example.roshk1n.foodcalculator.login;
 
-import android.view.View;
-
-import com.example.roshk1n.foodcalculator.activities.views.LoginView;
 import com.facebook.login.widget.LoginButton;
-import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by roshk1n on 7/14/2016.

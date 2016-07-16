@@ -1,9 +1,8 @@
-package com.example.roshk1n.foodcalculator.activities;
+package com.example.roshk1n.foodcalculator.login;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,22 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.roshk1n.foodcalculator.ManageLoginApi;
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.activities.presenters.LoginPresenterImpl;
-import com.example.roshk1n.foodcalculator.activities.views.LoginView;
+import com.example.roshk1n.foodcalculator.MainActivity;
+import com.example.roshk1n.foodcalculator.SingUpActivity;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.rest.RestClient;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.client.Firebase;
 
 public class LoginActivity extends Activity implements LoginView {
 
@@ -48,16 +39,14 @@ public class LoginActivity extends Activity implements LoginView {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
-
-        AppEventsLogger.activateApp(this);
         initUI();
 
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
         loginPresenter.checkLogin();
 
-        myApplication= (MyApplication) getApplicationContext();
-        Log.d("My",myApplication.getCount()+"");
+//        myApplication= (MyApplication) getApplicationContext();
+//        Log.d("My",myApplication.getCount()+"");
 
         loginPresenter.loginFacebookListner(btnLogInFacebook);
     }
@@ -116,7 +105,6 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     private void initUI() {
-
         etEmail = (EditText) findViewById(R.id.etLogin);
         etPassword = (EditText) findViewById(R.id.etPassword);
         info = (TextView) findViewById(R.id.info);

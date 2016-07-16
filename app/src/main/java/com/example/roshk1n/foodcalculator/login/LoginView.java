@@ -1,6 +1,4 @@
-package com.example.roshk1n.foodcalculator.activities.views;
-
-import android.widget.Toast;
+package com.example.roshk1n.foodcalculator.login;
 
 /**
  * Created by roshk1n on 7/14/2016.

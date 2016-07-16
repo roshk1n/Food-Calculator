@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.activities;
+package com.example.roshk1n.foodcalculator;
 
 
 
@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;

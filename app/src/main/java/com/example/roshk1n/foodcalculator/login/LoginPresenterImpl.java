@@ -1,18 +1,12 @@
-package com.example.roshk1n.foodcalculator.activities.presenters;
+package com.example.roshk1n.foodcalculator.login;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.example.roshk1n.foodcalculator.ManageLoginApi;
 import com.example.roshk1n.foodcalculator.MyApplication;
-import com.example.roshk1n.foodcalculator.activities.LoginActivity;
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
-import com.example.roshk1n.foodcalculator.activities.views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -29,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginPresenterImpl implements LoginPresenter{
 
     private static String TAG = "MyLog";
+
     private MyApplication myApplication;
 
     private CallbackManager callbackManager;
@@ -44,10 +39,6 @@ public class LoginPresenterImpl implements LoginPresenter{
 
     public CallbackManager getCallbackManager() {
         return callbackManager;
-    }
-
-    public void setCallbackManager(CallbackManager callbackManager) {
-        this.callbackManager = callbackManager;
     }
 
     @Override
@@ -135,32 +126,3 @@ public class LoginPresenterImpl implements LoginPresenter{
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*
-
-
- public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
-
-        com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser user = new com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser("Oleh", "Roshka", "roshk1n.ua@gmail.com", "132132132");
-        RestClient restClient = new RestClient();
-
-        restClient.getLoginApi().registrationUser(user, new Callback<RegistrationResponse>() {
-            @Override
-            public void success(RegistrationResponse responeRegister, Response response) {
-
-            }
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }*/

@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.activities;
+package com.example.roshk1n.foodcalculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

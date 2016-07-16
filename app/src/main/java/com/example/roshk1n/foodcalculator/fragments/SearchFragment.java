@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.activities.fragments;
+package com.example.roshk1n.foodcalculator.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
