@@ -8,10 +8,16 @@ import android.view.View;
 
 import com.example.roshk1n.foodcalculator.ManageLoginApi;
 import com.example.roshk1n.foodcalculator.MyApplication;
+import com.example.roshk1n.foodcalculator.activities.LoginActivity;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.activities.views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +30,9 @@ public class LoginPresenterImpl implements LoginPresenter{
 
     private static String TAG = "MyLog";
     private MyApplication myApplication;
+
+    private CallbackManager callbackManager;
+
     private LoginView loginVew;
 
     public LoginPresenterImpl() {}
@@ -31,6 +40,14 @@ public class LoginPresenterImpl implements LoginPresenter{
     @Override
     public void setView(LoginView view) {
         loginVew = view;
+    }
+
+    public CallbackManager getCallbackManager() {
+        return callbackManager;
+    }
+
+    public void setCallbackManager(CallbackManager callbackManager) {
+        this.callbackManager = callbackManager;
     }
 
     @Override
@@ -87,7 +104,7 @@ public class LoginPresenterImpl implements LoginPresenter{
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(!task.isSuccessful()) {
-                            loginVew.failedAuth();
+                            loginVew.showToast("Authentication failed. Try again please!");
                         }
                         Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
                     }
@@ -95,6 +112,27 @@ public class LoginPresenterImpl implements LoginPresenter{
                 FirebaseHelper.logInWhithEmail(email,password,onCompleteListener);
             }
         }
+    }
+
+    @Override
+    public void loginFacebookListner(LoginButton loginButton) {
+        callbackManager = CallbackManager.Factory.create();
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                loginVew.showToast("Login attempt succeed.");
+            }
+            @Override
+            public void onCancel() {
+                loginVew.showToast("Login attempt canceled.");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                loginVew.showToast("Login attempt failed.");
+            }
+        });
     }
 }
 

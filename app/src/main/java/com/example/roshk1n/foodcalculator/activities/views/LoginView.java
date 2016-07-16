@@ -1,5 +1,7 @@
 package com.example.roshk1n.foodcalculator.activities.views;
 
+import android.widget.Toast;
+
 /**
  * Created by roshk1n on 7/14/2016.
  */
@@ -11,6 +13,5 @@ public interface LoginView {
 
     void navigateToHome();
 
-    void failedAuth();
-
+    void showToast(String message);
 }

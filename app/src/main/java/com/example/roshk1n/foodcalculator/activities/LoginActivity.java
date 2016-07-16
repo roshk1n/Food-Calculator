@@ -18,19 +18,15 @@ import com.example.roshk1n.foodcalculator.activities.presenters.LoginPresenterIm
 import com.example.roshk1n.foodcalculator.activities.views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-
-import com.facebook.login.widget.ProfilePictureView;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.Firebase;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 
 public class LoginActivity extends Activity implements LoginView {
 
@@ -40,12 +36,7 @@ public class LoginActivity extends Activity implements LoginView {
     private TextView info;
     private EditText etEmail;
     private EditText etPassword;
-
-    private Firebase firebase;
-
-    //private LoginButton btnLogInFacebook;
-    //private ProfilePictureView profilePictureView;
-    //private CallbackManager callbackManager;
+    private LoginButton btnLogInFacebook;
 
     private MyApplication myApplication;
 
@@ -54,11 +45,12 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
-        initUI();
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        initUI();
 
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
@@ -67,39 +59,7 @@ public class LoginActivity extends Activity implements LoginView {
         myApplication= (MyApplication) getApplicationContext();
         Log.d("My",myApplication.getCount()+"");
 
-        // callbackManager = CallbackManager.Factory.create();
-
-       //btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
-
-
-
-       /* btnLogInFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() { //login via facebook
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-           info.setText(
-                        "RegistrationUser ID: "
-                                + loginResult.getAccessToken().getUserId()
-                                + "\n"
-                );
-
-
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-
-                // profilePictureView.setProfileId(loginResult.getAccessToken().getUserId());
-            }
-            @Override
-            public void onCancel() {
-                info.setText("Login attempt canceled.");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                info.setText("Login attempt failed.");
-            }
-        });*/
-
-     //   profilePictureView = (ProfilePictureView) findViewById(R.id.ProfilePhotoFac);
-
+        loginPresenter.loginFacebookListner(btnLogInFacebook);
     }
 
     @Override
@@ -120,8 +80,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       // callbackManager.onActivityResult(requestCode,resultCode,data);
-
+       loginPresenter.getCallbackManager().onActivityResult(requestCode,resultCode,data);
     }
 
     @Override
@@ -139,10 +98,9 @@ public class LoginActivity extends Activity implements LoginView {
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
-
     @Override
-    public void failedAuth() {
-        Toast.makeText(LoginActivity.this, "Authentication failed. Try again please!",Toast.LENGTH_SHORT).show();
+    public void showToast(String message) {
+        Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
     public void onGoSingInActivityClicked(View view) {
@@ -158,9 +116,11 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     private void initUI() {
-        btnLogIn = (Button)  findViewById(R.id.btnLogin);
+
         etEmail = (EditText) findViewById(R.id.etLogin);
         etPassword = (EditText) findViewById(R.id.etPassword);
         info = (TextView) findViewById(R.id.info);
+        btnLogIn = (Button) findViewById(R.id.btnLogin);
+        btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
     }
 }
