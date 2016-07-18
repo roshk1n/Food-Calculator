@@ -12,7 +12,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by roshk1n on 7/14/2016.
  */
-public class RestClient {
+public class RestClient { //TODO: Create in MyApplication
     private LoginApi loginApi;
     private NdbApi ndbApi;
 

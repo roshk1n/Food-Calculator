@@ -104,7 +104,7 @@ public class FirebaseHelper {
 
                                 }
                             });
-                        } //TODO: як повернути значення в presenter
+                        } //TODO:  повернути значення в presenter
                     }
                 });
     }
