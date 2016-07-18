@@ -1,26 +1,28 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.main;
 
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.main.fragments.DiaryFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.SearchFragment;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -28,35 +30,35 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static String TAG = "MyLog";
-    CircleImageView userIco;
-    TextView tvName;
+
+    private View mHeader;
+    private Toolbar mToolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawer;
+    private CircleImageView mImageViewUserIco;
+    private TextView mTextViewName;
+
+    private FragmentManager fragmentManager;
+    private SearchFragment searchFragment;
+    private DiaryFragment diaryFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View header=navigationView.getHeaderView(0);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Main");
-        setSupportActionBar(toolbar);
-
-        userIco = (CircleImageView) header.findViewById(R.id.imageView);
-        tvName = (TextView) header.findViewById(R.id.tvNameDrawer);
-
-        FirebaseUser dbuser = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        tvName.setText(dbuser.getDisplayName());
-
-       Glide.with(this).load(dbuser.getPhotoUrl().toString()).into(userIco);
-
-//        Log.d(TAG,dbuser.getDisplayName());
-        StorageReference storageReference = storage.getReferenceFromUrl("gs://food-calculator.appspot.com");
+        initUI();
+        mToolbar.setTitle("Main");
+        setSupportActionBar(mToolbar);
 
 
-       // userIco.setImageURI(Uri.parse("https://pp.vk.me/c633431/v633431030/3cf7c/e11bDmBVbqo.jpg)"));
+        searchFragment = new SearchFragment();
+        diaryFragment = new DiaryFragment();
+
+      //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+        // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
+
+
 
    /*     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,14 +68,10 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });*/
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
     }
 
     @Override
@@ -121,9 +119,17 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        fragmentManager = getFragmentManager();
         if (id == R.id.nav_diary) {
-            // Handle the camera action
+
+            fragmentManager.beginTransaction()
+                    .remove(searchFragment)
+                    .add(R.id.fragment_conteiner,diaryFragment).commit();
+
         } else if (id == R.id.nav_diets) {
+            fragmentManager.beginTransaction()
+                    .remove(diaryFragment)
+                    .add(R.id.fragment_conteiner,searchFragment).commit();
 
         } else if (id == R.id.nav_favorites) {
 
@@ -138,5 +144,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initUI() {
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mHeader=mNavigationView.getHeaderView(0);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
+        mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
+
+
     }
 }

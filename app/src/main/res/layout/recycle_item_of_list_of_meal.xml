@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/t_view_food_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/t_view_meal"
+        android:padding="10dp"
+        android:text="Картопля по селянськи"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_amout_cal_diary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/t_view_food_name"
+        android:layout_alignParentRight="true"
+        android:paddingRight="15sp"
+        android:text="247"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_value_por_diary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/t_view_food_name"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:text="100 g."
+
+        android:textSize="17sp" />
+</RelativeLayout>

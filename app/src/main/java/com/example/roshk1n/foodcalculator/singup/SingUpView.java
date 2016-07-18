@@ -12,4 +12,6 @@ public interface SingUpView {
     Bitmap getBitmapIv();
 
     void showToast(String message);
+
+    void navigateToHome();
 }

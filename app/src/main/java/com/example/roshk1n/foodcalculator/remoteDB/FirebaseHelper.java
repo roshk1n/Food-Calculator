@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.User;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
+import com.example.roshk1n.foodcalculator.singup.SingUpPresenter;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,6 +64,14 @@ public class FirebaseHelper {
         FirebaseHelper.urlUserPhto = urlUserPhto;
     }
 
+    public static FirebaseUser getmFirebaseUser() {
+        return mFirebaseUser;
+    }
+
+    public static void setmFirebaseUser(FirebaseUser mFirebaseUser) {
+        FirebaseHelper.mFirebaseUser = mFirebaseUser;
+    }
+
     public static void removeListner() {
         mAuth.removeAuthStateListener(mAuthListner);
     }
@@ -95,7 +104,7 @@ public class FirebaseHelper {
 
                                 }
                             });
-                        }
+                        } //TODO: як повернути значення в presenter
                     }
                 });
     }

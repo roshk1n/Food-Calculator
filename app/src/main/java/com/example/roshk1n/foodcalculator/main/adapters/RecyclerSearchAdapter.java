@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.main.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.model.Food;
+import com.example.roshk1n.foodcalculator.R;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by roshk1n on 7/12/2016.
@@ -15,6 +17,11 @@ import java.util.List;
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
     private ArrayList<Food> foods;
+
+    public RecyclerSearchAdapter(ArrayList<Food> foods)
+    {
+        this.foods = foods;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName;
@@ -25,17 +32,12 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         {
             super(v);
             tvName = (TextView) v.findViewById(R.id.tvSearchName);
-            tvValuePor = (TextView) v.findViewById(R.id.tv_value_por);
-            tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal);
+            tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
+            tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
         }
     }
 
-    public RecyclerSearchAdapter(ArrayList<Food> foods)
-    {
-        this.foods = foods;
-    }
     @Override
-
     public RecyclerSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_search,parent,false);
         ViewHolder vh = new ViewHolder(v);

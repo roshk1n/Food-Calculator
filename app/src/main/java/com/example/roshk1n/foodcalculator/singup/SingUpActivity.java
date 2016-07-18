@@ -8,10 +8,12 @@ import android.graphics.Bitmap;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.R;
 
 
@@ -21,6 +23,7 @@ public class SingUpActivity extends Activity implements SingUpView {
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
+    private static String TAG="MyLog";
 
     private EditText surname;
     private EditText email;
@@ -78,6 +81,12 @@ public class SingUpActivity extends Activity implements SingUpView {
     @Override
     public void showToast(String message) {
         Toast.makeText(SingUpActivity.this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void navigateToHome() {
+        startActivity(new Intent(SingUpActivity.this,MainActivity.class));
+        Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
     public void onSignUpClicked (View view) { //реєстрація користувача в firebase

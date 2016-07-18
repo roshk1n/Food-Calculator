@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.rest;
 
 
 import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
+import com.example.roshk1n.foodcalculator.rest.service.NdbApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,20 +14,28 @@ import retrofit.converter.GsonConverter;
  */
 public class RestClient {
     private LoginApi loginApi;
+    private NdbApi ndbApi;
 
     public RestClient() {
         Gson gson = new GsonBuilder().create();
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
+        RestAdapter loginRestAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setConverter(new GsonConverter(gson))
                 .setEndpoint("http://146.185.180.39:4020")
                 .build();
 
-        loginApi = restAdapter.create(LoginApi.class);
+        RestAdapter ndbRestAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(new GsonConverter(gson))
+                .setEndpoint("http://api.nal.usda.gov")
+                .build();
+
+        loginApi = loginRestAdapter.create(LoginApi.class);
+        ndbApi = ndbRestAdapter.create(NdbApi.class);
     }
 
-    public LoginApi getLoginApi() {
-        return loginApi;
-    }
+    public LoginApi getLoginApi() { return loginApi; }
+
+    public NdbApi getNdbApi() { return ndbApi; }
 }

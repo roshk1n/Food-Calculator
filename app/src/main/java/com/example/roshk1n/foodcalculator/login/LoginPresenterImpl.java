@@ -69,6 +69,7 @@ public class LoginPresenterImpl implements LoginPresenter{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
+                    FirebaseHelper.setmFirebaseUser(FirebaseHelper.getmAuth().getCurrentUser());
                     loginVew.navigateToHome();
                 }
             }

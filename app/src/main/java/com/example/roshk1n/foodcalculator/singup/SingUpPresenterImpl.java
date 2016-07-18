@@ -41,7 +41,7 @@ public class SingUpPresenterImpl implements SingUpPresenter {
                 || TextUtils.isEmpty(password) || TextUtils.isEmpty(congirmPassword)) {
             singUpView.showToast("Enter all fields, please.");
 
-        } else if(password!=congirmPassword) {
+        } else if(!password.equals(congirmPassword)) {
             singUpView.showToast("Password and confirm password don`t match.");
         } else {
             final Bitmap imageUser = singUpView.getBitmapIv();
@@ -50,8 +50,11 @@ public class SingUpPresenterImpl implements SingUpPresenter {
 // TODO: waiting for upload
             FirebaseHelper.uploadImage(imageUser, email);
 
-            if (FirebaseHelper.getUrlUserPhto() != null)
+            if (FirebaseHelper.getUrlUserPhto() != null) {
                 FirebaseHelper.createUser(user);
+                singUpView.navigateToHome();
+            }
+
         }
     }
 

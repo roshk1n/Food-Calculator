@@ -13,6 +13,7 @@ import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LogoutRes
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.RegistrationResponse;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.VerifyResponse;
+import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -25,9 +26,7 @@ public  class ManageLoginApi {
 
     private static RestClient restClient;
 
-    public ManageLoginApi() {
-        restClient = new RestClient();
-    }
+    public ManageLoginApi() {}
 
     public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
         RegistrationUser registrationUser = new RegistrationUser(f_namem,l_name,u_email,u_password);

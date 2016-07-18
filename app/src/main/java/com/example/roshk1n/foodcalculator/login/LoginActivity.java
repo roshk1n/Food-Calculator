@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.MainActivity;
+import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.singup.SingUpActivity;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 

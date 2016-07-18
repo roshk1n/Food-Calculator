@@ -25,7 +25,7 @@ public interface LoginApi {
     void verifyUser(@Body VerifyUser verifyUser, Callback<VerifyResponse> Callback);
 
     @POST("/login/email")
-    void login(@Body LoginUser loginUser, Callback<LoginResponse> Callbak);
+    void login(@Body LoginUser loginUser, Callback<LoginResponse> Callback);
 
     @POST("/login/logout")
     void logout(@Body LogoutUser logoutUserm, Callback<LogoutResponse> Callback);

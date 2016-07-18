@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator;
+package com.example.roshk1n.foodcalculator.model;
 
 /**
  * Created by roshk1n on 7/12/2016.
