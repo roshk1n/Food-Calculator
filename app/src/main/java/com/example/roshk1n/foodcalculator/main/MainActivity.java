@@ -2,7 +2,9 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 
+
 import android.app.FragmentManager;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,14 +18,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private SearchFragment searchFragment;
     private DiaryFragment diaryFragment;
     private InfoFoodFragment infoFoodFragment;
+    private RemindersFragment remindersFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         searchFragment = new SearchFragment();
         diaryFragment = new DiaryFragment();
         infoFoodFragment = new InfoFoodFragment();
+        remindersFragment = new RemindersFragment();
 
       //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getFragmentManager(); //TODO: make normal manager for fragments
         if (id == R.id.nav_diary) {
 
             fragmentManager.beginTransaction()
@@ -162,6 +167,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_history) {
 
         } else if (id == R.id.nav_remonders) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_conteiner,remindersFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_settings) {
 
@@ -171,7 +178,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
