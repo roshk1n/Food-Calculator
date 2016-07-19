@@ -3,7 +3,6 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,12 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.main.fragments.DiaryFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.SearchFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private SearchFragment searchFragment;
     private DiaryFragment diaryFragment;
+    private InfoFoodFragment infoFoodFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity
 
         searchFragment = new SearchFragment();
         diaryFragment = new DiaryFragment();
+        infoFoodFragment = new InfoFoodFragment();
 
       //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
@@ -72,6 +79,18 @@ public class MainActivity extends AppCompatActivity
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -123,15 +142,22 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_diary) {
 
             fragmentManager.beginTransaction()
+                    .remove(infoFoodFragment)
                     .remove(searchFragment)
-                    .add(R.id.fragment_conteiner,diaryFragment).commit();
+                    .add(R.id.fragment_conteiner,diaryFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_diets) {
             fragmentManager.beginTransaction()
+                    .remove(infoFoodFragment)
                     .remove(diaryFragment)
-                    .add(R.id.fragment_conteiner,searchFragment).commit();
+
+                    .add(R.id.fragment_conteiner,searchFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_favorites) {
+            fragmentManager.beginTransaction()
+                    .remove(searchFragment)
+                    .remove(diaryFragment)
+                    .add(R.id.fragment_conteiner,infoFoodFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_history) {
 
@@ -154,7 +180,5 @@ public class MainActivity extends AppCompatActivity
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
         mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
-
-
     }
 }

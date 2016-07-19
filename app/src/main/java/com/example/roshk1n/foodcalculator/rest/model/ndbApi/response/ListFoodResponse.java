@@ -4,10 +4,10 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public class SearchResponse {
+public class ListFoodResponse {
     private List list;
 
-    public SearchResponse() { }
+    public ListFoodResponse() { }
 
     public List getList() {
         return list;

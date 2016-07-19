@@ -37,8 +37,6 @@ public  class ManageLoginApi {
                 registrationResponse.getSucceeded();
 
                 registrationResponse.getDataRegistration();
-
-
                 Log.d("TAG", "success");
             }
 

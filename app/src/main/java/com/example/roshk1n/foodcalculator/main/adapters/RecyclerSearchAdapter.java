@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.main.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         this.foods = foods;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tvName;
         public TextView tvValuePor;
         public TextView tvAmoutCal;
@@ -35,6 +37,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
             tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
         }
+
     }
 
     @Override

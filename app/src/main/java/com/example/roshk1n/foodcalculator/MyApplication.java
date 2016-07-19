@@ -15,7 +15,7 @@ import com.firebase.client.Firebase;
 
 public class MyApplication extends Application {
 
-    private RestClient restClient;
+    private static RestClient restClient;
     private int count;
 
     @Override
@@ -25,7 +25,7 @@ public class MyApplication extends Application {
         restClient = new RestClient();
     }
 
-    public RestClient getRestClient() { return restClient; }
+    public static RestClient getRestClient() { return restClient; }
 
     public void setRestClient(RestClient restClient) { this.restClient = restClient; }
 

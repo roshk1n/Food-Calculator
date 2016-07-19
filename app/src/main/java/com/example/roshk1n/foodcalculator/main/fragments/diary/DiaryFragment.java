@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.main.fragments;
+package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
 import android.app.Fragment;
 import android.os.Bundle;
