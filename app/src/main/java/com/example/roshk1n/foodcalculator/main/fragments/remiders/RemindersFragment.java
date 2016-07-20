@@ -27,7 +27,7 @@ public class RemindersFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
         initUI();
-        
+
         cvBreakfast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
