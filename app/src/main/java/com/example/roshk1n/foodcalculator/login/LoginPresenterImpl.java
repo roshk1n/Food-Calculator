@@ -20,14 +20,11 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * Created by roshk1n on 7/14/2016.
  */
-public class LoginPresenterImpl implements LoginPresenter{
+public class LoginPresenterImpl implements LoginPresenter {
 
     private static String TAG = "MyLog";
-
     private MyApplication myApplication;
-
     private CallbackManager callbackManager;
-
     private LoginView loginVew;
 
     public LoginPresenterImpl() {}
@@ -45,11 +42,12 @@ public class LoginPresenterImpl implements LoginPresenter{
     public void loginWithApi(String email, String password) {
         boolean error = false;
         if(loginVew != null) {
+//            TODO: email validation
             if (TextUtils.isEmpty(email)) {
                 loginVew.setEmailError();
                 error = true;
             }
-
+//              TODO: min 6 symbols
             if (TextUtils.isEmpty(password)) {
                 loginVew.setPasswordError();
                 error = true;
@@ -57,6 +55,17 @@ public class LoginPresenterImpl implements LoginPresenter{
 
             if (!error){
                 ManageLoginApi.login("roshk1n.ua@gmail.com", "132132132");
+//TODO:
+//                restClient.getLoginApi().login(loginUser, new Callback<com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse>() {
+//                    @Override
+//                    public void success(com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse loginResponse, Response response) {
+//                        loginResponse.getData();
+//                    }
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//
+//                    }
+//                });
             }
         }
     }

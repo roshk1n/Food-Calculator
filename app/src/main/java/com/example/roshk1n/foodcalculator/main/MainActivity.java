@@ -4,33 +4,26 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 import android.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
-import com.example.roshk1n.foodcalculator.login.LoginActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -62,10 +55,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
 
-        searchFragment = new SearchFragment();
-        diaryFragment = new DiaryFragment();
-        infoFoodFragment = new InfoFoodFragment();
-        remindersFragment = new RemindersFragment();
+//        searchFragment = new SearchFragment();
+//        diaryFragment = new DiaryFragment();
+//        infoFoodFragment = new InfoFoodFragment();
+//        remindersFragment = new RemindersFragment();
 
       //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
@@ -142,21 +135,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+//        Fragment fr = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+//        Fragment introFragment = getSupportFragmentManager().findFragmentById(R.id.intro_content);
 
         fragmentManager = getFragmentManager(); //TODO: make normal manager for fragments
         if (id == R.id.nav_diary) {
-
+//            (fr instanceof DiaryFragment) {
+//
+//            }
             fragmentManager.beginTransaction()
                     .remove(infoFoodFragment)
                     .remove(searchFragment)
                     .add(R.id.fragment_conteiner,diaryFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_diets) {
-            fragmentManager.beginTransaction()
-                    .remove(infoFoodFragment)
-                    .remove(diaryFragment)
-
-                    .add(R.id.fragment_conteiner,searchFragment).addToBackStack(null).commit();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance())
+//                    .addToBackStack(null)
+//                    .commit();
 
         } else if (id == R.id.nav_favorites) {
             fragmentManager.beginTransaction()

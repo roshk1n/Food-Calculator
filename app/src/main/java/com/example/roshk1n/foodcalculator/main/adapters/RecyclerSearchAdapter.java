@@ -1,15 +1,14 @@
 package com.example.roshk1n.foodcalculator.main.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
+import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.model.Food;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
 
     private ArrayList<Food> foods;
 
-    public RecyclerSearchAdapter(ArrayList<Food> foods)
-    {
+    public RecyclerSearchAdapter(ArrayList<Food> foods) {
         this.foods = foods;
     }
 
@@ -48,10 +46,19 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvName.setText(foods.get(position).getName());
         holder.tvAmoutCal.setText(String.valueOf(foods.get(position).getEnergy())+" cal");
         holder.tvValuePor.setText(String.valueOf(foods.get(position).getValuePer())+" g, ");
+
+        holder.tvAmoutCal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()));
+//                getS
+            }
+        });
     }
 
     @Override

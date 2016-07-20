@@ -7,15 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
-import com.example.roshk1n.foodcalculator.singup.SingUpActivity;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-
+import com.example.roshk1n.foodcalculator.singup.SingUpActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
@@ -23,15 +21,13 @@ public class LoginActivity extends Activity implements LoginView {
 
     private static String TAG = "MyLog";
 
-    private Button btnLogIn;
-    private TextView info;
-    private EditText etEmail;
+    private LoginPresenterImpl loginPresenter;
+    private Button loginBtn;
+    private EditText emailEt;
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
 
     private MyApplication myApplication;
-
-    private LoginPresenterImpl loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +70,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     public void setEmailError() {
-        etEmail.setError("Enter email please");
+        emailEt.setError("Enter email please");
     }
 
     @Override
@@ -97,18 +93,17 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     public void onLogIn(View view) { // кнопка логіну користувача через email/password
-        loginPresenter.loginWithEmail(etEmail.getText().toString(),etPassword.getText().toString());
+        loginPresenter.loginWithEmail(emailEt.getText().toString(),etPassword.getText().toString());
     }
 
     public void onLogInApi(View view) {
-      //  loginPresenter.loginWithApi(etEmail.getText().toString(),etPassword.getText().toString()); невідомо шо там з апішкою )
+      //  loginPresenter.loginWithApi(emailEt.getText().toString(),etPassword.getText().toString()); невідомо шо там з апішкою )
     }
 
     private void initUI() {
-        etEmail = (EditText) findViewById(R.id.etLogin);
+        emailEt = (EditText) findViewById(R.id.etLogin);
         etPassword = (EditText) findViewById(R.id.etPassword);
-        info = (TextView) findViewById(R.id.info);
-        btnLogIn = (Button) findViewById(R.id.btnLogin);
+        loginBtn = (Button) findViewById(R.id.btnLogin);
         btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
     }
 }

@@ -5,7 +5,7 @@ package com.example.roshk1n.foodcalculator.rest.model.loginApi.response;
  */
 public class LoginResponse {
     private Succeeded succeeded;
-    private DataLogin data;
+    private com.example.roshk1n.foodcalculator.rest.model.loginApi.response.DataLogin data;
 
     public LoginResponse() {
     }
@@ -19,11 +19,11 @@ public class LoginResponse {
         this.succeeded = succeeded;
     }
 
-    public DataLogin getData() {
+    public com.example.roshk1n.foodcalculator.rest.model.loginApi.response.DataLogin getData() {
         return data;
     }
 
-    public void setData(DataLogin data) {
+    public void setData(com.example.roshk1n.foodcalculator.rest.model.loginApi.response.DataLogin data) {
         this.data = data;
     }
 }

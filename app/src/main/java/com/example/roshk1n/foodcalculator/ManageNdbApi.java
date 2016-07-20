@@ -7,10 +7,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodRes
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListInfoFoodResponse;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -42,7 +38,9 @@ public class ManageNdbApi {
                         public void success(InfoFoodResponse infoFoodResponse, Response response) {
                             Log.d("Mssssy",infoFoodResponse.getReport().getFood().getNutrients().get(0).getName());
                             infoFoodResponses.getFoodResponses().add(infoFoodResponse);
+
                         }
+
                         @Override
                         public void failure(RetrofitError error) {
 
@@ -57,6 +55,10 @@ public class ManageNdbApi {
 
             }
         });
+
+    }
+
+    private static void updateView() {
 
     }
 }

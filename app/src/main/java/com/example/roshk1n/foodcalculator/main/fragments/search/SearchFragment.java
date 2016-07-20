@@ -15,10 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.ManageNdbApi;
-import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
+import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListInfoFoodResponse;
 
@@ -54,6 +53,8 @@ public class SearchFragment extends Fragment implements SearchView {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         mRecyclerView.setItemAnimator(itemAnimator);
 
+//        myDataset.add(...);
+//        mAdapter.notifyItemInserted(..);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,8 +64,7 @@ public class SearchFragment extends Fragment implements SearchView {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()!=0)
-                {
+                if (s.length() != 0) {
                     ManageNdbApi.searchFood("json","milk","3","MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ");
                 }
             }
