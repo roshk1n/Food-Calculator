@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,11 +55,10 @@ public class MainActivity extends AppCompatActivity
         mToolbar.setTitle("Main");
         setSupportActionBar(mToolbar);
 
-
-//        searchFragment = new SearchFragment();
-//        diaryFragment = new DiaryFragment();
-//        infoFoodFragment = new InfoFoodFragment();
-//        remindersFragment = new RemindersFragment();
+        searchFragment = new SearchFragment();
+        diaryFragment = new DiaryFragment();
+        infoFoodFragment = new InfoFoodFragment();
+        remindersFragment = new RemindersFragment();
 
       //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
@@ -149,16 +149,16 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.fragment_conteiner,diaryFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_diets) {
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance())
-//                    .addToBackStack(null)
-//                    .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
 
         } else if (id == R.id.nav_favorites) {
             fragmentManager.beginTransaction()
                     .remove(searchFragment)
                     .remove(diaryFragment)
-                    .add(R.id.fragment_conteiner,infoFoodFragment).addToBackStack(null).commit();
+                    .add(R.id.fragment_conteiner,searchFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_history) {
 

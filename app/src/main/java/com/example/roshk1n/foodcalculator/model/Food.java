@@ -1,12 +1,10 @@
 package com.example.roshk1n.foodcalculator.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by roshk1n on 7/12/2016.
  */
-public class Food implements Parcelable {
+public class Food  {
     private String name;
     private String group;
     private String description;
@@ -107,14 +105,4 @@ public class Food implements Parcelable {
         this.valuePer = valuePer;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

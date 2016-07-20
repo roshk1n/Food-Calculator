@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.model;
 
 import com.example.roshk1n.foodcalculator.enums.MealOfDay;
+import com.example.roshk1n.foodcalculator.model.Food;
 
 import java.util.ArrayList;
 

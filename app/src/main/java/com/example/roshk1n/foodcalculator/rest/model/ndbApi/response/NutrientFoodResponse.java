@@ -3,10 +3,10 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public class InfoFoodResponse {
+public class NutrientFoodResponse {
     private Report report;
 
-    public InfoFoodResponse() {}
+    public NutrientFoodResponse() {}
 
     public Report getReport() {
         return report;

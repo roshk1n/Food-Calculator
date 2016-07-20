@@ -1,19 +1,41 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public class Nutrient {
+public class Nutrient implements Parcelable {
     private String nutrient_id;
-    private String name;
-    private String group;
+    private String nutrient;
     private String unit;
     private String value;
-    private ArrayList<Measure> measures = new ArrayList<Measure>();
+    private String gm;
 
     public Nutrient() { }
+
+    protected Nutrient(Parcel in) {
+        nutrient_id = in.readString();
+        nutrient = in.readString();
+        unit = in.readString();
+        value = in.readString();
+        gm = in.readString();
+    }
+
+    public static final Creator<Nutrient> CREATOR = new Creator<Nutrient>() {
+        @Override
+        public Nutrient createFromParcel(Parcel in) {
+            return new Nutrient(in);
+        }
+
+        @Override
+        public Nutrient[] newArray(int size) {
+            return new Nutrient[size];
+        }
+    };
 
     public String getNutrient_id() {
         return nutrient_id;
@@ -23,21 +45,13 @@ public class Nutrient {
         this.nutrient_id = nutrient_id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getGm() { return gm; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setGm(String gm) { this.gm = gm; }
 
-    public String getGroup() {
-        return group;
-    }
+    public String getNutrient() { return nutrient; }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
+    public void setNutrient(String nutrient) { this.nutrient = nutrient; }
 
     public String getUnit() {
         return unit;
@@ -55,11 +69,17 @@ public class Nutrient {
         this.value = value;
     }
 
-    public ArrayList<Measure> getMeasures() {
-        return measures;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setMeasures(ArrayList<Measure> measures) {
-        this.measures = measures;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nutrient_id);
+        dest.writeString(nutrient);
+        dest.writeString(unit);
+        dest.writeString(value);
+        dest.writeString(gm);
     }
 }

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.model.Food;
 
 import java.util.ArrayList;
 

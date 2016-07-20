@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.rest.service;
 
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.InfoFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 
 import retrofit.Callback;
@@ -20,10 +20,11 @@ public interface NdbApi {
             , @Query("api_key") String api_key
             , Callback<ListFoodResponse> callback);
 
-    @GET("/ndb/reports/")
-    void searchNutrientFood(@Query("ndbno") String ndbno
+    @GET("/ndb/nutrients/")
+    void getNutrientFood(@Query("ndbno") String ndbno
+            , @Query("nutrients") String [] nutrients
             , @Query("api_key") String api_key
-            , Callback<InfoFoodResponse> callback);
+            , Callback<NutrientFoodResponse> callback);
 
 
 }

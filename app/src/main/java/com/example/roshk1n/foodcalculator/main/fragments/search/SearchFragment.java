@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.roshk1n.foodcalculator.ManageNdbApi;
+import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
-import com.example.roshk1n.foodcalculator.model.Food;
+import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListInfoFoodResponse;
 
@@ -26,13 +27,20 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class SearchFragment extends Fragment implements SearchView {
+    private RestClient restClient;
+    private String[] nutrients = {"204","208","205","203"};;
 
     private View view;
-    EditText editText;
+    private EditText editText;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
+    private ArrayList<NutrientFoodResponse> nutrientFoodResponses = new ArrayList<NutrientFoodResponse>();
 
     public SearchFragment() {}
 
@@ -42,12 +50,12 @@ public class SearchFragment extends Fragment implements SearchView {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
         initUI();
-        ArrayList<Food> myDataset = getDataSet();
+        restClient = MyApplication.getRestClient();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(myDataset);
+        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses);
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -56,22 +64,36 @@ public class SearchFragment extends Fragment implements SearchView {
 //        myDataset.add(...);
 //        mAdapter.notifyItemInserted(..);
 
-        editText.addTextChangedListener(new TextWatcher() {
+        editText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
-                    ManageNdbApi.searchFood("json","milk","3","MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ");
+            public void onClick(View v) {
+                if (editText.getText().length() != 0) {
+                    nutrientFoodResponses.clear();
+                    mAdapter.notifyDataSetChanged();
+                    restClient.getNdbApi().searchFood("json",editText.getText().toString(),"20",restClient.getApi_key(), new Callback<ListFoodResponse>() {
+                        @Override
+                        public void success(final ListFoodResponse listFoodResponse, Response response) {
+                            for(int i =0;i<listFoodResponse.getList().getItem().size();i++)
+                            {
+                                MyApplication.getRestClient().getNdbApi().getNutrientFood(listFoodResponse.getList().getItem().get(i).getNdbno(),nutrients, restClient.getApi_key(), new Callback<NutrientFoodResponse>() {
+                                    @Override
+                                    public void success(NutrientFoodResponse nutrientFoodResponse, Response response) {
+                                        if(nutrientFoodResponse.getReport().getFoods().size()>0) {
+                                            nutrientFoodResponses.add(nutrientFoodResponse);
+                                            mAdapter.notifyItemInserted(nutrientFoodResponses.size());
+                                        }
+                                    }
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void failure(RetrofitError error) {
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
         return view;
@@ -94,19 +116,12 @@ public class SearchFragment extends Fragment implements SearchView {
         editText = (EditText) view.findViewById(R.id.et_food_name);
     }
 
-    private ArrayList<Food> getDataSet() {
-        ArrayList<Food> foods = new ArrayList<>();
-        foods.add(new Food("Картопля смажена",120,100.0f));
-        foods.add(new Food("Картопля печена",100,100.0f));
-        foods.add(new Food("Макарон",150,100.0f));
-        foods.add(new Food("Гриби",60,100.0f));
-        return foods;
-    }
+
     @Subscribe()
     public void doThis(ListInfoFoodResponse listInfoFood) {
         // Toast.makeText(getActivity(), listInfoFood.getFoodResponses().get(0).getReport().getFood().getName(), Toast.LENGTH_LONG).show();
         Log.d("MYYYY","fsafa");
-        Log.d("MYYYY",listInfoFood.getFoodResponses().get(0).getReport().getFood().getName());
+       // Log.d("MYYYY",listInfoFood.getFoodResponses().get(0).getReport().getFood().getName());
 /*        */
     }
 
@@ -116,4 +131,5 @@ public class SearchFragment extends Fragment implements SearchView {
 /*        mAdapter = new RecyclerSearchAdapter(infoFoodResponse);
         mRecyclerView.setAdapter(mAdapter);*/
     }
+
 }

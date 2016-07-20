@@ -15,6 +15,7 @@ import retrofit.converter.GsonConverter;
 public class RestClient { //TODO: Create in MyApplication
     private LoginApi loginApi;
     private NdbApi ndbApi;
+    private String api_key = "MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ";
 
     public RestClient() {
         Gson gson = new GsonBuilder().create();
@@ -33,6 +34,14 @@ public class RestClient { //TODO: Create in MyApplication
 
         loginApi = loginRestAdapter.create(LoginApi.class);
         ndbApi = ndbRestAdapter.create(NdbApi.class);
+    }
+
+    public String getApi_key() {
+        return api_key;
+    }
+
+    public void setApi_key(String api_key) {
+        this.api_key = api_key;
     }
 
     public LoginApi getLoginApi() { return loginApi; }

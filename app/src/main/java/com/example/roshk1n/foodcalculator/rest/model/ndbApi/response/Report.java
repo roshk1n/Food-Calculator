@@ -1,12 +1,18 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
+import java.util.ArrayList;
+
 /**
  * Created by roshk1n on 7/18/2016.
  */
 public class Report {
     private String sr;
-    private String type;
-    private Food food;
+    private String groups;
+    private String subset;
+    private int end;
+    private int start;
+    private int total;
+    private ArrayList<Food> foods = new ArrayList<Food>();
 
     public Report() {}
 
@@ -18,19 +24,51 @@ public class Report {
         this.sr = sr;
     }
 
-    public String getType() {
-        return type;
+    public String getGroups() {
+        return groups;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setGroups(String groups) {
+        this.groups = groups;
     }
 
-    public Food getFood() {
-        return food;
+    public String getSubset() {
+        return subset;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void setSubset(String subset) {
+        this.subset = subset;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public ArrayList<Food> getFoods() {
+        return foods;
+    }
+
+    public void setFoods(ArrayList<Food> foods) {
+        this.foods = foods;
     }
 }

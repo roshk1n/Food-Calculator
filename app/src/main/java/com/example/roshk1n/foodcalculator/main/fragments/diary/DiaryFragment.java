@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.roshk1n.foodcalculator.enums.MealOfDay;
-import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerListOfMealAdapter;
+import com.example.roshk1n.foodcalculator.model.Food;
 import com.example.roshk1n.foodcalculator.model.Meal;
 
 import java.util.ArrayList;
@@ -51,25 +51,6 @@ public class DiaryFragment extends Fragment {
         return view;
     }
 
-/*    private ArrayList<Food> getDataSet() {
-
-        ArrayList<Food> foods = new ArrayList<>();
-        foods.add(new Food("Картопля смажена",120,100.0f));
-        foods.add(new Food("Картопля печена",100,100.0f));
-        foods.add(new Food("Макарон",150,100.0f));
-        foods.add(new Food("Гриби",60,100.0f));
-        foods.add(new Food("Сир францкзький",200,100.0f));
-        foods.add(new Food("Мясо свинина",150,100.0f));
-        foods.add(new Food("Картопля смажена",120,100.0f));
-        foods.add(new Food("Картопля печена",100,100.0f));
-        foods.add(new Food("Макарон",150,100.0f));
-        foods.add(new Food("Гриби",60,100.0f));
-        foods.add(new Food("Сир францкзький",200,100.0f));
-        foods.add(new Food("Мясо свинина",150,100.0f));
-        foods.add(new Food("Картопля смажена",120,100.0f));
-
-        return foods;
-    }*/
     private ArrayList<Meal> getD() {
         ArrayList<Meal> meals = new ArrayList<Meal>();
         for (MealOfDay mealOfDat : MealOfDay.values()) {
