@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.main.adapters;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -65,8 +66,6 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("My lof", "onClick: ");
-
                     switchFragment(InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0)));
                 }
             });
@@ -92,7 +91,8 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             return;
         if (v.getContext() instanceof MainActivity) {
             MainActivity feeds = (MainActivity) v.getContext();
-            feeds.getFragmentManager().beginTransaction()
+            feeds.getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.fragment_conteiner, infoFood)
                     .addToBackStack(null)
                     .commit();

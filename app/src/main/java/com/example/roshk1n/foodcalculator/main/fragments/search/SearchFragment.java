@@ -1,12 +1,12 @@
 package com.example.roshk1n.foodcalculator.main.fragments.search;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,6 @@ import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListInfoFoodResponse;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,10 +43,12 @@ public class SearchFragment extends Fragment implements SearchView {
 
     public SearchFragment() {}
 
+    public static Fragment newInstance() { return  new SearchFragment(); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("s","on create");
         view = inflater.inflate(R.layout.fragment_search, container, false);
         initUI();
         restClient = MyApplication.getRestClient();
@@ -60,9 +61,6 @@ public class SearchFragment extends Fragment implements SearchView {
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         mRecyclerView.setItemAnimator(itemAnimator);
-
-//        myDataset.add(...);
-//        mAdapter.notifyItemInserted(..);
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,20 +114,8 @@ public class SearchFragment extends Fragment implements SearchView {
         editText = (EditText) view.findViewById(R.id.et_food_name);
     }
 
-
-    @Subscribe()
-    public void doThis(ListInfoFoodResponse listInfoFood) {
-        // Toast.makeText(getActivity(), listInfoFood.getFoodResponses().get(0).getReport().getFood().getName(), Toast.LENGTH_LONG).show();
-        Log.d("MYYYY","fsafa");
-       // Log.d("MYYYY",listInfoFood.getFoodResponses().get(0).getReport().getFood().getName());
-/*        */
-    }
-
     @Subscribe()
     public void doTh2is(ListFoodResponse listInfoFood) {
         Toast.makeText(getActivity(), listInfoFood.getList().getQ(), Toast.LENGTH_LONG).show();
-/*        mAdapter = new RecyclerSearchAdapter(infoFoodResponse);
-        mRecyclerView.setAdapter(mAdapter);*/
     }
-
 }

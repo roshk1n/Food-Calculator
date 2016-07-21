@@ -1,22 +1,31 @@
 package com.example.roshk1n.foodcalculator.main.fragments.infoFood;
 
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.main.MainActivity;
+import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
+import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
-import org.w3c.dom.Text;
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class InfoFoodFragment extends Fragment {
+
+    private Food food;
 
     private View view;
     private Button mAddFoodBtn;
@@ -25,9 +34,9 @@ public class InfoFoodFragment extends Fragment {
     private TextView fatFoodtv;
     private TextView proteinFoodtv;
     private TextView caloriesFoodtv;
-    private static InfoFoodFragment infoFoodFragment = new InfoFoodFragment();
 
     public static InfoFoodFragment newInstance(Food food) {
+        InfoFoodFragment infoFoodFragment = new InfoFoodFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("food", food);
         infoFoodFragment.setArguments(bundle);
@@ -35,7 +44,7 @@ public class InfoFoodFragment extends Fragment {
     }
 
     public static InfoFoodFragment newInstance() {
-        return infoFoodFragment;
+        return new InfoFoodFragment();
     }
 
     public InfoFoodFragment() {
@@ -49,23 +58,33 @@ public class InfoFoodFragment extends Fragment {
         initUI();
 
         Bundle bundle = getArguments();
-        if(bundle != null)
-        {
-            Food food = bundle.getParcelable("food");
+
+        if(bundle != null) {
+            food = bundle.getParcelable("food");
             proteinFoodtv.setText(food.getNutrients().get(0).getValue());
             caloriesFoodtv.setText(food.getNutrients().get(1).getValue());
             fatFoodtv.setText(food.getNutrients().get(2).getValue());
             cabsFoodtv.setText(food.getNutrients().get(3).getValue());
             nameFoodtv.setText(food.getName());
         }
-
-
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
 
         mAddFoodBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-
+                if (food !=null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    FoodRealm foodRealm = food.converToRealm();
+                    realm.beginTransaction();
+                    realm.copyToRealm(foodRealm);
+                    realm.commitTransaction();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .replace(R.id.fragment_conteiner, SearchFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
 

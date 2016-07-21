@@ -1,13 +1,15 @@
 package com.example.roshk1n.foodcalculator.main;
 
 
-
-
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,15 +20,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,39 +49,45 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView mImageViewUserIco;
     private TextView mTextViewName;
 
+    public FloatingActionButton getAddFoodFab() {
+        return addFoodFab;
+    }
+
+    public void setAddFoodFab(FloatingActionButton addFoodFab) {
+        this.addFoodFab = addFoodFab;
+    }
+
+    private  FloatingActionButton addFoodFab; //TODO: This button is private, how to access her from InfoFoodFragment
+
     private FragmentManager fragmentManager;
-    private SearchFragment searchFragment;
-    private DiaryFragment diaryFragment;
-    private InfoFoodFragment infoFoodFragment;
-    private RemindersFragment remindersFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initUI();
         mToolbar.setTitle("Main");
         setSupportActionBar(mToolbar);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
+                .commit();
 
-        searchFragment = new SearchFragment();
-        diaryFragment = new DiaryFragment();
-        infoFoodFragment = new InfoFoodFragment();
-        remindersFragment = new RemindersFragment();
+        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
 
-      //  mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-        // Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
-
-
-
-   /*     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
+        addFoodFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.fragment_conteiner, SearchFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                addFoodFab.hide();
             }
-        });*/
+        });
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
@@ -89,6 +104,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+
     }
 
     @Override
@@ -98,6 +114,9 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
+            if(fr instanceof DiaryFragment)
+                addFoodFab.show();
         }
     }
 
@@ -112,9 +131,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id)
@@ -133,38 +149,35 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-//        Fragment fr = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-//        Fragment introFragment = getSupportFragmentManager().findFragmentById(R.id.intro_content);
 
-        fragmentManager = getFragmentManager(); //TODO: make normal manager for fragments
+        Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
+
         if (id == R.id.nav_diary) {
-//            (fr instanceof DiaryFragment) {
-//
-//            }
-            fragmentManager.beginTransaction()
-                    .remove(infoFoodFragment)
-                    .remove(searchFragment)
-                    .add(R.id.fragment_conteiner,diaryFragment).addToBackStack(null).commit();
+            if(!(fr instanceof DiaryFragment)) {
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                addFoodFab.show();
+            }
 
         } else if (id == R.id.nav_diets) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
 
         } else if (id == R.id.nav_favorites) {
-            fragmentManager.beginTransaction()
-                    .remove(searchFragment)
-                    .remove(diaryFragment)
-                    .add(R.id.fragment_conteiner,searchFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.nav_history) {
 
         } else if (id == R.id.nav_remonders) {
-            fragmentManager.beginTransaction()
-                    .add(R.id.fragment_conteiner,remindersFragment).addToBackStack(null).commit();
+            if(!(fr instanceof RemindersFragment)) {
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                addFoodFab.hide();
+            }
 
         } else if (id == R.id.nav_settings) {
 

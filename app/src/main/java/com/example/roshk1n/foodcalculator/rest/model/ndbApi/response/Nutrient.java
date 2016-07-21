@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import io.realm.RealmObject;
+
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public class Nutrient implements Parcelable {
+public class Nutrient  implements Parcelable {
     private String nutrient_id;
     private String nutrient;
     private String unit;

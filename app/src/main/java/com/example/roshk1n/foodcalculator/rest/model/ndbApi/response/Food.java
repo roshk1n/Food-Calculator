@@ -3,16 +3,24 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
+
 import java.util.ArrayList;
+import java.util.Date;
+
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public class Food implements Parcelable {
+public class Food  implements Parcelable {
     private String ndbno;
     private String name;
     private float weight;
     private String measure;
+
     private ArrayList<Nutrient> nutrients = new ArrayList<Nutrient>();
 
     public Food() {}
@@ -80,5 +88,22 @@ public class Food implements Parcelable {
         dest.writeFloat(weight);
         dest.writeString(measure);
         dest.writeTypedList(nutrients);
+    }
+
+    public FoodRealm converToRealm() {
+        FoodRealm foodRealm = new FoodRealm();
+        foodRealm.setName(this.getName());
+        foodRealm.setNdbno(this.getNdbno());
+        for(int i=0;i<this.getNutrients().size();i++)
+        {
+            NutrientRealm nutrientRealm = new NutrientRealm();
+            nutrientRealm.setNutrient_id(this.getNutrients().get(i).getNutrient_id());
+            nutrientRealm.setNutrient(this.getNutrients().get(i).getNutrient());
+            nutrientRealm.setValue(this.getNutrients().get(i).getValue());
+            nutrientRealm.setUnit(this.getNutrients().get(i).getUnit());
+            foodRealm.getNutrients().add(nutrientRealm);
+        }
+        foodRealm.setDate(new Date());
+        return foodRealm;
     }
 }

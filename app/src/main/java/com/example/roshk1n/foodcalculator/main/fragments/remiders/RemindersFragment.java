@@ -1,7 +1,8 @@
 package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class RemindersFragment extends Fragment {
 
     public RemindersFragment() {}
 
+    public static Fragment newInstance() { return new RemindersFragment(); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +66,7 @@ public class RemindersFragment extends Fragment {
         cvDinner = (CardView) view.findViewById(R.id.card_view_dinner);
         cvSnack = (CardView) view.findViewById(R.id.card_view_skack);
     }
+
 
 
 }
