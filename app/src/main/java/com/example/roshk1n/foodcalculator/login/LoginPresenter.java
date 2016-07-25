@@ -17,4 +17,6 @@ public interface LoginPresenter {
 
     void loginFacebookListner(LoginButton loginButton);
 
+    void loginRealm(String email, String password);
+
 }

@@ -17,7 +17,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:src="@drawable/food_in_blue"/>
         <TextView
             android:layout_width="wrap_content"
@@ -46,22 +45,29 @@
             android:layout_height="wrap_content">
 
             <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:width="150dp"
-            android:onClick="onLogInApi"
-            android:id="@+id/btnLoginApi"
-            android:text="LogIn With Api" />
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onLogInApi"
+                android:id="@+id/btnLoginApi"
+                android:text="LogIn Api"
+                />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:width="100dp"
+                android:textAllCaps="false"
+                android:onClick="onLogIn"
+                android:id="@+id/login_realm_btn"
+                android:text="LogIn Realm" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
                 android:onClick="onLogIn"
                 android:id="@+id/btnLogin"
                 android:text="LogIn" />
-
-
         </LinearLayout>
 
         <TextView

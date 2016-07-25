@@ -67,10 +67,9 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:inputType="textPassword" />
-
         <Space
             android:layout_width="1dp"
-            android:layout_height="50dp" />
+            android:layout_height="20dp" />
         <Button
             android:id="@+id/button_user_sign_up"
             android:layout_width="fill_parent"
@@ -92,9 +91,18 @@
             android:text="Sing up with API"
             android:textStyle="bold"
             />
-
-
-
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="10dp" />
+        <Button
+            android:id="@+id/button_user_sign_up_Realm"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onSignUpAPIClicked"
+            android:background="@color/colorPrimary"
+            android:text="Sing up with Realm"
+            android:textStyle="bold"
+            />
     </LinearLayout>
 
 </RelativeLayout>

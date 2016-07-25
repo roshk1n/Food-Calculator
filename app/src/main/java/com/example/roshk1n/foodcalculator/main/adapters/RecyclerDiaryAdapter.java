@@ -17,6 +17,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -24,13 +25,13 @@ import io.realm.RealmResults;
  */
 public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdapter.ViewHolder> {
 
-    private RealmResults<FoodRealm>foods;
+    private RealmList<FoodRealm> foods;
 
-    public RealmResults<FoodRealm> getFoods() { return foods; }
+    public RealmList<FoodRealm> getFoods() { return foods; }
 
-    public void setFoods(RealmResults<FoodRealm> foods) { this.foods = foods; }
+    public void setFoods(RealmList<FoodRealm> foods) { this.foods = foods; }
 
-    public RecyclerDiaryAdapter(RealmResults<FoodRealm> foods) {
+    public RecyclerDiaryAdapter(RealmList<FoodRealm> foods) {
         this.foods = foods;
 
     }

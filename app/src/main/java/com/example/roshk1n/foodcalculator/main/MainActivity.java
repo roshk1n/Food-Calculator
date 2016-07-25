@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.main;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.http.SslCertificate;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,10 +19,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.roshk1n.foodcalculator.OnSwipeTouchListener;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
@@ -49,16 +55,6 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView mImageViewUserIco;
     private TextView mTextViewName;
 
-    public FloatingActionButton getAddFoodFab() {
-        return addFoodFab;
-    }
-
-    public void setAddFoodFab(FloatingActionButton addFoodFab) {
-        this.addFoodFab = addFoodFab;
-    }
-
-    private  FloatingActionButton addFoodFab; //TODO: This button is private, how to access her from InfoFoodFragment
-
     private FragmentManager fragmentManager;
 
     @Override
@@ -73,21 +69,9 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
                 .commit();
 
-        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);
-
-        addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
-        addFoodFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, SearchFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
-                addFoodFab.hide();
-            }
-        });
+/*        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
+        mTextViewName.setText(Session.getInstance().getFullname());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
@@ -114,9 +98,6 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
-            if(fr instanceof DiaryFragment)
-                addFoodFab.show();
         }
     }
 
@@ -138,6 +119,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_logout:
             {
                 FirebaseAuth.getInstance().signOut();
+                Session.destroy();
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
             }
             break;
@@ -160,7 +142,6 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
-                addFoodFab.show();
             }
 
         } else if (id == R.id.nav_diets) {
@@ -176,7 +157,6 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
-                addFoodFab.hide();
             }
 
         } else if (id == R.id.nav_settings) {

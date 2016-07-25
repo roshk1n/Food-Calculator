@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.ManageLoginApi;
 import com.example.roshk1n.foodcalculator.MyApplication;
+import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.User;
+import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -16,6 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by roshk1n on 7/14/2016.
@@ -134,5 +140,22 @@ public class LoginPresenterImpl implements LoginPresenter {
                 loginVew.showToast("Login attempt failed.");
             }
         });
+    }
+
+    @Override
+    public void loginRealm(String email, String password) {
+
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<UserRealm> userRealms = realm.where(UserRealm.class)
+                .equalTo("email",email)
+                .equalTo("password",password).findAll();
+
+        if(userRealms.size()!=0) {
+            Session.startSession();
+            Session.getInstance().setEmail(userRealms.get(0).getEmail());
+            Session.getInstance().setFullname(userRealms.get(0).getFullname());
+            Session.getInstance().setUrlPhoto(userRealms.get(0).getPhotoUrl());
+            loginVew.navigateToHome();
+        }
     }
 }

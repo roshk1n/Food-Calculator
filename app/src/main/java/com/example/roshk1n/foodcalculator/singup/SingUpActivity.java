@@ -10,9 +10,11 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.R;
 
@@ -30,6 +32,7 @@ public class SingUpActivity extends Activity implements SingUpView {
     private EditText password;
     private EditText confirmPassword;
     private CircleImageView ivUser;
+    private Button singUpRealmbtn;
 
     private SingUpPresenterImpl singUpPresente;
 
@@ -42,6 +45,14 @@ public class SingUpActivity extends Activity implements SingUpView {
 
         singUpPresente = new SingUpPresenterImpl();
         singUpPresente.setView(this);
+
+        singUpRealmbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                singUpPresente.singUpRealm(surname.getText().toString(),email.getText().toString()
+                        ,password.getText().toString(),confirmPassword.getText().toString());
+            }
+        });
     }
     @Override
     protected void onStart()
@@ -89,6 +100,12 @@ public class SingUpActivity extends Activity implements SingUpView {
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
+    @Override
+    public void navigateToLogin() {
+        startActivity(new Intent(SingUpActivity.this,LoginActivity.class));
+        Log.d(TAG, "onAuthStateChanged:signed_in");
+    }
+
     public void onSignUpClicked (View view) { //реєстрація користувача в firebase
         singUpPresente.singUpFirebase(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
@@ -100,6 +117,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         ivUser = (CircleImageView) findViewById(R.id.ivUser);
+        singUpRealmbtn = (Button) findViewById(R.id.button_user_sign_up_Realm);
     }
 
     public void onSignUpAPIClicked(View view) {}

@@ -15,10 +15,15 @@ import android.widget.Toast;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by roshk1n on 7/12/2016.
@@ -45,6 +50,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
             tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
             searchCardView = (CardView) v.findViewById(R.id.item_search_card_view);
+
         }
 
     }
@@ -66,6 +72,15 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("Mst",SearchFragment.DATE);
+                    SimpleDateFormat format1=new SimpleDateFormat("EEEE/dd/MMMM/yyyy");
+                    Date finalDate= null;
+                    try {
+                        finalDate = format1.parse(SearchFragment.DATE);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(finalDate);
                     switchFragment(InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0)));
                 }
             });

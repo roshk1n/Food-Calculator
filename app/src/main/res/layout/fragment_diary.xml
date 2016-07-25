@@ -1,117 +1,149 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".main.fragments.diary.DiaryFragment">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/item_search_card_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginBottom="1dp"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".main.fragments.diary.DiaryFragment">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/date_diary_tv"
             android:layout_width="match_parent"
-            android:gravity="center"
-
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="15dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="date"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="17sp" />
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/item_search_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="1dp"
+            android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/goal_cal_diary_tv"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1600"
-                    android:textSize="20sp" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/goal_cal_diary_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1600"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/goal_cal_diary_tv"
+                        android:text="Goal"
+                        android:textAlignment="center" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/goal_cal_diary_tv"
-                    android:text="Goal"
-                    android:textAlignment="center" />
+                    android:layout_alignBaseline="@id/goal_cal_diary_tv"
+                    android:layout_toRightOf="@id/goal_cal_diary_tv"
+                    android:text="-"
+                    android:textSize="25sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/eatdaily_cal_diary_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/goal_cal_diary_tv"
+                        android:text="Food"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/goal_cal_diary_tv"
+                    android:layout_toRightOf="@id/goal_cal_diary_tv"
+                    android:text="="
+                    android:textSize="25sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/remaining_cal_diary_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1600"
+                        android:textColor="#d30b0b"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/goal_cal_diary_tv"
+                        android:text="Remaining"
+                        android:textAlignment="center"
+                        android:textColor="#d30b0b" />
+                </LinearLayout>
+
             </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <!--TODO: Make scroll margin-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_meal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:splitMotionEvents="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/goal_cal_diary_tv"
-                android:layout_toRightOf="@id/goal_cal_diary_tv"
-                android:text="-"
-                android:textSize="25sp" />
+        </android.support.v7.widget.RecyclerView>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:orientation="vertical">
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/eatdaily_cal_diary_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1200"
-                    android:textSize="20sp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addFood_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/btn_add_food" />
+</FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/goal_cal_diary_tv"
-                    android:text="Food"
-                    android:textAlignment="center" />
-            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/goal_cal_diary_tv"
-                android:layout_toRightOf="@id/goal_cal_diary_tv"
-                android:text="="
-                android:textSize="25sp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/remaining_cal_diary_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="400"
-                    android:textColor="#d30b0b"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/goal_cal_diary_tv"
-                    android:text="Remaining"
-                    android:textColor="#d30b0b"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.RecyclerView
-        android:paddingTop="15dp"
-        android:id="@+id/recycler_view_meal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-</LinearLayout>

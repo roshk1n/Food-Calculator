@@ -1,30 +1,21 @@
 package com.example.roshk1n.foodcalculator.main.fragments.infoFood;
 
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
+public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
-public class InfoFoodFragment extends Fragment {
-
+    private InfoFoodPresenterImpl infoFoodPresenter;
     private Food food;
 
     private View view;
@@ -57,6 +48,9 @@ public class InfoFoodFragment extends Fragment {
 
         initUI();
 
+        infoFoodPresenter = new InfoFoodPresenterImpl();
+        infoFoodPresenter.setView(this);
+
         Bundle bundle = getArguments();
 
         if(bundle != null) {
@@ -70,27 +64,25 @@ public class InfoFoodFragment extends Fragment {
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
 
         mAddFoodBtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (food !=null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    FoodRealm foodRealm = food.converToRealm();
-                    realm.beginTransaction();
-                    realm.copyToRealm(foodRealm);
-                    realm.commitTransaction();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.fragment_conteiner, SearchFragment.newInstance())
-                            .addToBackStack(null)
-                            .commit();
+                    infoFoodPresenter.addNewFood(food);
                 }
             }
         });
-
         return view;
     }
 
+    @Override
+    public void navigateToSearch() {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
+       // getActivity().getSupportFragmentManager().popBackStack();
+    }
     public void initUI() {
         cabsFoodtv = (TextView) view.findViewById(R.id.tv_cabs_food_info);
         fatFoodtv = (TextView) view.findViewById(R.id.tv_fat_food_info);

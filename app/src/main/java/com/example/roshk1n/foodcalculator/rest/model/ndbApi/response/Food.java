@@ -20,7 +20,7 @@ public class Food  implements Parcelable {
     private String name;
     private float weight;
     private String measure;
-
+    private Date date;
     private ArrayList<Nutrient> nutrients = new ArrayList<Nutrient>();
 
     public Food() {}
@@ -76,6 +76,14 @@ public class Food  implements Parcelable {
         this.nutrients = nutrients;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -103,7 +111,7 @@ public class Food  implements Parcelable {
             nutrientRealm.setUnit(this.getNutrients().get(i).getUnit());
             foodRealm.getNutrients().add(nutrientRealm);
         }
-        foodRealm.setDate(new Date());
+        foodRealm.setTime(this.getDate());
         return foodRealm;
     }
 }

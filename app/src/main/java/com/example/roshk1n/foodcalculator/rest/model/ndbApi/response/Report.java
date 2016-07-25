@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by roshk1n on 7/18/2016.
@@ -12,6 +13,7 @@ public class Report {
     private int end;
     private int start;
     private int total;
+
     private ArrayList<Food> foods = new ArrayList<Food>();
 
     public Report() {}

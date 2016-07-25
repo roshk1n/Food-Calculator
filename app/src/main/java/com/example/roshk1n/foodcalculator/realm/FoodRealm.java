@@ -4,15 +4,16 @@ import java.util.Date;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by roshk1n on 7/21/2016.
  */
 public class FoodRealm extends RealmObject {
+
     private String ndbno;
     private String name;
-    private Date date;
-
+    private Date time;
     private RealmList<NutrientRealm> nutrients = new RealmList<NutrientRealm>();
 
     public FoodRealm() {
@@ -39,6 +40,14 @@ public class FoodRealm extends RealmObject {
         this.name = name;
     }
 
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
     public RealmList<NutrientRealm> getNutrients() {
         return nutrients;
     }
@@ -46,12 +55,4 @@ public class FoodRealm extends RealmObject {
     public void setNutrients(RealmList<NutrientRealm> nutrients) {
         this.nutrients = nutrients;
     }
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
 }

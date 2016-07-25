@@ -29,6 +29,7 @@ public class MyApplication extends Application {
         restClient = new RestClient();
         RealmConfiguration realmConfig = new RealmConfiguration
                 .Builder(getApplicationContext())
+                .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
     }

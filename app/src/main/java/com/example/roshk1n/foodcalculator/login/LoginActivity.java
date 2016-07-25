@@ -12,10 +12,14 @@ import android.widget.Toast;
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
+import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.singup.SingUpActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class LoginActivity extends Activity implements LoginView {
 
@@ -23,6 +27,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     private LoginPresenterImpl loginPresenter;
     private Button loginBtn;
+    private Button loginRealmBtn;
     private EditText emailEt;
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
@@ -40,11 +45,21 @@ public class LoginActivity extends Activity implements LoginView {
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
         loginPresenter.checkLogin();
-
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<UserRealm> userRealms = realm.where(UserRealm.class)
+                .equalTo("email","roshk1n.ua@gmail.com").findAll();
+        Log.d("Msssy",String.valueOf(userRealms.size()));
 //        myApplication= (MyApplication) getApplicationContext();
 //        Log.d("My",myApplication.getCount()+"");
 
         loginPresenter.loginFacebookListner(btnLogInFacebook);
+
+        loginRealmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginPresenter.loginRealm(emailEt.getText().toString(),etPassword.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -105,5 +120,6 @@ public class LoginActivity extends Activity implements LoginView {
         etPassword = (EditText) findViewById(R.id.etPassword);
         loginBtn = (Button) findViewById(R.id.btnLogin);
         btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
+        loginRealmBtn = (Button) findViewById(R.id.login_realm_btn);
     }
 }

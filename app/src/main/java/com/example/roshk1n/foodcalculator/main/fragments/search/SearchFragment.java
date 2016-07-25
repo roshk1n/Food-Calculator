@@ -18,6 +18,7 @@ import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 
@@ -25,15 +26,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SearchFragment extends Fragment implements SearchView {
+
+    public static String DATE;
+
     private RestClient restClient;
     private String[] nutrients = {"204","208","205","203"};;
-
     private View view;
     private EditText editText;
     private RecyclerView mRecyclerView;
@@ -45,12 +49,25 @@ public class SearchFragment extends Fragment implements SearchView {
 
     public static Fragment newInstance() { return  new SearchFragment(); }
 
+    public static SearchFragment newInstance(String date) {
+        SearchFragment searchFragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("date", date);
+        searchFragment.setArguments(bundle);
+        return searchFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("s","on create");
         view = inflater.inflate(R.layout.fragment_search, container, false);
+
         initUI();
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            DATE = bundle.getString("date");
+        }
         restClient = MyApplication.getRestClient();
 
         mLayoutManager = new LinearLayoutManager(getActivity());

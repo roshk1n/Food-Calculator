@@ -16,4 +16,6 @@ public interface SingUpPresenter {
     void setUserPhotoSD(Intent data, ContentResolver context);
 
     void setUserPhotoCamera(Intent data);
+
+    void singUpRealm(String fullname, String email, String password, String confirmPassword);
 }

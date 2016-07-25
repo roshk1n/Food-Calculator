@@ -14,4 +14,6 @@ public interface SingUpView {
     void showToast(String message);
 
     void navigateToHome();
+
+    void navigateToLogin();
 }
