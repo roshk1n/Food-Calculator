@@ -1,117 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    tools:context=".login.LoginActivity"
-    android:orientation="vertical">
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context=".login.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
-        >
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/food_in_blue"/>
+            android:src="@drawable/food_in_blue" />
+
         <TextView
+            android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/info"
-            />
+            android:textColor="@color/colorPrimaryText" />
+
         <EditText
+            android:id="@+id/etLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:inputType="textPersonName"
             android:ems="14"
-            android:id="@+id/etLogin"
-            android:hint="Email" />
+            android:hint="Email"
+            android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/etPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:ems="14"
-            android:id="@+id/etPassword"
             android:hint="@string/password"
-            />
+            android:inputType="textPassword"
+            android:textColor="@color/colorPrimaryText" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <Button
-                android:textAllCaps="false"
+                android:id="@+id/btnLoginApi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onLogInApi"
-                android:id="@+id/btnLoginApi"
-                android:text="LogIn Api"
-                />
+                android:text="Log in Api"
+                android:layout_margin="5dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:onClick="onLogIn"
                 android:id="@+id/login_realm_btn"
-                android:text="LogIn Realm" />
-
-            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
+                android:layout_margin="5dp"
                 android:onClick="onLogIn"
+                android:text="Log in Realm"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText" />
+
+            <Button
                 android:id="@+id/btnLogin"
-                android:text="LogIn" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onLogIn"
+                android:text="Log in"
+                android:layout_margin="5dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tbOR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/or"
             android:layout_marginBottom="10dp"
-            android:textSize="25sp"
-            android:id="@+id/tbOR" />
+            android:text="@string/or"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="25sp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.facebook.login.widget.LoginButton
-                xmlns:facebook="http://schemas.android.com/apk/res-auto"
-                android:width="10dp"
-                android:height="20dp"
+            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/btnLogInFacebook"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="10dp"
 
-                android:layout_height="wrap_content"/>
+                android:height="20dp" />
 
         </LinearLayout>
-<!--        <com.facebook.login.widget.ProfilePictureView
-            android:id="@+id/ProfilePhotoFac"
-            android:layout_width="wrap_content"
+        <!--        <com.facebook.login.widget.ProfilePictureView
+                    android:id="@+id/ProfilePhotoFac"
+                    android:layout_width="wrap_content"
 
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            />-->
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    />-->
 
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onGoSingInActivityClicked"
-        android:textSize="20sp"
-        android:clickable="true"
-       android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/com_facebook_blue"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="@string/sing_up"/>
+        android:clickable="true"
+        android:onClick="onGoSingInActivityClicked"
+        android:text="@string/sing_up"
+        android:textColor="@color/com_facebook_blue"
+        android:textSize="20sp" />
 
 </RelativeLayout>

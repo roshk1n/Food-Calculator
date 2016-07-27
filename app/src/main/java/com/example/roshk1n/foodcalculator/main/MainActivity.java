@@ -2,12 +2,8 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.http.SslCertificate;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,22 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.roshk1n.foodcalculator.OnSwipeTouchListener;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -150,7 +138,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_history) {
 
-        } else if (id == R.id.nav_remonders) {
+        } else if (id == R.id.nav_reminders) {
             if(!(fr instanceof RemindersFragment)) {
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -161,6 +149,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
+        } else if (id == R.id.nav_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Session.destroy();
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));  //TODO : remove backStack
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

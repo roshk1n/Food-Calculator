@@ -84,16 +84,6 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
                     switchFragment(InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0)));
                 }
             });
-
-
-/*        holder.tvAmoutCal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()));
-//                getS
-            }
-        });*/
     }
 
     @Override

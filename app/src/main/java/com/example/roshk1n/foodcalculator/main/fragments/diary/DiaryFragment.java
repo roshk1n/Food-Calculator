@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,8 @@ public class DiaryFragment extends Fragment implements DiaryView{
     private TextView goal_calories_tv;
     private TextView eat_daily_calories_tv;
     private TextView remaining_calories_tv;
+    private ImageView follow_day_iv;
+    private ImageView next_day_iv;
 
     private FloatingActionButton addFoodFab;
 
@@ -61,6 +65,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
     public DiaryFragment() { }
 
     public static DiaryFragment newInstance() {
+
         return new DiaryFragment();
     }
 
@@ -81,13 +86,39 @@ public class DiaryFragment extends Fragment implements DiaryView{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
         initUI();
+        follow_day_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date_add.setDate(date_add.getDate()-1);
+                setDate(date_add);
+            }
+        });
 
-        SimpleDateFormat format1=new SimpleDateFormat("EEEE, d MMM.");
+        next_day_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date_add.setDate(date_add.getDate()+1);
+                setDate(date_add);
+            }
+        });
+        if(SearchFragment.DATE==null) { //TODO : show date witch add
+            date_add = new Date();
+
+        } else {
+            SimpleDateFormat format1=new SimpleDateFormat("EEEE/dd/MMMM/yyyy");
+            try {
+                date_add = format1.parse(SearchFragment.DATE);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        SimpleDateFormat format1=new SimpleDateFormat("EEEE, d MMMM");
         date_tv.setText(format1.format(date_add));
 
         foods = diaryPresenter.getFoods(diaryPresenter.getCurrentUserRealm(),date_add);
@@ -135,7 +166,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
     @Override
     public void setDate(Date date) {
         SimpleDateFormat format1=new SimpleDateFormat();
-        format1.applyPattern("EEEE, dd MMM.");
+        format1.applyPattern("EEEE, dd MMMM");
         date_add = date;
         String str = format1.format(date);
         date_tv.setText(str);
@@ -145,8 +176,6 @@ public class DiaryFragment extends Fragment implements DiaryView{
         foods = diaryPresenter.getFoods(diaryPresenter.getCurrentUserRealm(),date_add);
         mAdapter = new RecyclerDiaryAdapter(foods);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
 
     @Override
@@ -163,5 +192,9 @@ public class DiaryFragment extends Fragment implements DiaryView{
         goal_calories_tv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
         eat_daily_calories_tv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
         remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
+        follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
+        next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
+
     }
 }

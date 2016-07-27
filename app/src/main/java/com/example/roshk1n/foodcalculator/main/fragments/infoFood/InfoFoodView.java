@@ -5,5 +5,7 @@ package com.example.roshk1n.foodcalculator.main.fragments.infoFood;
  */
 public interface InfoFoodView {
 
-    void navigateToSearch();
+    void navigateToDiary();
+
+    void setNutrients(String protein, String calories, String fat, String cabs, String name);
 }

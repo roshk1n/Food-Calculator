@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.example.roshk1n.foodcalculator.R;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -34,8 +35,8 @@ public class RemindersPresenterImpl implements RemindersPresenter,TimePickerDial
                 calendar.get(Calendar.MINUTE),
                 true
         );
+        timePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
         timePickerDialog.show(fragment.getActivity().getFragmentManager(), tag);
-        timePickerDialog.setTitle("Choose time");
     }
 
     @Override

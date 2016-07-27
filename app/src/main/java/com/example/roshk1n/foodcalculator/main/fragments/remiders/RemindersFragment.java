@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,7 @@ public class RemindersFragment extends Fragment  implements RemindersView /*Date
         time_lunch_tv = (TextView) view.findViewById(R.id.tv_time_lunch);
         time_dinner_tv = (TextView) view.findViewById(R.id.tv_time_dinner);
         time_snacks_tv = (TextView) view.findViewById(R.id.tv_time_snack);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reminders");
     }
 
 

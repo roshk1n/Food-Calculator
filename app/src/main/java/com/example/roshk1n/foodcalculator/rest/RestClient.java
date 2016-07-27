@@ -40,10 +40,6 @@ public class RestClient { //TODO: Create in MyApplication
         return api_key;
     }
 
-    public void setApi_key(String api_key) {
-        this.api_key = api_key;
-    }
-
     public LoginApi getLoginApi() { return loginApi; }
 
     public NdbApi getNdbApi() { return ndbApi; }

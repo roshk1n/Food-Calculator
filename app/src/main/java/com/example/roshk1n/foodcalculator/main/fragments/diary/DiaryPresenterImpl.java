@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
 import android.support.v4.app.Fragment;
 
+import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -37,6 +38,7 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
+        datePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
         datePickerDialog.show( fragment.getActivity().getFragmentManager(), "DatePickerDialog" );
     }
 

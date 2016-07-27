@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <!--TODO : Нормально розділити nameMeal і calOfDay-->
+
                 <TextView
                     android:id="@+id/t_view_meal"
                     android:layout_width="match_parent"

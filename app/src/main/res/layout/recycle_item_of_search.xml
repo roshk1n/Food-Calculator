@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_search_card_view"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_search_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:layout_marginBottom="1dp">
+    android:layout_marginBottom="1dp"
+    android:foreground="?android:attr/selectableItemBackground">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
             android:id="@+id/favorites_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="6dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_favorite_border_black_24dp" />
@@ -30,8 +32,8 @@
             android:layout_marginRight="70dp"
             android:layout_toLeftOf="@id/favorites_iv"
             android:text="Картопля смажена"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="18sp" />
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv_value_por_search"
@@ -39,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSearchName"
             android:text="100 g,"
-            android:textSize="16sp" />
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_amout_cal_search"
@@ -48,7 +51,9 @@
             android:layout_alignBaseline="@id/tv_value_por_search"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/tv_value_por_search"
-            android:text="320 cal" />
+            android:text="320 cal"
+            android:textSize="15sp"
+            android:textColor="@color/colorSecondaryText" />
     </RelativeLayout>
 
 

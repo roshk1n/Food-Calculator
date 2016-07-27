@@ -32,7 +32,6 @@ public class LoginActivity extends Activity implements LoginView {
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
 
-    private MyApplication myApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +44,6 @@ public class LoginActivity extends Activity implements LoginView {
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
         loginPresenter.checkLogin();
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<UserRealm> userRealms = realm.where(UserRealm.class)
-                .equalTo("email","roshk1n.ua@gmail.com").findAll();
-        Log.d("Msssy",String.valueOf(userRealms.size()));
-//        myApplication= (MyApplication) getApplicationContext();
-//        Log.d("My",myApplication.getCount()+"");
 
         loginPresenter.loginFacebookListner(btnLogInFacebook);
 

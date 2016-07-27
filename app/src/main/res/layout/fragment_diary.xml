@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,30 +10,69 @@
         android:orientation="vertical"
         tools:context=".main.fragments.diary.DiaryFragment">
 
-        <TextView
-            android:id="@+id/date_diary_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="date"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="17sp" />
 
-        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/item_search_card_view"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginBottom="1dp"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:layout_marginBottom="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/follow_day_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:src="@drawable/ic_chevron_left_black_24dp" />
+
+                <TextView
+                    android:id="@+id/date_diary_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="10"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:text="date"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/next_day_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:src="@drawable/ic_chevron_right_black_24dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/item_search_card_view"
+            android:layout_width="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="15dp">
@@ -50,14 +89,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1600"
-                        android:textSize="20sp" />
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/goal_cal_diary_tv"
                         android:text="Goal"
-                        android:textAlignment="center" />
+                        android:textSize="13sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorSecondaryText" />
                 </LinearLayout>
 
                 <TextView
@@ -66,6 +108,7 @@
                     android:layout_alignBaseline="@id/goal_cal_diary_tv"
                     android:layout_toRightOf="@id/goal_cal_diary_tv"
                     android:text="-"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="25sp" />
 
                 <LinearLayout
@@ -80,14 +123,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textSize="20sp" />
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/goal_cal_diary_tv"
                         android:text="Food"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/colorSecondaryText" />
                 </LinearLayout>
 
                 <TextView
@@ -96,6 +142,7 @@
                     android:layout_alignBaseline="@id/goal_cal_diary_tv"
                     android:layout_toRightOf="@id/goal_cal_diary_tv"
                     android:text="="
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="25sp" />
 
                 <LinearLayout
@@ -111,13 +158,14 @@
                         android:layout_height="wrap_content"
                         android:text="1600"
                         android:textColor="#d30b0b"
-                        android:textSize="20sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/goal_cal_diary_tv"
                         android:text="Remaining"
+                        android:textSize="13sp"
                         android:textAlignment="center"
                         android:textColor="#d30b0b" />
                 </LinearLayout>
@@ -142,7 +190,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/btn_add_food" />
+        android:src="@drawable/ic_add_white_24dp" />
 </FrameLayout>
 
 

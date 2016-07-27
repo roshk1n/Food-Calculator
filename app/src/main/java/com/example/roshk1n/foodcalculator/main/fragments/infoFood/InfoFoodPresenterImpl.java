@@ -8,6 +8,8 @@ import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
+import java.text.DecimalFormat;
+
 import io.realm.Realm;
 
 /**
@@ -29,7 +31,6 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
         FoodRealm foodRealm = food.converToRealm();
         UserRealm user = getCurrentUserRealm();
-        Log.d("m",foodRealm.getTime().getDate()+"");
         for (int i = 0; i < user.getDayRealms().size(); i++) {
             if(user.getDayRealms().get(i).getDate().getDate()==foodRealm.getTime().getDate()
                     && user.getDayRealms().get(i).getDate().getMonth()==foodRealm.getTime().getMonth()
@@ -69,7 +70,7 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
             realm.commitTransaction();
         }
 
-        foodView.navigateToSearch();
+        foodView.navigateToDiary();
     }
     @Override
     public UserRealm getCurrentUserRealm() {
@@ -78,4 +79,54 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
                 .findFirst();
         return userRealms;
     }
+
+
+    @Override
+    public void updateUI(Food food, int numberOfServing) {
+
+        float protein=0,cabs=0,fat=0;
+        int calories=0;
+        if(isFloat(food.getNutrients().get(0).getValue()))
+            protein = Float.valueOf(food.getNutrients().get(0).getValue()) * numberOfServing;
+
+        if (isFloat(food.getNutrients().get(1).getValue()))
+            calories = Integer.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
+
+        if(isFloat(food.getNutrients().get(2).getValue()))
+            fat = Float.valueOf(food.getNutrients().get(2).getValue()) * numberOfServing;
+
+        if(isFloat(food.getNutrients().get(3).getValue()))
+            cabs = Float.valueOf(food.getNutrients().get(3).getValue()) * numberOfServing;
+
+        DecimalFormat format = new DecimalFormat();
+        format.setDecimalSeparatorAlwaysShown(false);
+
+        foodView.setNutrients(String.valueOf(format.format(protein))
+                ,String.valueOf(calories)
+                ,String.valueOf(format.format(fat))
+                ,String.valueOf(format.format(cabs))
+                ,food.getName().toString());
+    }
+
+    @Override
+    public Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name) {
+
+        foodForUpdate.getNutrients().get(0).setValue(protein);
+        foodForUpdate.getNutrients().get(1).setValue(calories);
+        foodForUpdate.getNutrients().get(2).setValue(fat);
+        foodForUpdate.getNutrients().get(3).setValue(cabs);
+        foodForUpdate.setName(name);
+        return foodForUpdate;
+    }
+
+    boolean isFloat(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+
 }

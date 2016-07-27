@@ -24,14 +24,14 @@ public class ManageNdbApi {
     {
        /*final ListInfoFoodResponse infoFoodResponses = new ListInfoFoodResponse();
         restClient = new RestClient();
-        //TODO: this request return list food through name_food. Response object contains id_food and name_food
+
         MyApplication.getRestClient().getNdbApi().searchFood(format,name, max,api_key, new Callback<ListFoodResponse>() {
             @Override
             public void success(final ListFoodResponse listFoodResponse, Response response) {
 
                 for(int i =0;i<listFoodResponse.getList().getItem().size();i++)
                 {
-                    //TODO: this request return information about each food through id_food.
+
                     // It`s feature for this API I can`t receive information about food through name_food only through id_food
                     restClient.getNdbApi().searchNutrientFood(listFoodResponse.getList().getItem().get(i).getNdbno(), api_key, new Callback<NutrientFoodResponse>() {
                         @Override
@@ -47,7 +47,7 @@ public class ManageNdbApi {
                         }
                     });
                 }
-             //   EventBus.getDefault().post(infoFoodResponses); //TODO: how to return data from searchNutrientFood method.
+             //   EventBus.getDefault().post(infoFoodResponses);
             }
 
             @Override
