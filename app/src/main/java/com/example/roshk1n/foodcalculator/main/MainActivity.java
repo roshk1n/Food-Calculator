@@ -2,6 +2,8 @@ package com.example.roshk1n.foodcalculator.main;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +27,11 @@ import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
+import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,9 +59,22 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
                 .commit();
 
+        //Firebase
 /*        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
+
+//Realm
         mTextViewName.setText(Session.getInstance().getFullname());
+        Bitmap imageUser = null;
+        try {
+            byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
+            imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch(Exception e) {
+            e.getMessage();
+        }
+        mImageViewUserIco.setImageBitmap(imageUser);
+////////////
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);

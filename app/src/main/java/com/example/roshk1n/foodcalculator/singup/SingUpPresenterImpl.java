@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.example.roshk1n.foodcalculator.User;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -92,7 +94,14 @@ public class SingUpPresenterImpl implements SingUpPresenter {
             singUpView.showToast("Password and confirm password don`t match.");
         } else {
             Realm realm = Realm.getDefaultInstance();
-            UserRealm userRealm = new UserRealm(fullname,email,password);
+
+            Bitmap userIco = singUpView.getBitmapIv();
+            ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+            userIco.compress(Bitmap.CompressFormat.PNG,100, baos);
+            byte [] b=baos.toByteArray();
+            String image = Base64.encodeToString(b, Base64.DEFAULT);
+
+            UserRealm userRealm = new UserRealm(fullname,email,password,image);
             realm.beginTransaction();
             realm.copyToRealm(userRealm);
             realm.commitTransaction();

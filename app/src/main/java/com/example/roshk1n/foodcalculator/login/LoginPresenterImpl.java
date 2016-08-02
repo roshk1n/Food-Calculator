@@ -147,15 +147,15 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void loginRealm(String email, String password) {
 
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<UserRealm> userRealms = realm.where(UserRealm.class)
+        UserRealm userRealms = realm.where(UserRealm.class)
                 .equalTo("email",email)
-                .equalTo("password",password).findAll();
+                .equalTo("password",password).findFirst();
 
-        if(userRealms.size()!=0) {
+        if(userRealms!= null) {
             Session.startSession();
-            Session.getInstance().setEmail(userRealms.get(0).getEmail());
-            Session.getInstance().setFullname(userRealms.get(0).getFullname());
-            Session.getInstance().setUrlPhoto(userRealms.get(0).getPhotoUrl());
+            Session.getInstance().setEmail(userRealms.getEmail());
+            Session.getInstance().setFullname(userRealms.getFullname());
+            Session.getInstance().setUrlPhoto(userRealms.getPhotoUrl());
             loginVew.navigateToHome();
         }
     }

@@ -19,10 +19,11 @@ public class UserRealm extends RealmObject {
 
     public UserRealm() { }
 
-    public UserRealm(String fullname, String email, String password) {
+    public UserRealm(String fullname, String email, String password, String photo) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
+        this.photoUrl = photo;
     }
 
     public String getFullname() {
