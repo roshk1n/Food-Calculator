@@ -10,10 +10,10 @@ import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 /**
  * Created by roshk1n on 7/29/2016.
  */
-@SuppressWarnings("ALL")
+
 public class JumpFragment extends Fragment {
 
-    @SuppressWarnings("FieldCanBeLocal")
+
     private long mdate;
 
     public static JumpFragment newInstance(long date,int side) {
