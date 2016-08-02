@@ -89,6 +89,7 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     public void navigateToHome() {
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+        finish();
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
     @Override
@@ -96,16 +97,15 @@ public class LoginActivity extends Activity implements LoginView {
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
-    public void onGoSingInActivityClicked(View view) {
-        startActivity(new Intent(getApplicationContext(), SingUpActivity.class));
-    }
-
     public void onLogIn(View view) { // кнопка логіну користувача через email/password
         loginPresenter.loginWithEmail(emailEt.getText().toString(),etPassword.getText().toString());
     }
 
     public void onLogInApi(View view) {
-      //  loginPresenter.loginWithApi(emailEt.getText().toString(),etPassword.getText().toString()); невідомо шо там з апішкою )
+        //  loginPresenter.loginWithApi(emailEt.getText().toString(),etPassword.getText().toString()); невідомо шо там з апішкою )
+    }
+    public void onGoSingInActivityClicked(View view) {
+        startActivity(new Intent(getApplicationContext(), SingUpActivity.class));
     }
 
     private void initUI() {

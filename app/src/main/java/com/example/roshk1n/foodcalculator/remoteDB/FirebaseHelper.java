@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.User;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
+import com.example.roshk1n.foodcalculator.singup.ResponseListentenerUpload;
 import com.example.roshk1n.foodcalculator.singup.SingUpPresenter;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,7 @@ public class FirebaseHelper {
     private static FirebaseUser mFirebaseUser;
     private static FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    private static String urlUserPhto;
+//    private static String urlUserPhto;
 
     public static FirebaseStorage getStorage() { return storage; }
 
@@ -58,11 +59,11 @@ public class FirebaseHelper {
         FirebaseHelper.mAuthListner = mAuthListner;
     }
 
-    public static String getUrlUserPhto() { return urlUserPhto; }
+  /*  public static String getUrlUserPhto() { return urlUserPhto; }
 
     public static void setUrlUserPhto(String urlUserPhto) {
         FirebaseHelper.urlUserPhto = urlUserPhto;
-    }
+    }*/
 
     public static FirebaseUser getmFirebaseUser() {
         return mFirebaseUser;
@@ -101,15 +102,14 @@ public class FirebaseHelper {
                             mFirebaseUser.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-
                                 }
                             });
-                        } //TODO:  повернути значення в presenter
+                        }
                     }
                 });
     }
 
-    public static void uploadImage(Bitmap image, String fileName) {
+    public static void uploadImage(Bitmap image, String fileName, final ResponseListentenerUpload upload) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG,100,baos);
@@ -130,7 +130,8 @@ public class FirebaseHelper {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                urlUserPhto =  downloadUrl.toString();
+                upload.onSuccess(downloadUrl.toString());
+                /*urlUserPhto =  downloadUrl.toString();*/
             }
         });
 

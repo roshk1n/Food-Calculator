@@ -85,7 +85,6 @@ public class LoginPresenterImpl implements LoginPresenter {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
                     FirebaseHelper.setmFirebaseUser(FirebaseHelper.getmAuth().getCurrentUser());
-                    loginVew.navigateToHome();
                 }
             }
         });
@@ -107,16 +106,18 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
 
             if (!error){
-                OnCompleteListener onCompleteListener = new OnCompleteListener() {
+
+                FirebaseHelper.logInWhithEmail(email, password, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if(!task.isSuccessful()) {
-                            loginVew.showToast("Authentication failed. Try again please!");
+                            if(!task.isSuccessful()) {
+                                loginVew.showToast("Authentication failed. Try again please!");
+                            } else {
+                                loginVew.navigateToHome();
+                            }
+                            Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
                         }
-                        Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
-                    }
-                };
-                FirebaseHelper.logInWhithEmail(email,password,onCompleteListener);
+                });
             }
         }
     }

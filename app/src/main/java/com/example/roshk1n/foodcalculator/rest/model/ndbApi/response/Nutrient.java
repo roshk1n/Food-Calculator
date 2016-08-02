@@ -15,7 +15,6 @@ public class Nutrient  implements Parcelable {
     private String nutrient;
     private String unit;
     private String value;
-    private String gm;
 
     public Nutrient() { }
 
@@ -24,7 +23,6 @@ public class Nutrient  implements Parcelable {
         nutrient = in.readString();
         unit = in.readString();
         value = in.readString();
-        gm = in.readString();
     }
 
     public static final Creator<Nutrient> CREATOR = new Creator<Nutrient>() {
@@ -46,10 +44,6 @@ public class Nutrient  implements Parcelable {
     public void setNutrient_id(String nutrient_id) {
         this.nutrient_id = nutrient_id;
     }
-
-    public String getGm() { return gm; }
-
-    public void setGm(String gm) { this.gm = gm; }
 
     public String getNutrient() { return nutrient; }
 
@@ -82,6 +76,5 @@ public class Nutrient  implements Parcelable {
         dest.writeString(nutrient);
         dest.writeString(unit);
         dest.writeString(value);
-        dest.writeString(gm);
     }
 }

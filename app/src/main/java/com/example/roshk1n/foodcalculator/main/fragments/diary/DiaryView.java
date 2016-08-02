@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by roshk1n on 7/19/2016.
  */
 public interface DiaryView {
-    void setDate(Date date);
+    void setData(Date date);
 
     void updateCalories(int goal,int eat,int remaining);
 }

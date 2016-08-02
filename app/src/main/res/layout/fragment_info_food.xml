@@ -18,10 +18,20 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="15dp">
+            <ImageView
+                android:id="@+id/favorites_info_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_favorite_border_black_24dp" />
 
             <TextView
                 android:id="@+id/tv_name_food_info"
                 android:layout_width="match_parent"
+                android:layout_toLeftOf="@id/favorites_info_iv"
+                android:layout_marginRight="30dp"
                 android:layout_height="wrap_content"
                 android:text="Milk dessert"
                 android:textColor="@color/colorPrimaryText"

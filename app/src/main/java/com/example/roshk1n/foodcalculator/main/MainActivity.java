@@ -17,19 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
+import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 
 /*        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
+        Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
         mTextViewName.setText(Session.getInstance().getFullname());
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,6 +106,7 @@ public class MainActivity extends AppCompatActivity
                 FirebaseAuth.getInstance().signOut();
                 Session.destroy();
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                finish();
             }
             break;
         }
@@ -135,24 +133,33 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_diets) {
 
         } else if (id == R.id.nav_favorites) {
+            if(!(fr instanceof FavoriteFragment)) {
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.fragment_conteiner, FavoriteFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
 
         } else if (id == R.id.nav_history) {
 
         } else if (id == R.id.nav_reminders) {
             if(!(fr instanceof RemindersFragment)) {
                 fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .setCustomAnimations(R.anim.slide_in_left_enter, R.anim.slide_in_left_exit)
                         .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
             }
+
 
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Session.destroy();
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));  //TODO : remove backStack
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

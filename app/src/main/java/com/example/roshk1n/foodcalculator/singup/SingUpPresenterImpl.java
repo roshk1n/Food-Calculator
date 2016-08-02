@@ -50,14 +50,15 @@ public class SingUpPresenterImpl implements SingUpPresenter {
         } else {
             final Bitmap imageUser = singUpView.getBitmapIv();
 
-// TODO: waiting for upload
-            FirebaseHelper.uploadImage(imageUser, email);
-            user = new User(surname, email, password, FirebaseHelper.getUrlUserPhto());
-            if (FirebaseHelper.getUrlUserPhto() != null) {
-                FirebaseHelper.createUser(user);
-                singUpView.navigateToHome();
-            }
+            FirebaseHelper.uploadImage(imageUser, email, new ResponseListentenerUpload() {
+                @Override
+                public void onSuccess(String urlPhoto) {
 
+                    user = new User(surname, email, password, urlPhoto);
+                    FirebaseHelper.createUser(user);
+                    singUpView.navigateToLogin();
+                }
+            });
         }
     }
 

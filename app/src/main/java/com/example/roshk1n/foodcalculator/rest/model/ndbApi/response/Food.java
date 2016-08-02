@@ -18,9 +18,8 @@ import io.realm.annotations.Ignore;
 public class Food  implements Parcelable {
     private String ndbno;
     private String name;
-    private float weight;
-    private String measure;
-    private Date date;
+    private int portion = 1;
+    private long date;
     private ArrayList<Nutrient> nutrients = new ArrayList<Nutrient>();
 
     public Food() {}
@@ -28,8 +27,9 @@ public class Food  implements Parcelable {
     protected Food(Parcel in) {
         ndbno = in.readString();
         name = in.readString();
-        weight = in.readFloat();
-        measure = in.readString();
+        portion = in.readInt();
+        date = in.readLong();
+        nutrients = in.createTypedArrayList(Nutrient.CREATOR);
     }
 
     public static final Creator<Food> CREATOR = new Creator<Food>() {
@@ -60,14 +60,6 @@ public class Food  implements Parcelable {
         this.name = name;
     }
 
-    public float getWeight() { return weight; }
-
-    public void setWeight(float weight) { this.weight = weight; }
-
-    public String getMeasure() { return measure; }
-
-    public void setMeasure(String measure) { this.measure = measure; }
-
     public ArrayList<Nutrient> getNutrients() {
         return nutrients;
     }
@@ -76,32 +68,27 @@ public class Food  implements Parcelable {
         this.nutrients = nutrients;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int getPortion() {
+        return portion;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(ndbno);
-        dest.writeString(name);
-        dest.writeFloat(weight);
-        dest.writeString(measure);
-        dest.writeTypedList(nutrients);
+    public void setPortion(int portion) {
+        this.portion = portion;
     }
 
     public FoodRealm converToRealm() {
         FoodRealm foodRealm = new FoodRealm();
         foodRealm.setName(this.getName());
         foodRealm.setNdbno(this.getNdbno());
+        foodRealm.setPortion(this.getPortion());
         for(int i=0;i<this.getNutrients().size();i++)
         {
             NutrientRealm nutrientRealm = new NutrientRealm();
@@ -113,5 +100,19 @@ public class Food  implements Parcelable {
         }
         foodRealm.setTime(this.getDate());
         return foodRealm;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ndbno);
+        dest.writeString(name);
+        dest.writeInt(portion);
+        dest.writeLong(date);
+        dest.writeTypedList(nutrients);
     }
 }

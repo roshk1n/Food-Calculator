@@ -95,14 +95,9 @@ public class SingUpActivity extends Activity implements SingUpView {
     }
 
     @Override
-    public void navigateToHome() {
-        startActivity(new Intent(SingUpActivity.this,MainActivity.class));
-        Log.d(TAG, "onAuthStateChanged:signed_in");
-    }
-
-    @Override
     public void navigateToLogin() {
         startActivity(new Intent(SingUpActivity.this,LoginActivity.class));
+        finish();
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 

@@ -54,7 +54,7 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
 
         holder.nameFoodtv.setText(foods.get(position).getName().toString());
         holder.amoutCaltv.setText(foods.get(position).getNutrients().get(1).getValue().toString());
-        holder.valuePortv.setText("100 g.");
+        holder.valuePortv.setText(foods.get(position).getPortion()*100 + " g.");
     }
 
     @Override

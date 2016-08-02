@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
+import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.jar.Pack200;
 
 import io.realm.Realm;
 
@@ -32,14 +35,14 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
         FoodRealm foodRealm = food.converToRealm();
         UserRealm user = getCurrentUserRealm();
         for (int i = 0; i < user.getDayRealms().size(); i++) {
-            if(user.getDayRealms().get(i).getDate().getDate()==foodRealm.getTime().getDate()
-                    && user.getDayRealms().get(i).getDate().getMonth()==foodRealm.getTime().getMonth()
-                    && user.getDayRealms().get(i).getDate().getYear()==foodRealm.getTime().getYear()) {
+            if(compareLongAndDate( getCurrentUserRealm().getDayRealms().get(i).getDate()
+                    , new Date(foodRealm.getTime()))) {
 
                 realm.beginTransaction();
                 user.getDayRealms().get(i).getFoods().add(foodRealm);
                 realm.commitTransaction();
                 break;
+
             }  else {
                 if(i==user.getDayRealms().size()-1) {
                     realm.beginTransaction();
@@ -109,14 +112,60 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
     }
 
     @Override
-    public Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name) {
+    public Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number) {
 
         foodForUpdate.getNutrients().get(0).setValue(protein);
         foodForUpdate.getNutrients().get(1).setValue(calories);
         foodForUpdate.getNutrients().get(2).setValue(fat);
         foodForUpdate.getNutrients().get(3).setValue(cabs);
         foodForUpdate.setName(name);
+        foodForUpdate.setPortion(Integer.valueOf(number));
         return foodForUpdate;
+    }
+
+    @Override
+    public boolean addToFavorite(Food food) {
+        FoodRealm foodRealm = food.converToRealm();
+        boolean check= false;
+        if(getCurrentUserRealm().getFavoriteList() != null) {
+            if(!foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods())) {
+
+                realm.beginTransaction();
+                getCurrentUserRealm().getFavoriteList().getFoods().add(foodRealm);
+                realm.commitTransaction();
+                Log.d("My",getCurrentUserRealm().getFavoriteList().getFoods().size()+ "s");
+                check = true;
+            }
+        }
+        return check;
+    }
+
+    @Override
+    public void removeFromFavorite(Food food) {
+        FoodRealm foodRealm = food.converToRealm();
+
+        if(getCurrentUserRealm().getFavoriteList() == null) {
+            realm.beginTransaction();
+            FavoriteListRealm favoriteListRealm = realm.createObject(FavoriteListRealm.class);
+            getCurrentUserRealm().setFavoriteList(favoriteListRealm);
+            realm.commitTransaction();
+        }
+        for(int i =0; i<getCurrentUserRealm().getFavoriteList().getFoods().size();i++) {
+            if(foodRealm.getNdbno().equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
+                realm.beginTransaction();
+                getCurrentUserRealm().getFavoriteList().getFoods().remove(i);
+                realm.commitTransaction();
+            }
+        }
+
+    }
+
+    @Override
+    public void isExistFavorite(Food food) {
+
+        FoodRealm foodRealm = food.converToRealm();
+        foodView.updateFavoriteImage(foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods()));
+
     }
 
     boolean isFloat(String str) {
@@ -128,5 +177,16 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
         }
     }
 
+    private boolean compareLongAndDate(Long UserDate, Date date) {
 
+        Date userDayDate = new Date(UserDate);
+        if(userDayDate.getDate()== date.getDate()
+                && userDayDate.getYear() == date.getYear()
+                && userDayDate.getMonth()== date.getMonth()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 }

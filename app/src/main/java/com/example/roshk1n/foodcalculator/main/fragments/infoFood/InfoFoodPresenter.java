@@ -16,5 +16,11 @@ public interface InfoFoodPresenter {
 
     void updateUI(Food food, int numberOfServing);
 
-    Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name);
+    Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number);
+
+    boolean addToFavorite(Food food);
+
+    void removeFromFavorite(Food food);
+
+    void isExistFavorite(Food food);
 }

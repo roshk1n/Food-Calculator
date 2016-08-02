@@ -31,10 +31,12 @@ import java.util.Date;
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
     private ArrayList<NutrientFoodResponse> foods;
+    private long mdate;
     private View v;
 
-    public RecyclerSearchAdapter(ArrayList<NutrientFoodResponse> foods) {
+    public RecyclerSearchAdapter(ArrayList<NutrientFoodResponse> foods, long date) {
         this.foods = foods;
+        mdate = date;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -72,15 +74,8 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Mst",SearchFragment.DATE);
-                    SimpleDateFormat format1=new SimpleDateFormat("EEEE/dd/MMMM/yyyy");
-                    Date finalDate= null;
-                    try {
-                        finalDate = format1.parse(SearchFragment.DATE);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(finalDate);
+
+                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(mdate);
                     switchFragment(InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0)));
                 }
             });

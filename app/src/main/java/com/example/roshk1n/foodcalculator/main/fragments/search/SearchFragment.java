@@ -31,11 +31,11 @@ import retrofit.client.Response;
 
 public class SearchFragment extends Fragment implements SearchView {
 
-    public static String DATE;
+
     private SearchPresenterImpl searchPresenter;
     private RestClient restClient;
     private String[] nutrients = {"204","208","205","203"};;
-
+    private long mdate=0;
 
     private View view;
     private EditText searchEt;
@@ -48,10 +48,10 @@ public class SearchFragment extends Fragment implements SearchView {
 
     public static Fragment newInstance() { return  new SearchFragment(); }
 
-    public static SearchFragment newInstance(String date) {
+    public static SearchFragment newInstance(long date) {
         SearchFragment searchFragment = new SearchFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("date", date);
+        bundle.putLong("date", date);
         searchFragment.setArguments(bundle);
         return searchFragment;
     }
@@ -68,14 +68,14 @@ public class SearchFragment extends Fragment implements SearchView {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            DATE = bundle.getString("date");
+            mdate = bundle.getLong("date");
         }
         restClient = MyApplication.getRestClient();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses);
+        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses, mdate);
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -88,47 +88,11 @@ public class SearchFragment extends Fragment implements SearchView {
                     nutrientFoodResponses.clear();
                     mAdapter.notifyDataSetChanged();
 
-                   // searchPresenter.searchFood(searchEt.getText().toString());
- //TODO: How to do it. mAdapter moving to presenter or create nutrients list here.
-                    restClient.getNdbApi().searchFood("json", searchEt.getText().toString(),"20",restClient.getApi_key(), new Callback<ListFoodResponse>() {
-                        @Override
-                        public void success(final ListFoodResponse listFoodResponse, Response response) {
-                            for(int i =0;i<listFoodResponse.getList().getItem().size();i++)
-                            {
-                                MyApplication.getRestClient().getNdbApi().getNutrientFood(listFoodResponse.getList().getItem().get(i).getNdbno(),nutrients, restClient.getApi_key(), new Callback<NutrientFoodResponse>() {
-                                    @Override
-                                    public void success(NutrientFoodResponse nutrientFoodResponse, Response response) {
-                                        if(nutrientFoodResponse.getReport().getFoods().size()>0) {
-                                            nutrientFoodResponses.add(nutrientFoodResponse);
-                                            mAdapter.notifyItemInserted(nutrientFoodResponses.size());
-                                        }
-                                    }
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                    }
-                                });
-                            }
-                        }
-                        @Override
-                        public void failure(RetrofitError error) {
-                        }
-                    });
+                    searchPresenter.searchFood(searchEt.getText().toString());
                 }
             }
         });
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     private void initUI() {
@@ -136,16 +100,10 @@ public class SearchFragment extends Fragment implements SearchView {
         searchEt = (EditText) view.findViewById(R.id.et_food_name);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
     }
-
-    @Subscribe()
-    public void doTh2is(ListFoodResponse listInfoFood) {
-        Toast.makeText(getActivity(), listInfoFood.getList().getQ(), Toast.LENGTH_LONG).show();
-    }
-
     @Override
     public void updateUI(ArrayList<NutrientFoodResponse> nutrientFoodResponses) {
         this.nutrientFoodResponses = nutrientFoodResponses;
-        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses);
+        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses,mdate);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

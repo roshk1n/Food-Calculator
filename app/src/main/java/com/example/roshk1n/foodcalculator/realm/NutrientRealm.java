@@ -47,4 +47,5 @@ public class NutrientRealm extends RealmObject {
     public void setValue(String value) {
         this.value = value;
     }
+
 }

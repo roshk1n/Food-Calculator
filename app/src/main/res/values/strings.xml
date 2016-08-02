@@ -34,9 +34,12 @@
     <string name="reminders">Reminders</string>
     <string name="setting">Setting</string>
     <string name="log_out">Log Out</string>
+    <string name="search_for_a_food">Search for a Food</string>
     <array name="photo">
         <item>Choose from Gallery</item>
         <item>Take a picture</item>
     </array>
+
+
 
 </resources>

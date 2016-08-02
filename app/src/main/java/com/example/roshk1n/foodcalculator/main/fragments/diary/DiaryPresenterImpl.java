@@ -39,6 +39,7 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
+        datePickerDialog.setTitle("asgagas");
         datePickerDialog.show( fragment.getActivity().getFragmentManager(), "DatePickerDialog" );
     }
 
@@ -53,11 +54,10 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
     @Override
     public RealmList<FoodRealm> getFoods(UserRealm user, Date date) {
         RealmList<FoodRealm> foodRealms = new RealmList<>();
-        for (int i = 0; i < user.getDayRealms().size(); i++) {
-            if(user.getDayRealms().get(i).getDate().getDate()== date.getDate()
-                    && user.getDayRealms().get(i).getDate().getYear() == date.getYear()
-                    && user.getDayRealms().get(i).getDate().getMonth()== date.getMonth()) {
 
+        for (int i = 0; i < user.getDayRealms().size(); i++) {
+
+            if(compareLongAndDate(user.getDayRealms().get(i).getDate(),date)) {
                 foodRealms = user.getDayRealms().get(i).getFoods();
                 calculateCaloriesAdd(i);
             }
@@ -71,11 +71,8 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         realm.beginTransaction();
         int day = 0;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if(getCurrentUserRealm().getDayRealms().get(i).getDate().getDate()==date.getDate()
-                    && getCurrentUserRealm().getDayRealms().get(i).getDate().getMonth()==date.getMonth()
-                    && getCurrentUserRealm().getDayRealms().get(i).getDate().getYear()==date.getYear()) {
+            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
                 day=i;
-
             }
         }
         realm.commitTransaction();
@@ -93,7 +90,7 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         date.setDate(dayOfMonth);
         date.setYear(year-1900); //TODO: unreal )
 
-        diaryView.setDate(date);
+        diaryView.setData(date);
     }
 
     private void calculateCaloriesRemove(int day, int index) {
@@ -106,6 +103,7 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         realm.commitTransaction();
         diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories());
     }
+
     private void calculateCaloriesAdd(int day) {
         realm.beginTransaction();
         DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(day);
@@ -117,5 +115,18 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
         realm.commitTransaction();
         diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories());
+    }
+
+    private boolean compareLongAndDate(Long UserDate, Date date) {
+
+        Date userDayDate = new Date(UserDate);
+        if(userDayDate.getDate()== date.getDate()
+                && userDayDate.getYear() == date.getYear()
+                && userDayDate.getMonth()== date.getMonth()) {
+            return true;
+
+        } else {
+            return false;
+        }
     }
 }
