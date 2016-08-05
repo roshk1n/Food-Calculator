@@ -52,9 +52,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
             tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
             searchCardView = (CardView) v.findViewById(R.id.item_search_card_view);
-
         }
-
     }
 
     @Override

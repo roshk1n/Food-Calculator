@@ -1,31 +1,60 @@
 package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.main.adapters.RecyclerReminderAdapter;
+import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-public class RemindersFragment extends Fragment  implements RemindersView /*DatePickerDialog.OnDateSetListener,*/ /* DialogInterface.OnCancelListener,*/  {
+import java.util.Calendar;
+import java.util.Date;
 
+import io.realm.RealmList;
+
+public class RemindersFragment extends Fragment  implements RemindersView, ResponseAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
+
+    private RemindersPresenterImpl remindersPresenter;
+    private RealmList<ReminderReaml> reminderReamls;
+
+    private ReceiverNotification receiverNotification;
+    private int positionAdapter;
+    private int hour, minute;
+
+    private TimePickerDialog timePickerDialog;
     private View view;
-    private CardView cvBreakfast;
-    private CardView cvLunch;
-    private CardView cvDinner;
-    private CardView cvSnack;
-    private TextView time_brakfast_tv;
-    private TextView time_lunch_tv;
-    private TextView time_dinner_tv;
-    private TextView time_snacks_tv;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerReminderAdapter mAdapter;
 
     public RemindersFragment() {}
 
     public static Fragment newInstance() { return new RemindersFragment(); }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        remindersPresenter = new RemindersPresenterImpl();
+        remindersPresenter.setView(this);
+
+        receiverNotification = new ReceiverNotification();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,73 +63,73 @@ public class RemindersFragment extends Fragment  implements RemindersView /*Date
 
         initUI();
 
-        final RemindersPresenterImpl remindersPresenter = new RemindersPresenterImpl();
-        remindersPresenter.setView(this);
+        remindersPresenter.setDufaultReminders();
+        reminderReamls = remindersPresenter.getReminderList();
 
-        cvBreakfast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remindersPresenter.showTimePicker("breakfast",RemindersFragment.this);
-              }
-        });
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        cvLunch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remindersPresenter.showTimePicker("lunch",RemindersFragment.this);
-            }
-        });
+        mAdapter = new RecyclerReminderAdapter(reminderReamls,this);
+        mRecyclerView.setAdapter(mAdapter);
 
-        cvDinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remindersPresenter.showTimePicker("dinner",RemindersFragment.this);
-            }
-        });
-
-        cvSnack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remindersPresenter.showTimePicker("snacks",RemindersFragment.this);
-            }
-        });
         return view;
-
     }
 
     @Override
-    public void SetTime(String tag,String time) {
-        switch (tag) {
-            case "breakfast" : {
-                time_brakfast_tv.setText(time);
-            } break;
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute1, int second) {
+        this.hour = hourOfDay;
+        this.minute = minute1;
+        String time = (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
+        remindersPresenter.updateTime(positionAdapter,time);
+    }
 
-            case "lunch" : {
-                time_lunch_tv.setText(time);
-            } break;
+    @Override
+    public void createPicker(int position, String title) {
+        initDateTimeData();
+        positionAdapter = position;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(0, 0,0,hour,minute);
 
-            case "dinner" : {
-                time_dinner_tv.setText(time);
-            } break;
+        timePickerDialog = TimePickerDialog.newInstance(
+                this,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+        );
+        timePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        timePickerDialog.show(getActivity().getFragmentManager(), title);
+    }
 
-            case "snacks" : {
-                time_snacks_tv.setText(time);
-            } break;
+    @Override
+    public void updateSwitch(Boolean check, int positionAdapter) {
+        Log.d("My", positionAdapter+ "");
+        this.positionAdapter = positionAdapter;
+        if(!check) {
+            receiverNotification.cancelNotification(getContext(),positionAdapter);
+        } else {
+            receiverNotification.createNotification(getContext(),positionAdapter);
         }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void initDateTimeData(){
+        Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR_OF_DAY);
+        minute = c.get(Calendar.MINUTE);
     }
 
     void initUI() {
-        cvBreakfast = (CardView) view.findViewById(R.id.card_view_breakfast);
-        cvLunch = (CardView) view.findViewById(R.id.card_view_lunch);
-        cvDinner = (CardView) view.findViewById(R.id.card_view_dinner);
-        cvSnack = (CardView) view.findViewById(R.id.card_view_skack);
-        time_brakfast_tv = (TextView) view.findViewById(R.id.tv_time_breakfast);
-        time_lunch_tv = (TextView) view.findViewById(R.id.tv_time_lunch);
-        time_dinner_tv = (TextView) view.findViewById(R.id.tv_time_dinner);
-        time_snacks_tv = (TextView) view.findViewById(R.id.tv_time_snack);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_reminders);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reminders");
     }
 
+    @Override
+    public void updateTime() {
+        mAdapter.notifyDataSetChanged();
+        if(remindersPresenter.getStateSwitch(positionAdapter)) {
+            receiverNotification.createNotification(getContext(),positionAdapter);
+        }
+    }
 
 }
 

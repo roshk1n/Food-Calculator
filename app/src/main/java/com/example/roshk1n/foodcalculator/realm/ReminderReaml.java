@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 public class ReminderReaml extends RealmObject {
 
     private String name;
-    private Date time;
+    private long time;
     private boolean state;
 
     public ReminderReaml() {
@@ -25,15 +25,15 @@ public class ReminderReaml extends RealmObject {
         this.name = name;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
-    public boolean isState() {
+    public boolean getState() {
         return state;
     }
 

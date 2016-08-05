@@ -1,22 +1,24 @@
 package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
-import android.support.v4.app.Fragment;
-import android.view.View;
+import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.example.roshk1n.foodcalculator.realm.UserRealm;
 
-import com.example.roshk1n.foodcalculator.R;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import java.util.Calendar;
+import io.realm.Realm;
+import io.realm.RealmList;
 
 /**
  * Created by roshk1n on 7/24/2016.
  */
-public class RemindersPresenterImpl implements RemindersPresenter,TimePickerDialog.OnTimeSetListener {
+public class RemindersPresenterImpl implements RemindersPresenter {
+
+    private Realm realm = Realm.getDefaultInstance();
 
     private RemindersView remindersView;
-    private TimePickerDialog timePickerDialog;
-    private int hour, minute;
 
     @Override
     public void setView(RemindersView view) {
@@ -24,31 +26,70 @@ public class RemindersPresenterImpl implements RemindersPresenter,TimePickerDial
     }
 
     @Override
-    public void showTimePicker(String tag, Fragment fragment){
-        initDateTimeData();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(0, 0,0,hour,minute);
-
-        timePickerDialog = TimePickerDialog.newInstance(
-                this,
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                true
-        );
-        timePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
-        timePickerDialog.show(fragment.getActivity().getFragmentManager(), tag);
+    public UserRealm getCurrentUserRealm() {
+        final UserRealm userRealms = realm.where(UserRealm.class)
+                .equalTo("email", Session.getInstance().getEmail())
+                .findFirst();
+        return userRealms;
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int min, int second) {
-        hour = hourOfDay;
-        minute = min;
-        String time = (hour < 10 ? "0"+hour : hour)+" : "+(minute < 10 ? "0"+minute : minute);
-        remindersView.SetTime(timePickerDialog.getTag(),time);
+    public void createReminder(boolean isChecked,String time, String tag) {
+        Date date = stringToTime(time);
+        realm.beginTransaction();
+        ReminderReaml reminderReaml = new ReminderReaml();
+        reminderReaml.setName(tag);
+        reminderReaml.setTime(date.getTime());
+        reminderReaml.setState(isChecked);
+        getCurrentUserRealm().getReminders().add(reminderReaml);
+        realm.commitTransaction();
     }
-    private void initDateTimeData(){
-        Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
+
+    @Override
+    public void setDufaultReminders() {
+        if(getCurrentUserRealm().getReminders().size() == 0) {
+            createReminder(false,"8:45","Breakfast");
+            createReminder(false,"14:00","Lunch");
+            createReminder(false,"18:00","Dinner");
+            createReminder(false,"17:00","Snack");
+        }
+    }
+
+    @Override
+    public RealmList<ReminderReaml> getReminderList() {
+        return getCurrentUserRealm().getReminders();
+    }
+
+    @Override
+    public void updateTime(final int positionAdapter, String time) {
+        final Date date = new Date(stringToTime(time).getTime());
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                getCurrentUserRealm().getReminders().get(positionAdapter).setTime(date.getTime());
+                remindersView.updateTime();
+            }
+        });
+    }
+
+    @Override
+    public ReminderReaml getNotification(int positionAdapter) {
+        return getCurrentUserRealm().getReminders().get(positionAdapter);
+    }
+
+    @Override
+    public boolean getStateSwitch(int positionAdapter) {
+        return getCurrentUserRealm().getReminders().get(positionAdapter).getState();
+    }
+
+    private Date stringToTime(String time) {
+        SimpleDateFormat format = new SimpleDateFormat("H:m");
+        Date date = null;
+        try {
+            date = format.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

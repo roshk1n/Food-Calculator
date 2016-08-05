@@ -27,6 +27,7 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
         this.foods = foods;
 
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameFoodtv;
         public TextView valuePortv;

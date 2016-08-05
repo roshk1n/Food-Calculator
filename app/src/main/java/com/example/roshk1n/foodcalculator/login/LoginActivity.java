@@ -32,7 +32,6 @@ public class LoginActivity extends Activity implements LoginView {
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

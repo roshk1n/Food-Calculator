@@ -26,12 +26,9 @@ import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
-import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
+
         mToolbar.setTitle("Main");
         setSupportActionBar(mToolbar);
         fragmentManager = getSupportFragmentManager();
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -90,7 +87,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
 
     }
 
@@ -125,10 +121,8 @@ public class MainActivity extends AppCompatActivity
                 Session.destroy();
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 finish();
-            }
-            break;
+            } break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -184,6 +178,18 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+/*
+    private void restartNotify() {
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ReceiverNotification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT );
+
+      //  alarmManager.set(AlarmManager.RTC_WAKEUP, stamp.getTime(), pendingIntent);
+    }
+*/
+
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);

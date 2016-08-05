@@ -71,7 +71,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         if(requestCode==PICK_PHOTO_FOR_AVATAR&& resultCode==Activity.RESULT_OK) {
            singUpPresente.setUserPhotoSD(data,getApplicationContext().getContentResolver());
         }
-        if(requestCode==MAKE_PHOTO&& resultCode==Activity.RESULT_OK) {
+        if(requestCode==MAKE_PHOTO && resultCode==Activity.RESULT_OK) {
             singUpPresente.setUserPhotoCamera(data);
         }
     }

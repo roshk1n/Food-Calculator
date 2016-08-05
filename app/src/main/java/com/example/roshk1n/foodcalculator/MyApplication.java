@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +21,8 @@ import io.realm.RealmConfiguration;
 public class MyApplication extends Application {
 
     private static RestClient restClient;
+    private static AlarmManager alarmManager;
+
     private int count;
 
     @Override
@@ -32,9 +35,13 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     public static RestClient getRestClient() { return restClient; }
+
+    public static AlarmManager getAlarmManager() { return alarmManager; }
 
     public void setRestClient(RestClient restClient) { this.restClient = restClient; }
 

@@ -73,4 +73,12 @@ public class UserRealm extends RealmObject {
     public void setDayRealms(RealmList<DayRealm> dayRealms) {
         this.dayRealms = dayRealms;
     }
+
+    public RealmList<ReminderReaml> getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(RealmList<ReminderReaml> reminders) {
+        this.reminders = reminders;
+    }
 }

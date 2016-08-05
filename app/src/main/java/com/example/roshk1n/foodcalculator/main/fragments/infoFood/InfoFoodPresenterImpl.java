@@ -136,6 +136,14 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
                 Log.d("My",getCurrentUserRealm().getFavoriteList().getFoods().size()+ "s");
                 check = true;
             }
+
+        } else {
+            realm.beginTransaction();
+            FavoriteListRealm favoriteListRealm = realm.createObject(FavoriteListRealm.class);
+            getCurrentUserRealm().setFavoriteList(favoriteListRealm);
+            getCurrentUserRealm().getFavoriteList().getFoods().add(foodRealm);
+            realm.commitTransaction();
+            check =true;
         }
         return check;
     }
@@ -164,8 +172,8 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
     public void isExistFavorite(Food food) {
 
         FoodRealm foodRealm = food.converToRealm();
+        if(getCurrentUserRealm().getFavoriteList() != null)
         foodView.updateFavoriteImage(foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods()));
-
     }
 
     boolean isFloat(String str) {
