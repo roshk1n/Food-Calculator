@@ -1,125 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="@color/colorBackground"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".singup.SingUpActivity">
 
-    <LinearLayout
-        android:id="@+id/email_sign_up_form"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/ivUser"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:onClick="onChoosePhoto"
-            android:src="@drawable/ic_profile" />
-
-        <EditText
-            android:id="@+id/edit_text_username"
+        <LinearLayout
+            android:id="@+id/email_sign_up_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Full name"
-            android:inputType="textPersonName"
-            android:textColor="@color/colorPrimaryText" />
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="15dp" />
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivUser"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:onClick="onChoosePhoto"
+                android:src="@drawable/ic_profile" />
 
-        <EditText
-            android:id="@+id/edit_text_new_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/colorPrimaryText" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="15dp" />
+                <EditText
+                    android:id="@+id/edit_text_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="Full name"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/colorPrimaryText" />
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/edit_text_new_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorPrimaryText" />
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="5dp" />
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="15dp" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <EditText
-            android:id="@+id/edit_text_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Confirm password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorPrimaryText" />
+                <EditText
+                    android:id="@+id/edit_text_new_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorPrimaryText" />
+            </android.support.design.widget.TextInputLayout>
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="20dp" />
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="5dp" />
 
-        <Button
-            android:id="@+id/button_user_sign_up"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:onClick="onSignUpClicked"
-            android:text="Sign up Now"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryText"
-            android:textStyle="bold" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="10dp" />
+                <EditText
+                    android:id="@+id/edit_text_new_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorPrimaryText" />
+            </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/button_user_sign_up_API"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textAllCaps="false"
-            android:onClick="onSignUpAPIClicked"
-            android:text="Sing up with API"
-            android:textColor="@color/colorPrimaryText"
-            android:textStyle="bold" />
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="5dp" />
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="10dp" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <Button
-            android:id="@+id/button_user_sign_up_Realm"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorPrimaryText"
-            android:textAllCaps="false"
-            android:onClick="onSignUpAPIClicked"
-            android:text="Sing up with Realm"
-            android:textStyle="bold" />
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_text_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="Confirm password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorPrimaryText" />
+            </android.support.design.widget.TextInputLayout>
 
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="20dp" />
+
+            <Button
+                android:id="@+id/button_user_sign_up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:onClick="onSignUpClicked"
+                android:text="Sign up Now"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/button_user_sign_up_API"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:onClick="onSignUpAPIClicked"
+                android:text="Sing up with API"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="10dp" />
+
+            <Button
+                android:id="@+id/button_user_sign_up_Realm"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:onClick="onSignUpAPIClicked"
+                android:text="Sing up with Realm"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryText"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

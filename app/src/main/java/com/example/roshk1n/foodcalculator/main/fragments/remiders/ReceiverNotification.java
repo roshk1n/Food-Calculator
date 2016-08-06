@@ -40,9 +40,9 @@ public class ReceiverNotification extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setAutoCancel(true)
-                        .setTicker("Time to eat")
+                        .setTicker("Time to eat :)")
                         .setDefaults(Notification.DEFAULT_ALL)
-                        .setSmallIcon(R.drawable.ic_favorite_black_24dp)
+                        .setSmallIcon(R.drawable.ic_add_white_24dp)
                         .setContentTitle("Food Calculator")
                         .setContentText("You long time without " + name + ". Time to eat :)")
                         .setContentIntent(pendingIntent);

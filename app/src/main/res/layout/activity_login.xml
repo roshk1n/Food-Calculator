@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,23 +26,36 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText" />
 
-        <EditText
-            android:id="@+id/etLogin"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="14"
-            android:hint="Email"
-            android:inputType="textPersonName" />
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/etLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:ems="14"
+                android:hint="Email"
+                android:inputType="textPersonName" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="14"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorPrimaryText" />
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="14"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/colorPrimaryText" />
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -51,9 +65,9 @@
                 android:id="@+id/btnLoginApi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:onClick="onLogInApi"
                 android:text="Log in Api"
-                android:layout_margin="5dp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -71,9 +85,9 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:onClick="onLogIn"
                 android:text="Log in"
-                android:layout_margin="5dp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
         </LinearLayout>
@@ -122,5 +136,4 @@
         android:text="@string/sing_up"
         android:textColor="@color/com_facebook_blue"
         android:textSize="20sp" />
-
 </RelativeLayout>

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +28,7 @@ import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.settings.SettingFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,7 +45,11 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView mImageViewUserIco;
     private TextView mTextViewName;
 
+    private FloatingActionButton floatingActionButton;
+
+
     private FragmentManager fragmentManager;
+    private CoordinatorLayout coordinatorHintAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +158,8 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_conteiner, FavoriteFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
+                floatingActionButton.hide();
+                coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
         } else if (id == R.id.nav_history) {
@@ -162,10 +171,20 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
+                floatingActionButton.hide();
+                coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
 
         } else if (id == R.id.nav_settings) {
+
+            fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_conteiner, SettingFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+                floatingActionButton.hide();
+            coordinatorHintAdd.setVisibility(View.INVISIBLE);
+
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
@@ -179,17 +198,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-/*
-    private void restartNotify() {
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, ReceiverNotification.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT );
-
-      //  alarmManager.set(AlarmManager.RTC_WAKEUP, stamp.getTime(), pendingIntent);
-    }
-*/
-
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -198,5 +206,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
         mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.addFood_fab);
+        coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
     }
 }

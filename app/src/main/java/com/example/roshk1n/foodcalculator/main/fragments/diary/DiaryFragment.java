@@ -4,29 +4,25 @@ package com.example.roshk1n.foodcalculator.main.fragments.diary;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.OnSwipeTouchListener;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerDiaryAdapter;
-import com.example.roshk1n.foodcalculator.main.fragments.JumpFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 
@@ -53,8 +49,10 @@ public class DiaryFragment extends Fragment implements DiaryView{
     private TextView remaining_calories_tv;
     private ImageView follow_day_iv;
     private ImageView next_day_iv;
-    private FrameLayout frameLayout;
+    private View hintCircleAddFood;
     private FloatingActionButton addFoodFab;
+    
+    private CoordinatorLayout coordinatorHintAdd;
 
     public DiaryFragment() { }
 
@@ -81,8 +79,10 @@ public class DiaryFragment extends Fragment implements DiaryView{
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
+        Log.d("My", "onCreateView");
+
         initUI();
-        addFoodFab.show();
+
         Bundle bundle = getArguments();
 
         if(bundle != null) {
@@ -98,22 +98,23 @@ public class DiaryFragment extends Fragment implements DiaryView{
         mAdapter = new RecyclerDiaryAdapter(foods);
         mRecyclerView.setAdapter(mAdapter);
 
+        addFoodFab.show();
 
+        if(foods.size()==0) {
+            showHintAddAmin();
+        } else {
+            hideHintAddAmin();
+        }
 
         follow_day_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                        , R.anim.slide_in_left_enter);
-
                 date_add.setDate(date_add.getDate()-1);
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right_enter,R.anim.slide_in_right_exit)
                         .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(date_add.getTime()))
                         .commit();
-                //setData(date_add);
-               // mRecyclerView.startAnimation(animation1);
             }
         });
 
@@ -126,11 +127,6 @@ public class DiaryFragment extends Fragment implements DiaryView{
                         .setCustomAnimations(R.anim.slide_in_left_enter,R.anim.slide_in_left_exit)
                         .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(date_add.getTime()))
                         .commit();
-              //  setData(date_add);
-                Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                        , R.anim.slide_right_recycler);
-
-              //  mRecyclerView.startAnimation(animation1);
             }
         });
 
@@ -164,6 +160,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
                         .replace(R.id.fragment_conteiner, SearchFragment.newInstance(date_add.getTime()))
                         .addToBackStack(null)
                         .commit();
+                hideHintAddAmin();
             }
         });
 
@@ -231,8 +228,54 @@ public class DiaryFragment extends Fragment implements DiaryView{
         remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
         follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
         next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
-        frameLayout = (FrameLayout) getActivity().findViewById(R.id.fragment_conteiner);
+        hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
+        coordinatorHintAdd = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
+
+    }
+
+    void hideHintAddAmin() {
+        Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                ,R.anim.hide_hint_add_food);
+        hintCircleAddFood.startAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                coordinatorHintAdd.setVisibility(View.INVISIBLE);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+    }
+
+    void showHintAddAmin() {
+
+        Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                ,R.anim.show_hint_add_food);
+        hintCircleAddFood.startAnimation(animation1);
+        coordinatorHintAdd.setVisibility(View.VISIBLE);
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
     }
 }
