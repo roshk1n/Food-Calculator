@@ -13,11 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.roshk1n.foodcalculator.login.LoginActivity;
-import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.R;
-
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,7 +22,7 @@ public class SingUpActivity extends Activity implements SingUpView {
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
-    private static String TAG="MyLog";
+    private static final String TAG = "MyLog";
 
     private EditText surname;
     private EditText email;
@@ -54,15 +51,6 @@ public class SingUpActivity extends Activity implements SingUpView {
             }
         });
     }
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,8 +73,7 @@ public class SingUpActivity extends Activity implements SingUpView {
     public Bitmap getBitmapIv() {
         ivUser.setDrawingCacheEnabled(true);
         ivUser.buildDrawingCache();
-        Bitmap bitmap = ivUser.getDrawingCache();
-        return bitmap;
+        return ivUser.getDrawingCache();
     }
 
     @Override

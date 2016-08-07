@@ -11,12 +11,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class InfoFoodFragment extends Fragment implements InfoFoodView {
@@ -27,11 +29,11 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     private View view;
     private CoordinatorLayout coordinatorLayout;
     private Button mAddFoodBtn;
-    private TextView nameFoodtv;
-    private TextView cabsFoodtv;
-    private TextView fatFoodtv;
-    private TextView proteinFoodtv;
-    private TextView caloriesFoodtv;
+    private TextView nameFoodTv;
+    private TextView cabsFoodTv;
+    private TextView fatFoodTv;
+    private TextView proteinFoodTv;
+    private TextView caloriesFoodTv;
     private TextView numberOfServingsEt;
     private ImageView addFavoriteIv;
 
@@ -75,11 +77,11 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
             public void onClick(View v) {
                 if (food !=null) {
                     if (!numberOfServingsEt.getText().toString().equals("")) {
-                       food = infoFoodPresenter.updateFood(food,proteinFoodtv.getText().toString()
-                                ,caloriesFoodtv.getText().toString()
-                                ,fatFoodtv.getText().toString()
-                                ,cabsFoodtv.getText().toString()
-                                ,nameFoodtv.getText().toString()
+                       food = infoFoodPresenter.updateFood(food, proteinFoodTv.getText().toString()
+                                , caloriesFoodTv.getText().toString()
+                                , fatFoodTv.getText().toString()
+                                , cabsFoodTv.getText().toString()
+                                , nameFoodTv.getText().toString()
                                 ,numberOfServingsEt.getText().toString());
 
                         infoFoodPresenter.addNewFood(food);
@@ -135,15 +137,20 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
         String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
         getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override
     public void setNutrients(String protein, String calories, String fat, String cabs,String name) {
-        proteinFoodtv.setText(protein);
-        caloriesFoodtv.setText(calories);
-        fatFoodtv.setText(fat);
-        cabsFoodtv.setText(cabs);
-        nameFoodtv.setText(name);
+        proteinFoodTv.setText(protein);
+        caloriesFoodTv.setText(calories);
+        fatFoodTv.setText(fat);
+        cabsFoodTv.setText(cabs);
+        nameFoodTv.setText(name);
     }
 
     @Override
@@ -156,16 +163,17 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
         }
     }
 
-    public void initUI() {
-        cabsFoodtv = (TextView) view.findViewById(R.id.tv_cabs_food_info);
-        fatFoodtv = (TextView) view.findViewById(R.id.tv_fat_food_info);
-        proteinFoodtv = (TextView) view.findViewById(R.id.tv_protein_food_info);
-        caloriesFoodtv = (TextView) view.findViewById(R.id.tv_calories_food_info);
-        nameFoodtv = (TextView) view.findViewById(R.id.tv_name_food_info);
+    private void initUI() {
+        cabsFoodTv = (TextView) view.findViewById(R.id.tv_cabs_food_info);
+        fatFoodTv = (TextView) view.findViewById(R.id.tv_fat_food_info);
+        proteinFoodTv = (TextView) view.findViewById(R.id.tv_protein_food_info);
+        caloriesFoodTv = (TextView) view.findViewById(R.id.tv_calories_food_info);
+        nameFoodTv = (TextView) view.findViewById(R.id.tv_name_food_info);
         numberOfServingsEt = (EditText) view.findViewById(R.id.number_of_servings_et);
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
         addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_info_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");
     }
 }

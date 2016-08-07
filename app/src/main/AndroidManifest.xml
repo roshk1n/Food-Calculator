@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.roshk1n.foodcalculator">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,8 +23,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.CLICK1" />
-                <action android:name="android.intent.action.CLICK2" />
+                <action android:name="android.intent.action.receiverNotification" />
             </intent-filter>
         </receiver>
 
@@ -52,6 +50,7 @@
             android:name=".main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>

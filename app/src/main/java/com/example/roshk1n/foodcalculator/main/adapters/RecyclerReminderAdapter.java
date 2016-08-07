@@ -22,14 +22,13 @@ import io.realm.RealmList;
  * Created by roshk1n on 8/3/2016.
  */
 public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerReminderAdapter.ViewHolder> {
-
-    private RealmList<ReminderReaml> reminderReamls;
+    private final Realm realm = Realm.getDefaultInstance();
+    private RealmList<ReminderReaml> remindersReaml;
     private ResponseAdapter responseAdapter;
-    private Realm realm = Realm.getDefaultInstance();
     private View v;
 
-    public RecyclerReminderAdapter(RealmList<ReminderReaml> reminderReamls, ResponseAdapter responseAdapter) {
-        this.reminderReamls = reminderReamls;
+    public RecyclerReminderAdapter(RealmList<ReminderReaml> remindersReaml, ResponseAdapter responseAdapter) {
+        this.remindersReaml = remindersReaml;
         this.responseAdapter = responseAdapter;
     }
 
@@ -52,27 +51,26 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_reminder,parent,false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        Date  date = new Date(reminderReamls.get(position).getTime());
+        Date  date = new Date(remindersReaml.get(position).getTime());
         int minute= date.getMinutes();
         final int hour = date.getHours();
         String time = (hour < 10 ? "0" + hour : hour)+":"+(minute < 10 ? "0" + minute : minute);
 
-        holder.title_reminder_tv.setText(reminderReamls.get(position).getName());
+        holder.title_reminder_tv.setText(remindersReaml.get(position).getName());
         holder.time_reminder_tv.setText(time);
-        holder.reminder_switch.setChecked(reminderReamls.get(position).getState());
+        holder.reminder_switch.setChecked(remindersReaml.get(position).getState());
 
         holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseAdapter.createPicker(holder.getAdapterPosition()
-                        ,reminderReamls.get(holder.getAdapterPosition()).getName());
+                        , remindersReaml.get(holder.getAdapterPosition()).getName());
             }
         });
 
@@ -82,7 +80,7 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        reminderReamls.get(holder.getAdapterPosition()).setState(isChecked);
+                        remindersReaml.get(holder.getAdapterPosition()).setState(isChecked);
                         responseAdapter.updateSwitch(isChecked, holder.getAdapterPosition());
                     }
                 });
@@ -92,6 +90,6 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
 
     @Override
     public int getItemCount() {
-        return reminderReamls.size();
+        return remindersReaml.size();
     }
 }

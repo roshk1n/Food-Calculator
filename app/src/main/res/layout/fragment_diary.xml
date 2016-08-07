@@ -20,7 +20,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -44,7 +43,7 @@
                     android:gravity="center"
                     android:paddingBottom="6dp"
                     android:paddingTop="6dp"
-                    android:text="date"
+                    android:text="@string/date"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp" />
 
@@ -65,9 +64,9 @@
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/item_search_card_view"
             android:layout_width="match_parent"
-            android:layout_marginTop="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:layout_marginTop="0dp"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
@@ -88,26 +87,23 @@
                         android:id="@+id/goal_cal_diary_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1600"
+                        android:text="@string/_1600"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/goal_cal_diary_tv"
-                        android:text="Goal"
-                        android:textSize="13sp"
+                        android:text="@string/goal"
                         android:textAlignment="center"
-                        android:textColor="@color/colorSecondaryText" />
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/goal_cal_diary_tv"
-                    android:layout_toRightOf="@id/goal_cal_diary_tv"
-                    android:text="-"
+                    android:text="@string/slide"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="25sp" />
 
@@ -122,26 +118,23 @@
                         android:id="@+id/eatdaily_cal_diary_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="@string/_0"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/goal_cal_diary_tv"
-                        android:text="Food"
+                        android:text="@string/food"
                         android:textAlignment="center"
-                        android:textSize="13sp"
-                        android:textColor="@color/colorSecondaryText" />
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/goal_cal_diary_tv"
-                    android:layout_toRightOf="@id/goal_cal_diary_tv"
-                    android:text="="
+                    android:text="@string/equals"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="25sp" />
 
@@ -156,18 +149,18 @@
                         android:id="@+id/remaining_cal_diary_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1600"
+                        android:text="@string/_1600"
                         android:textColor="#d30b0b"
                         android:textSize="17sp" />
 
                     <TextView
+                        android:id="@+id/remaining_cal_diary_field_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/goal_cal_diary_tv"
-                        android:text="Remaining"
-                        android:textSize="13sp"
+                        android:text="@string/remaining"
                         android:textAlignment="center"
-                        android:textColor="#d30b0b" />
+                        android:textColor="#d30b0b"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -178,19 +171,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
-            android:splitMotionEvents="true">
-
-        </android.support.v7.widget.RecyclerView>
-
+            android:splitMotionEvents="true"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
-<!--    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addFood_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp" />-->
 </FrameLayout>
 
 

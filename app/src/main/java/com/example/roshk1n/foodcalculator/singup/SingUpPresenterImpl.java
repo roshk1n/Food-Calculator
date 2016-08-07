@@ -4,30 +4,17 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Base64;
-
 import com.example.roshk1n.foodcalculator.User;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import io.realm.Realm;
 
-/**
- * Created by roshk1n on 7/16/2016.
- */
 public class SingUpPresenterImpl implements SingUpPresenter {
     private SingUpView singUpView;
 
@@ -42,7 +29,6 @@ public class SingUpPresenterImpl implements SingUpPresenter {
 
     @Override
     public void singUpFirebase(final String surname, final String email, final String password, final String congirmPassword) {
-        boolean error = false;
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(surname)
                 || TextUtils.isEmpty(password) || TextUtils.isEmpty(congirmPassword)) {
             singUpView.showToast("Enter all fields, please.");
@@ -85,7 +71,6 @@ public class SingUpPresenterImpl implements SingUpPresenter {
 
     @Override
     public void singUpRealm(String fullname, String email, String password, String confirmPassword) {
-        boolean error = false;
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(fullname)
                 || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             singUpView.showToast("Enter all fields, please.");

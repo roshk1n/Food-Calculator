@@ -1,7 +1,5 @@
 package com.example.roshk1n.foodcalculator.main.fragments.favorite;
 
-import android.view.View;
-
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 

@@ -11,20 +11,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import com.example.roshk1n.foodcalculator.OnSwipeTouchListener;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerFavoriteAdapter;
-import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
-
-import io.realm.Realm;
-
 
 public class FavoriteFragment extends Fragment implements FavoriteView{
 
@@ -32,7 +22,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
     private FavoriteListRealm favoriteListRealm;
     private View view;
 
-    private FrameLayout frame;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
@@ -86,7 +75,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
-        frame = (FrameLayout) getActivity().findViewById(R.id.fragment_conteiner);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite");
     }
 

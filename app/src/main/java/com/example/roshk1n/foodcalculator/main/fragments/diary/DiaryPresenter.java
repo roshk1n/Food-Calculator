@@ -12,6 +12,7 @@ import io.realm.RealmList;
 /**
  * Created by roshk1n on 7/19/2016.
  */
+
 public interface DiaryPresenter  {
 
     void setView(DiaryView view);

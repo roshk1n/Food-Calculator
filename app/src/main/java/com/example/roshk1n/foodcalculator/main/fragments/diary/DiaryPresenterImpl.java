@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 
 import com.example.roshk1n.foodcalculator.R;
@@ -21,7 +22,7 @@ import io.realm.RealmList;
 public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnDateSetListener{
 
     private DiaryView diaryView;
-    private Realm realm= Realm.getDefaultInstance();
+    private final Realm realm = Realm.getDefaultInstance();
 
     @Override
     public void setView(DiaryView view) {
@@ -39,16 +40,14 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
-        datePickerDialog.setTitle("asgagas");
         datePickerDialog.show( fragment.getActivity().getFragmentManager(), "DatePickerDialog" );
     }
 
     @Override
     public UserRealm getCurrentUserRealm() {
-        final UserRealm userRealms = realm.where(UserRealm.class)
+        return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
-        return userRealms;
     }
 
     @Override
@@ -93,15 +92,21 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         diaryView.setData(date);
     }
 
-    private void calculateCaloriesRemove(int day, int index) {
-        realm.beginTransaction();
-        DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(day);
+    private void calculateCaloriesRemove(int day, final int index) {
+        final DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(day);
 
-        infoDay.setEatDailyCalories(infoDay.getEatDailyCalories()
-                - Integer.valueOf(infoDay.getFoods().get(index).getNutrients().get(1).getValue()));
-        infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
-        realm.commitTransaction();
-        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories());
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                infoDay.setEatDailyCalories(infoDay.getEatDailyCalories()
+                        - Integer.valueOf(infoDay.getFoods().get(index).getNutrients().get(1).getValue()));
+                infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
+            }
+        });
+
+        int checkLimit = checkLimit(infoDay.getRemainingCalories());
+        int color = getColor(checkLimit);
+        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories(),checkLimit,color);
     }
 
     private void calculateCaloriesAdd(int day) {
@@ -114,19 +119,43 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
         infoDay.setEatDailyCalories(eat_calories);
         infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
         realm.commitTransaction();
-        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories());
+
+        int checkLimit = checkLimit(infoDay.getRemainingCalories());
+        int color = getColor(checkLimit);
+        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories(),checkLimit,color);
     }
 
     private boolean compareLongAndDate(Long UserDate, Date date) {
 
         Date userDayDate = new Date(UserDate);
-        if(userDayDate.getDate()== date.getDate()
+        return (userDayDate.getDate()== date.getDate()
                 && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth()== date.getMonth()) {
-            return true;
-
-        } else {
-            return false;
-        }
+                && userDayDate.getMonth()== date.getMonth());
     }
+
+    private int checkLimit(int remaining) {
+
+        int checkLimit = 1;// if limit not reached
+
+        if(remaining<=300) checkLimit = 2; // if almost reach limit
+
+        if(remaining<=0) checkLimit = 3; // if limit reached
+
+        if(remaining<=-500) checkLimit = 4; // if limit quite a a lot
+
+        return checkLimit;
+    }
+
+    private int getColor(int checkLimit) {
+        int color = Color.parseColor("#212121");
+
+        if(checkLimit==2) color = Color.parseColor("#7cab26");
+
+        if(checkLimit==3) color = Color.parseColor("#d30b0b");
+
+        if(checkLimit==4) color = Color.parseColor("#a40f0f");
+
+        return color;
+    }
+
 }

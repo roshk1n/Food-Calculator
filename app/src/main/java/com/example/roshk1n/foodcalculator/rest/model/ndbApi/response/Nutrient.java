@@ -3,13 +3,6 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
-import io.realm.RealmObject;
-
-/**
- * Created by roshk1n on 7/18/2016.
- */
 public class Nutrient  implements Parcelable {
     private String nutrient_id;
     private String nutrient;
@@ -18,7 +11,7 @@ public class Nutrient  implements Parcelable {
 
     public Nutrient() { }
 
-    protected Nutrient(Parcel in) {
+    private Nutrient(Parcel in) {
         nutrient_id = in.readString();
         nutrient = in.readString();
         unit = in.readString();

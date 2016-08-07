@@ -2,39 +2,34 @@ package com.example.roshk1n.foodcalculator.main.fragments.search;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class SearchFragment extends Fragment implements SearchView {
 
-
     private SearchPresenterImpl searchPresenter;
     private RestClient restClient;
-    private String[] nutrients = {"204","208","205","203"};;
     private long mdate=0;
 
     private View view;
@@ -57,11 +52,21 @@ public class SearchFragment extends Fragment implements SearchView {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
         initUI();
+
+      //  ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
 
         searchPresenter = new SearchPresenterImpl();
         searchPresenter.setView(this);
@@ -84,12 +89,23 @@ public class SearchFragment extends Fragment implements SearchView {
         searchEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (searchEt.getText().length() != 0) {
-                    nutrientFoodResponses.clear();
-                    mAdapter.notifyDataSetChanged();
 
-                    searchPresenter.searchFood(searchEt.getText().toString());
+            }
+        });
+
+        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (searchEt.getText().length() != 0) {
+                        nutrientFoodResponses.clear();
+                        mAdapter.notifyDataSetChanged();
+                        searchPresenter.searchFood(searchEt.getText().toString());
+                        hideKeyboard();
+                    }
+                    return true;
                 }
+                return false;
             }
         });
         return view;
@@ -98,12 +114,28 @@ public class SearchFragment extends Fragment implements SearchView {
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
         searchEt = (EditText) view.findViewById(R.id.et_food_name);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
     }
+
     @Override
-    public void updateUI(ArrayList<NutrientFoodResponse> nutrientFoodResponses) {
-        this.nutrientFoodResponses = nutrientFoodResponses;
-        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses,mdate);
-        mRecyclerView.setAdapter(mAdapter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                getActivity().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void updateUI(NutrientFoodResponse nutrientFoodResponses) {
+        this.nutrientFoodResponses.add(nutrientFoodResponses);
+        mAdapter.notifyItemInserted(this.nutrientFoodResponses.size());
+    }
+
+    private void hideKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

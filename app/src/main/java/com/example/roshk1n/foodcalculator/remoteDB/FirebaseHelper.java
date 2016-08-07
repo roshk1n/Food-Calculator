@@ -1,17 +1,11 @@
 package com.example.roshk1n.foodcalculator.remoteDB;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.example.roshk1n.foodcalculator.User;
-import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.singup.ResponseListentenerUpload;
-import com.example.roshk1n.foodcalculator.singup.SingUpPresenter;
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,21 +17,13 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
-/**
- * Created by roshk1n on 7/14/2016.
- */
 public class FirebaseHelper {
     private static FirebaseAuth mAuth;
     private static FirebaseAuth.AuthStateListener mAuthListner;
-    private static Firebase mFirebaseRef;
     private static FirebaseUser mFirebaseUser;
     private static FirebaseStorage storage = FirebaseStorage.getInstance();
-
-//    private static String urlUserPhto;
 
     public static FirebaseStorage getStorage() { return storage; }
 
@@ -58,12 +44,6 @@ public class FirebaseHelper {
     public static void setmAuthListner(FirebaseAuth.AuthStateListener mAuthListner) {
         FirebaseHelper.mAuthListner = mAuthListner;
     }
-
-  /*  public static String getUrlUserPhto() { return urlUserPhto; }
-
-    public static void setUrlUserPhto(String urlUserPhto) {
-        FirebaseHelper.urlUserPhto = urlUserPhto;
-    }*/
 
     public static FirebaseUser getmFirebaseUser() {
         return mFirebaseUser;
@@ -131,7 +111,6 @@ public class FirebaseHelper {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 upload.onSuccess(downloadUrl.toString());
-                /*urlUserPhto =  downloadUrl.toString();*/
             }
         });
 

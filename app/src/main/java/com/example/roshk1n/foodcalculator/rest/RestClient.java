@@ -12,10 +12,10 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by roshk1n on 7/14/2016.
  */
-public class RestClient { //TODO: Create in MyApplication
+public class RestClient {
     private LoginApi loginApi;
     private NdbApi ndbApi;
-    private String api_key = "MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ";
+    private final String api_key = "MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ";
 
     public RestClient() {
         Gson gson = new GsonBuilder().create();

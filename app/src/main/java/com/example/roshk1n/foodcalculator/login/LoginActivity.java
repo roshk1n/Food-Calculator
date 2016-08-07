@@ -8,22 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.singup.SingUpActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
 public class LoginActivity extends Activity implements LoginView {
 
-    private static String TAG = "MyLog";
+    private final static String TAG = "MyLog";
 
     private LoginPresenterImpl loginPresenter;
     private Button loginBtn;

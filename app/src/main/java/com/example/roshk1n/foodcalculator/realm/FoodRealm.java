@@ -1,14 +1,8 @@
 package com.example.roshk1n.foodcalculator.realm;
 
-import java.util.Date;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by roshk1n on 7/21/2016.
- */
 public class FoodRealm extends RealmObject {
 
     private String ndbno;

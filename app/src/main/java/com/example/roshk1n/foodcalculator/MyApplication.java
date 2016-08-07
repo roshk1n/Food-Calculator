@@ -1,29 +1,14 @@
 package com.example.roshk1n.foodcalculator;
 
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Point;
-import android.os.Build;
-import android.view.Display;
-import android.view.WindowManager;
-
 import com.example.roshk1n.foodcalculator.rest.RestClient;
-import com.facebook.stetho.Stetho;
 import com.firebase.client.Firebase;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MyApplication extends Application {
 
     private static RestClient restClient;
-    private static AlarmManager alarmManager;
-
-    private int count;
 
     @Override
     public void onCreate() {
@@ -35,21 +20,7 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
-
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     public static RestClient getRestClient() { return restClient; }
-
-    public static AlarmManager getAlarmManager() { return alarmManager; }
-
-    public void setRestClient(RestClient restClient) { this.restClient = restClient; }
-
-    public int getCount() { return count; }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-
 }

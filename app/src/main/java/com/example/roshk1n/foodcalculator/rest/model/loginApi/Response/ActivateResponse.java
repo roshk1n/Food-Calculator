@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator.rest.model.loginApi.response;
 
-/**
- * Created by roshk1n on 7/15/2016.
- */
 public class ActivateResponse {
     private Succeeded succeeded;
     private DataActivate data;

@@ -16,7 +16,7 @@ import io.realm.RealmList;
  */
 public class RemindersPresenterImpl implements RemindersPresenter {
 
-    private Realm realm = Realm.getDefaultInstance();
+    private final Realm realm = Realm.getDefaultInstance();
 
     private RemindersView remindersView;
 
@@ -27,10 +27,9 @@ public class RemindersPresenterImpl implements RemindersPresenter {
 
     @Override
     public UserRealm getCurrentUserRealm() {
-        final UserRealm userRealms = realm.where(UserRealm.class)
+        return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
-        return userRealms;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     }
 
     @Override
-    public void setDufaultReminders() {
+    public void setDefaultReminders() {
         if(getCurrentUserRealm().getReminders().size() == 0) {
             createReminder(false,"8:45","Breakfast");
             createReminder(false,"14:00","Lunch");

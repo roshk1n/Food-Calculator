@@ -13,7 +13,6 @@ import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LogoutRes
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.RegistrationResponse;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.RegistrationUser;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.VerifyResponse;
-import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

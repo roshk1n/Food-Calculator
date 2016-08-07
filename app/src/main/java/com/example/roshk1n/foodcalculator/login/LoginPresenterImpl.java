@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.roshk1n.foodcalculator.ManageLoginApi;
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.Session;
-import com.example.roshk1n.foodcalculator.User;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.facebook.CallbackManager;
@@ -19,16 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
 
-/**
- * Created by roshk1n on 7/14/2016.
- */
 public class LoginPresenterImpl implements LoginPresenter {
 
-    private static String TAG = "MyLog";
+    private final static String TAG = "MyLog";
     private MyApplication myApplication;
     private CallbackManager callbackManager;
     private LoginView loginVew;

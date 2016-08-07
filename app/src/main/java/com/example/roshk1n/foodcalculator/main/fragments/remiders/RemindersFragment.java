@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerReminderAdapter;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
@@ -23,14 +19,13 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import io.realm.RealmList;
 
 public class RemindersFragment extends Fragment  implements RemindersView, ResponseAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
 
     private RemindersPresenterImpl remindersPresenter;
-    private RealmList<ReminderReaml> reminderReamls;
+    private RealmList<ReminderReaml> remindersReaml;
 
     private ReceiverNotification receiverNotification;
     private int positionAdapter;
@@ -63,13 +58,13 @@ public class RemindersFragment extends Fragment  implements RemindersView, Respo
 
         initUI();
 
-        remindersPresenter.setDufaultReminders();
-        reminderReamls = remindersPresenter.getReminderList();
+        remindersPresenter.setDefaultReminders();
+        remindersReaml = remindersPresenter.getReminderList();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerReminderAdapter(reminderReamls,this);
+        mAdapter = new RecyclerReminderAdapter(remindersReaml,this);
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -118,7 +113,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Respo
         minute = c.get(Calendar.MINUTE);
     }
 
-    void initUI() {
+    private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_reminders);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reminders");
     }

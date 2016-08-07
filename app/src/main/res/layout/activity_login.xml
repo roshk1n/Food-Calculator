@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:ems="14"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textPersonName" />
 
         </android.support.design.widget.TextInputLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:onClick="onLogInApi"
-                android:text="Log in Api"
+                android:text="@string/log_in_api"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:onClick="onLogIn"
-                android:text="Log in Realm"
+                android:text="@string/log_in_realm"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:onClick="onLogIn"
-                android:text="Log in"
+                android:text="@string/log_in"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
         </LinearLayout>

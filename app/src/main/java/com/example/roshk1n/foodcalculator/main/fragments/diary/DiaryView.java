@@ -8,5 +8,5 @@ import java.util.Date;
 public interface DiaryView {
     void setData(Date date);
 
-    void updateCalories(int goal,int eat,int remaining);
+    void updateCalories(int goal,int eat,int remaining, int checkLimit, int color);
 }

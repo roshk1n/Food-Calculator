@@ -16,10 +16,6 @@ public class Session {
         return instance;
     }
 
-    private static void setInstance(Session instance) {
-        Session.instance = instance;
-    }
-
     public String getEmail() {
         return email;
     }

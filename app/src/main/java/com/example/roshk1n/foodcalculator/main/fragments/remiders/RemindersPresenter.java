@@ -1,15 +1,9 @@
 package com.example.roshk1n.foodcalculator.main.fragments.remiders;
 
-import android.support.v4.app.Fragment;
-
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
-
 import io.realm.RealmList;
 
-/**
- * Created by roshk1n on 7/24/2016.
- */
 public interface RemindersPresenter {
 
     void setView(RemindersView view);
@@ -18,7 +12,7 @@ public interface RemindersPresenter {
 
     void createReminder(boolean isChecked,String time,String tag);
 
-    void setDufaultReminders();
+    void setDefaultReminders();
 
     RealmList<ReminderReaml> getReminderList();
 

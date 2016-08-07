@@ -1,12 +1,8 @@
 package com.example.roshk1n.foodcalculator.singup;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by roshk1n on 7/16/2016.
- */
 public interface SingUpPresenter {
 
     void setView(SingUpView view);

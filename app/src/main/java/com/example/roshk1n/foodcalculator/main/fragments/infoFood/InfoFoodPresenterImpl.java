@@ -1,26 +1,19 @@
 package com.example.roshk1n.foodcalculator.main.fragments.infoFood;
 
 import android.util.Log;
-
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.jar.Pack200;
-
 import io.realm.Realm;
 
-/**
- * Created by roshk1n on 7/25/2016.
- */
 public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
-    private  Realm realm = Realm.getDefaultInstance();
+    private final Realm realm = Realm.getDefaultInstance();
 
     private InfoFoodView foodView;
 
@@ -77,12 +70,10 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
     }
     @Override
     public UserRealm getCurrentUserRealm() {
-        final UserRealm userRealms = realm.where(UserRealm.class)
+        return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
-        return userRealms;
     }
-
 
     @Override
     public void updateUI(Food food, int numberOfServing) {
@@ -108,7 +99,7 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
                 ,String.valueOf(calories)
                 ,String.valueOf(format.format(fat))
                 ,String.valueOf(format.format(cabs))
-                ,food.getName().toString());
+                ,food.getName());
     }
 
     @Override
@@ -165,18 +156,16 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
                 realm.commitTransaction();
             }
         }
-
     }
 
     @Override
     public void isExistFavorite(Food food) {
-
         FoodRealm foodRealm = food.converToRealm();
         if(getCurrentUserRealm().getFavoriteList() != null)
         foodView.updateFavoriteImage(foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods()));
     }
 
-    boolean isFloat(String str) {
+   private boolean isFloat(String str) {
         try {
             Float.parseFloat(str);
             return true;
@@ -186,15 +175,9 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
     }
 
     private boolean compareLongAndDate(Long UserDate, Date date) {
-
         Date userDayDate = new Date(UserDate);
-        if(userDayDate.getDate()== date.getDate()
+        return (userDayDate.getDate()== date.getDate()
                 && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth()== date.getMonth()) {
-            return true;
-
-        } else {
-            return false;
-        }
+                && userDayDate.getMonth()== date.getMonth());
     }
 }

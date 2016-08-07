@@ -2,19 +2,10 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
-
 import java.util.ArrayList;
-import java.util.Date;
 
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-
-/**
- * Created by roshk1n on 7/18/2016.
- */
 public class Food  implements Parcelable {
     private String ndbno;
     private String name;
@@ -24,7 +15,7 @@ public class Food  implements Parcelable {
 
     public Food() {}
 
-    protected Food(Parcel in) {
+    private Food(Parcel in) {
         ndbno = in.readString();
         name = in.readString();
         portion = in.readInt();

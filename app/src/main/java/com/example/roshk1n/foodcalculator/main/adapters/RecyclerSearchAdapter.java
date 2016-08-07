@@ -1,29 +1,19 @@
 package com.example.roshk1n.foodcalculator.main.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by roshk1n on 7/12/2016.
@@ -42,7 +32,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView tvName;
         public TextView tvValuePor;
-        public TextView tvAmoutCal;
+        public TextView tvAmountCal;
         private CardView searchCardView;
 
         public ViewHolder(View v)
@@ -50,7 +40,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             super(v);
             tvName = (TextView) v.findViewById(R.id.tvSearchName);
             tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
-            tvAmoutCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
+            tvAmountCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
             searchCardView = (CardView) v.findViewById(R.id.item_search_card_view);
         }
     }
@@ -58,15 +48,14 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     @Override
     public RecyclerSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_search,parent,false);
-        ViewHolder vh = new ViewHolder(v);
-        return  vh;
+        return  new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
             holder.tvName.setText(foods.get(position).getReport().getFoods().get(0).getName());
-            holder.tvAmoutCal.setText(String.valueOf(foods.get(position).getReport().getFoods().get(0).getNutrients().get(1).getValue() + " cal"));
+            holder.tvAmountCal.setText(String.valueOf(foods.get(position).getReport().getFoods().get(0).getNutrients().get(1).getValue() + " cal"));
             holder.tvValuePor.setText("100" + " g, ");
 
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {

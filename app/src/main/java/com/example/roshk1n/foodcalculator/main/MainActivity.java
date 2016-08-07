@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.main;
 
 
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,12 +45,13 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawer;
     private CircleImageView mImageViewUserIco;
     private TextView mTextViewName;
-
     private FloatingActionButton floatingActionButton;
-
-
     private FragmentManager fragmentManager;
     private CoordinatorLayout coordinatorHintAdd;
+
+    public Toolbar getmToolbar() {
+        return mToolbar;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,21 +82,10 @@ public class MainActivity extends AppCompatActivity
         mImageViewUserIco.setImageBitmap(imageUser);
 ////////////
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     @Override
@@ -111,8 +102,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-            /*         menuItem = menu.findItem(R.id.action_username);
-         menuItem.setTitle(username);*/
+
         return true;
     }
 
@@ -129,6 +119,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 finish();
             } break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -208,5 +199,6 @@ public class MainActivity extends AppCompatActivity
         mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
-    }
+
+     }
 }

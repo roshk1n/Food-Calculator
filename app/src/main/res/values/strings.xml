@@ -34,24 +34,57 @@
     <string name="reminders">Reminders</string>
     <string name="setting">Setting</string>
     <string name="log_out">Log Out</string>
-    <string name="search_for_a_food">Search for a Food</string>
+    <string name="search_for_a_food">Search...</string>
+    <string name="logout">LogOut</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="Potato">Картопля</string>
+    <string name="_247">247</string>
+    <string name="username">UserName</string>
+    <string name="_100_g">100 g,</string>
+    <string name="_08_45">08:45</string>
+    <string name="milk_dessert">Milk dessert</string>
+    <string name="email">Email</string>
+    <string name="full_name">Full Name</string>
+    <string name="_320_cal">320 cal</string>
+    <string name="date">date</string>
+    <string name="serving_size">Serving size:</string>
+    <string name="oleh_roshka">Oleh Roshka</string>
+    <string name="add_a_new_food_for_your_day">Add a new food for your day.</string>
+    <string name="_100">100</string>
+    <string name="add_food">Add Food</string>
+    <string name="g">g.</string>
+    <string name="log_in_api">Log in Api</string>
+    <string name="age">Age</string>
+    <string name="number_of_servings">Number of Servings:</string>
+    <string name="log_in_realm">Log in Realm</string>
+    <string name="_20">20</string>
+    <string name="_1">1</string>
+    <string name="_1600">1600</string>
+    <string name="goal">Goal</string>
+    <string name="food">Food</string>
+    <string name="_0">0</string>
+    <string name="remaining">Remaining</string>
+    <string name="height">Height</string>
+    <string name="slide">-</string>
+    <string name="_1_0">1,0</string>
+    <string name="_176_cm">176 cm</string>
+    <string name="sign_up_now">Sign up Now</string>
+    <string name="carbs_g">Carbs (g)</string>
+    <string name="sing_up_with_api">Sing up with API</string>
+    <string name="weight">Weight</string>
+    <string name="_17_0">17,0</string>
+    <string name="equals">=</string>
+    <string name="_70_kg">70 kg</string>
+    <string name="fat_g">Fat (g)</string>
+    <string name="sing_up_with_realm">Sing up with Realm</string>
+    <string name="active_level">Active Level</string>
+    <string name="protein_g">Protein (g)</string>
+    <string name="active">Active</string>
+    <string name="calories">Calories</string>
+    <string name="_1660">1600</string>
+    <string name="confirm_password">Confirm password</string>
     <array name="photo">
         <item>Choose from Gallery</item>
         <item>Take a picture</item>
     </array>
-
-
-    <string-array name="listArray">
-        <item>Headings</item>
-        <item>Headings and Details</item>
-        <item>All Data</item>
-    </string-array>
-
-    <string-array name="listValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-
 </resources>

@@ -1,19 +1,7 @@
 package com.example.roshk1n.foodcalculator;
 
-import android.util.Log;
-
 import com.example.roshk1n.foodcalculator.rest.RestClient;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListInfoFoodResponse;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-/**
- * Created by roshk1n on 7/18/2016.
- */
 public class ManageNdbApi {
 
     private static RestClient restClient;

@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:hint="Full name"
+                    android:hint="@string/full_name"
                     android:inputType="textPersonName"
                     android:textColor="@color/colorPrimaryText" />
             </android.support.design.widget.TextInputLayout>
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:hint="Email"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/colorPrimaryText" />
             </android.support.design.widget.TextInputLayout>
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textColor="@color/colorPrimaryText" />
             </android.support.design.widget.TextInputLayout>
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:hint="Confirm password"
+                    android:hint="@string/confirm_password"
                     android:inputType="textPassword"
                     android:textColor="@color/colorPrimaryText" />
             </android.support.design.widget.TextInputLayout>
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:onClick="onSignUpClicked"
-                android:text="Sign up Now"
+                android:text="@string/sign_up_now"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText"
                 android:textStyle="bold" />
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:onClick="onSignUpAPIClicked"
-                android:text="Sing up with API"
+                android:text="@string/sing_up_with_api"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText"
                 android:textStyle="bold" />
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:onClick="onSignUpAPIClicked"
-                android:text="Sing up with Realm"
+                android:text="@string/sing_up_with_realm"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText"
                 android:textStyle="bold" />

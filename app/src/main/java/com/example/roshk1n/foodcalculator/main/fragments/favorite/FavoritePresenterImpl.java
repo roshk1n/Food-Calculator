@@ -1,20 +1,14 @@
 package com.example.roshk1n.foodcalculator.main.fragments.favorite;
 
-import android.view.View;
-
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
-
 import io.realm.Realm;
 
-/**
- * Created by roshk1n on 8/2/2016.
- */
 public class FavoritePresenterImpl implements FavoritePresenter {
     private FavoriteView favoriteView;
 
-    private Realm realm = Realm.getDefaultInstance();
+    private final Realm realm = Realm.getDefaultInstance();
 
     @Override
     public void setView(FavoriteView favoriteView) {
@@ -32,10 +26,9 @@ public class FavoritePresenterImpl implements FavoritePresenter {
 
     @Override
     public UserRealm getCurrentUserRealm() {
-        final UserRealm userRealms = realm.where(UserRealm.class)
+        return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
-        return userRealms;
     }
 
     @Override

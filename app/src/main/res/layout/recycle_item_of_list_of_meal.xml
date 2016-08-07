@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_diary_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:text="247"
+            android:text="@string/_247"
             android:textColor="@color/colorSecondaryText"
             android:textSize="17sp" />
 
@@ -34,7 +33,7 @@
             android:layout_marginBottom="3dp"
             android:layout_marginRight="30dp"
             android:layout_toLeftOf="@id/tv_amout_cal_diary"
-            android:text="Картопля по селянськи"
+            android:text="@string/Potato"
             android:textColor="@color/colorPrimaryText"
             android:textSize="17sp" />
 
@@ -43,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/t_view_food_name"
-            android:text="100 g."
+            android:text="@string/_100_g"
             android:textColor="@color/colorSecondaryText"
             android:textSize="15sp" />
         <!--        <TextView

@@ -5,19 +5,13 @@ import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 
-import java.util.ArrayList;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by roshk1n on 7/19/2016.
- */
 public class SearchPresenterImpl implements SearchPresenter {
 
-    private ArrayList<NutrientFoodResponse> nutrientFoodResponses = new ArrayList<NutrientFoodResponse>();
-    private String[] nutrients = {"204","208","205","203"};;
+    private String[] nutrients = {"204","208","205","203"};
 
     private SearchView searchView;
 
@@ -41,7 +35,7 @@ public class SearchPresenterImpl implements SearchPresenter {
                         @Override
                         public void success(NutrientFoodResponse nutrientFoodResponse, Response response) {
                             if(nutrientFoodResponse.getReport().getFoods().size()>0) {
-                                nutrientFoodResponses.add(nutrientFoodResponse);
+                                searchView.updateUI(nutrientFoodResponse);
                             }
                         }
                         @Override
@@ -49,13 +43,10 @@ public class SearchPresenterImpl implements SearchPresenter {
                         }
                     });
                 }
-                searchView.updateUI(nutrientFoodResponses);
             }
             @Override
             public void failure(RetrofitError error) {
             }
         });
-
     }
-
 }

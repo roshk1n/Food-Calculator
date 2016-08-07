@@ -1,13 +1,8 @@
 package com.example.roshk1n.foodcalculator.realm;
 
-import java.util.Date;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-/**
- * Created by roshk1n on 7/23/2016.
- */
 public class DayRealm extends RealmObject {
 
     private long date;
