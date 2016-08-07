@@ -266,17 +266,17 @@ public class DiaryFragment extends Fragment implements DiaryView{
 
     }
 
-    private void showDialog(int remaining, int checklimit) {
+    private void showDialog(int remaining, int checkLimit) {
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle("Attention");
-        if(checklimit==2) alertDialog.setMessage("     You almost reached the limit today." +
+        alertDialog.setTitle("Limit of calories");
+        if(checkLimit == 2) alertDialog.setMessage("     You almost reached the limit today." +
                 "\n     You have "+remaining+" calories.");
 
-        if (checklimit==3) alertDialog.setMessage("    You reached the limit today." +
+        if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
                 "\n    Recommend will not eat today :(");
 
-        if(checklimit ==4 ) alertDialog.setMessage("     You exceeded the limit greatly today!");
+        if(checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {

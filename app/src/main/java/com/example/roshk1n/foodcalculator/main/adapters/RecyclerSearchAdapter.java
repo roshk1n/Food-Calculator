@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.main.adapters;
 
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,24 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.main.MainActivity;
-import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.search.ResponseAdapter;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshk1n on 7/12/2016.
- */
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
     private ArrayList<NutrientFoodResponse> foods;
-    private long mdate;
+    private ResponseAdapter responseAdapter;
+    private long date;
     private View v;
 
-    public RecyclerSearchAdapter(ArrayList<NutrientFoodResponse> foods, long date) {
+    public RecyclerSearchAdapter(ArrayList<NutrientFoodResponse> foods, long date, ResponseAdapter responseAdapter) {
         this.foods = foods;
-        mdate = date;
+        this.date = date;
+        this.responseAdapter = responseAdapter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -47,7 +45,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
 
     @Override
     public RecyclerSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_search,parent,false);
+        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_search,parent,false);
         return  new ViewHolder(v);
     }
 
@@ -61,9 +59,9 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(mdate);
-                    switchFragment(InfoFoodFragment.newInstance(foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0)));
+                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(date);
+                    Food food = foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0);
+                    responseAdapter.navigateToInfoFood(food);
                 }
             });
     }
@@ -73,16 +71,4 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         return foods.size();
     }
 
-    private void switchFragment(InfoFoodFragment infoFood) {
-        if (v.getContext() == null)
-            return;
-        if (v.getContext() instanceof MainActivity) {
-            MainActivity feeds = (MainActivity) v.getContext();
-            feeds.getSupportFragmentManager().beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.fragment_conteiner, infoFood)
-                    .addToBackStack(null)
-                    .commit();
-        }
-    }
 }

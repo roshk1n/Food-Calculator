@@ -4,6 +4,7 @@ package com.example.roshk1n.foodcalculator.main.fragments.search;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,11 +23,13 @@ import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
+import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment implements SearchView {
+public class SearchFragment extends Fragment implements SearchView, ResponseAdapter {
 
     private SearchPresenterImpl searchPresenter;
     private RestClient restClient;
@@ -37,7 +40,7 @@ public class SearchFragment extends Fragment implements SearchView {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
-    private ArrayList<NutrientFoodResponse> nutrientFoodResponses = new ArrayList<NutrientFoodResponse>();
+    private ArrayList<NutrientFoodResponse> nutrientFoodResponses = new ArrayList<>();
 
     public SearchFragment() {}
 
@@ -80,7 +83,7 @@ public class SearchFragment extends Fragment implements SearchView {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses, mdate);
+        mAdapter = new RecyclerSearchAdapter(nutrientFoodResponses, mdate,this);
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -111,11 +114,6 @@ public class SearchFragment extends Fragment implements SearchView {
         return view;
     }
 
-    private void initUI() {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
-        searchEt = (EditText) view.findViewById(R.id.et_food_name);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
@@ -129,6 +127,20 @@ public class SearchFragment extends Fragment implements SearchView {
     public void updateUI(NutrientFoodResponse nutrientFoodResponses) {
         this.nutrientFoodResponses.add(nutrientFoodResponses);
         mAdapter.notifyItemInserted(this.nutrientFoodResponses.size());
+    }
+
+    @Override
+    public void navigateToInfoFood(Food food) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance(food))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void initUI() {
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
+        searchEt = (EditText) view.findViewById(R.id.et_food_name);
     }
 
     private void hideKeyboard() {
