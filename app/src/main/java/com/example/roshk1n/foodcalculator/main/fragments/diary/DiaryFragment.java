@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -55,8 +56,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
     private ImageView next_day_iv;
     private View hintCircleAddFood;
     private FloatingActionButton addFoodFab;
-    
-    private CoordinatorLayout coordinatorHintAdd;
+    private CoordinatorLayout HintAddFoodLayout;
 
     public DiaryFragment() { }
 
@@ -84,6 +84,9 @@ public class DiaryFragment extends Fragment implements DiaryView{
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
         initUI();
+
+        ((MainActivity)view.getContext()).setUpDrawerMenu();
+        ((MainActivity)view.getContext()).enableMenuSwipe();
 
         Bundle bundle = getArguments();
 
@@ -223,7 +226,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
         follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
         next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
         hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
-        coordinatorHintAdd = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
+        HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         remaining_field = (TextView) view.findViewById(R.id.remaining_cal_diary_field_tv);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
 
@@ -241,7 +244,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                coordinatorHintAdd.setVisibility(View.GONE);
+                HintAddFoodLayout.setVisibility(View.GONE);
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -255,7 +258,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
         Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                 ,R.anim.show_hint_add_food);
         hintCircleAddFood.startAnimation(animation1);
-        coordinatorHintAdd.setVisibility(View.VISIBLE);
+        HintAddFoodLayout.setVisibility(View.VISIBLE);
 
         final Animation animation = new AlphaAnimation(1, 0.6f);
         animation.setDuration(800);
@@ -270,8 +273,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle("Limit of calories");
-        if(checkLimit == 2) alertDialog.setMessage("     You almost reached the limit today." +
-                "\n     You have "+remaining+" calories.");
+        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.test));
 
         if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
                 "\n    Recommend will not eat today :(");

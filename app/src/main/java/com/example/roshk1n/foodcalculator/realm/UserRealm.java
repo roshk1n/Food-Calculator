@@ -13,6 +13,10 @@ public class UserRealm extends RealmObject {
     private String fullname;
     private String password;
     private String photoUrl;
+    private int age=0;
+    private int weight=0;
+    private int height=0;
+    private String activeLevel="active";
     private FavoriteListRealm favoriteList;
     private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
     private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();
@@ -52,6 +56,38 @@ public class UserRealm extends RealmObject {
 
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getActiveLevel() {
+        return activeLevel;
+    }
+
+    public void setActiveLevel(String activeLevel) {
+        this.activeLevel = activeLevel;
     }
 
     public void setPhotoUrl(String photoUrl) {

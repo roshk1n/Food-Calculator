@@ -67,6 +67,8 @@ public class SearchFragment extends Fragment implements SearchView, ResponseAdap
 
         initUI();
 
+        ((MainActivity)view.getContext()).setUpToolbarArrow();
+        ((MainActivity)view.getContext()).disableMenuSwipe();
       //  ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");

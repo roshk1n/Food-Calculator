@@ -1,7 +1,5 @@
 package com.example.roshk1n.foodcalculator.main;
 
-
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,15 +28,13 @@ import com.example.roshk1n.foodcalculator.login.LoginActivity;
 import com.example.roshk1n.foodcalculator.main.fragments.diary.DiaryFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment;
-import com.example.roshk1n.foodcalculator.main.fragments.settings.SettingFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.profile.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-    private static String TAG = "MyLog";
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener{
 
     private View mHeader;
     private Toolbar mToolbar;
@@ -49,18 +46,14 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private CoordinatorLayout coordinatorHintAdd;
 
-    public Toolbar getmToolbar() {
-        return mToolbar;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
 
-        mToolbar.setTitle("Main");
         setSupportActionBar(mToolbar);
+
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
@@ -82,10 +75,8 @@ public class MainActivity extends AppCompatActivity
         mImageViewUserIco.setImageBitmap(imageUser);
 ////////////
 
-         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
-        toggle.syncState();
+        setUpDrawerMenu();
+        enableMenuSwipe();
     }
 
     @Override
@@ -140,9 +131,7 @@ public class MainActivity extends AppCompatActivity
                         .commit();
             }
 
-        } else if (id == R.id.nav_diets) {
-
-        } else if (id == R.id.nav_favorites) {
+        }  else if (id == R.id.nav_favorites) {
             if(!(fr instanceof FavoriteFragment)) {
                 fragmentManager.beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -167,10 +156,10 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_profile) {
 
             fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_conteiner, SettingFragment.newInstance())
+                        .replace(R.id.fragment_conteiner, ProfileFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
                 floatingActionButton.hide();
@@ -189,9 +178,44 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void setUpToolbarArrow() {
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+        mToolbar.setNavigationOnClickListener(this);
+    }
+   public void disableMenuSwipe() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+    public void enableMenuSwipe() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+    public void setUpDrawerMenu() {
+
+        mNavigationView.setItemIconTintList(null);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this,
+                mDrawer,
+                mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawer.setDrawerListener(toggle);
+        toggle.syncState();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+    }
+
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
         mHeader=mNavigationView.getHeaderView(0);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -201,4 +225,9 @@ public class MainActivity extends AppCompatActivity
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
 
      }
+
+    @Override
+    public void onClick(View v) {
+        onBackPressed();
+    }
 }

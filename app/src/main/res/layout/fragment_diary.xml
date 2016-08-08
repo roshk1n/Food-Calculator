@@ -150,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_1600"
-                        android:textColor="#d30b0b"
+                        android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
 
                     <TextView
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/remaining"
                         android:textAlignment="center"
-                        android:textColor="#d30b0b"
+                        android:textColor="@color/colorSecondaryText"
                         android:textSize="13sp" />
                 </LinearLayout>
 

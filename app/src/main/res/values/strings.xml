@@ -32,7 +32,7 @@
     <string name="history">History</string>
     <string name="diets">Diets</string>
     <string name="reminders">Reminders</string>
-    <string name="setting">Setting</string>
+    <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
     <string name="search_for_a_food">Search...</string>
     <string name="logout">LogOut</string>
@@ -83,6 +83,11 @@
     <string name="calories">Calories</string>
     <string name="_1660">1600</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="test">dawd %1s dwad </string>
+    <string name="roshk1n_ua_gmail_com">roshk1n.ua@gmail.com</string>
+    <string name="_176">176</string>
+    <string name="_70">70</string>
+
     <array name="photo">
         <item>Choose from Gallery</item>
         <item>Take a picture</item>
