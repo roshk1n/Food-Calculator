@@ -124,7 +124,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
                     infoFoodPresenter.removeFromFavorite(food);
                     addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    Snackbar.make(coordinatorLayout, "Deleting the food from favorites...", Snackbar.LENGTH_INDEFINITE).show();
+                    Snackbar.make(coordinatorLayout, "Deleting the food from favorites...", Snackbar.LENGTH_SHORT).show();
                 }
             }
 

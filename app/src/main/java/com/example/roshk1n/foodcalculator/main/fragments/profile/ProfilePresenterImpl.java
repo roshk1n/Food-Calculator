@@ -1,5 +1,7 @@
 package com.example.roshk1n.foodcalculator.main.fragments.profile;
 
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -7,11 +9,11 @@ import android.util.Base64;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 
-import io.realm.Realm;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-/**
- * Created by roshk1n on 8/5/2016.
- */
+import io.realm.Realm;
 
 public class ProfilePresenterImpl implements ProfilePresenter {
 
@@ -52,11 +54,32 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     @Override
+    public void setUserPhotoSD(Intent data, ContentResolver context) {
+        InputStream inputStream = null;
+        try {
+            inputStream = context.openInputStream(data.getData());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Bitmap photo = BitmapFactory.decodeStream(inputStream);
+        profileView.setUserPhoto(photo);
+    }
+
+    @Override
+    public void setUserPhotoCamera(Intent data) {
+        Bitmap photo = (Bitmap) data.getExtras().get("data");
+        profileView.setUserPhoto(photo);
+    }
+
+    @Override
     public void updateUserProfile(final String fullname,
                                   final String weight,
                                   final String height,
                                   final String age,
-                                  final String email) {
+                                  final String email,
+                                  final Bitmap image) {
+
+        String image_profile = bitmapToString(image);//convert to string
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -65,11 +88,20 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                 getCurrentUserRealm().setHeight(Integer.parseInt(height));
                 getCurrentUserRealm().setAge(Integer.parseInt(age));
                 getCurrentUserRealm().setEmail(email);
+                getCurrentUserRealm().setPhotoUrl(bitmapToString(image));
             }
         });
         Session.getInstance().setEmail(email);
         Session.getInstance().setFullname(fullname);
-    }
-//TODO return message
+        Session.getInstance().setUrlPhoto(image_profile);
 
+        profileView.CompleteUpdateAndRefreshDrawer();
+    }
+
+    private String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
+        byte [] b = outputStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
 }

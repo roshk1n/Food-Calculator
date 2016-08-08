@@ -92,4 +92,11 @@
         <item>Choose from Gallery</item>
         <item>Take a picture</item>
     </array>
+
+    <string-array name="active_level">
+        <item>Not Very Active</item>
+        <item>Lightly Active</item>
+        <item>Active</item>
+        <item>Very Active</item>
+    </string-array>
 </resources>

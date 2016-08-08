@@ -29,9 +29,9 @@ public class SingUpActivity extends Activity implements SingUpView {
     private EditText password;
     private EditText confirmPassword;
     private CircleImageView ivUser;
-    private Button singUpRealmbtn;
+    private Button singUpRealmBtn;
 
-    private SingUpPresenterImpl singUpPresente;
+    private SingUpPresenterImpl singUpPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +40,13 @@ public class SingUpActivity extends Activity implements SingUpView {
 
         initUI();
 
-        singUpPresente = new SingUpPresenterImpl();
-        singUpPresente.setView(this);
+        singUpPresenter = new SingUpPresenterImpl();
+        singUpPresenter.setView(this);
 
-        singUpRealmbtn.setOnClickListener(new View.OnClickListener() {
+        singUpRealmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                singUpPresente.singUpRealm(surname.getText().toString(),email.getText().toString()
+                singUpPresenter.singUpRealm(surname.getText().toString(),email.getText().toString()
                         ,password.getText().toString(),confirmPassword.getText().toString());
             }
         });
@@ -57,10 +57,10 @@ public class SingUpActivity extends Activity implements SingUpView {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==PICK_PHOTO_FOR_AVATAR&& resultCode==Activity.RESULT_OK) {
-           singUpPresente.setUserPhotoSD(data,getApplicationContext().getContentResolver());
+           singUpPresenter.setUserPhotoSD(data,getApplicationContext().getContentResolver());
         }
         if(requestCode==MAKE_PHOTO && resultCode==Activity.RESULT_OK) {
-            singUpPresente.setUserPhotoCamera(data);
+            singUpPresenter.setUserPhotoCamera(data);
         }
     }
 
@@ -89,7 +89,7 @@ public class SingUpActivity extends Activity implements SingUpView {
     }
 
     public void onSignUpClicked (View view) { //реєстрація користувача в firebase
-        singUpPresente.singUpFirebase(surname.getText().toString(),email.getText().toString()
+        singUpPresenter.singUpFirebase(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
     }
 
@@ -99,7 +99,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         ivUser = (CircleImageView) findViewById(R.id.ivUser);
-        singUpRealmbtn = (Button) findViewById(R.id.button_user_sign_up_Realm);
+        singUpRealmBtn = (Button) findViewById(R.id.button_user_sign_up_Realm);
     }
 
     public void onSignUpAPIClicked(View view) {}

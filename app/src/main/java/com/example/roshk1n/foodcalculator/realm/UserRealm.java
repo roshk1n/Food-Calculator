@@ -13,10 +13,10 @@ public class UserRealm extends RealmObject {
     private String fullname;
     private String password;
     private String photoUrl;
-    private int age=0;
-    private int weight=0;
-    private int height=0;
-    private String activeLevel="active";
+    private int age;
+    private int weight;
+    private int height;
+    private String activeLevel;
     private FavoriteListRealm favoriteList;
     private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
     private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();

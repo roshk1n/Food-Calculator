@@ -64,15 +64,7 @@ public class MainActivity extends AppCompatActivity
         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
 
 //Realm
-        mTextViewName.setText(Session.getInstance().getFullname());
-        Bitmap imageUser = null;
-        try {
-            byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
-            imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch(Exception e) {
-            e.getMessage();
-        }
-        mImageViewUserIco.setImageBitmap(imageUser);
+        updateDrawer();
 ////////////
 
         setUpDrawerMenu();
@@ -178,16 +170,36 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        onBackPressed();
+    }
+
+    private void initUI() {
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mHeader=mNavigationView.getHeaderView(0);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
+        mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.addFood_fab);
+        coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
+
+    }
+
     public void setUpToolbarArrow() {
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha));
         mToolbar.setNavigationOnClickListener(this);
     }
-   public void disableMenuSwipe() {
+
+    public void disableMenuSwipe() {
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
+
     public void enableMenuSwipe() {
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
+
     public void setUpDrawerMenu() {
 
         mNavigationView.setItemIconTintList(null);
@@ -214,20 +226,15 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
-    private void initUI() {
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mHeader=mNavigationView.getHeaderView(0);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
-        mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.addFood_fab);
-        coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
-
-     }
-
-    @Override
-    public void onClick(View v) {
-        onBackPressed();
+    public void updateDrawer() {
+        mTextViewName.setText(Session.getInstance().getFullname());
+        Bitmap imageUser = null;
+        try {
+            byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
+            imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch(Exception e) {
+            e.getMessage();
+        }
+        mImageViewUserIco.setImageBitmap(imageUser);
     }
 }
