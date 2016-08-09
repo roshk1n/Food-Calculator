@@ -18,6 +18,8 @@ import android.widget.FrameLayout;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
+import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class FavoriteFragment extends Fragment implements FavoriteView{
 
@@ -67,7 +69,8 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                makeSnackBar(viewHolder.getAdapterPosition());
+                favoritePresenter.removeFood(viewHolder.getAdapterPosition());
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -76,20 +79,20 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
         return view;
     }
 
-    private void makeSnackBar(final int position) {
-        Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+    @Override
+    public void makeSnackBar(final int position , final Food deleteFood) {
+        Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout,
+                "Item was removed successfully.",
+                Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                    favoritePresenter.removeFood(position);
-                    mAdapter.notifyItemRemoved(position);
-                }
+
             }
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                favoritePresenter.addFood(position,deleteFood);
                 mAdapter.notifyDataSetChanged();
             }
         }).setActionTextColor(Color.YELLOW);
