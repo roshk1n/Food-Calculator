@@ -14,11 +14,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class FavoriteFragment extends Fragment implements FavoriteView{
@@ -104,5 +102,4 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
         favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite");
     }
-
 }
