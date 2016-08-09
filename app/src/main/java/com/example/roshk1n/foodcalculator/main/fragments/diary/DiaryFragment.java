@@ -28,15 +28,18 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.main.fragments.search.SearchFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.search.SearchView;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.RealmList;
 
-public class DiaryFragment extends Fragment implements DiaryView{
+public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDialog.OnDateSetListener{
 
     private DiaryPresenterImpl diaryPresenter;
     private RealmList<FoodRealm> foods;
@@ -94,7 +97,11 @@ public class DiaryFragment extends Fragment implements DiaryView{
            date_add = new Date(bundle.getLong("date"));
         }
 
-        setData(date_add);
+        foods = diaryPresenter.getFoods(date_add);
+        date_tv.setText(diaryPresenter.dateToString(date_add));
+
+        diaryPresenter.getGoalCalories();
+        diaryPresenter.calculateCalories(date_add);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -118,6 +125,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
                         .setCustomAnimations(R.anim.slide_in_right_enter,R.anim.slide_in_right_exit)
                         .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(date_add.getTime()))
                         .commit();
+
             }
         });
 
@@ -136,7 +144,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
         date_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                diaryPresenter.showDatePicker(DiaryFragment.this);
+                showDatePicker();
             }
         });
 
@@ -148,6 +156,7 @@ public class DiaryFragment extends Fragment implements DiaryView{
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 diaryPresenter.removeFood(viewHolder.getAdapterPosition(),date_add);
+                diaryPresenter.calculateCalories(date_add);
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         };
@@ -187,25 +196,31 @@ public class DiaryFragment extends Fragment implements DiaryView{
     }
 
     @Override
-    public void setData(Date date) {
-        SimpleDateFormat format1 = new SimpleDateFormat();
-        format1.applyPattern("EEEE, dd MMMM");
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        Date date = new Date();
+        date.setMonth(monthOfYear);
+        date.setDate(dayOfMonth);
+        date.setYear(year-1900);
+
         date_add = date;
-        String str = format1.format(date);
+        String str = diaryPresenter.dateToString(date);
         date_tv.setText(str);
-        goal_calories_tv.setText(R.string._1660);
-        eat_daily_calories_tv.setText(R.string._0);
-        remaining_calories_tv.setText(R.string._1660);
-        foods = diaryPresenter.getFoods(diaryPresenter.getCurrentUserRealm(),date_add);
+
+        foods = diaryPresenter.getFoods(date_add);
         mAdapter = new RecyclerDiaryAdapter(foods);
         mRecyclerView.setAdapter(mAdapter);
+
+        if(foods.size()==0) {
+            showHintAddAmin();
+        } else {
+            HintAddFoodLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public void updateCalories(int goal, int eat, int remaining, int checkLimit, int color) {
-        goal_calories_tv.setText(String.valueOf(goal));
-        eat_daily_calories_tv.setText(String.valueOf(eat));
-        remaining_calories_tv.setText(String.valueOf(remaining));
+    public void updateCalories(String eat, String remaining, int checkLimit, int color) {
+        eat_daily_calories_tv.setText(eat);
+        remaining_calories_tv.setText(remaining);
         remaining_calories_tv.setTextColor(color);
         remaining_field.setTextColor(color);
 
@@ -214,6 +229,11 @@ public class DiaryFragment extends Fragment implements DiaryView{
         } else {
             remaining_field.setTextColor(getResources().getColor(R.color.colorSecondaryText));
         }
+    }
+
+    @Override
+    public void setGoalCalories(String goalCalories) {
+        goal_calories_tv.setText(goalCalories);
     }
 
     private void initUI() {
@@ -229,7 +249,39 @@ public class DiaryFragment extends Fragment implements DiaryView{
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         remaining_field = (TextView) view.findViewById(R.id.remaining_cal_diary_field_tv);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
+    }
 
+    public void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog" );
+    }
+
+    private void showDialog(String remaining, int checkLimit) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle("Limit of calories"); //TODO text for dialog
+        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.test));
+
+        if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
+                "\n    Recommend will not eat today :(");
+
+        if(checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     private void hideHintAddAmin() {
@@ -260,34 +312,12 @@ public class DiaryFragment extends Fragment implements DiaryView{
         hintCircleAddFood.startAnimation(animation1);
         HintAddFoodLayout.setVisibility(View.VISIBLE);
 
-        final Animation animation = new AlphaAnimation(1, 0.6f);
+  /*      final Animation animation = new AlphaAnimation(1, 0.6f);
         animation.setDuration(800);
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(4);
         animation.setRepeatMode(Animation.REVERSE);
-        addFoodFab.startAnimation(animation);
+        addFoodFab.startAnimation(animation);*/
 
     }
-
-    private void showDialog(int remaining, int checkLimit) {
-
-        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle("Limit of calories");
-        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.test));
-
-        if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
-                "\n    Recommend will not eat today :(");
-
-        if(checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
-
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-
-    }
-
 }

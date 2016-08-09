@@ -17,12 +17,15 @@ public interface DiaryPresenter  {
 
     void setView(DiaryView view);
 
-    void showDatePicker(Fragment fragment);
-
     UserRealm getCurrentUserRealm();
 
-    RealmList<FoodRealm> getFoods(UserRealm user, Date date);
+    RealmList<FoodRealm> getFoods(Date date);
+
+    String dateToString(Date date);
 
     void removeFood(int index, Date date);
 
+    void calculateCalories(Date date);
+
+    void getGoalCalories();
 }

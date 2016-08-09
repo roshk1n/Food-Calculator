@@ -1,25 +1,18 @@
 package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
-
-import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.main.fragments.search.SearchView;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 
-/**
- * Created by roshk1n on 7/19/2016.
- */
-public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnDateSetListener{
+public class DiaryPresenterImpl implements DiaryPresenter {
 
     private DiaryView diaryView;
     private final Realm realm = Realm.getDefaultInstance();
@@ -30,20 +23,6 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
     }
 
     @Override
-    public void showDatePicker(Fragment fragment) {
-        Calendar calendar = Calendar.getInstance();
-
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setAccentColor(fragment.getActivity().getResources().getColor(R.color.colorPrimary));
-        datePickerDialog.show( fragment.getActivity().getFragmentManager(), "DatePickerDialog" );
-    }
-
-    @Override
     public UserRealm getCurrentUserRealm() {
         return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
@@ -51,78 +30,75 @@ public class DiaryPresenterImpl implements DiaryPresenter,  DatePickerDialog.OnD
     }
 
     @Override
-    public RealmList<FoodRealm> getFoods(UserRealm user, Date date) {
+    public RealmList<FoodRealm> getFoods(Date date) {
         RealmList<FoodRealm> foodRealms = new RealmList<>();
 
-        for (int i = 0; i < user.getDayRealms().size(); i++) {
+        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
 
-            if(compareLongAndDate(user.getDayRealms().get(i).getDate(),date)) {
-                foodRealms = user.getDayRealms().get(i).getFoods();
-                calculateCaloriesAdd(i);
+            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
+                foodRealms = getCurrentUserRealm().getDayRealms().get(i).getFoods();
             }
         }
         return foodRealms;
     }
 
     @Override
-    public void removeFood(int index, Date date) {
-
-        realm.beginTransaction();
+    public void removeFood(final int index, Date date) {
         int day = 0;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
                 day=i;
             }
         }
-        realm.commitTransaction();
-        calculateCaloriesRemove(day,index);
-        realm.beginTransaction();
-        getCurrentUserRealm().getDayRealms().get(day).getFoods().get(index).deleteFromRealm();
-        realm.commitTransaction();
-    }
-
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
-        Date date = new Date();
-        date.setMonth(monthOfYear);
-        date.setDate(dayOfMonth);
-        date.setYear(year-1900); //TODO: unreal )
-
-        diaryView.setData(date);
-    }
-
-    private void calculateCaloriesRemove(int day, final int index) {
-        final DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(day);
-
+        final int finalDay = day;
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                infoDay.setEatDailyCalories(infoDay.getEatDailyCalories()
-                        - Integer.valueOf(infoDay.getFoods().get(index).getNutrients().get(1).getValue()));
-                infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
+                getCurrentUserRealm().getDayRealms().get(finalDay).getFoods().get(index).deleteFromRealm();
             }
         });
-
-        int checkLimit = checkLimit(infoDay.getRemainingCalories());
-        int color = getColor(checkLimit);
-        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories(),checkLimit,color);
     }
 
-    private void calculateCaloriesAdd(int day) {
-        realm.beginTransaction();
-        DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(day);
-        int eat_calories=0;
-        for (int i = 0; i < infoDay.getFoods().size(); i++) {
-            eat_calories += Integer.valueOf(infoDay.getFoods().get(i).getNutrients().get(1).getValue());
-        }
-        infoDay.setEatDailyCalories(eat_calories);
-        infoDay.setRemainingCalories(infoDay.getGoalCalories() - infoDay.getEatDailyCalories());
-        realm.commitTransaction();
+    @Override
+    public String dateToString(Date date) {
+        SimpleDateFormat format1 = new SimpleDateFormat();
+        format1.applyPattern("EEEE, dd MMMM");
+        return format1.format(date);
+    }
 
-        int checkLimit = checkLimit(infoDay.getRemainingCalories());
-        int color = getColor(checkLimit);
-        diaryView.updateCalories(infoDay.getGoalCalories(),infoDay.getEatDailyCalories(),infoDay.getRemainingCalories(),checkLimit,color);
+    @Override
+    public void calculateCalories(Date date) {
+
+        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
+
+            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
+                final DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(i);
+
+                int eat_calories=0;
+                for (int j = 0; j < infoDay.getFoods().size(); j++) {
+                    eat_calories += Integer.valueOf(infoDay.getFoods().get(j).getNutrients().get(1).getValue());
+                }
+
+                final int finalEat_calories = eat_calories;
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        infoDay.setEatDailyCalories(finalEat_calories);
+                        infoDay.setRemainingCalories(getCurrentUserRealm().getGoalCalories() - infoDay.getEatDailyCalories());
+                    }
+                });
+                String eat =  String.valueOf(infoDay.getEatDailyCalories());
+                String remaining =  String.valueOf(infoDay.getRemainingCalories());
+                int checkLimit = checkLimit(infoDay.getRemainingCalories());
+                int color = getColor(checkLimit);
+                diaryView.updateCalories(eat,remaining,checkLimit,color);
+            }
+        }
+    }
+
+    @Override
+    public void getGoalCalories() {
+        diaryView.setGoalCalories(String.valueOf(getCurrentUserRealm().getGoalCalories()));
     }
 
     private boolean compareLongAndDate(Long UserDate, Date date) {

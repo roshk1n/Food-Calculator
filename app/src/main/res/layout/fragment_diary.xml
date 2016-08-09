@@ -87,7 +87,7 @@
                         android:id="@+id/goal_cal_diary_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/_1600"
+                        android:text="@string/_0"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
 
@@ -149,7 +149,7 @@
                         android:id="@+id/remaining_cal_diary_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/_1600"
+                        android:text="@string/_0"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
 

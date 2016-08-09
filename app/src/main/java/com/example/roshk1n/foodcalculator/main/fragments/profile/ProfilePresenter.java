@@ -27,4 +27,5 @@ public interface ProfilePresenter {
     void updateUserProfile(String fullname, String weight, String height, String age, String email,Bitmap image);
 
 
+    void updateLimitCalories();
 }

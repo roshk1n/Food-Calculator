@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 
@@ -36,12 +38,15 @@ public class ProfileFragment extends Fragment implements ProfileView {
     private EditText height_et;
     private EditText weight_et;
     private EditText email_et;
+    private Spinner sex_profile_sp;
+    private Spinner active_level__profile_sp;
     private ImageView full_name_ico_iv;
     private ImageView email_ico_iv;
     private ImageView age_ico_iv;
     private ImageView weight_ico_iv;
     private ImageView height_ico_iv;
     private ImageView active_level_ico_iv;
+    private ImageView sex_ico_profile_iv;
 
     private FloatingActionButton edit_profile_fab;
 
@@ -82,7 +87,8 @@ public class ProfileFragment extends Fragment implements ProfileView {
             @Override
             public void onClick(View v) {
                 saveUserProfile(full_name_et.isEnabled());
-                chooseIcon();
+                changeEnable(full_name_et.isEnabled());
+                changeIcon();
             }
         });
         return view;
@@ -122,23 +128,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
-    private void initUI() {
-        full_name_et = (EditText) view.findViewById(R.id.full_name_profile_et);
-        weight_et = (EditText) view.findViewById(R.id.weight_profile_et);
-        height_et = (EditText) view.findViewById(R.id.height_profile_et);
-        age_et = (EditText) view.findViewById(R.id.age_profile_et);
-        email_et = (EditText) view.findViewById(R.id.email_profile_et);
-        edit_profile_fab = (FloatingActionButton) view.findViewById(R.id.edit_profile_fab);
-        profile_iv = (ImageView) view.findViewById(R.id.profile_iv);
-        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.profile_coordinator_layout);
-        full_name_ico_iv = (ImageView) view.findViewById(R.id.full_name_ico_profile_iv);
-        email_ico_iv = (ImageView) view.findViewById(R.id.email_ico_profile_iv);
-        age_ico_iv = (ImageView) view.findViewById(R.id.age_ico_profile_iv);
-        weight_ico_iv = (ImageView) view.findViewById(R.id.weight_ico_profile_iv);
-        height_ico_iv = (ImageView) view.findViewById(R.id.height_ico_profile_iv);
-        active_level_ico_iv = (ImageView) view.findViewById(R.id.active_level_ico_profile_iv);
-    }
-
     private void createPickerPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Photo")
@@ -169,24 +158,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
     }
 
     private void saveUserProfile(boolean isEnable) {
-        full_name_et.setEnabled(!isEnable); //set enable or disable change
-        weight_et.setEnabled(!isEnable);
-        height_et.setEnabled(!isEnable);
-        age_et.setEnabled(!isEnable);
-        email_et.setEnabled(!isEnable);
-        if(!isEnable) {
-            edit_profile_fab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
-        } else {
-            full_name_et.clearFocus(); // clear focus after saving
-            weight_et.clearFocus();
-            height_et.clearFocus();
-            email_et.clearFocus();
-            age_et.clearFocus();
-            edit_profile_fab.setImageDrawable(getActivity()
-                    .getResources()
-                    .getDrawable(R.drawable.ic_create_white_24dp));
-//update user in realm
+        if (isEnable) {
             profile_iv.setDrawingCacheEnabled(true);// get Bitmap from ImageView
             profile_iv.buildDrawingCache();
             profilePresenter.updateUserProfile(
@@ -197,10 +169,12 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     email_et.getText().toString(),
                     profile_iv.getDrawingCache()
             );
+
+            profilePresenter.updateLimitCalories();
         }
     }
 
-    private void chooseIcon() {
+    private void changeIcon() {
         if(full_name_et.isEnabled()) {
             full_name_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_accent_24dp));
             email_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_accent_24dp));
@@ -208,7 +182,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
             weight_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_accent_24dp));
             height_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_accent_24dp));
             active_level_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_accent_24dp));
-
+            sex_ico_profile_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_accent_24dp));
         } else {
             full_name_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_primary_24dp));
             email_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_primary_24dp));
@@ -216,6 +190,59 @@ public class ProfileFragment extends Fragment implements ProfileView {
             weight_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_primary_24dp));
             height_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_primary_24dp));
             active_level_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_primary_24dp));
+            sex_ico_profile_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_primary_24dp));
         }
+    }
+
+    private void changeEnable(boolean isEnable) {
+        full_name_et.setEnabled(!isEnable); //set enable or disable change
+        weight_et.setEnabled(!isEnable);
+        height_et.setEnabled(!isEnable);
+        age_et.setEnabled(!isEnable);
+        email_et.setEnabled(!isEnable);
+        sex_profile_sp.setEnabled(!isEnable);
+        active_level__profile_sp.setEnabled(!isEnable);
+
+        if(!isEnable) {
+            edit_profile_fab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
+            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
+        } else {
+            full_name_et.clearFocus(); // clear focus after saving
+            weight_et.clearFocus();
+            height_et.clearFocus();
+            email_et.clearFocus();
+            age_et.clearFocus();
+            sex_profile_sp.clearFocus();
+            active_level__profile_sp.clearFocus();
+            edit_profile_fab.setImageDrawable(getActivity()
+                    .getResources()
+                    .getDrawable(R.drawable.ic_create_white_24dp));
+        }
+    }
+
+    private void initUI() {
+        edit_profile_fab = (FloatingActionButton) view.findViewById(R.id.edit_profile_fab);
+        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.profile_coordinator_layout);
+
+        full_name_et = (EditText) view.findViewById(R.id.full_name_profile_et);
+        weight_et = (EditText) view.findViewById(R.id.weight_profile_et);
+        height_et = (EditText) view.findViewById(R.id.height_profile_et);
+        age_et = (EditText) view.findViewById(R.id.age_profile_et);
+        email_et = (EditText) view.findViewById(R.id.email_profile_et);
+
+        sex_profile_sp = (Spinner) view.findViewById(R.id.sex_profile_sp) ;
+        active_level__profile_sp = (Spinner) view.findViewById(R.id.active_level_profile_sp) ;
+
+        profile_iv = (ImageView) view.findViewById(R.id.profile_iv);
+        full_name_ico_iv = (ImageView) view.findViewById(R.id.full_name_ico_profile_iv);
+        email_ico_iv = (ImageView) view.findViewById(R.id.email_ico_profile_iv);
+        age_ico_iv = (ImageView) view.findViewById(R.id.age_ico_profile_iv);
+        weight_ico_iv = (ImageView) view.findViewById(R.id.weight_ico_profile_iv);
+        height_ico_iv = (ImageView) view.findViewById(R.id.height_ico_profile_iv);
+        active_level_ico_iv = (ImageView) view.findViewById(R.id.active_level_ico_profile_iv);
+        sex_ico_profile_iv = (ImageView) view.findViewById(R.id.sex_ico_profile_iv);
+
+        sex_profile_sp.setEnabled(full_name_et.isEnabled());
+        active_level__profile_sp.setEnabled(full_name_et.isEnabled());
     }
 }

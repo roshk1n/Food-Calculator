@@ -98,6 +98,21 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         profileView.CompleteUpdateAndRefreshDrawer();
     }
 
+    @Override
+    public void updateLimitCalories() {
+        float goalCaloriesFloat = (10*getCurrentUserRealm().getWeight() +
+                6.25f*getCurrentUserRealm().getHeight() -
+                5*getCurrentUserRealm().getAge() +5)*1.2f ; // calculate litim calories for day TODO: include active
+
+        final int goalCalories = Math.round(goalCaloriesFloat);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                getCurrentUserRealm().setGoalCalories(goalCalories);
+            }
+        });
+    }
+
     private String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);

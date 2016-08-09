@@ -17,6 +17,7 @@ public class UserRealm extends RealmObject {
     private int weight;
     private int height;
     private String activeLevel;
+    private int goalCalories;
     private FavoriteListRealm favoriteList;
     private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
     private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();
@@ -96,6 +97,14 @@ public class UserRealm extends RealmObject {
 
     public FavoriteListRealm getFavoriteList() {
         return favoriteList;
+    }
+
+    public int getGoalCalories() {
+        return goalCalories;
+    }
+
+    public void setGoalCalories(int limit_calories) {
+        this.goalCalories = limit_calories;
     }
 
     public void setFavoriteList(FavoriteListRealm favoriteList) {

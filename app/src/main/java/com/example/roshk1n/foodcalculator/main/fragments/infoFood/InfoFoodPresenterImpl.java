@@ -25,42 +25,45 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
     @Override
     public void addNewFood(Food food) {
 
-        FoodRealm foodRealm = food.converToRealm();
-        UserRealm user = getCurrentUserRealm();
+        final FoodRealm foodRealm = food.converToRealm();
+        final UserRealm user = getCurrentUserRealm();
         for (int i = 0; i < user.getDayRealms().size(); i++) {
             if(compareLongAndDate( getCurrentUserRealm().getDayRealms().get(i).getDate()
                     , new Date(foodRealm.getTime()))) {
 
-                realm.beginTransaction();
-                user.getDayRealms().get(i).getFoods().add(foodRealm);
-                realm.commitTransaction();
+                final int finalI1 = i;
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        user.getDayRealms().get(finalI1).getFoods().add(foodRealm);
+                    }
+                });
                 break;
 
             }  else {
                 if(i==user.getDayRealms().size()-1) {
-                    realm.beginTransaction();
-                    DayRealm newDay = new DayRealm();
-                    newDay.setDate(foodRealm.getTime());
-                    newDay.setGoalCalories(1600);
-                    newDay.setEatDailyCalories(0);
-                    newDay.setRemainingCalories(1600);
-                    user.getDayRealms().add(newDay);
-                    realm.commitTransaction();
-                    realm.beginTransaction();
-                    user.getDayRealms().get(i+1).getFoods().add(foodRealm);
-                    realm.commitTransaction();
+                    final int finalI = i;
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            DayRealm newDay = new DayRealm();
+                            newDay.setDate(foodRealm.getTime());
+                            newDay.setEatDailyCalories(0);
+                            newDay.setRemainingCalories(user.getGoalCalories());
+                            user.getDayRealms().add(newDay);
+                            user.getDayRealms().get(finalI +1).getFoods().add(foodRealm);
+                        }
+                    });
                     break;
                 }
             }
         }
         if(user.getDayRealms().size()==0) { //if it`s first day for this user
-
             realm.beginTransaction();
             DayRealm newDay = new DayRealm();
             newDay.setDate(foodRealm.getTime());
-            newDay.setGoalCalories(1600);
             newDay.setEatDailyCalories(0);
-            newDay.setRemainingCalories(1600);
+            newDay.setRemainingCalories(user.getGoalCalories());
             user.getDayRealms().add(newDay);
             user.getDayRealms().get(user.getDayRealms().size()-1).getFoods().add(foodRealm);
             realm.commitTransaction();

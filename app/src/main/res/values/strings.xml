@@ -94,9 +94,14 @@
     </array>
 
     <string-array name="active_level">
-        <item>Not Very Active</item>
-        <item>Lightly Active</item>
-        <item>Active</item>
         <item>Very Active</item>
+        <item>Active</item>
+        <item>Lightly Active</item>
+        <item>Not Very Active</item>
+    </string-array>
+
+    <string-array name="sex">
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 </resources>

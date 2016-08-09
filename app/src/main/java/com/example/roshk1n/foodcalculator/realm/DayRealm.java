@@ -6,7 +6,6 @@ import io.realm.RealmObject;
 public class DayRealm extends RealmObject {
 
     private long date;
-    private int goalCalories;
     private int eatDailyCalories;
     private int remainingCalories;
     private RealmList<FoodRealm> foods = new RealmList<FoodRealm>();
@@ -20,14 +19,6 @@ public class DayRealm extends RealmObject {
 
     public void setDate(long date) {
         this.date = date;
-    }
-
-    public int getGoalCalories() {
-        return goalCalories;
-    }
-
-    public void setGoalCalories(int limit_calories) {
-        this.goalCalories = limit_calories;
     }
 
     public int getEatDailyCalories() {
