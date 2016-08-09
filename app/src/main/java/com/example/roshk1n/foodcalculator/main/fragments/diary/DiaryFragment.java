@@ -252,6 +252,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
                switch(event) {
                    case Snackbar.Callback.DISMISS_EVENT_ACTION: {
                        mAdapter.notifyDataSetChanged();
+
                    } break;
 
                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT: {
