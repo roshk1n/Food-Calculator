@@ -1,15 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favorite_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     tools:context="com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_favorite"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:splitMotionEvents="true">
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:splitMotionEvents="true"/>
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

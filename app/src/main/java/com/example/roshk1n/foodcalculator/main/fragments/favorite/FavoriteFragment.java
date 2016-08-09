@@ -1,8 +1,11 @@
 package com.example.roshk1n.foodcalculator.main.fragments.favorite;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
     private FavoritePresenterImpl favoritePresenter;
     private FavoriteListRealm favoriteListRealm;
     private View view;
+    private CoordinatorLayout favoriteCoordinatorLayout;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -63,8 +67,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                favoritePresenter.removeFood(viewHolder.getAdapterPosition());
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                makeSnackBar(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -73,8 +76,29 @@ public class FavoriteFragment extends Fragment implements FavoriteView{
         return view;
     }
 
+    private void makeSnackBar(final int position) {
+        Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    favoritePresenter.removeFood(position);
+                    mAdapter.notifyItemRemoved(position);
+                }
+            }
+        }).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mAdapter.notifyDataSetChanged();
+            }
+        }).setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
+        favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite");
     }
 

@@ -9,12 +9,12 @@
             android:title="@string/diary" />
         <item
             android:id="@+id/nav_favorites"
-            android:title="@string/my_favorites"
-            android:icon="@drawable/ic_favorite_black_24dp"/>
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/my_favorites" />
         <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_schedule_black_24dp"
-            android:title="@string/history" />
+            android:id="@+id/nav_statistic"
+            android:icon="@drawable/ic_chart_primary_24dp"
+            android:title="Chart" />
 
         <item
             android:id="@+id/nav_reminders"

@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
     private DrawerLayout mDrawer;
-    private CircleImageView mImageViewUserIco;
-    private TextView mTextViewName;
-    private FloatingActionButton floatingActionButton;
+    private CircleImageView icoUserDrawerIv;
+    private TextView fullNameDrawerTv;
+    private FloatingActionButton addFoodFab;
     private FragmentManager fragmentManager;
     private CoordinatorLayout coordinatorHintAdd;
 
@@ -56,12 +56,27 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
                 .commit();
-
+        icoUserDrawerIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.closeDrawers();
+                Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
+                if(!(fr instanceof ProfileFragment)) {
+                    coordinatorHintAdd.setVisibility(View.INVISIBLE);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_conteiner, ProfileFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                    addFoodFab.hide();
+                }
+            }
+        });
         //Firebase
-/*        mTextViewName.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-        Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(mImageViewUserIco);*/
+/*        fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+        Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);*/
 
 //Realm
         updateDrawer();
@@ -77,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            floatingActionButton.hide();
+            addFoodFab.hide();
             super.onBackPressed();
         }
     }
@@ -131,33 +146,34 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.fragment_conteiner, FavoriteFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
-                floatingActionButton.hide();
+                addFoodFab.hide();
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
-        } else if (id == R.id.nav_history) {
+        } else if (id == R.id.nav_statistic) {
 
         } else if (id == R.id.nav_reminders) {
             if(!(fr instanceof RemindersFragment)) {
                 fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left_enter, R.anim.slide_in_left_exit)
+                        /*.setCustomAnimations(R.anim.slide_in_left_enter, R.anim.slide_in_left_exit)*/ //TODO anim slide
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
-                floatingActionButton.hide();
+                addFoodFab.hide();
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
-
         } else if (id == R.id.nav_profile) {
-
-            fragmentManager.beginTransaction()
+            if(!(fr instanceof ProfileFragment)) {
+                fragmentManager.beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .replace(R.id.fragment_conteiner, ProfileFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
-                floatingActionButton.hide();
-            coordinatorHintAdd.setVisibility(View.INVISIBLE);
-
+                addFoodFab.hide();
+                coordinatorHintAdd.setVisibility(View.INVISIBLE);
+            }
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
@@ -181,9 +197,9 @@ public class MainActivity extends AppCompatActivity
         mHeader=mNavigationView.getHeaderView(0);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mImageViewUserIco = (CircleImageView) mHeader.findViewById(R.id.imageView);
-        mTextViewName = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.addFood_fab);
+        icoUserDrawerIv = (CircleImageView) mHeader.findViewById(R.id.imageView);
+        fullNameDrawerTv = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
+        addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
 
     }
@@ -228,7 +244,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateDrawer() {
-        mTextViewName.setText(Session.getInstance().getFullname());
+        fullNameDrawerTv.setText(Session.getInstance().getFullname());
         Bitmap imageUser = null;
         try {
             byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
@@ -236,6 +252,6 @@ public class MainActivity extends AppCompatActivity
         } catch(Exception e) {
             e.getMessage();
         }
-        mImageViewUserIco.setImageBitmap(imageUser);
+        icoUserDrawerIv.setImageBitmap(imageUser);
     }
 }

@@ -117,14 +117,14 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
                         .getConstantState()) {
                     if(infoFoodPresenter.addToFavorite(food)) {
                         addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                        Snackbar.make(coordinatorLayout, "Adding the food to favorites...", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
 
                     }
                 } else {
 
                     infoFoodPresenter.removeFromFavorite(food);
                     addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    Snackbar.make(coordinatorLayout, "Deleting the food from favorites...", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
                 }
             }
 
@@ -142,6 +142,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
             InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+        Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

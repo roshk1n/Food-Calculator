@@ -50,7 +50,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 day=i;
             }
         }
-        FoodRealm deleteFood = getCurrentUserRealm().getDayRealms().get(day).getFoods().get(index);
 
         final int finalDay = day;
         realm.executeTransaction(new Realm.Transaction() {
@@ -59,7 +58,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 getCurrentUserRealm().getDayRealms().get(finalDay).getFoods().get(index).deleteFromRealm();
             }
         });
-       // diaryView.makeSnackBar(deleteFood,index);
     }
 
     @Override

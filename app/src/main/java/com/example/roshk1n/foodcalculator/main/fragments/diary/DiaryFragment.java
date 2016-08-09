@@ -160,10 +160,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                makeSnackBar(new FoodRealm(),viewHolder.getAdapterPosition());
-                /*diaryPresenter.removeFood(viewHolder.getAdapterPosition(),date_add);
-                diaryPresenter.calculateCalories(date_add);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());*/
+                makeSnackBar(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -243,35 +240,24 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         goal_calories_tv.setText(goalCalories);
     }
 
-    @Override
-    public void makeSnackBar(FoodRealm deleteFood, final int index) {
-       Snackbar.make(coordinatorLayout, "Had a snack at Snackbar", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+    private void makeSnackBar(final int index) {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
            @Override
            public void onDismissed(Snackbar snackbar, int event) {
                super.onDismissed(snackbar, event);
-               switch(event) {
-                   case Snackbar.Callback.DISMISS_EVENT_ACTION: {
-                       mAdapter.notifyDataSetChanged();
-                   } break;
-
-                   case Snackbar.Callback.DISMISS_EVENT_TIMEOUT: {
-                       diaryPresenter.removeFood(index,date_add);
-                       diaryPresenter.calculateCalories(date_add);
-                       mAdapter.notifyItemRemoved(index);
-                   } break;
+               if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                   diaryPresenter.removeFood(index,date_add);
+                   diaryPresenter.calculateCalories(date_add);
+                   mAdapter.notifyItemRemoved(index);
                }
-           }
-
-           @Override
-           public void onShown(Snackbar snackbar) {
-               super.onShown(snackbar);
            }
        }).setAction("Undo", new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-
+               mAdapter.notifyDataSetChanged();
            }
-       }).setActionTextColor(Color.RED).show();
+       }).setActionTextColor(Color.YELLOW);
+        snackbar.show();
     }
 
     private void initUI() {
