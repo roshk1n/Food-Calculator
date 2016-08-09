@@ -7,9 +7,9 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
  * Created by roshk1n on 7/25/2016.
  */
 
-public interface InfoFoodPresenter {
+public interface AddFoodPresenter {
 
-    void setView(InfoFoodView view);
+    void setView(AddFoodView view);
 
     void addNewFood(Food food);
 

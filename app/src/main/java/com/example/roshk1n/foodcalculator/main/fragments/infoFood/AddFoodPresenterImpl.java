@@ -11,14 +11,14 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import io.realm.Realm;
 
-public class InfoFoodPresenterImpl implements InfoFoodPresenter {
+public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     private final Realm realm = Realm.getDefaultInstance();
 
-    private InfoFoodView foodView;
+    private AddFoodView foodView;
 
     @Override
-    public void setView(InfoFoodView view) {
+    public void setView(AddFoodView view) {
         foodView = view;
     }
 

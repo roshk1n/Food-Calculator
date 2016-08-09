@@ -23,7 +23,7 @@ import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.main.adapters.RecyclerSearchAdapter;
-import com.example.roshk1n.foodcalculator.main.fragments.infoFood.InfoFoodFragment;
+import com.example.roshk1n.foodcalculator.main.fragments.infoFood.AddFoodFragment;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
@@ -135,7 +135,7 @@ public class SearchFragment extends Fragment implements SearchView, ResponseAdap
     public void navigateToInfoFood(Food food) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance(food))
+                .replace(R.id.fragment_conteiner, AddFoodFragment.newInstance(food))
                 .addToBackStack(null)
                 .commit();
     }

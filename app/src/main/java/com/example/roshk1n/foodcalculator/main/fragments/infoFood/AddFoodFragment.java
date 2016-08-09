@@ -21,9 +21,9 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
-public class InfoFoodFragment extends Fragment implements InfoFoodView {
+public class AddFoodFragment extends Fragment implements AddFoodView {
 
-    private InfoFoodPresenterImpl infoFoodPresenter;
+    private AddFoodPresenterImpl infoFoodPresenter;
     private Food food;
 
     private View view;
@@ -37,19 +37,19 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     private TextView numberOfServingsEt;
     private ImageView addFavoriteIv;
 
-    public static InfoFoodFragment newInstance(Food food) {
-        InfoFoodFragment infoFoodFragment = new InfoFoodFragment();
+    public static AddFoodFragment newInstance(Food food) {
+        AddFoodFragment addFoodFragment = new AddFoodFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("food", food);
-        infoFoodFragment.setArguments(bundle);
-        return infoFoodFragment;
+        addFoodFragment.setArguments(bundle);
+        return addFoodFragment;
     }
 
-    public static InfoFoodFragment newInstance() {
-        return new InfoFoodFragment();
+    public static AddFoodFragment newInstance() {
+        return new AddFoodFragment();
     }
 
-    public InfoFoodFragment() {
+    public AddFoodFragment() {
     }
 
     @Override
@@ -59,7 +59,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
         initUI();
 
-        infoFoodPresenter = new InfoFoodPresenterImpl();
+        infoFoodPresenter = new AddFoodPresenterImpl();
         infoFoodPresenter.setView(this);
 
         Bundle bundle = getArguments();
