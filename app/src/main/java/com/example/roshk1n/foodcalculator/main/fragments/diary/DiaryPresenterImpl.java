@@ -2,7 +2,6 @@ package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
 import android.graphics.Color;
 import com.example.roshk1n.foodcalculator.Session;
-import com.example.roshk1n.foodcalculator.main.fragments.search.SearchView;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
@@ -45,11 +44,14 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void removeFood(final int index, Date date) {
         int day = 0;
+
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
                 day=i;
             }
         }
+        FoodRealm deleteFood = getCurrentUserRealm().getDayRealms().get(day).getFoods().get(index);
+
         final int finalDay = day;
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -57,6 +59,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 getCurrentUserRealm().getDayRealms().get(finalDay).getFoods().get(index).deleteFromRealm();
             }
         });
+       // diaryView.makeSnackBar(deleteFood,index);
     }
 
     @Override

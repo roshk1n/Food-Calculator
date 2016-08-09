@@ -2,11 +2,13 @@ package com.example.roshk1n.foodcalculator.main.fragments.diary;
 
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.main.MainActivity;
@@ -59,6 +62,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
     private ImageView next_day_iv;
     private View hintCircleAddFood;
     private FloatingActionButton addFoodFab;
+    private CoordinatorLayout coordinatorLayout;
     private CoordinatorLayout HintAddFoodLayout;
 
     public DiaryFragment() { }
@@ -155,9 +159,11 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                diaryPresenter.removeFood(viewHolder.getAdapterPosition(),date_add);
+
+                makeSnackBar(new FoodRealm(),viewHolder.getAdapterPosition());
+                /*diaryPresenter.removeFood(viewHolder.getAdapterPosition(),date_add);
                 diaryPresenter.calculateCalories(date_add);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());*/
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -192,6 +198,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
                 }
             }
         });
+
         return view;
     }
 
@@ -236,6 +243,37 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         goal_calories_tv.setText(goalCalories);
     }
 
+    @Override
+    public void makeSnackBar(FoodRealm deleteFood, final int index) {
+       Snackbar.make(coordinatorLayout, "Had a snack at Snackbar", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+           @Override
+           public void onDismissed(Snackbar snackbar, int event) {
+               super.onDismissed(snackbar, event);
+               switch(event) {
+                   case Snackbar.Callback.DISMISS_EVENT_ACTION: {
+                       mAdapter.notifyDataSetChanged();
+                   } break;
+
+                   case Snackbar.Callback.DISMISS_EVENT_TIMEOUT: {
+                       diaryPresenter.removeFood(index,date_add);
+                       diaryPresenter.calculateCalories(date_add);
+                       mAdapter.notifyItemRemoved(index);
+                   } break;
+               }
+           }
+
+           @Override
+           public void onShown(Snackbar snackbar) {
+               super.onShown(snackbar);
+           }
+       }).setAction("Undo", new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       }).setActionTextColor(Color.RED).show();
+    }
+
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_meal);
         date_tv = (TextView) view.findViewById(R.id.date_diary_tv);
@@ -247,6 +285,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
         hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
+        coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
         remaining_field = (TextView) view.findViewById(R.id.remaining_cal_diary_field_tv);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
     }
@@ -312,7 +351,7 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         hintCircleAddFood.startAnimation(animation1);
         HintAddFoodLayout.setVisibility(View.VISIBLE);
 
-  /*      final Animation animation = new AlphaAnimation(1, 0.6f);
+  /*      final Animation animation = new AlphaAnimation(1, 0.6f);  // light fab
         animation.setDuration(800);
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(4);
