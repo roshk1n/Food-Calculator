@@ -73,7 +73,7 @@ public class FoodRealm extends RealmObject {
         return check;
     }
 
-    public Food converToBaseClass() {
+    public Food converToResponseClass() {
         Food food = new Food();
         food.setNdbno(this.getNdbno());
         food.setName(this.getName());

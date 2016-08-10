@@ -80,7 +80,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
     }
 
     @Override
-    public void makeSnackBar(final int position , final Food deleteFood) {
+    public void makeSnackBarAction(final int position , final Food deleteFood) {
         Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout,
                 "Item was removed successfully.",
                 Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
@@ -92,11 +92,16 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favoritePresenter.addFood(position,deleteFood);
+                favoritePresenter.addRemovedFavoriteFood(position,deleteFood);
                 mAdapter.notifyDataSetChanged();
             }
         }).setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+
+    @Override
+    public void makeSnackBar(String text) {
+        Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
     }
 
     private void initUI() {

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.roshk1n.foodcalculator.ManageLoginApi;
+import com.example.roshk1n.foodcalculator.LoginApiManager;
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
@@ -55,7 +55,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
 
             if (!error){
-                ManageLoginApi.login("roshk1n.ua@gmail.com", "132132132");
+                LoginApiManager.login("roshk1n.ua@gmail.com", "132132132");
 //TODO:
 //                restClient.getLoginApi().login(loginUser, new Callback<com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse>() {
 //                    @Override

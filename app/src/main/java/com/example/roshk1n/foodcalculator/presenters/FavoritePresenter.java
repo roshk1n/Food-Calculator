@@ -14,9 +14,7 @@ public interface FavoritePresenter {
 
     FavoriteListRealm getFavoriteList();
 
-    UserRealm getCurrentUserRealm();
-
     void removeFood(int adapterPosition);
 
-    void addFood(int position, Food foodRealm);
+    void addRemovedFavoriteFood(int position, Food foodRealm);
 }

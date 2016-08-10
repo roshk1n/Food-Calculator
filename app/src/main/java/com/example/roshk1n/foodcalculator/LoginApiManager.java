@@ -21,11 +21,11 @@ import retrofit.client.Response;
 /**
  * Created by roshk1n on 7/10/2016.
  */
-public  class ManageLoginApi {
+public  class LoginApiManager {
 
     private static RestClient restClient;
 
-    public ManageLoginApi() {}
+    public LoginApiManager() {}
 
     public static void registerUser(String f_namem, String l_name, String u_email, String u_password) {
         RegistrationUser registrationUser = new RegistrationUser(f_namem,l_name,u_email,u_password);

@@ -7,5 +7,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
  */
 public interface FavoriteView {
 
-    void makeSnackBar(int position, Food deleteFood);
+    void makeSnackBarAction(int position, Food deleteFood);
+
+    void makeSnackBar(String text);
 }
