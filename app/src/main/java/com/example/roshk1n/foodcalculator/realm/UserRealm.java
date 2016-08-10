@@ -16,19 +16,23 @@ public class UserRealm extends RealmObject {
     private int age;
     private int weight;
     private int height;
-    private String activeLevel;
     private int goalCalories;
+    private String sex;
+    private String activeLevel;
+
     private FavoriteListRealm favoriteList;
     private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
     private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();
 
     public UserRealm() { }
 
-    public UserRealm(String fullname, String email, String password, String photo) {
+    public UserRealm(String fullname, String email, String password, String photo, String sex, String activeLevel ) {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
         this.photoUrl = photo;
+        this.sex = sex;
+        this.activeLevel = activeLevel;
     }
 
     public String getFullname() {
@@ -109,6 +113,14 @@ public class UserRealm extends RealmObject {
 
     public void setFavoriteList(FavoriteListRealm favoriteList) {
         this.favoriteList = favoriteList;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public RealmList<DayRealm> getDayRealms() {

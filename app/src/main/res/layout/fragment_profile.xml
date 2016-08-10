@@ -7,7 +7,7 @@
     android:background="@color/colorBackground"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context=".main.fragments.profile.ProfileFragment">
+    tools:context=".fragments.ProfileFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/edit_profile_fab"

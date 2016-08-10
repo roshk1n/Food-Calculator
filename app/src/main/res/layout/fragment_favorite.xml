@@ -3,7 +3,7 @@
     android:id="@+id/favorite_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.roshk1n.foodcalculator.main.fragments.favorite.FavoriteFragment">
+    tools:context=".fragments.FavoriteFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,8 +1,8 @@
 package com.example.roshk1n.foodcalculator.rest;
 
 
-import com.example.roshk1n.foodcalculator.rest.service.LoginApi;
-import com.example.roshk1n.foodcalculator.rest.service.NdbApi;
+import com.example.roshk1n.foodcalculator.rest.services.LoginApi;
+import com.example.roshk1n.foodcalculator.rest.services.NdbApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

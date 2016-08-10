@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context="com.example.roshk1n.foodcalculator.main.fragments.remiders.RemindersFragment">
+    tools:context=".fragments.RemindersFragment">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_reminders"
         android:layout_width="match_parent"
