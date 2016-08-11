@@ -30,6 +30,7 @@ import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -41,7 +42,7 @@ import java.util.Date;
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter, DatePickerDialog.OnDateSetListener{
 
     private DiaryPresenterImpl diaryPresenter;
-    private ArrayList<Food> foods;
+    private Day day;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
@@ -102,7 +103,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
 
-        foods = diaryPresenter.loadFoods();
+        day = diaryPresenter.loadDay();
         date_tv.setText(diaryPresenter.getDateString());
 
         diaryPresenter.getGoalCalories();
@@ -110,12 +111,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerDiaryAdapter(foods,this);
+        mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this);
         mRecyclerView.setAdapter(mAdapter);
 
         addFoodFab.show();
 
-        if(foods.size()==0) {
+       /* if(foods.size()==0) {
             showHintAddAmin();
         } else {
             hideHintAddAmin();
@@ -196,7 +197,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                     }
                 }
             }
-        });
+        });*/
 
         return view;
     }
@@ -210,14 +211,14 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         diaryPresenter.setDate(date);
         //date_add = date;
-        String str = diaryPresenter.getDateString(date);
+        String str = diaryPresenter.getDateString();
         date_tv.setText(str);
 
-        foods = diaryPresenter.loadFoods();
-        mAdapter = new RecyclerDiaryAdapter(foods,this); //need new Recycler because load new foods
+        day = diaryPresenter.loadDay();
+        mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
 
-        if(foods.size()==0) {
+        if(day.getFoods().size()==0) {
             showHintAddAmin();
         } else {
             HintAddFoodLayout.setVisibility(View.GONE);
@@ -244,7 +245,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     private void makeSnackBar(final int position, final Food removedFood) {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+/*        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
            @Override
            public void onDismissed(Snackbar snackbar, int event) {
                super.onDismissed(snackbar, event);
@@ -261,7 +262,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                mAdapter.notifyDataSetChanged();
            }
        }).setActionTextColor(Color.YELLOW);
-        snackbar.show();
+        snackbar.show();*/
     }
 
     private void initUI() {

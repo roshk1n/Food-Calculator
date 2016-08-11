@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.text.SimpleDateFormat;
@@ -12,8 +13,8 @@ import java.util.Date;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private ArrayList<Food> foods = new ArrayList<>();
-    private Date date;
+    private Day day;
+    private Date date = new Date();
     private DiaryView diaryView;
 
     public Date getDate() {
@@ -30,9 +31,15 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     @Override
+    public Day loadDay() {
+        day = localDataBaseManager.loadDayData(date);
+        return day;
+    }
+
+    @Override
     public ArrayList<Food> loadFoods() {
-        foods = localDataBaseManager.loadFoodsData(date);
-       return foods;
+   /*     foods = localDataBaseManager.loadFoodsData(date);*/
+       return null;
     }
 
     @Override
@@ -57,7 +64,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void calculateCalories() {
 
-        localDataBaseManager.loadDayLimited
+  /*      localDataBaseManager.loadDayLimited
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
 
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
@@ -82,7 +89,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 int color = getColor(checkLimit);
                 diaryView.updateCalories(eat,remaining,checkLimit,color);
             }
-        }
+        }*/
     }
 
     @Override

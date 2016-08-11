@@ -1,5 +1,8 @@
 package com.example.roshk1n.foodcalculator.realm;
 
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
@@ -43,5 +46,17 @@ public class DayRealm extends RealmObject {
 
     public void setFoods(RealmList<FoodRealm> foods) {
         this.foods = foods;
+    }
+
+    public Day convertToModel() {
+        Day day = new Day();
+        day.setDate(this.getDate());
+        for (int i = 0; i<this.getFoods().size(); i++) {
+            day.getFoods().add(this.getFoods().get(i).converToModel());
+        }
+        day.setEatDailyCalories(this.getEatDailyCalories());
+        day.setRemainingCalories(this.getRemainingCalories());
+
+        return day;
     }
 }

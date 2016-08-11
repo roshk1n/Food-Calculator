@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.presenters;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;
@@ -27,4 +28,6 @@ public interface DiaryPresenter  {
     void calculateCalories();
 
     void getGoalCalories();
+
+    Day loadDay();
 }

@@ -1,8 +1,10 @@
 package com.example.roshk1n.foodcalculator;
 
+import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;
@@ -89,5 +91,16 @@ public class LocalDataBaseManager {
 
     public int loadGoalCalories() {
         return getCurrentUserRealm().getGoalCalories();
+    }
+
+    public Day loadDayData(Date date) {
+        Day day = new Day();
+
+        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
+            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
+                day = getCurrentUserRealm().getDayRealms().get(i).convertToModel();
+            }
+        }
+        return day;
     }
 }
