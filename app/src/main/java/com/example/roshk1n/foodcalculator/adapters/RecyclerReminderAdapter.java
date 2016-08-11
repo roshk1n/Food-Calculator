@@ -10,7 +10,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.responseAdapter.ResponseReminderAdapter;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 
 import java.util.Date;
@@ -24,12 +24,12 @@ import io.realm.RealmList;
 public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerReminderAdapter.ViewHolder> {
     private final Realm realm = Realm.getDefaultInstance();
     private RealmList<ReminderReaml> remindersReaml;
-    private ResponseReminderAdapter responseReminderAdapter;
+    private CallbackReminderAdapter callbackReminderAdapter;
     private View v;
 
-    public RecyclerReminderAdapter(RealmList<ReminderReaml> remindersReaml, ResponseReminderAdapter responseReminderAdapter) {
+    public RecyclerReminderAdapter(RealmList<ReminderReaml> remindersReaml, CallbackReminderAdapter callbackReminderAdapter) {
         this.remindersReaml = remindersReaml;
-        this.responseReminderAdapter = responseReminderAdapter;
+        this.callbackReminderAdapter = callbackReminderAdapter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,7 +69,7 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                responseReminderAdapter.createPicker(holder.getAdapterPosition()
+                callbackReminderAdapter.createPicker(holder.getAdapterPosition()
                         , remindersReaml.get(holder.getAdapterPosition()).getName());
             }
         });
@@ -81,7 +81,7 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
                     @Override
                     public void execute(Realm realm) {
                         remindersReaml.get(holder.getAdapterPosition()).setState(isChecked);
-                        responseReminderAdapter.updateSwitch(isChecked, holder.getAdapterPosition());
+                        callbackReminderAdapter.updateSwitch(isChecked, holder.getAdapterPosition());
                     }
                 });
             }

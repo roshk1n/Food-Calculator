@@ -17,7 +17,7 @@ import com.example.roshk1n.foodcalculator.adapters.RecyclerReminderAdapter;
 import com.example.roshk1n.foodcalculator.broadcastReceivers.ReceiverNotification;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.RemindersView;
-import com.example.roshk1n.foodcalculator.responseAdapter.ResponseReminderAdapter;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 import io.realm.RealmList;
 
-public class RemindersFragment extends Fragment  implements RemindersView, ResponseReminderAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
+public class RemindersFragment extends Fragment  implements RemindersView, CallbackReminderAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
 
     private RemindersPresenterImpl remindersPresenter;
     private RealmList<ReminderReaml> remindersReaml;

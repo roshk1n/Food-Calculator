@@ -18,13 +18,14 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
-import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+
+import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment implements FavoriteView {
 
     private FavoritePresenterImpl favoritePresenter;
-    private FavoriteListRealm favoriteListRealm;
+    private ArrayList<Food> favoriteList = new ArrayList<>();
     private View view;
     private CoordinatorLayout favoriteCoordinatorLayout;
 
@@ -32,8 +33,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
 
-    public FavoriteFragment() {
-    }
+    public FavoriteFragment() {}
 
     public static Fragment newInstance() {
         return new FavoriteFragment();
@@ -44,7 +44,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
         super.onCreate(savedInstanceState);
         favoritePresenter  = new FavoritePresenterImpl();
         favoritePresenter.setView(this);
-
     }
 
     @Override
@@ -54,12 +53,12 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
 
         initUI();
 
-        favoriteListRealm = favoritePresenter.getFavoriteList();
+        favoriteList = favoritePresenter.getFavoriteList();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerFavoriteAdapter(favoriteListRealm);
+        mAdapter = new RecyclerFavoriteAdapter(favoriteList);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -69,7 +68,8 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                favoritePresenter.removeFood(viewHolder.getAdapterPosition());
+                Food removedFood = favoriteList.remove(viewHolder.getAdapterPosition());
+                makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         };
@@ -80,29 +80,32 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
     }
 
     @Override
-    public void makeSnackBarAction(final int position , final Food deleteFood) {
+    public void makeSnackBar(String text) {
+        Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void makeSnackBarAction(final int position, final Food removed) {
         Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout,
                 "Item was removed successfully.",
                 Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-
+                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    favoritePresenter.removeFavoriteFoodDB(position);
+                }
             }
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favoritePresenter.addRemovedFavoriteFood(position,deleteFood);
-                mAdapter.notifyDataSetChanged();
+                favoriteList.add(position,removed);
+                mAdapter.notifyItemInserted(position);
+
             }
         }).setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
-    @Override
-    public void makeSnackBar(String text) {
-        Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
-    }
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);

@@ -8,23 +8,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.responseAdapter.ResponseSearchAdapter;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
 
 import java.util.ArrayList;
 
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
-    private ArrayList<NutrientFoodResponse> foods;
-    private ResponseSearchAdapter responseSearchAdapter;
+    private ArrayList<NutrientSpecialFoodResponse> foods;
+    private CallbackSearchAdapter callbackSearchAdapter;
     private long date;
     private View v;
 
-    public RecyclerSearchAdapter(ArrayList<NutrientFoodResponse> foods, long date, ResponseSearchAdapter responseSearchAdapter) {
+    public RecyclerSearchAdapter(ArrayList<NutrientSpecialFoodResponse> foods, long date, CallbackSearchAdapter callbackSearchAdapter) {
         this.foods = foods;
         this.date = date;
-        this.responseSearchAdapter = responseSearchAdapter;
+        this.callbackSearchAdapter = callbackSearchAdapter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -61,7 +61,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
                 public void onClick(View v) {
                     foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(date);
                     Food food = foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0);
-                    responseSearchAdapter.navigateToInfoFood(food);
+                    callbackSearchAdapter.navigateToAddFood(food);
                 }
             });
     }

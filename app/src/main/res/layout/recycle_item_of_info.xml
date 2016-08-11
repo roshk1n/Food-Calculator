@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/item_reminder_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginBottom="1dp"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:id="@+id/title_nutrients_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Protein"
+            android:layout_marginRight="100dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/value_nutrients_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6.38g"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

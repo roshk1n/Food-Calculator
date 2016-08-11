@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.Views;
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
 
 public interface SearchView {
-    void updateUI(NutrientFoodResponse nutrientFoodResponses);
+    void updateUI(NutrientSpecialFoodResponse nutrientSpecialFoodResponses);
 }

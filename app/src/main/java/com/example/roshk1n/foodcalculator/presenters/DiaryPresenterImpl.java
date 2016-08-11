@@ -1,22 +1,28 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Color;
-import com.example.roshk1n.foodcalculator.Session;
+
+import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
-import com.example.roshk1n.foodcalculator.presenters.DiaryPresenter;
-import com.example.roshk1n.foodcalculator.realm.DayRealm;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-import io.realm.Realm;
-import io.realm.RealmList;
-
 public class DiaryPresenterImpl implements DiaryPresenter {
-
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private ArrayList<Food> foods = new ArrayList<>();
+    private Date date;
     private DiaryView diaryView;
-    private final Realm realm = Realm.getDefaultInstance();
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Override
     public void setView(DiaryView view) {
@@ -24,62 +30,42 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     @Override
-    public UserRealm getCurrentUserRealm() {
-        return realm.where(UserRealm.class)
-                .equalTo("email", Session.getInstance().getEmail())
-                .findFirst();
+    public ArrayList<Food> loadFoods() {
+        foods = localDataBaseManager.loadFoodsData(date);
+       return foods;
     }
 
     @Override
-    public RealmList<FoodRealm> getFoods(Date date) {
-        RealmList<FoodRealm> foodRealms = new RealmList<>();
-
-        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-
-            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
-                foodRealms = getCurrentUserRealm().getDayRealms().get(i).getFoods();
-            }
-        }
-        return foodRealms;
-    }
-
-    @Override
-    public void removeFood(final int index, Date date) {
-        int day = 0;
+    public void removeFoodDB(final int indexRemove, Date date) {
+/*        int day = 0;
 
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
                 day=i;
             }
         }
-
-        final int finalDay = day;
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().getDayRealms().get(finalDay).getFoods().get(index).deleteFromRealm();
-            }
-        });
+        localDataBaseManager.removeFoodDB(day, indexRemove);*/
     }
 
     @Override
-    public String dateToString(Date date) {
+    public String getDateString() {
         SimpleDateFormat format1 = new SimpleDateFormat();
         format1.applyPattern("EEEE, dd MMMM");
         return format1.format(date);
     }
 
     @Override
-    public void calculateCalories(Date date) {
+    public void calculateCalories() {
 
+        localDataBaseManager.loadDayLimited
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
 
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
                 final DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(i);
 
                 int eat_calories=0;
-                for (int j = 0; j < infoDay.getFoods().size(); j++) {
-                    eat_calories += Integer.valueOf(infoDay.getFoods().get(j).getNutrients().get(1).getValue());
+                for (int j = 0; j < infoDay.loadFoods().size(); j++) {
+                    eat_calories += Integer.valueOf(infoDay.loadFoods().get(j).getNutrients().get(1).getValue());
                 }
 
                 final int finalEat_calories = eat_calories;
@@ -101,7 +87,8 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void getGoalCalories() {
-        diaryView.setGoalCalories(String.valueOf(getCurrentUserRealm().getGoalCalories()));
+        int goalCalories = localDataBaseManager.loadGoalCalories();
+        diaryView.setGoalCalories(String.valueOf(goalCalories));
     }
 
     private boolean compareLongAndDate(Long UserDate, Date date) {

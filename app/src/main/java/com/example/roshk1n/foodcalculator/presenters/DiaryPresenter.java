@@ -3,7 +3,9 @@ package com.example.roshk1n.foodcalculator.presenters;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.RealmList;
@@ -16,15 +18,13 @@ public interface DiaryPresenter  {
 
     void setView(DiaryView view);
 
-    UserRealm getCurrentUserRealm();
+    ArrayList<Food> loadFoods();
 
-    RealmList<FoodRealm> getFoods(Date date);
+    String getDateString();
 
-    String dateToString(Date date);
+    void removeFoodDB(int index, Date date);
 
-    void removeFood(int index, Date date);
-
-    void calculateCalories(Date date);
+    void calculateCalories();
 
     void getGoalCalories();
 }

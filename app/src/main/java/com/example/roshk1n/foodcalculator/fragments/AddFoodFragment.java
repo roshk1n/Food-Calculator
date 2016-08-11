@@ -57,7 +57,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_info_food, container, false);
+        view = inflater.inflate(R.layout.fragment_add_food, container, false);
 
         initUI();
 
@@ -167,14 +167,14 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
     }
 
     private void initUI() {
-        cabsFoodTv = (TextView) view.findViewById(R.id.tv_cabs_food_info);
-        fatFoodTv = (TextView) view.findViewById(R.id.tv_fat_food_info);
-        proteinFoodTv = (TextView) view.findViewById(R.id.tv_protein_food_info);
-        caloriesFoodTv = (TextView) view.findViewById(R.id.tv_calories_food_info);
-        nameFoodTv = (TextView) view.findViewById(R.id.tv_name_food_info);
+        cabsFoodTv = (TextView) view.findViewById(R.id.tv_cabs_food_add);
+        fatFoodTv = (TextView) view.findViewById(R.id.tv_fat_food_add);
+        proteinFoodTv = (TextView) view.findViewById(R.id.tv_protein_food_add);
+        caloriesFoodTv = (TextView) view.findViewById(R.id.tv_calories_food_add);
+        nameFoodTv = (TextView) view.findViewById(R.id.tv_name_food_add);
         numberOfServingsEt = (EditText) view.findViewById(R.id.number_of_servings_et);
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
-        addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_info_iv);
+        addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_add_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");

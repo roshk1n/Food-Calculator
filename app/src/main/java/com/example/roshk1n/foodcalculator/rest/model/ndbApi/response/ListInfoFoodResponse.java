@@ -6,16 +6,16 @@ import java.util.ArrayList;
  * Created by roshk1n on 7/19/2016.
  */
 public class ListInfoFoodResponse {
-    private ArrayList<NutrientFoodResponse>  foodResponses = new ArrayList<NutrientFoodResponse>();
+    private ArrayList<NutrientSpecialFoodResponse>  foodResponses = new ArrayList<NutrientSpecialFoodResponse>();
 
     public ListInfoFoodResponse() {
     }
 
-    public ArrayList<NutrientFoodResponse> getFoodResponses() {
+    public ArrayList<NutrientSpecialFoodResponse> getFoodResponses() {
         return foodResponses;
     }
 
-    public void setFoodResponses(ArrayList<NutrientFoodResponse> foodResponses) {
+    public void setFoodResponses(ArrayList<NutrientSpecialFoodResponse> foodResponses) {
         this.foodResponses = foodResponses;
     }
 }

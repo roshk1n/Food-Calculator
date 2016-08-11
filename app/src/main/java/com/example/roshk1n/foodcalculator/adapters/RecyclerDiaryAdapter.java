@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+
+import java.util.ArrayList;
 
 import io.realm.RealmList;
 
@@ -19,13 +23,15 @@ import io.realm.RealmList;
 
 public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdapter.ViewHolder> {
 
-    private RealmList<FoodRealm> foods;
+    private ArrayList<Food> foods;
 
-    public RealmList<FoodRealm> getFoods() { return foods; }
+    private CallbackDiaryAdapter callbackDiaryAdapter;
 
-    public RecyclerDiaryAdapter(RealmList<FoodRealm> foods) {
+    public ArrayList<Food> getFoods() { return foods; }
+
+    public RecyclerDiaryAdapter(ArrayList<Food> foods, CallbackDiaryAdapter callbackDiaryAdapter) {
         this.foods = foods;
-
+        this.callbackDiaryAdapter = callbackDiaryAdapter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,11 +56,18 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.nameFoodTv.setText(foods.get(position).getName());
         holder.amountCalTv.setText(foods.get(position).getNutrients().get(1).getValue());
         holder.valuePorTv.setText(foods.get(position).getPortion()*100 + " g.");
+
+        holder.contentCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbackDiaryAdapter.navigateToInfoFood(foods.get(position));
+            }
+        });
     }
 
     @Override

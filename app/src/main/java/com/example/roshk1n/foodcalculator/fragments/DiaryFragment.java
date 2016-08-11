@@ -29,21 +29,19 @@ import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import io.realm.RealmList;
-
-public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDialog.OnDateSetListener{
+public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter, DatePickerDialog.OnDateSetListener{
 
     private DiaryPresenterImpl diaryPresenter;
-    private RealmList<FoodRealm> foods;
-
-    private Date date_add ;
+    private ArrayList<Food> foods;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
@@ -73,12 +71,21 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         return diaryFragment;
     }
 
+    public static DiaryFragment newInstance(int ndbno) {
+        DiaryFragment diaryFragment = new DiaryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("ndbno", ndbno);
+        diaryFragment.setArguments(bundle);
+        return diaryFragment;
+    }
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         diaryPresenter = new DiaryPresenterImpl();
         diaryPresenter.setView(this);
-        date_add = new Date();
     }
 
     @Override
@@ -91,21 +98,19 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         ((MainActivity)view.getContext()).setUpDrawerMenu();
         ((MainActivity)view.getContext()).enableMenuSwipe();
 
-        Bundle bundle = getArguments();
-
-        if(bundle != null) {
-           date_add = new Date(bundle.getLong("date"));
+        if(getArguments() != null) {
+            diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
 
-        foods = diaryPresenter.getFoods(date_add);
-        date_tv.setText(diaryPresenter.dateToString(date_add));
+        foods = diaryPresenter.loadFoods();
+        date_tv.setText(diaryPresenter.getDateString());
 
         diaryPresenter.getGoalCalories();
-        diaryPresenter.calculateCalories(date_add);
+        diaryPresenter.calculateCalories();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerDiaryAdapter(foods);
+        mAdapter = new RecyclerDiaryAdapter(foods,this);
         mRecyclerView.setAdapter(mAdapter);
 
         addFoodFab.show();
@@ -155,8 +160,9 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                makeSnackBar(viewHolder.getAdapterPosition());
+                Food removedFood = foods.remove(viewHolder.getAdapterPosition());
+                makeSnackBar(viewHolder.getAdapterPosition(),removedFood);
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -202,12 +208,13 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         date.setDate(dayOfMonth);
         date.setYear(year-1900);
 
-        date_add = date;
-        String str = diaryPresenter.dateToString(date);
+        diaryPresenter.setDate(date);
+        //date_add = date;
+        String str = diaryPresenter.getDateString(date);
         date_tv.setText(str);
 
-        foods = diaryPresenter.getFoods(date_add);
-        mAdapter = new RecyclerDiaryAdapter(foods);
+        foods = diaryPresenter.loadFoods();
+        mAdapter = new RecyclerDiaryAdapter(foods,this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
 
         if(foods.size()==0) {
@@ -236,20 +243,21 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         goal_calories_tv.setText(goalCalories);
     }
 
-    private void makeSnackBar(final int index) {
+    private void makeSnackBar(final int position, final Food removedFood) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
            @Override
            public void onDismissed(Snackbar snackbar, int event) {
                super.onDismissed(snackbar, event);
                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                   diaryPresenter.removeFood(index,date_add);
+                   diaryPresenter.removeFoodDB(position,date_add);
                    diaryPresenter.calculateCalories(date_add);
-                   mAdapter.notifyItemRemoved(index);
+                   mAdapter.notifyItemRemoved(position);
                }
            }
        }).setAction("Undo", new View.OnClickListener() {
            @Override
            public void onClick(View v) {
+               foods.add(position,removedFood);
                mAdapter.notifyDataSetChanged();
            }
        }).setActionTextColor(Color.YELLOW);
@@ -340,5 +348,14 @@ public class DiaryFragment extends Fragment implements DiaryView,  DatePickerDia
         animation.setRepeatMode(Animation.REVERSE);
         addFoodFab.startAnimation(animation);*/
 
+    }
+
+    @Override
+    public void navigateToInfoFood(Food food) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance(food))
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -154,7 +154,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         }
         float goalCaloriesFloat = (10*getCurrentUserRealm().getWeight() +
                 6.25f*getCurrentUserRealm().getHeight() -
-                5*getCurrentUserRealm().getAge() + maleOrFemaleCof)*activeLevelCof ; // calculate limit
+                5*getCurrentUserRealm().getAge() + maleOrFemaleCof)*activeLevelCof; // calculate limit
 
         final int goalCalories = Math.round(goalCaloriesFloat);
         realm.executeTransaction(new Realm.Transaction() {

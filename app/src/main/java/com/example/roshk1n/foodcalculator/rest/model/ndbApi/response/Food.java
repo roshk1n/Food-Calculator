@@ -75,6 +75,20 @@ public class Food  implements Parcelable {
         this.portion = portion;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ndbno);
+        dest.writeString(name);
+        dest.writeInt(portion);
+        dest.writeLong(date);
+        dest.writeTypedList(nutrients);
+    }
+
     public FoodRealm converToRealm() {
         FoodRealm foodRealm = new FoodRealm();
         foodRealm.setName(this.getName());
@@ -91,19 +105,5 @@ public class Food  implements Parcelable {
         }
         foodRealm.setTime(this.getDate());
         return foodRealm;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(ndbno);
-        dest.writeString(name);
-        dest.writeInt(portion);
-        dest.writeLong(date);
-        dest.writeTypedList(nutrients);
     }
 }

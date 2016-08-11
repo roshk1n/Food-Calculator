@@ -17,7 +17,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_create_white_24dp" />
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -259,6 +259,6 @@
                     android:textColor="@color/colorPrimaryText" />
             </LinearLayout>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

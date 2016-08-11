@@ -2,7 +2,7 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import java.util.ArrayList;
 
-public class Report {
+public class ReportSpecialNutrients {
     private String sr;
     private String groups;
     private String subset;
@@ -12,7 +12,7 @@ public class Report {
 
     private ArrayList<Food> foods = new ArrayList<Food>();
 
-    public Report() {}
+    public ReportSpecialNutrients() {}
 
     public String getSr() {
         return sr;
