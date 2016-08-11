@@ -52,7 +52,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private TextView goal_calories_tv;
     private TextView eat_daily_calories_tv;
     private TextView remaining_calories_tv;
-    private TextView remaining_field;
     private ImageView follow_day_iv;
     private ImageView next_day_iv;
     private View hintCircleAddFood;
@@ -115,20 +114,14 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         addFoodFab.show();
 
-       /* if(foods.size()==0) {
-            showHintAddAmin();
-        } else {
-            hideHintAddAmin();
-        }
-
         follow_day_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                date_add.setDate(date_add.getDate()-1);
+                diaryPresenter.setFollowDate();
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_right_enter,R.anim.slide_in_right_exit)
-                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(date_add.getTime()))
+                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(diaryPresenter.getDate().getTime()))
                         .commit();
 
             }
@@ -137,11 +130,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         next_day_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                date_add.setDate(date_add.getDate()+1);
+                diaryPresenter.setNextDate();
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left_enter,R.anim.slide_in_left_exit)
-                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(date_add.getTime()))
+                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(diaryPresenter.getDate().getTime()))
                         .commit();
             }
         });
@@ -160,9 +153,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Food removedFood = foods.remove(viewHolder.getAdapterPosition());
+/*                Food removedFood = foods.remove(viewHolder.getAdapterPosition());
                 makeSnackBar(viewHolder.getAdapterPosition(),removedFood);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());*/
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -172,10 +165,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             @Override
             public void onClick(View view) {
                 addFoodFab.hide();
-                hideHintAddAmin();
+                hideHintAddAnim();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, SearchFragment.newInstance(date_add.getTime()))
+                        .replace(R.id.fragment_conteiner, SearchFragment.newInstance(diaryPresenter.getDate().getTime()))
                         .addToBackStack(null)
                         .commit();
             }
@@ -196,7 +189,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                     }
                 }
             }
-        });*/
+        });
 
         return view;
     }
@@ -209,7 +202,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         date.setYear(year-1900);
 
         diaryPresenter.setDate(date);
-        //date_add = date;
         String str = diaryPresenter.getDateString();
         date_tv.setText(str);
 
@@ -217,25 +209,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
 
-        if(day.getFoods().size()==0) {
-            showHintAddAmin();
-        } else {
-            HintAddFoodLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override
-    public void updateCalories(String eat, String remaining, int checkLimit, int color) {
+    public void updateCalories(String eat, String remaining, int color) {
         eat_daily_calories_tv.setText(eat);
         remaining_calories_tv.setText(remaining);
         remaining_calories_tv.setTextColor(color);
-        remaining_field.setTextColor(color);
-
-        if (checkLimit!=1) { //if need dialog for limit
-            showDialog(remaining,checkLimit);
-        } else {
-            remaining_field.setTextColor(getResources().getColor(R.color.colorSecondaryText));
-        }
     }
 
     @Override
@@ -243,57 +223,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         goal_calories_tv.setText(goalCalories);
     }
 
-    private void makeSnackBar(final int position, final Food removedFood) {
-/*        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
-           @Override
-           public void onDismissed(Snackbar snackbar, int event) {
-               super.onDismissed(snackbar, event);
-               if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                   diaryPresenter.removeFoodDB(position,date_add);
-                   diaryPresenter.calculateCalories(date_add);
-                   mAdapter.notifyItemRemoved(position);
-               }
-           }
-       }).setAction("Undo", new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               foods.add(position,removedFood);
-               mAdapter.notifyDataSetChanged();
-           }
-       }).setActionTextColor(Color.YELLOW);
-        snackbar.show();*/
-    }
-
-    private void initUI() {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_meal);
-        date_tv = (TextView) view.findViewById(R.id.date_diary_tv);
-        addFoodFab = (FloatingActionButton) getActivity().findViewById(R.id.addFood_fab);
-        goal_calories_tv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
-        eat_daily_calories_tv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
-        remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
-        follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
-        next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
-        hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
-        HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
-        coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-        remaining_field = (TextView) view.findViewById(R.id.remaining_cal_diary_field_tv);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
-    }
-
-    public void showDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog" );
-    }
-
-    private void showDialog(String remaining, int checkLimit) {
+    @Override
+    public void showDialog(String remaining, int checkLimit) {
 
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle("Limit of calories"); //TODO text for dialog
@@ -313,7 +244,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         alertDialog.show();
     }
 
-    private void hideHintAddAmin() {
+    @Override
+    public void hideHintAddAnim() {
         Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                 ,R.anim.hide_hint_add_food);
         hintCircleAddFood.startAnimation(animation);
@@ -334,7 +266,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         });
     }
 
-    private void showHintAddAmin() {
+    @Override
+    public void showHintAddAnim() {
 
         Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                 ,R.anim.show_hint_add_food);
@@ -349,6 +282,58 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         addFoodFab.startAnimation(animation);*/
 
     }
+
+    private void makeSnackBar(final int position, final Food removedFood) {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+           @Override
+           public void onDismissed(Snackbar snackbar, int event) {
+               super.onDismissed(snackbar, event);
+               if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                   diaryPresenter.removeFoodDB(position,date_add);
+                   diaryPresenter.calculateCalories(date_add);
+                   mAdapter.notifyItemRemoved(position);
+               }
+           }
+       }).setAction("Undo", new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               foods.add(position,removedFood);
+               mAdapter.notifyDataSetChanged();
+           }
+       }).setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
+    private void initUI() {
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_meal);
+        date_tv = (TextView) view.findViewById(R.id.date_diary_tv);
+        addFoodFab = (FloatingActionButton) getActivity().findViewById(R.id.addFood_fab);
+        goal_calories_tv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
+        eat_daily_calories_tv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
+        remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
+        follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
+        next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
+        hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
+        HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
+        coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
+    }
+
+    public void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog" );
+    }
+
+
+
 
     @Override
     public void navigateToInfoFood(Food food) {

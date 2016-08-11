@@ -30,4 +30,8 @@ public interface DiaryPresenter  {
     void getGoalCalories();
 
     Day loadDay();
+
+    void setFollowDate();
+
+    void setNextDate();
 }

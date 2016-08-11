@@ -15,6 +15,7 @@ import io.realm.RealmList;
 
 public class LocalDataBaseManager {
 
+    private DayRealm dayRealm;
     private final Realm realm = Realm.getDefaultInstance();
 
     public LocalDataBaseManager() {}
@@ -95,21 +96,24 @@ public class LocalDataBaseManager {
 
     public Day loadDayData(Date date) {
         Day day = new Day();
-
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
-                day = getCurrentUserRealm().getDayRealms().get(i).convertToModel();
+                dayRealm = getCurrentUserRealm().getDayRealms().get(i);
             }
+        }
+
+        if(dayRealm != null) {
+            day = dayRealm.convertToModel();
         }
         return day;
     }
 
-    public void updateCalories(int eat_calories, int remainingCalories) {
+    public void updateCalories(final int eat_calories, final int remainingCalories) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                infoDay.setEatDailyCalories(finalEat_calories);
-                infoDay.setRemainingCalories(getCurrentUserRealm().getGoalCalories() - infoDay.getEatDailyCalories());
+                dayRealm.setEatDailyCalories(eat_calories);
+                dayRealm.setRemainingCalories(remainingCalories);
             }
         });
     }

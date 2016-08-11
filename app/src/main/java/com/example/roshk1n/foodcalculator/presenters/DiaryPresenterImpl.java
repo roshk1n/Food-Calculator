@@ -3,6 +3,8 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.graphics.Color;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -10,6 +12,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import io.realm.Realm;
 
@@ -35,7 +38,22 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public Day loadDay() {
         day = localDataBaseManager.loadDayData(date);
+        if(day.getFoods().size()==0) {
+            diaryView.showHintAddAnim();
+        } else {
+            diaryView.hideHintAddAnim();
+        }
         return day;
+    }
+
+    @Override
+    public void setFollowDate() {
+        date.setDate(date.getDate()-1);
+    }
+
+    @Override
+    public void setNextDate() {
+        date.setDate(date.getDate()+1);
     }
 
     @Override
@@ -65,29 +83,25 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void calculateCalories() {
-
-                int eat_calories=0;
-                for (int j = 0; j < day.getFoods().size(); j++) {
-                    eat_calories += Integer.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue());
-                }
-                int goalCalories = localDataBaseManager.loadGoalCalories();
-                day.setRemainingCalories(goalCalories - eat_calories);
-
-                localDataBaseManager.updateCalories(eat_calories,day.getRemainingCalories());
-
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        infoDay.setEatDailyCalories(finalEat_calories);
-                        infoDay.setRemainingCalories(getCurrentUserRealm().getGoalCalories() - infoDay.getEatDailyCalories());
-                    }
-                });
-                String eat =  String.valueOf(infoDay.getEatDailyCalories());
-                String remaining =  String.valueOf(infoDay.getRemainingCalories());
-                int checkLimit = checkLimit(infoDay.getRemainingCalories());
-                int color = getColor(checkLimit);
-                diaryView.updateCalories(eat,remaining,checkLimit,color);
+        if(day.getFoods().size() != 0) {
+            int eat_calories = 0;
+            for (int j = 0; j < day.getFoods().size(); j++) {
+                eat_calories += Integer.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue());
             }
+            int goalCalories = localDataBaseManager.loadGoalCalories();
+            day.setRemainingCalories(goalCalories - eat_calories);
+
+            localDataBaseManager.updateCalories(eat_calories, day.getRemainingCalories());
+
+            String remainingCalories = String.valueOf(day.getRemainingCalories());
+            String eatCalories = String.valueOf(eat_calories);
+            int checkLimit = checkLimit(day.getRemainingCalories());
+            int color = getColor(checkLimit);
+
+            if (checkLimit != 1) { //if need dialog for limit
+                diaryView.showDialog(remainingCalories, checkLimit);
+            }
+            diaryView.updateCalories(eatCalories, remainingCalories, color);
         }
     }
 
