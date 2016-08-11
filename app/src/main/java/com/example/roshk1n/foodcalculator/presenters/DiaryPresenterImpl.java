@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.Realm;
+
 public class DiaryPresenterImpl implements DiaryPresenter {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
     private Day day;
@@ -64,18 +66,15 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void calculateCalories() {
 
-  /*      localDataBaseManager.loadDayLimited
-        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-
-            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
-                final DayRealm infoDay = getCurrentUserRealm().getDayRealms().get(i);
-
                 int eat_calories=0;
-                for (int j = 0; j < infoDay.loadFoods().size(); j++) {
-                    eat_calories += Integer.valueOf(infoDay.loadFoods().get(j).getNutrients().get(1).getValue());
+                for (int j = 0; j < day.getFoods().size(); j++) {
+                    eat_calories += Integer.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue());
                 }
+                int goalCalories = localDataBaseManager.loadGoalCalories();
+                day.setRemainingCalories(goalCalories - eat_calories);
 
-                final int finalEat_calories = eat_calories;
+                localDataBaseManager.updateCalories(eat_calories,day.getRemainingCalories());
+
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
@@ -89,7 +88,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 int color = getColor(checkLimit);
                 diaryView.updateCalories(eat,remaining,checkLimit,color);
             }
-        }*/
+        }
     }
 
     @Override

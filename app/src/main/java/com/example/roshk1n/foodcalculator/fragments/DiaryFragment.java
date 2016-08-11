@@ -105,7 +105,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         day = diaryPresenter.loadDay();
         date_tv.setText(diaryPresenter.getDateString());
-
         diaryPresenter.getGoalCalories();
         diaryPresenter.calculateCalories();
 

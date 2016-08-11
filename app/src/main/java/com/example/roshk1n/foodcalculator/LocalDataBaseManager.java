@@ -103,4 +103,14 @@ public class LocalDataBaseManager {
         }
         return day;
     }
+
+    public void updateCalories(int eat_calories, int remainingCalories) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                infoDay.setEatDailyCalories(finalEat_calories);
+                infoDay.setRemainingCalories(getCurrentUserRealm().getGoalCalories() - infoDay.getEatDailyCalories());
+            }
+        });
+    }
 }
