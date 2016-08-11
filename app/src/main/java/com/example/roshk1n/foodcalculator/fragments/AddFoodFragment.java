@@ -69,8 +69,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         if(bundle != null) {
             food = bundle.getParcelable("food");
             infoFoodPresenter.isExistFavorite(food);
-            setNutrients(food.getNutrients().get(0).getValue(),food.getNutrients().get(1).getValue()
-                    ,food.getNutrients().get(2).getValue(),food.getNutrients().get(3).getValue()
+            setNutrients(food.getNutrients().get(0).getGm(),food.getNutrients().get(1).getGm()
+                    ,food.getNutrients().get(2).getGm(),food.getNutrients().get(3).getGm()
                     ,food.getName());
         }
 

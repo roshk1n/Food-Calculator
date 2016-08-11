@@ -19,11 +19,9 @@ public interface DiaryPresenter  {
 
     void setView(DiaryView view);
 
-    ArrayList<Food> loadFoods();
-
     String getDateString();
 
-    void removeFoodDB(int index, Date date);
+    void removeFoodDB(int index);
 
     void calculateCalories();
 

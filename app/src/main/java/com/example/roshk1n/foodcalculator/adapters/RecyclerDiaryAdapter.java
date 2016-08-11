@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 
 import java.util.ArrayList;
-
-import io.realm.RealmList;
 
 /**
  * Created by roshk1n on 7/17/2016.
@@ -59,7 +57,7 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.nameFoodTv.setText(foods.get(position).getName());
-        holder.amountCalTv.setText(foods.get(position).getNutrients().get(1).getValue());
+        holder.amountCalTv.setText(String.valueOf(Math.round(Float.parseFloat(foods.get(position).getNutrients().get(1).getGm()))));
         holder.valuePorTv.setText(foods.get(position).getPortion()*100 + " g.");
 
         holder.contentCv.setOnClickListener(new View.OnClickListener() {

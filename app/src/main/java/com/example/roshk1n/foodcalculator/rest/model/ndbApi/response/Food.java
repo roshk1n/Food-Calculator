@@ -99,7 +99,7 @@ public class Food  implements Parcelable {
             NutrientRealm nutrientRealm = new NutrientRealm();
             nutrientRealm.setNutrient_id(this.getNutrients().get(i).getNutrient_id());
             nutrientRealm.setNutrient(this.getNutrients().get(i).getNutrient());
-            nutrientRealm.setValue(this.getNutrients().get(i).getValue());
+            nutrientRealm.setValue(this.getNutrients().get(i).getGm());
             nutrientRealm.setUnit(this.getNutrients().get(i).getUnit());
             foodRealm.getNutrients().add(nutrientRealm);
         }

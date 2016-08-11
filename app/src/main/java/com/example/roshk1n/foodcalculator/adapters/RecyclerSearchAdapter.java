@@ -53,7 +53,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
             holder.tvName.setText(foods.get(position).getReport().getFoods().get(0).getName());
-            holder.tvAmountCal.setText(String.valueOf(foods.get(position).getReport().getFoods().get(0).getNutrients().get(1).getValue() + " cal"));
+            holder.tvAmountCal.setText(String.valueOf(foods.get(position).getReport().getFoods().get(0).getNutrients().get(1).getGm() + " cal"));
             holder.tvValuePor.setText("100" + " g, ");
 
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {

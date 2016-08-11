@@ -3,7 +3,6 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.util.Log;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
-import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenter;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -85,17 +84,17 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
         float protein=0,cabs=0,fat=0;
         int calories=0;
-        if(isFloat(food.getNutrients().get(0).getValue()))
-            protein = Float.valueOf(food.getNutrients().get(0).getValue()) * numberOfServing;
+        if(isFloat(food.getNutrients().get(0).getGm()))
+            protein = Float.valueOf(food.getNutrients().get(0).getGm()) * numberOfServing;
 
-        if (isFloat(food.getNutrients().get(1).getValue()))
-            calories = Integer.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
+        if (isFloat(food.getNutrients().get(1).getGm()))
+            calories = Integer.valueOf(food.getNutrients().get(1).getGm()) * numberOfServing;
 
-        if(isFloat(food.getNutrients().get(2).getValue()))
-            fat = Float.valueOf(food.getNutrients().get(2).getValue()) * numberOfServing;
+        if(isFloat(food.getNutrients().get(2).getGm()))
+            fat = Float.valueOf(food.getNutrients().get(2).getGm()) * numberOfServing;
 
-        if(isFloat(food.getNutrients().get(3).getValue()))
-            cabs = Float.valueOf(food.getNutrients().get(3).getValue()) * numberOfServing;
+        if(isFloat(food.getNutrients().get(3).getGm()))
+            cabs = Float.valueOf(food.getNutrients().get(3).getGm()) * numberOfServing;
 
         DecimalFormat format = new DecimalFormat();
         format.setDecimalSeparatorAlwaysShown(false);
@@ -110,10 +109,10 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     @Override
     public Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number) {
 
-        foodForUpdate.getNutrients().get(0).setValue(protein);
-        foodForUpdate.getNutrients().get(1).setValue(calories);
-        foodForUpdate.getNutrients().get(2).setValue(fat);
-        foodForUpdate.getNutrients().get(3).setValue(cabs);
+        foodForUpdate.getNutrients().get(0).setGm(protein);
+        foodForUpdate.getNutrients().get(1).setGm(calories);
+        foodForUpdate.getNutrients().get(2).setGm(fat);
+        foodForUpdate.getNutrients().get(3).setGm(cabs);
         foodForUpdate.setName(name);
         foodForUpdate.setPortion(Integer.valueOf(number));
         return foodForUpdate;

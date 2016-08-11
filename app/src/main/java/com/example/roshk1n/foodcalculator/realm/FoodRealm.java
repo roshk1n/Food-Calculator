@@ -84,7 +84,7 @@ public class FoodRealm extends RealmObject {
             Nutrient nutrient = new Nutrient();
             nutrient.setNutrient_id(this.getNutrients().get(i).getNutrient_id());
             nutrient.setNutrient(this.getNutrients().get(i).getNutrient());
-            nutrient.setValue(this.getNutrients().get(i).getValue());
+            nutrient.setGm(this.getNutrients().get(i).getValue());
             nutrient.setUnit(this.getNutrients().get(i).getUnit());
             food.getNutrients().add(nutrient);
         }

@@ -37,11 +37,11 @@ public class LocalDataBaseManager {
         return foods;
     }
 
-    public void removeFood(final int indexday, final int indexRemove) {
+    public void removeFood(final int indexRemove) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                getCurrentUserRealm().getDayRealms().get(indexday).getFoods().get(indexRemove).deleteFromRealm();
+                dayRealm.getFoods().get(indexRemove).deleteFromRealm();
             }
         });
     }
@@ -58,7 +58,7 @@ public class LocalDataBaseManager {
         return favoriteList;
     }
 
-    public void removeFavoriteFood(final int position) {
+    public void removeFavoriteFoodDB(final int position) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -68,12 +68,7 @@ public class LocalDataBaseManager {
     }
 
     public void removeFavoriteFood(final int position, final FoodRealm addFood) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().getFavoriteList().getFoods().add(position,addFood);
-            }
-        });
+
     }
 
     private UserRealm getCurrentUserRealm() {

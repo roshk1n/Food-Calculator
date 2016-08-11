@@ -26,6 +26,6 @@ public class FavoritePresenterImpl implements FavoritePresenter {
 
     @Override
     public void removeFavoriteFoodDB(int position) {
-        localDataBaseManager.removeFavoriteFood(position);
+        localDataBaseManager.removeFavoriteFoodDB(position);
     }
 }

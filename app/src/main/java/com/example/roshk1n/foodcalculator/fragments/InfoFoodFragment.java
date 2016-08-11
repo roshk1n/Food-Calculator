@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,10 +101,10 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     }
     private void setNutrients() {
         name_food_tv.setText(food.getName());
-        protein_food_tv.setText(food.getNutrients().get(0).getValue());
-        calories_food_tv.setText(food.getNutrients().get(1).getValue());
-        fat_food_tv.setText(food.getNutrients().get(2).getValue());
-        cabs_food_tv.setText(food.getNutrients().get(3).getValue());
+        protein_food_tv.setText(food.getNutrients().get(0).getGm());
+        calories_food_tv.setText(food.getNutrients().get(1).getGm());
+        fat_food_tv.setText(food.getNutrients().get(2).getGm());
+        cabs_food_tv.setText(food.getNutrients().get(3).getGm());
 
     }
 }

@@ -35,7 +35,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -153,9 +152,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-/*                Food removedFood = foods.remove(viewHolder.getAdapterPosition());
-                makeSnackBar(viewHolder.getAdapterPosition(),removedFood);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());*/
+                Food removedFood = day.getFoods().remove(viewHolder.getAdapterPosition());
+                makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
+                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -190,7 +190,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 }
             }
         });
-
         return view;
     }
 
@@ -208,7 +207,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         day = diaryPresenter.loadDay();
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -225,7 +223,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showDialog(String remaining, int checkLimit) {
-
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle("Limit of calories"); //TODO text for dialog
         if(checkLimit == 2) alertDialog.setMessage(getString(R.string.test));
@@ -268,7 +265,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showHintAddAnim() {
-
         Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                 ,R.anim.show_hint_add_food);
         hintCircleAddFood.startAnimation(animation1);
@@ -280,25 +276,25 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         animation.setRepeatCount(4);
         animation.setRepeatMode(Animation.REVERSE);
         addFoodFab.startAnimation(animation);*/
-
     }
 
-    private void makeSnackBar(final int position, final Food removedFood) {
+    private void makeSnackBarAction(final int position, final Food removedFood) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
            @Override
            public void onDismissed(Snackbar snackbar, int event) {
                super.onDismissed(snackbar, event);
                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                   diaryPresenter.removeFoodDB(position,date_add);
-                   diaryPresenter.calculateCalories(date_add);
+                   diaryPresenter.removeFoodDB(position);
                    mAdapter.notifyItemRemoved(position);
+                   diaryPresenter.calculateCalories();
+
                }
            }
        }).setAction("Undo", new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               foods.add(position,removedFood);
-               mAdapter.notifyDataSetChanged();
+               day.getFoods().add(position,removedFood);
+               mAdapter.notifyItemInserted(position);
            }
        }).setActionTextColor(Color.YELLOW);
         snackbar.show();
@@ -331,9 +327,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
         datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog" );
     }
-
-
-
 
     @Override
     public void navigateToInfoFood(Food food) {

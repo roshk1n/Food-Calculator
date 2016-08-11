@@ -3,18 +3,11 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.graphics.Color;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.StringTokenizer;
-
-import io.realm.Realm;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
@@ -57,21 +50,9 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     @Override
-    public ArrayList<Food> loadFoods() {
-   /*     foods = localDataBaseManager.loadFoodsData(date);*/
-       return null;
-    }
+    public void removeFoodDB(final int indexRemove) {
 
-    @Override
-    public void removeFoodDB(final int indexRemove, Date date) {
-/*        int day = 0;
-
-        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
-                day=i;
-            }
-        }
-        localDataBaseManager.removeFoodDB(day, indexRemove);*/
+        localDataBaseManager.removeFood(indexRemove);
     }
 
     @Override
@@ -86,7 +67,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         if(day.getFoods().size() != 0) {
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {
-                eat_calories += Integer.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue());
+                eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getGm()));
             }
             int goalCalories = localDataBaseManager.loadGoalCalories();
             day.setRemainingCalories(goalCalories - eat_calories);
@@ -109,14 +90,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     public void getGoalCalories() {
         int goalCalories = localDataBaseManager.loadGoalCalories();
         diaryView.setGoalCalories(String.valueOf(goalCalories));
-    }
-
-    private boolean compareLongAndDate(Long UserDate, Date date) {
-
-        Date userDayDate = new Date(UserDate);
-        return (userDayDate.getDate()== date.getDate()
-                && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth()== date.getMonth());
     }
 
     private int checkLimit(int remaining) {
@@ -143,5 +116,4 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
         return color;
     }
-
 }
