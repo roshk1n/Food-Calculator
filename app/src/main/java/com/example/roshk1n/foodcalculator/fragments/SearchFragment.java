@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
@@ -34,21 +37,21 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
 
     private SearchPresenterImpl searchPresenter;
-    private RestClient restClient;
-    private long mdate=0;
-
-    private View view;
     private EditText searchEt;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<NutrientSpecialFoodResponse> nutrientSpecialFoodResponses = new ArrayList<>();
+    private long mdate=0;
+
+    private View view;
 
     public SearchFragment() {}
 
     public  static SearchFragment newInstance() {
         return new SearchFragment();
     }
+
     public static SearchFragment newInstance(long date) {
         SearchFragment searchFragment = new SearchFragment();
         Bundle bundle = new Bundle();
@@ -61,6 +64,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        searchPresenter = new SearchPresenterImpl();
+        searchPresenter.setView(this);
     }
 
     @Override
@@ -76,14 +82,11 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
 
-        searchPresenter = new SearchPresenterImpl();
-        searchPresenter.setView(this);
 
         Bundle bundle = getArguments();
         if(bundle != null) {
             mdate = bundle.getLong("date");
         }
-        restClient = MyApplication.getRestClient();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -129,9 +132,14 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void updateUI(NutrientSpecialFoodResponse nutrientSpecialFoodResponses) {
+    public void setFoodNutrients(NutrientSpecialFoodResponse nutrientSpecialFoodResponses) {
         this.nutrientSpecialFoodResponses.add(nutrientSpecialFoodResponses);
         mAdapter.notifyItemInserted(this.nutrientSpecialFoodResponses.size());
+    }
+
+    @Override
+    public void setErrorNetwork() {
+        Log.d("Myy","error network");
     }
 
     @Override

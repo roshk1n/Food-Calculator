@@ -20,7 +20,7 @@ public class FavoritePresenterImpl implements FavoritePresenter {
 
     @Override
     public ArrayList<Food> getFavoriteList() {
-        favoriteFood = localDataBaseManager.getFavoriteFood();
+        favoriteFood = localDataBaseManager.loadFavoriteFood();
         return favoriteFood;
     }
 

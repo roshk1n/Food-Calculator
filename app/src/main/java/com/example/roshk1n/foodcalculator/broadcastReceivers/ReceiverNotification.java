@@ -9,10 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+
+import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -50,9 +54,9 @@ public class ReceiverNotification extends BroadcastReceiver {
 
     public void createNotification(Context context, int positionAdapter) {
 
-        ReminderReaml reminderReaml = (new RemindersPresenterImpl()).getNotification(positionAdapter);
-        Date timeNotify = new Date(reminderReaml.getTime());
-        String nameNotification = reminderReaml.getName();
+        Reminder reminder = (new LocalDataBaseManager()).getNotification(positionAdapter);
+        Date timeNotify = new Date(reminder.getTime());
+        String nameNotification = reminder.getName();
 
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, ReceiverNotification.class);

@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -51,7 +52,13 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         return new AddFoodFragment();
     }
 
-    public AddFoodFragment() {
+    public AddFoodFragment() {}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        infoFoodPresenter = new AddFoodPresenterImpl();
+        infoFoodPresenter.setView(this);
     }
 
     @Override
@@ -61,13 +68,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
         initUI();
 
-        infoFoodPresenter = new AddFoodPresenterImpl();
-        infoFoodPresenter.setView(this);
-
-        Bundle bundle = getArguments();
-
-        if(bundle != null) {
-            food = bundle.getParcelable("food");
+        if(getArguments() != null) {
+            food = getArguments().getParcelable("food");
             infoFoodPresenter.isExistFavorite(food);
             setNutrients(food.getNutrients().get(0).getGm(),food.getNutrients().get(1).getGm()
                     ,food.getNutrients().get(2).getGm(),food.getNutrients().get(3).getGm()
@@ -77,7 +79,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         mAddFoodBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (food !=null) {
+                if (food != null) {
                     if (!numberOfServingsEt.getText().toString().equals("")) {
                        food = infoFoodPresenter.updateFood(food, proteinFoodTv.getText().toString()
                                 , caloriesFoodTv.getText().toString()
@@ -117,14 +119,11 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
                 if(addFavoriteIv.getDrawable().getConstantState() == getResources()
                         .getDrawable(R.drawable.ic_favorite_border_black_24dp )
                         .getConstantState()) {
-                    if(infoFoodPresenter.addToFavorite(food)) {
-                        addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                        Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
-
-                    }
+                    infoFoodPresenter.addToFavorite(food);
+                    addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
                 } else {
-
-                    infoFoodPresenter.removeFromFavorite(food);
+                    infoFoodPresenter.removeFromFavorite(food.getNdbno());
                     addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
                 }
@@ -136,7 +135,6 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
     @Override
     public void navigateToDiary() {
-
         String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
         getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         View view = getActivity().getCurrentFocus();

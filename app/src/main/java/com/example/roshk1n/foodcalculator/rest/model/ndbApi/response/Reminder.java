@@ -1,16 +1,16 @@
-package com.example.roshk1n.foodcalculator.realm;
+package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
+import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 
-import io.realm.RealmObject;
-
-public class ReminderReaml extends RealmObject {
-
+/**
+ * Created by roshk1n on 8/12/2016.
+ */
+public class Reminder {
     private String name;
     private long time;
     private boolean state;
 
-    public ReminderReaml() {
+    public Reminder() {
     }
 
     public String getName() {
@@ -37,8 +37,8 @@ public class ReminderReaml extends RealmObject {
         this.state = state;
     }
 
-    public Reminder convertToBase() {
-        Reminder reminder = new Reminder();
+    public ReminderReaml convertToRealm() {
+        ReminderReaml reminder = new ReminderReaml();
         reminder.setName(this.getName());
         reminder.setTime(this.getTime());
         reminder.setState(this.getState());

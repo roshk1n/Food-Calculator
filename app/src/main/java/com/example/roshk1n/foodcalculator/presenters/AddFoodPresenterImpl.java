@@ -1,11 +1,8 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import android.util.Log;
+import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
-import com.example.roshk1n.foodcalculator.realm.DayRealm;
-import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.text.DecimalFormat;
@@ -14,6 +11,7 @@ import io.realm.Realm;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
     private final Realm realm = Realm.getDefaultInstance();
 
     private AddFoodView foodView;
@@ -25,49 +23,14 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     @Override
     public void addNewFood(Food food) {
+        int indexDay = localDataBaseManager.dayIsExist(new Date(food.getDate()));
+        localDataBaseManager.loadDayData(new Date(food.getDate()));
+        if(indexDay!=-1) {
+            localDataBaseManager.addFood(food,indexDay);
 
-        final FoodRealm foodRealm = food.converToRealm();
-        final UserRealm user = getCurrentUserRealm();
-        for (int i = 0; i < user.getDayRealms().size(); i++) {
-            if(compareLongAndDate( getCurrentUserRealm().getDayRealms().get(i).getDate()
-                    , new Date(foodRealm.getTime()))) {
-
-                final int finalI1 = i;
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        user.getDayRealms().get(finalI1).getFoods().add(foodRealm);
-                    }
-                });
-                break;
-
-            }  else {
-                if(i==user.getDayRealms().size()-1) {
-                    final int finalI = i;
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            DayRealm newDay = new DayRealm();
-                            newDay.setDate(foodRealm.getTime());
-                            newDay.setEatDailyCalories(0);
-                            newDay.setRemainingCalories(user.getGoalCalories());
-                            user.getDayRealms().add(newDay);
-                            user.getDayRealms().get(finalI +1).getFoods().add(foodRealm);
-                        }
-                    });
-                    break;
-                }
-            }
-        }
-        if(user.getDayRealms().size()==0) { //if it`s first day for this user
-            realm.beginTransaction();
-            DayRealm newDay = new DayRealm();
-            newDay.setDate(foodRealm.getTime());
-            newDay.setEatDailyCalories(0);
-            newDay.setRemainingCalories(user.getGoalCalories());
-            user.getDayRealms().add(newDay);
-            user.getDayRealms().get(user.getDayRealms().size()-1).getFoods().add(foodRealm);
-            realm.commitTransaction();
+        } else {
+            localDataBaseManager.createDay(food.getDate());
+            localDataBaseManager.addFood(food,indexDay);
         }
 
         foodView.navigateToDiary();
@@ -82,13 +45,12 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     @Override
     public void updateUI(Food food, int numberOfServing) {
 
-        float protein=0,cabs=0,fat=0;
-        int calories=0;
+        float protein=0,cabs=0,fat=0,calories=0;
         if(isFloat(food.getNutrients().get(0).getGm()))
             protein = Float.valueOf(food.getNutrients().get(0).getGm()) * numberOfServing;
 
         if (isFloat(food.getNutrients().get(1).getGm()))
-            calories = Integer.valueOf(food.getNutrients().get(1).getGm()) * numberOfServing;
+            calories = Float.valueOf(food.getNutrients().get(1).getGm()) * numberOfServing;
 
         if(isFloat(food.getNutrients().get(2).getGm()))
             fat = Float.valueOf(food.getNutrients().get(2).getGm()) * numberOfServing;
@@ -119,54 +81,20 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     }
 
     @Override
-    public boolean addToFavorite(Food food) {
-        FoodRealm foodRealm = food.converToRealm();
-        boolean check= false;
-        if(getCurrentUserRealm().getFavoriteList() != null) {
-            if(!foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods())) {
-
-                realm.beginTransaction();
-                getCurrentUserRealm().getFavoriteList().getFoods().add(foodRealm);
-                realm.commitTransaction();
-                Log.d("My",getCurrentUserRealm().getFavoriteList().getFoods().size()+ "s");
-                check = true;
-            }
-
-        } else {
-            realm.beginTransaction();
-            FavoriteListRealm favoriteListRealm = realm.createObject(FavoriteListRealm.class);
-            getCurrentUserRealm().setFavoriteList(favoriteListRealm);
-            getCurrentUserRealm().getFavoriteList().getFoods().add(foodRealm);
-            realm.commitTransaction();
-            check =true;
-        }
-        return check;
+    public void addToFavorite(Food food) {
+        localDataBaseManager.addFavoriteFood(food);
+        foodView.updateFavoriteImage(true);
     }
 
     @Override
-    public void removeFromFavorite(Food food) {
-        FoodRealm foodRealm = food.converToRealm();
-
-        if(getCurrentUserRealm().getFavoriteList() == null) {
-            realm.beginTransaction();
-            FavoriteListRealm favoriteListRealm = realm.createObject(FavoriteListRealm.class);
-            getCurrentUserRealm().setFavoriteList(favoriteListRealm);
-            realm.commitTransaction();
-        }
-        for(int i =0; i<getCurrentUserRealm().getFavoriteList().getFoods().size();i++) {
-            if(foodRealm.getNdbno().equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
-                realm.beginTransaction();
-                getCurrentUserRealm().getFavoriteList().getFoods().remove(i);
-                realm.commitTransaction();
-            }
-        }
+    public void removeFromFavorite(String ndbno) {
+        localDataBaseManager.removeFavoriteFoodDB(ndbno);
+        foodView.updateFavoriteImage(false);
     }
 
     @Override
     public void isExistFavorite(Food food) {
-        FoodRealm foodRealm = food.converToRealm();
-        if(getCurrentUserRealm().getFavoriteList() != null)
-        foodView.updateFavoriteImage(foodRealm.isExistIn(getCurrentUserRealm().getFavoriteList().getFoods()));
+        foodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
     }
 
    private boolean isFloat(String str) {
@@ -176,12 +104,5 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    private boolean compareLongAndDate(Long UserDate, Date date) {
-        Date userDayDate = new Date(UserDate);
-        return (userDayDate.getDate()== date.getDate()
-                && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth()== date.getMonth());
     }
 }

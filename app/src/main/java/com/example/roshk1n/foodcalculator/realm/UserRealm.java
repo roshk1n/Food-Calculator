@@ -20,7 +20,7 @@ public class UserRealm extends RealmObject {
     private String sex;
     private String activeLevel;
 
-    private FavoriteListRealm favoriteList;
+    private FavoriteListRealm favoriteList = new FavoriteListRealm();
     private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
     private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();
 

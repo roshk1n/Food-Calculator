@@ -1,24 +1,26 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.RemindersView;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenter;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 
-/**
- * Created by roshk1n on 7/24/2016.
- */
 public class RemindersPresenterImpl implements RemindersPresenter {
 
-    private final Realm realm = Realm.getDefaultInstance();
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+
+    private ArrayList<Reminder> reminders = new ArrayList<>();
 
     private RemindersView remindersView;
 
@@ -27,60 +29,47 @@ public class RemindersPresenterImpl implements RemindersPresenter {
         this.remindersView = view;
     }
 
-    @Override
-    public UserRealm getCurrentUserRealm() {
-        return realm.where(UserRealm.class)
-                .equalTo("email", Session.getInstance().getEmail())
-                .findFirst();
-    }
 
-    @Override
-    public void createReminder(boolean isChecked,String time, String tag) {
+    private Reminder createReminder(boolean isChecked,String time, String tag) {
         Date date = stringToTime(time);
-        realm.beginTransaction();
-        ReminderReaml reminderReaml = new ReminderReaml();
-        reminderReaml.setName(tag);
-        reminderReaml.setTime(date.getTime());
-        reminderReaml.setState(isChecked);
-        getCurrentUserRealm().getReminders().add(reminderReaml);
-        realm.commitTransaction();
+        Reminder reminder = new Reminder();
+        reminder.setName(tag);
+        reminder.setTime(date.getTime());
+        reminder.setState(isChecked);
+        return reminder;
+    }
+
+    private void setDefaultReminders() {
+        reminders.add(createReminder(false,"8:45","Breakfast"));
+        reminders.add(createReminder(false,"14:00","Lunch"));
+        reminders.add(createReminder(false,"18:00","Dinner"));
+        reminders.add(createReminder(false,"17:00","Snack"));
     }
 
     @Override
-    public void setDefaultReminders() {
-        if(getCurrentUserRealm().getReminders().size() == 0) {
-            createReminder(false,"8:45","Breakfast");
-            createReminder(false,"14:00","Lunch");
-            createReminder(false,"18:00","Dinner");
-            createReminder(false,"17:00","Snack");
+    public ArrayList<Reminder> loadReminder() {
+        reminders = localDataBaseManager.loadReminders();
+        if (reminders.size() == 0) {
+            setDefaultReminders();
+            localDataBaseManager.saveReminders(reminders);
         }
-    }
-
-    @Override
-    public RealmList<ReminderReaml> getReminderList() {
-        return getCurrentUserRealm().getReminders();
+        return reminders;
     }
 
     @Override
     public void updateTime(final int positionAdapter, String time) {
-        final Date date = new Date(stringToTime(time).getTime());
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().getReminders().get(positionAdapter).setTime(date.getTime());
-                remindersView.updateTime();
-            }
-        });
-    }
-
-    @Override
-    public ReminderReaml getNotification(int positionAdapter) {
-        return getCurrentUserRealm().getReminders().get(positionAdapter);
+        localDataBaseManager.updateReminderTime(positionAdapter,stringToTime(time).getTime());
+        remindersView.updateTime();
     }
 
     @Override
     public boolean getStateSwitch(int positionAdapter) {
-        return getCurrentUserRealm().getReminders().get(positionAdapter).getState();
+        return localDataBaseManager.getRemindersState(positionAdapter);
+    }
+
+    @Override
+    public void updateSwitchState(boolean check, int position) {
+        localDataBaseManager.updateReminderState(check,position);
     }
 
     private Date stringToTime(String time) {

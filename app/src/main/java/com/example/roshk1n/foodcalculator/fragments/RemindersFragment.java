@@ -19,9 +19,11 @@ import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.RemindersView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import io.realm.RealmList;
@@ -29,7 +31,7 @@ import io.realm.RealmList;
 public class RemindersFragment extends Fragment  implements RemindersView, CallbackReminderAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
 
     private RemindersPresenterImpl remindersPresenter;
-    private RealmList<ReminderReaml> remindersReaml;
+    private ArrayList<Reminder> reminders;
 
     private ReceiverNotification receiverNotification;
     private int positionAdapter;
@@ -62,13 +64,12 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
         initUI();
 
-        remindersPresenter.setDefaultReminders();
-        remindersReaml = remindersPresenter.getReminderList();
+        reminders = remindersPresenter.loadReminder();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerReminderAdapter(remindersReaml,this);
+        mAdapter = new RecyclerReminderAdapter(reminders,this);
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -101,7 +102,9 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     @Override
     public void updateSwitch(Boolean check, int positionAdapter) {
-        Log.d("My", positionAdapter+ "");
+
+        remindersPresenter.updateSwitchState(check,positionAdapter);
+
         this.positionAdapter = positionAdapter;
         if(!check) {
             receiverNotification.cancelNotification(getContext(),positionAdapter);

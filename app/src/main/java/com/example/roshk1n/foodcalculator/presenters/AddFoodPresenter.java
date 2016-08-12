@@ -14,15 +14,15 @@ public interface AddFoodPresenter {
 
     void addNewFood(Food food);
 
-     UserRealm getCurrentUserRealm();
+    UserRealm getCurrentUserRealm();
 
     void updateUI(Food food, int numberOfServing);
 
     Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number);
 
-    boolean addToFavorite(Food food);
+    void addToFavorite(Food food);
 
-    void removeFromFavorite(Food food);
+    void removeFromFavorite(String ndbno);
 
     void isExistFavorite(Food food);
 }
