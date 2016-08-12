@@ -111,7 +111,8 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         } else {
             receiverNotification.createNotification(getContext(),positionAdapter);
         }
-        mAdapter.notifyDataSetChanged();
+        reminders.get(positionAdapter).setState(check);
+        mAdapter.notifyItemChanged(positionAdapter);
     }
 
     private void initDateTimeData(){
@@ -127,6 +128,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     @Override
     public void updateTime() {
+
         mAdapter.notifyDataSetChanged();
         if(remindersPresenter.getStateSwitch(positionAdapter)) {
             receiverNotification.createNotification(getContext(),positionAdapter);
