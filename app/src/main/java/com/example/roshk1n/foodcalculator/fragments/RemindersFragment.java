@@ -80,6 +80,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         this.hour = hourOfDay;
         this.minute = minute1;
         String time = (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
+
         remindersPresenter.updateTime(positionAdapter,time);
     }
 
@@ -112,7 +113,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
             receiverNotification.createNotification(getContext(),positionAdapter);
         }
         reminders.get(positionAdapter).setState(check);
-        mAdapter.notifyItemChanged(positionAdapter);
     }
 
     private void initDateTimeData(){
@@ -127,13 +127,12 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
     }
 
     @Override
-    public void updateTime() {
-
+    public void setTime(int positionAdapter, long time) {
+        reminders.get(positionAdapter).setTime(time);
         mAdapter.notifyDataSetChanged();
         if(remindersPresenter.getStateSwitch(positionAdapter)) {
             receiverNotification.createNotification(getContext(),positionAdapter);
         }
     }
-
 }
 

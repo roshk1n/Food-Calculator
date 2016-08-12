@@ -59,7 +59,7 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     @Override
     public void updateTime(final int positionAdapter, String time) {
         localDataBaseManager.updateReminderTime(positionAdapter,stringToTime(time).getTime());
-        remindersView.updateTime();
+        remindersView.setTime(positionAdapter,stringToTime(time).getTime());
     }
 
     @Override

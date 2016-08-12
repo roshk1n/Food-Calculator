@@ -7,5 +7,5 @@ package com.example.roshk1n.foodcalculator.Views;
 
 public interface RemindersView {
 
-    void updateTime();
+    void setTime(int position, long time);
 }
