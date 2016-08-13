@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
         initUI();
 
-        profilePresenter.getUserProfile();
+        profilePresenter.loadUser();
 
         profile_iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +129,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     @Override
     public void setUserPhoto(Bitmap bitmap) {
-
         profile_iv.setImageBitmap(bitmap);
     }
 
@@ -177,12 +177,10 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     height_et.getText().toString(),
                     age_et.getText().toString(),
                     email_et.getText().toString(),
-                    profile_iv.getDrawingCache(),
+                    profile_iv.getDrawingCache(), //TODO same image
                     sex_profile_sp.getSelectedItem().toString(),
                     active_level__profile_sp.getSelectedItem().toString()
             );
-
-            profilePresenter.updateLimitCalories();
         }
     }
 

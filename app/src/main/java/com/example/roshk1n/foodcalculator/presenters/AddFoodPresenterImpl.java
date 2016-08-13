@@ -5,6 +5,8 @@ import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
+
 import java.text.DecimalFormat;
 import java.util.Date;
 import io.realm.Realm;
@@ -12,7 +14,6 @@ import io.realm.Realm;
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private final Realm realm = Realm.getDefaultInstance();
 
     private AddFoodView foodView;
 
@@ -23,40 +24,32 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     @Override
     public void addNewFood(Food food) {
-        int indexDay = localDataBaseManager.dayIsExist(new Date(food.getDate()));
-        localDataBaseManager.loadDayData(new Date(food.getDate()));
+        int indexDay = localDataBaseManager.dayIsExist(new Date(food.getTime()));
+        localDataBaseManager.loadDayData(new Date(food.getTime()));
         if(indexDay!=-1) {
             localDataBaseManager.addFood(food,indexDay);
 
         } else {
-            localDataBaseManager.createDay(food.getDate());
+            localDataBaseManager.createDay(food.getTime());
             localDataBaseManager.addFood(food,indexDay);
         }
 
         foodView.navigateToDiary();
     }
-    @Override
-    public UserRealm getCurrentUserRealm() {
-        return realm.where(UserRealm.class)
-                .equalTo("email", Session.getInstance().getEmail())
-                .findFirst();
-    }
 
     @Override
     public void updateUI(Food food, int numberOfServing) {
 
-        float protein=0,cabs=0,fat=0,calories=0;
-        if(isFloat(food.getNutrients().get(0).getGm()))
-            protein = Float.valueOf(food.getNutrients().get(0).getGm()) * numberOfServing;
+        float protein,cabs,fat,calories;
 
-        if (isFloat(food.getNutrients().get(1).getGm()))
-            calories = Float.valueOf(food.getNutrients().get(1).getGm()) * numberOfServing;
+        for (Nutrient nutrient : food.getNutrients()) {
+            nutrient.setGm(String.valueOf(Float.parseFloat(nutrient.getGm()) * numberOfServing));
+        }
 
-        if(isFloat(food.getNutrients().get(2).getGm()))
-            fat = Float.valueOf(food.getNutrients().get(2).getGm()) * numberOfServing;
-
-        if(isFloat(food.getNutrients().get(3).getGm()))
-            cabs = Float.valueOf(food.getNutrients().get(3).getGm()) * numberOfServing;
+        protein = Float.parseFloat(food.getNutrients().get(0).getGm());
+        calories = Float.parseFloat(food.getNutrients().get(1).getGm());
+        fat = Float.parseFloat(food.getNutrients().get(2).getGm());
+        cabs = Float.parseFloat(food.getNutrients().get(3).getGm());
 
         DecimalFormat format = new DecimalFormat();
         format.setDecimalSeparatorAlwaysShown(false);

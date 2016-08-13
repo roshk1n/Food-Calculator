@@ -5,9 +5,9 @@ import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.*;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,26 +22,26 @@ public class LocalDataBaseManager {
     private RealmList<ReminderReaml> remindersRealm;
     private final Realm realm = Realm.getDefaultInstance();
 
-    public LocalDataBaseManager() {}
+    public LocalDataBaseManager() {
+    }
 
     public Day loadDayData(Date date) {
         Day day = new Day();
-
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
+            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(dayIsExist(date));
             }
         }
 
-        if(dayRealm != null) {
-            day = dayRealm.convertToModel();
+        if (dayRealm != null) {
+            day = new Day(dayRealm);
         }
         return day;
     }
 
     public int dayIsExist(Date date) {
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if(compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(),date)) {
+            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(i);
                 return i;
             }
@@ -53,7 +53,7 @@ public class LocalDataBaseManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                dayRealm.getFoods().add(food.converToRealm());
+                dayRealm.getFoods().add(new FoodRealm(food));
             }
         });
     }
@@ -83,12 +83,12 @@ public class LocalDataBaseManager {
     }
 
     public ArrayList<Food> loadFavoriteFood() {
-        if(getCurrentUserRealm().getFavoriteList()!=null) {
+        if (getCurrentUserRealm().getFavoriteList() != null) {
             favoriteListRealm = getCurrentUserRealm().getFavoriteList();
         }
         ArrayList<Food> favoriteList = new ArrayList<>(); //convert to base model
-        for (int i = 0; i < favoriteListRealm.getFoods().size(); i++) {
-            favoriteList.add(favoriteListRealm.getFoods().get(i).converToModel());
+        for (FoodRealm foodRealm : favoriteListRealm.getFoods()) {
+            favoriteList.add(new Food(foodRealm));
         }
         return favoriteList;
     }
@@ -97,7 +97,7 @@ public class LocalDataBaseManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                getCurrentUserRealm().getFavoriteList().getFoods().add(food.converToRealm());
+                getCurrentUserRealm().getFavoriteList().getFoods().add(new FoodRealm(food));
             }
         });
     }
@@ -112,8 +112,8 @@ public class LocalDataBaseManager {
     }
 
     public void removeFavoriteFoodDB(String ndbno) {
-        for(int i =0; i<getCurrentUserRealm().getFavoriteList().getFoods().size();i++) {
-            if(ndbno.equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
+        for (int i = 0; i < getCurrentUserRealm().getFavoriteList().getFoods().size(); i++) {
+            if (ndbno.equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
                 final int finalI = i;
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -133,9 +133,9 @@ public class LocalDataBaseManager {
 
     private boolean compareLongAndDate(Long UserDate, Date date) {
         Date userDayDate = new Date(UserDate);
-        return (userDayDate.getDate()== date.getDate()
+        return (userDayDate.getDate() == date.getDate()
                 && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth()== date.getMonth());
+                && userDayDate.getMonth() == date.getMonth());
     }
 
     public int loadGoalCalories() {
@@ -153,15 +153,15 @@ public class LocalDataBaseManager {
     }
 
     public boolean isExistInFavotite(Food food) {
-        return food.converToRealm().isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
+        return new FoodRealm(food).isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
     }
 
     // reminders
     public ArrayList<Reminder> loadReminders() {
         remindersRealm = getCurrentUserRealm().getReminders();
         ArrayList<Reminder> reminders = new ArrayList<>();
-        for(int i = 0; i<remindersRealm.size();i++) {
-            reminders.add(remindersRealm.get(i).convertToBase());
+        for (ReminderReaml reminderReaml : remindersRealm) {
+            reminders.add(new Reminder(reminderReaml));
         }
         return reminders;
     }
@@ -185,17 +185,38 @@ public class LocalDataBaseManager {
     }
 
     public boolean getRemindersState(int position) {
-       return remindersRealm.get(position).getState();
+        return remindersRealm.get(position).getState();
     }
 
     public void saveReminders(ArrayList<Reminder> reminders) {
         remindersRealm = new RealmList<>();
-        for (int i = 0; i<reminders.size();i++) {
-            remindersRealm.add(reminders.get(i).convertToRealm());
+        for (Reminder reminder : reminders) {
+            remindersRealm.add(new ReminderReaml(reminder));
         }
     }
 
     public Reminder getNotification(int positionAdapter) {
-       return getCurrentUserRealm().getReminders().get(positionAdapter).convertToBase();
+        return new Reminder(getCurrentUserRealm().getReminders().get(positionAdapter));
+    }
+
+    public com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User loadUser() {
+        return new User(getCurrentUserRealm());
+    }
+
+    public void updateUserProfile(final User user) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                getCurrentUserRealm().setFullname(user.getFullname());
+                getCurrentUserRealm().setWeight(user.getWeight());
+                getCurrentUserRealm().setHeight(user.getHeight());
+                getCurrentUserRealm().setAge(user.getAge());
+                getCurrentUserRealm().setEmail(user.getEmail());
+                getCurrentUserRealm().setPhotoUrl(user.getPhotoUrl());
+                getCurrentUserRealm().setSex(user.getSex());
+                getCurrentUserRealm().setActiveLevel(user.getActiveLevel());
+                getCurrentUserRealm().setGoalCalories(user.getGoalCalories());
+            }
+        });
     }
 }

@@ -6,21 +6,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
-import com.example.roshk1n.foodcalculator.presenters.ProfilePresenter;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import io.realm.Realm;
-
 public class ProfilePresenterImpl implements ProfilePresenter {
 
-    private final Realm realm = Realm.getDefaultInstance();
-
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private User user;
     private final String SEX_NONE = "None";
     private final String SEX_MALE = "Male";
     private final String SEX_FEMALE = "Female";
@@ -40,18 +38,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     @Override
-    public void getUserProfile() {
-
-        profileView.setProfile(getCurrentUserRealm().getPhotoUrl(),getCurrentUserRealm().getEmail(),
-                getCurrentUserRealm().getFullname(),getCurrentUserRealm().getAge(),getCurrentUserRealm().getHeight(),
-                getCurrentUserRealm().getWeight(),getCurrentUserRealm().getSex(),getCurrentUserRealm().getActiveLevel());
-    }
-
-    @Override
-    public UserRealm getCurrentUserRealm() {
-        return realm.where(UserRealm.class)
-                .equalTo("email", Session.getInstance().getEmail())
-                .findFirst();
+    public void loadUser() {
+        user = localDataBaseManager.loadUser();
+        profileView.setProfile(user.getPhotoUrl(), user.getEmail(), user.getFullname(), user.getAge(),
+                user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
     }
 
     @Override
@@ -95,19 +85,18 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final String active_level) {
 
         String image_profile = bitmapToString(image);//convert to string
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().setFullname(fullname);
-                getCurrentUserRealm().setWeight(Integer.parseInt(weight));
-                getCurrentUserRealm().setHeight(Integer.parseInt(height));
-                getCurrentUserRealm().setAge(Integer.parseInt(age));
-                getCurrentUserRealm().setEmail(email);
-                getCurrentUserRealm().setPhotoUrl(bitmapToString(image));
-                getCurrentUserRealm().setSex(sex);
-                getCurrentUserRealm().setActiveLevel(active_level);
-            }
-        });
+        int goalCalories = updateLimitCalories(sex,active_level,weight,height,age);
+        user.setFullname(fullname);
+        user.setWeight(Integer.parseInt(weight));
+        user.setHeight(Integer.parseInt(height));
+        user.setAge(Integer.parseInt(age));
+        user.setEmail(email);
+        user.setPhotoUrl(image_profile);
+        user.setSex(sex);
+        user.setActiveLevel(active_level);
+        user.setGoalCalories(goalCalories);
+        localDataBaseManager.updateUserProfile(user);
+
         Session.getInstance().setEmail(email);
         Session.getInstance().setFullname(fullname);
         Session.getInstance().setUrlPhoto(image_profile);
@@ -116,11 +105,23 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     }
 
     @Override
-    public void updateLimitCalories() {
+    public int getPositionInArray(String active, String [] array) {
+        int position = 0;
+        for (int i= 0; i<array.length;i++) {
+            if(array[i].equals(active)) {
+                position = i;
+            }
+        }
+        return position;
+    }
+
+    private int updateLimitCalories(String sex, String active_level, String _weight, String _height, String _age ) {
         short maleOrFemaleCof = 0;
         float activeLevelCof = 1;// none active
-
-        switch (getCurrentUserRealm().getSex()) {
+        int weight = Integer.parseInt(_weight);
+        int height = Integer.parseInt(_height);
+        int age = Integer.parseInt(_age);
+        switch (sex) {
             case SEX_NONE : {
                 maleOrFemaleCof = 0;
             }
@@ -133,7 +134,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             }
         }
 
-        switch (getCurrentUserRealm().getActiveLevel()) {
+        switch (active_level) {
             case NONE__LEVEL : {
                 activeLevelCof = 1f;
             } break;
@@ -152,28 +153,9 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             }break;
 
         }
-        float goalCaloriesFloat = (10*getCurrentUserRealm().getWeight() +
-                6.25f*getCurrentUserRealm().getHeight() -
-                5*getCurrentUserRealm().getAge() + maleOrFemaleCof)*activeLevelCof; // calculate limit
+        float goalCaloriesFloat = (10 * weight + 6.25f * height - 5 * age + maleOrFemaleCof)*activeLevelCof; // calculate limit
 
-        final int goalCalories = Math.round(goalCaloriesFloat);
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().setGoalCalories(goalCalories);
-            }
-        });
-    }
-
-    @Override
-    public int getPositionInArray(String active, String [] array) {
-        int position = 0;
-        for (int i= 0; i<array.length;i++) {
-            if(array[i].equals(active)) {
-                position = i;
-            }
-        }
-        return position;
+        return Math.round(goalCaloriesFloat);
     }
 
     private String bitmapToString(Bitmap bitmap) {

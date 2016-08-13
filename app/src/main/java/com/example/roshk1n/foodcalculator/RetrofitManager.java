@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator;
 
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientBasicFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
 
 import retrofit.Callback;
@@ -27,6 +28,20 @@ public class RetrofitManager {
                             MyApplication
                                     .getRestClient()
                                     .getNdbApi()
+                                    .getBasicNutrientsFood(restClient.getApi_key(),
+                                            listFoodResponse.getList().getItem().get(i).getNdbno(),
+                                            "b", new Callback<NutrientBasicFoodResponse>() {
+                                                @Override
+                                                public void success(NutrientBasicFoodResponse nutrientBasicFoodResponse, Response response) {
+                                                        callbackRetrofit.addFood(nutrientSpecial);
+                                                    }
+
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+
+                                                }
+                                            })
                                     .getNutrientFood(listFoodResponse.getList().getItem().get(i).getNdbno(),
                                             nutrients, restClient.getApi_key(),
                                             new Callback<NutrientSpecialFoodResponse>() { // get nutrients report for each food

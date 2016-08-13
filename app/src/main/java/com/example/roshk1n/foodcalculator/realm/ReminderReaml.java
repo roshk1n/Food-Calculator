@@ -13,6 +13,12 @@ public class ReminderReaml extends RealmObject {
     public ReminderReaml() {
     }
 
+    public ReminderReaml(Reminder reminder) {
+        setName(reminder.getName());
+        setTime(reminder.getTime());
+        setState(reminder.getState());
+    }
+
     public String getName() {
         return name;
     }
@@ -37,11 +43,4 @@ public class ReminderReaml extends RealmObject {
         this.state = state;
     }
 
-    public Reminder convertToBase() {
-        Reminder reminder = new Reminder();
-        reminder.setName(this.getName());
-        reminder.setTime(this.getTime());
-        reminder.setState(this.getState());
-        return reminder;
-    }
 }

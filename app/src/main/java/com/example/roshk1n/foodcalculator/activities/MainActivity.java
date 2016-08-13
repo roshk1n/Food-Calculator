@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.BlankFragment;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
@@ -33,7 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
+        BlankFragment.OnFragmentInteractionListener {
 
     private View mHeader;
     private Toolbar mToolbar;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
-                .commit();
+                .commit();//TODO окремий клас
         icoUserDrawerIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,5 +255,10 @@ public class MainActivity extends AppCompatActivity
             e.getMessage();
         }
         icoUserDrawerIv.setImageBitmap(imageUser);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

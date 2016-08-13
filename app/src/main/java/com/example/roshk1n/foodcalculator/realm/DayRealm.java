@@ -16,6 +16,15 @@ public class DayRealm extends RealmObject {
     public DayRealm() {
     }
 
+    public DayRealm(Day day) {
+        setDate(day.getDate());
+        setEatDailyCalories(day.getEatDailyCalories());
+        setRemainingCalories(day.getRemainingCalories());
+        for (Food food : day.getFoods()) {
+            foods.add(new FoodRealm(food));
+        }
+    }
+
     public long getDate() {
         return date;
     }
@@ -46,17 +55,5 @@ public class DayRealm extends RealmObject {
 
     public void setFoods(RealmList<FoodRealm> foods) {
         this.foods = foods;
-    }
-
-    public Day convertToModel() {
-        Day day = new Day();
-        day.setDate(this.getDate());
-        for (int i = 0; i<this.getFoods().size(); i++) {
-            day.getFoods().add(this.getFoods().get(i).converToModel());
-        }
-        day.setEatDailyCalories(this.getEatDailyCalories());
-        day.setRemainingCalories(this.getRemainingCalories());
-
-        return day;
     }
 }

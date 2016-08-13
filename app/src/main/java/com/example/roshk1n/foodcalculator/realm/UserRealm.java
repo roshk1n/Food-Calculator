@@ -1,5 +1,11 @@
 package com.example.roshk1n.foodcalculator.realm;
 
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.UserProfile;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -33,6 +39,31 @@ public class UserRealm extends RealmObject {
         this.photoUrl = photo;
         this.sex = sex;
         this.activeLevel = activeLevel;
+    }
+
+    public UserRealm(User user) {
+        setEmail(user.getEmail());
+        setFullname(user.getFullname());
+        setPassword(user.getPassword());
+        setPhotoUrl(user.getPhotoUrl());
+        setAge(user.getAge());
+        setWeight(user.getWeight());
+        setHeight(user.getHeight());
+        setGoalCalories(user.getGoalCalories());
+        setSex(user.getSex());
+        setActiveLevel(user.getActiveLevel());
+
+        for (Food food : user.getFavoriteFood()) {
+            favoriteList.getFoods().add(new FoodRealm(food));
+        }
+
+        for (Reminder reminder : user.getReminders()) {
+            reminders.add(new ReminderReaml(reminder));
+        }
+
+        for (Day day : user.getDays()) {
+            dayRealms.add(new DayRealm(day));
+        }
     }
 
     public String getFullname() {
@@ -138,4 +169,5 @@ public class UserRealm extends RealmObject {
     public void setReminders(RealmList<ReminderReaml> reminders) {
         this.reminders = reminders;
     }
+
 }

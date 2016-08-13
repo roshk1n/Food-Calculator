@@ -22,6 +22,16 @@ public class FoodRealm extends RealmObject {
         this.name = name;
     }
 
+    public FoodRealm(Food food) {
+        setNdbno(food.getNdbno());
+        setName(food.getName());
+        setTime(food.getTime());
+        setPortion(food.getPortion());
+        for (Nutrient nutrient : food.getNutrients()) {
+            nutrients.add(new NutrientRealm(nutrient));
+        }
+    }
+
     public String getNdbno() {
         return ndbno;
     }
@@ -71,24 +81,5 @@ public class FoodRealm extends RealmObject {
             }
         }
         return check;
-    }
-
-    public Food converToModel() {
-        Food food = new Food();
-        food.setNdbno(this.getNdbno());
-        food.setName(this.getName());
-        food.setNdbno(this.getNdbno());
-        food.setPortion(this.getPortion());
-        for(int i=0;i<this.getNutrients().size();i++)
-        {
-            Nutrient nutrient = new Nutrient();
-            nutrient.setNutrient_id(this.getNutrients().get(i).getNutrient_id());
-            nutrient.setNutrient(this.getNutrients().get(i).getNutrient());
-            nutrient.setGm(this.getNutrients().get(i).getValue());
-            nutrient.setUnit(this.getNutrients().get(i).getUnit());
-            food.getNutrients().add(nutrient);
-        }
-        food.setDate(this.getTime());
-        return food;
     }
 }

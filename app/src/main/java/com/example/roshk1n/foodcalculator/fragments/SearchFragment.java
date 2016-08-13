@@ -37,13 +37,13 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
 
     private SearchPresenterImpl searchPresenter;
-    private EditText searchEt;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<NutrientSpecialFoodResponse> nutrientSpecialFoodResponses = new ArrayList<>();
     private long mdate=0;
 
+    private EditText searchEt;
     private View view;
 
     public SearchFragment() {}
@@ -78,14 +78,11 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         ((MainActivity)view.getContext()).setUpToolbarArrow();
         ((MainActivity)view.getContext()).disableMenuSwipe();
-      //  ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
 
-
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            mdate = bundle.getLong("date");
+        if(getArguments() != null) {
+            mdate = getArguments().getLong("date");
         }
 
         mLayoutManager = new LinearLayoutManager(getActivity());

@@ -15,9 +15,7 @@ public interface ProfilePresenter {
 
     void setView (ProfileView view);
 
-    void getUserProfile();
-
-    UserRealm getCurrentUserRealm();
+    void loadUser();
 
     Bitmap stringToBitmap(String photoUrl);
 
@@ -26,8 +24,6 @@ public interface ProfilePresenter {
     void setUserPhotoCamera(Intent data);
 
     void updateUserProfile(String fullname, String weight, String height, String age, String email,Bitmap image, String sex, String active_level);
-
-    void updateLimitCalories();
 
     int getPositionInArray(String active, String [] array);
 }

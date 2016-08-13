@@ -59,7 +59,7 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setDate(date);
+                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setTime(date);
                     Food food = foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0);
                     callbackSearchAdapter.navigateToAddFood(food);
                 }

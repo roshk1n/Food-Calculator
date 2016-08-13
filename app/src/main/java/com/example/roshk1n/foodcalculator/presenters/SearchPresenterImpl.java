@@ -16,8 +16,6 @@ public class SearchPresenterImpl implements SearchPresenter, CallbackRetrofit{
 
     private RetrofitManager retrofitManager = new RetrofitManager(this);
 
-    private String[] nutrients = {"204","208","205","203"};
-
     private NutrientSpecialFoodResponse nutrientSpecial;
 
     private SearchView searchView;

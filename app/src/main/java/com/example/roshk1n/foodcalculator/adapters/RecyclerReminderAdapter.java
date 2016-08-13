@@ -27,39 +27,61 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         this.callbackReminderAdapter = callbackReminderAdapter;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title_reminder_tv;
-        public TextView time_reminder_tv;
-        public Switch reminder_switch;
-        public CardView reminder_cv;
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ViewHolder(View v) {
+        private final CallbackReminderAdapter callbackReminderAdapter;
+        private final TextView title_reminder_tv;
+        private final TextView time_reminder_tv;
+        private final Switch reminder_switch;
+        private final CardView reminder_cv;
+        private ArrayList<Reminder> reminders;
+
+        public ViewHolder(View v, ArrayList<Reminder> reminders, CallbackReminderAdapter callbackReminderAdapter) {
             super(v);
-
+            this.reminders = reminders;
+            this.callbackReminderAdapter = callbackReminderAdapter;
             title_reminder_tv = (TextView) v.findViewById(R.id.title_reminders_tv);
             time_reminder_tv = (TextView) v.findViewById(R.id.time_reminders_tv);
             reminder_switch = (Switch) v.findViewById(R.id.reminder_switch);
             reminder_cv = (CardView) v.findViewById(R.id.item_reminder_card_view);
+        }
+
+        public void setUpListeners() {
+//            reminder_switch.setOnClickListener(this);
+            reminder_cv.setOnClickListener(this);
+        }
+
+        public void setData() {
+            Date  date = new Date(reminders.get(getAdapterPosition()).getTime());
+            int minute= date.getMinutes();
+            final int hour = date.getHours();
+            String time = (hour < 10 ? "0" + hour : hour)+":"+(minute < 10 ? "0" + minute : minute);
+            Reminder reminder = reminders.get(getAdapterPosition());
+            title_reminder_tv.setText(reminder.getName());
+            time_reminder_tv.setText(time);
+            reminder_switch.setChecked(reminder.getState());
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == reminder_switch) {
+
+            } else if (v == reminder_cv) {
+
+            }
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_reminder,parent,false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, reminders, callbackReminderAdapter);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
-        Date  date = new Date(reminders.get(position).getTime());
-        int minute= date.getMinutes();
-        final int hour = date.getHours();
-        String time = (hour < 10 ? "0" + hour : hour)+":"+(minute < 10 ? "0" + minute : minute);
-
-        holder.title_reminder_tv.setText(reminders.get(position).getName());
-        holder.time_reminder_tv.setText(time);
-        holder.reminder_switch.setChecked(reminders.get(position).getState());
+        holder.setData();
+        holder.setUpListeners();
 
         holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
             @Override

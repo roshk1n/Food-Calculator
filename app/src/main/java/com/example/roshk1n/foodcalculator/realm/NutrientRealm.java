@@ -1,5 +1,7 @@
 package com.example.roshk1n.foodcalculator.realm;
 
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
+
 import io.realm.RealmObject;
 
 public class NutrientRealm extends RealmObject {
@@ -10,6 +12,13 @@ public class NutrientRealm extends RealmObject {
     private String value;
 
     public NutrientRealm() {
+    }
+
+    public NutrientRealm(Nutrient nutrient) {
+        setNutrient_id(nutrient.getNutrient_id());
+        setNutrient(nutrient.getNutrient());
+        setUnit(nutrient.getUnit());
+        setValue(nutrient.getGm());
     }
 
     public String getNutrient_id() {

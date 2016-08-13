@@ -10,16 +10,28 @@ public class Food  implements Parcelable {
     private String ndbno;
     private String name;
     private int portion = 1;
-    private long date;
+    private long time;
     private ArrayList<Nutrient> nutrients = new ArrayList<Nutrient>();
 
     public Food() {}
+
+    public Food(FoodRealm foodRealm) {
+        setName(foodRealm.getName());
+        setNdbno(foodRealm.getNdbno());
+        setTime(foodRealm.getTime());
+        setPortion(foodRealm.getPortion());
+        ArrayList<Nutrient> nutrient = new ArrayList<>();
+        for (NutrientRealm nutrientRealm : foodRealm.getNutrients()) {
+            nutrient.add(new Nutrient(nutrientRealm));
+        }
+        setNutrients(nutrient);
+    }
 
     private Food(Parcel in) {
         ndbno = in.readString();
         name = in.readString();
         portion = in.readInt();
-        date = in.readLong();
+        time = in.readLong();
         nutrients = in.createTypedArrayList(Nutrient.CREATOR);
     }
 
@@ -59,12 +71,12 @@ public class Food  implements Parcelable {
         this.nutrients = nutrients;
     }
 
-    public long getDate() {
-        return date;
+    public long getTime() {
+        return time;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public int getPortion() {
@@ -85,25 +97,7 @@ public class Food  implements Parcelable {
         dest.writeString(ndbno);
         dest.writeString(name);
         dest.writeInt(portion);
-        dest.writeLong(date);
+        dest.writeLong(time);
         dest.writeTypedList(nutrients);
-    }
-
-    public FoodRealm converToRealm() {
-        FoodRealm foodRealm = new FoodRealm();
-        foodRealm.setName(this.getName());
-        foodRealm.setNdbno(this.getNdbno());
-        foodRealm.setPortion(this.getPortion());
-        for(int i=0;i<this.getNutrients().size();i++)
-        {
-            NutrientRealm nutrientRealm = new NutrientRealm();
-            nutrientRealm.setNutrient_id(this.getNutrients().get(i).getNutrient_id());
-            nutrientRealm.setNutrient(this.getNutrients().get(i).getNutrient());
-            nutrientRealm.setValue(this.getNutrients().get(i).getGm());
-            nutrientRealm.setUnit(this.getNutrients().get(i).getUnit());
-            foodRealm.getNutrients().add(nutrientRealm);
-        }
-        foodRealm.setTime(this.getDate());
-        return foodRealm;
     }
 }

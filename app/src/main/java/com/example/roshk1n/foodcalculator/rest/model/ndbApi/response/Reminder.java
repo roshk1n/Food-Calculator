@@ -13,6 +13,12 @@ public class Reminder {
     public Reminder() {
     }
 
+    public Reminder(ReminderReaml reminderReaml) {
+        setName(reminderReaml.getName());
+        setState(reminderReaml.getState());
+        setTime(reminderReaml.getTime());
+    }
+
     public String getName() {
         return name;
     }
@@ -35,13 +41,5 @@ public class Reminder {
 
     public void setState(boolean state) {
         this.state = state;
-    }
-
-    public ReminderReaml convertToRealm() {
-        ReminderReaml reminder = new ReminderReaml();
-        reminder.setName(this.getName());
-        reminder.setTime(this.getTime());
-        reminder.setState(this.getState());
-        return reminder;
     }
 }

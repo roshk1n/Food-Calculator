@@ -14,8 +14,6 @@ public interface AddFoodPresenter {
 
     void addNewFood(Food food);
 
-    UserRealm getCurrentUserRealm();
-
     void updateUI(Food food, int numberOfServing);
 
     Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number);
