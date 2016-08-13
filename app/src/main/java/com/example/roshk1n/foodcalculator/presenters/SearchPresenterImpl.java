@@ -1,22 +1,15 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.CallbackRetrofit;
-import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.RetrofitManager;
 import com.example.roshk1n.foodcalculator.Views.SearchView;
-import com.example.roshk1n.foodcalculator.rest.RestClient;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 
 public class SearchPresenterImpl implements SearchPresenter, CallbackRetrofit{
 
     private RetrofitManager retrofitManager = new RetrofitManager(this);
 
-    private NutrientSpecialFoodResponse nutrientSpecial;
+    private FoodResponse nutrientBasic;
 
     private SearchView searchView;
 
@@ -32,9 +25,9 @@ public class SearchPresenterImpl implements SearchPresenter, CallbackRetrofit{
     }
 
     @Override
-    public void addFood(NutrientSpecialFoodResponse nutrientSpecial) {
-        this.nutrientSpecial = nutrientSpecial;
-        searchView.setFoodNutrients(nutrientSpecial);
+    public void addFood(FoodResponse nutrientBasic) {
+        this.nutrientBasic = nutrientBasic;
+        searchView.setFoodNutrients(nutrientBasic);
     }
 
     @Override

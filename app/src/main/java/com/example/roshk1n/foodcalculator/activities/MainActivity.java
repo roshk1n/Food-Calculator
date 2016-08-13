@@ -1,5 +1,5 @@
 package com.example.roshk1n.foodcalculator.activities;
-
+//TODO баг видалення продукту зміни дати , фото в профілі
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

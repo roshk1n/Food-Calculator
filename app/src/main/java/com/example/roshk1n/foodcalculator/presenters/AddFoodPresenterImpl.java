@@ -1,15 +1,12 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.text.DecimalFormat;
 import java.util.Date;
-import io.realm.Realm;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
@@ -27,11 +24,11 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         int indexDay = localDataBaseManager.dayIsExist(new Date(food.getTime()));
         localDataBaseManager.loadDayData(new Date(food.getTime()));
         if(indexDay!=-1) {
-            localDataBaseManager.addFood(food,indexDay);
+            localDataBaseManager.addFood(food);
 
         } else {
             localDataBaseManager.createDay(food.getTime());
-            localDataBaseManager.addFood(food,indexDay);
+            localDataBaseManager.addFood(food);
         }
 
         foodView.navigateToDiary();
@@ -40,34 +37,37 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     @Override
     public void updateUI(Food food, int numberOfServing) {
 
-        float protein,cabs,fat,calories;
+        float protein=0,cabs=0,fat=0,calories=0;
 
-        for (Nutrient nutrient : food.getNutrients()) {
-            nutrient.setGm(String.valueOf(Float.parseFloat(nutrient.getGm()) * numberOfServing));
-        }
+        if (isFloat(food.getNutrients().get(1).getValue()))
+            calories = Integer.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
 
-        protein = Float.parseFloat(food.getNutrients().get(0).getGm());
-        calories = Float.parseFloat(food.getNutrients().get(1).getGm());
-        fat = Float.parseFloat(food.getNutrients().get(2).getGm());
-        cabs = Float.parseFloat(food.getNutrients().get(3).getGm());
+        if(isFloat(food.getNutrients().get(2).getValue()))
+            protein = Float.valueOf(food.getNutrients().get(2).getValue()) * numberOfServing;
+
+        if(isFloat(food.getNutrients().get(3).getValue()))
+            fat = Float.valueOf(food.getNutrients().get(3).getValue()) * numberOfServing;
+
+        if(isFloat(food.getNutrients().get(4).getValue()))
+            cabs = Float.valueOf(food.getNutrients().get(4).getValue()) * numberOfServing;
 
         DecimalFormat format = new DecimalFormat();
         format.setDecimalSeparatorAlwaysShown(false);
 
-        foodView.setNutrients(String.valueOf(format.format(protein))
-                ,String.valueOf(calories)
+        foodView.setNutrients(String.valueOf(format.format(calories))
+                ,String.valueOf(format.format(protein))
                 ,String.valueOf(format.format(fat))
                 ,String.valueOf(format.format(cabs))
                 ,food.getName());
     }
 
     @Override
-    public Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number) {
+    public Food updateFood(Food foodForUpdate,String calories, String protein, String fat, String cabs, String name, String number) {
 
-        foodForUpdate.getNutrients().get(0).setGm(protein);
-        foodForUpdate.getNutrients().get(1).setGm(calories);
-        foodForUpdate.getNutrients().get(2).setGm(fat);
-        foodForUpdate.getNutrients().get(3).setGm(cabs);
+        foodForUpdate.getNutrients().get(1).setValue(calories);
+        foodForUpdate.getNutrients().get(2).setValue(protein);
+        foodForUpdate.getNutrients().get(3).setValue(fat);
+        foodForUpdate.getNutrients().get(4).setValue(cabs);
         foodForUpdate.setName(name);
         foodForUpdate.setPortion(Integer.valueOf(number));
         return foodForUpdate;

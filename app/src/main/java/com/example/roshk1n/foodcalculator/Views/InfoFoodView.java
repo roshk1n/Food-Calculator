@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.Views;
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientBasic;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.util.ArrayList;
 
@@ -9,5 +9,4 @@ import java.util.ArrayList;
  */
 public interface InfoFoodView {
 
-    void addNutrients(ArrayList<NutrientBasic> nutrients);
 }

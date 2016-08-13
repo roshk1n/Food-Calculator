@@ -49,7 +49,7 @@ public class LocalDataBaseManager {
         return -1;
     }
 
-    public void addFood(final Food food, final int indexDay) {
+    public void addFood(final Food food) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

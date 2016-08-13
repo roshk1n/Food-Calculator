@@ -17,7 +17,7 @@ import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerInfoAdapter;
 import com.example.roshk1n.foodcalculator.presenters.InfoFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientBasic;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     private final static String FOOD_KEY = "food";
     private InfoFoodPresenterImpl infoFoodPresenter;
     private Food food;
-    private ArrayList<NutrientBasic> nutrientBasics;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -59,7 +58,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
         super.onCreate(savedInstanceState);
         infoFoodPresenter = new InfoFoodPresenterImpl();
         infoFoodPresenter.setView(this);
-        nutrientBasics = new ArrayList<>();
         if(getArguments() != null) {
             food = getArguments().getParcelable(FOOD_KEY);
         }
@@ -74,18 +72,13 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
         setNutrients(); //set filed from parcelable
 
-        infoFoodPresenter.getNutrientsBasic(food.getNdbno(),"b");
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        return view;
-    }
-
-    @Override
-    public void addNutrients(ArrayList<NutrientBasic> nutrients) {
-
-        mAdapter = new RecyclerInfoAdapter(nutrients);
+        mAdapter = new RecyclerInfoAdapter(food.getNutrients());
         mRecyclerView.setAdapter(mAdapter);
+
+        return view;
     }
 
     private void initUI() {
@@ -101,10 +94,9 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     }
     private void setNutrients() {
         name_food_tv.setText(food.getName());
-        protein_food_tv.setText(food.getNutrients().get(0).getGm());
-        calories_food_tv.setText(food.getNutrients().get(1).getGm());
-        fat_food_tv.setText(food.getNutrients().get(2).getGm());
-        cabs_food_tv.setText(food.getNutrients().get(3).getGm());
-
+        calories_food_tv.setText(food.getNutrients().get(1).getValue());
+        protein_food_tv.setText(food.getNutrients().get(2).getValue());
+        fat_food_tv.setText(food.getNutrients().get(3).getValue());
+        cabs_food_tv.setText(food.getNutrients().get(4).getValue());
     }
 }

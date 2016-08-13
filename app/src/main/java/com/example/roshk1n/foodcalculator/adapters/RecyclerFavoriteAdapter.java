@@ -46,7 +46,7 @@ public class RecyclerFavoriteAdapter extends RecyclerView.Adapter<RecyclerFavori
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvName.setText(favoriteList.get(position).getName());
-        holder.tvAmountCal.setText(favoriteList.get(position).getNutrients().get(1).getGm() + " cal.");
+        holder.tvAmountCal.setText(favoriteList.get(position).getNutrients().get(1).getValue() + " cal.");
         holder.tvValuePor.setText("100" + " g, ");
     }
 

@@ -8,7 +8,7 @@ public interface AddFoodView {
 
     void navigateToDiary();
 
-    void setNutrients(String protein, String calories, String fat, String cabs, String name);
+    void setNutrients(String calories, String protein, String fat, String cabs, String name);
 
     void updateFavoriteImage(boolean existIn);
 }

@@ -7,24 +7,24 @@ import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
 
 public class Nutrient  implements Parcelable {
     private String nutrient_id;
-    private String nutrient;
+    private String name;
     private String unit;
-    private String gm;
+    private String value;
 
     public Nutrient() { }
 
     public Nutrient(NutrientRealm nutrientRealm) {
-        setGm(nutrientRealm.getValue());
-        setNutrient(nutrientRealm.getNutrient());
+        setValue(nutrientRealm.getValue());
+        setName(nutrientRealm.getName());
         setNutrient_id(nutrientRealm.getNutrient_id());
         setUnit(nutrientRealm.getUnit());
     }
 
     private Nutrient(Parcel in) {
         nutrient_id = in.readString();
-        nutrient = in.readString();
+        name = in.readString();
         unit = in.readString();
-        gm = in.readString();
+        value = in.readString();
     }
 
     public static final Creator<Nutrient> CREATOR = new Creator<Nutrient>() {
@@ -47,9 +47,9 @@ public class Nutrient  implements Parcelable {
         this.nutrient_id = nutrient_id;
     }
 
-    public String getNutrient() { return nutrient; }
+    public String getName() { return name; }
 
-    public void setNutrient(String nutrient) { this.nutrient = nutrient; }
+    public void setName(String name) { this.name = name; }
 
     public String getUnit() {
         return unit;
@@ -59,12 +59,12 @@ public class Nutrient  implements Parcelable {
         this.unit = unit;
     }
 
-    public String getGm() {
-        return gm;
+    public String getValue() {
+        return value;
     }
 
-    public void setGm(String gm) {
-        this.gm = gm;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
@@ -75,8 +75,8 @@ public class Nutrient  implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(nutrient_id);
-        dest.writeString(nutrient);
+        dest.writeString(name);
         dest.writeString(unit);
-        dest.writeString(gm);
+        dest.writeString(value);
     }
 }

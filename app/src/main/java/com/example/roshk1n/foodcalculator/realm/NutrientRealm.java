@@ -7,18 +7,18 @@ import io.realm.RealmObject;
 public class NutrientRealm extends RealmObject {
 
     private String nutrient_id;
-    private String nutrient;
+    private String name;
     private String unit;
     private String value;
 
     public NutrientRealm() {
     }
 
-    public NutrientRealm(Nutrient nutrient) {
-        setNutrient_id(nutrient.getNutrient_id());
-        setNutrient(nutrient.getNutrient());
-        setUnit(nutrient.getUnit());
-        setValue(nutrient.getGm());
+    public NutrientRealm(Nutrient name) {
+        setNutrient_id(name.getNutrient_id());
+        setName(name.getName());
+        setUnit(name.getUnit());
+        setValue(name.getValue());
     }
 
     public String getNutrient_id() {
@@ -29,12 +29,12 @@ public class NutrientRealm extends RealmObject {
         this.nutrient_id = nutrient_id;
     }
 
-    public String getNutrient() {
-        return nutrient;
+    public String getName() {
+        return name;
     }
 
-    public void setNutrient(String nutrient) {
-        this.nutrient = nutrient;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUnit() {

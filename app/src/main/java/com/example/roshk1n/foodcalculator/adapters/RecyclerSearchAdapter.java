@@ -10,18 +10,18 @@ import android.widget.TextView;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 
 import java.util.ArrayList;
 
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
 
-    private ArrayList<NutrientSpecialFoodResponse> foods;
+    private ArrayList<FoodResponse> foods;
     private CallbackSearchAdapter callbackSearchAdapter;
     private long date;
     private View v;
 
-    public RecyclerSearchAdapter(ArrayList<NutrientSpecialFoodResponse> foods, long date, CallbackSearchAdapter callbackSearchAdapter) {
+    public RecyclerSearchAdapter(ArrayList<FoodResponse> foods, long date, CallbackSearchAdapter callbackSearchAdapter) {
         this.foods = foods;
         this.date = date;
         this.callbackSearchAdapter = callbackSearchAdapter;
@@ -52,15 +52,15 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-            holder.tvName.setText(foods.get(position).getReport().getFoods().get(0).getName());
-            holder.tvAmountCal.setText(String.valueOf(foods.get(position).getReport().getFoods().get(0).getNutrients().get(1).getGm() + " cal"));
+            holder.tvName.setText(foods.get(position).getReport().getFood().getName());
+            holder.tvAmountCal.setText(String.valueOf(foods.get(position).getReport().getFood().getNutrients().get(1).getValue() + " cal"));
             holder.tvValuePor.setText("100" + " g, ");
 
             holder.searchCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0).setTime(date);
-                    Food food = foods.get(holder.getAdapterPosition()).getReport().getFoods().get(0);
+                    foods.get(holder.getAdapterPosition()).getReport().getFood().setTime(date);
+                    Food food = foods.get(holder.getAdapterPosition()).getReport().getFood();
                     callbackSearchAdapter.navigateToAddFood(food);
                 }
             });

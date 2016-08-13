@@ -20,18 +20,16 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.SearchView;
-import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientSpecialFoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
+
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
@@ -40,7 +38,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
-    private ArrayList<NutrientSpecialFoodResponse> nutrientSpecialFoodResponses = new ArrayList<>();
+    private ArrayList<FoodResponse> foodResponses = new ArrayList<>();
     private long mdate=0;
 
     private EditText searchEt;
@@ -88,7 +86,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(nutrientSpecialFoodResponses, mdate,this);
+        mAdapter = new RecyclerSearchAdapter(foodResponses, mdate,this);
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -106,7 +104,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (searchEt.getText().length() != 0) {
-                        nutrientSpecialFoodResponses.clear();
+                        foodResponses.clear();
                         mAdapter.notifyDataSetChanged();
                         searchPresenter.searchFood(searchEt.getText().toString());
                         hideKeyboard();
@@ -129,9 +127,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void setFoodNutrients(NutrientSpecialFoodResponse nutrientSpecialFoodResponses) {
-        this.nutrientSpecialFoodResponses.add(nutrientSpecialFoodResponses);
-        mAdapter.notifyItemInserted(this.nutrientSpecialFoodResponses.size());
+    public void setFoodNutrients(FoodResponse nutrientBasicFood) {
+        this.foodResponses.add(nutrientBasicFood);
+        mAdapter.notifyItemInserted(this.foodResponses.size());
     }
 
     @Override

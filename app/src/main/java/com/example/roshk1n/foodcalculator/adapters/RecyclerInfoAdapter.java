@@ -7,16 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.NutrientBasic;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.util.ArrayList;
 
 public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapter.ViewHolder> {
-    ArrayList<NutrientBasic> nutrients;
+    private ArrayList<Nutrient> nutrients;
     private View v;
 
 
-    public RecyclerInfoAdapter(ArrayList<NutrientBasic> nutrients) {
+    public RecyclerInfoAdapter(ArrayList<Nutrient> nutrients) {
         this.nutrients = nutrients;
     }
 
@@ -39,8 +40,9 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title_nutrients_tv.setText(nutrients.get(position).getName());
-        holder.value_nutrients_tv.setText(nutrients.get(position).getValue() + " " + nutrients.get(position).getUnit());
+        Nutrient nutrient = nutrients.get(position);
+        holder.title_nutrients_tv.setText(nutrient.getName());
+        holder.value_nutrients_tv.setText(nutrient.getValue() + " " + nutrient.getUnit());
     }
 
     @Override

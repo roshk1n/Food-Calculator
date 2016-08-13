@@ -67,7 +67,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         if(day.getFoods().size() != 0) {
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {
-                eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getGm()));
+                eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
             }
             int goalCalories = localDataBaseManager.loadGoalCalories();
             day.setRemainingCalories(goalCalories - eat_calories);

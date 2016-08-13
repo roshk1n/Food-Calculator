@@ -71,9 +71,9 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         if(getArguments() != null) {
             food = getArguments().getParcelable("food");
             infoFoodPresenter.isExistFavorite(food);
-            setNutrients(food.getNutrients().get(0).getGm(),food.getNutrients().get(1).getGm()
-                    ,food.getNutrients().get(2).getGm(),food.getNutrients().get(3).getGm()
-                    ,food.getName());
+            setNutrients(food.getNutrients().get(1).getValue(),food.getNutrients().get(2).getValue(),
+                    food.getNutrients().get(3).getValue(),food.getNutrients().get(4).getValue(),
+                    food.getName());
         }
 
         mAddFoodBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,12 +81,12 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
             public void onClick(View v) {
                 if (food != null) {
                     if (!numberOfServingsEt.getText().toString().equals("")) {
-                       food = infoFoodPresenter.updateFood(food, proteinFoodTv.getText().toString()
-                                , caloriesFoodTv.getText().toString()
-                                , fatFoodTv.getText().toString()
-                                , cabsFoodTv.getText().toString()
-                                , nameFoodTv.getText().toString()
-                                ,numberOfServingsEt.getText().toString());
+                       food = infoFoodPresenter.updateFood(food, caloriesFoodTv.getText().toString(),
+                               proteinFoodTv.getText().toString(),
+                               fatFoodTv.getText().toString(),
+                               cabsFoodTv.getText().toString(),
+                               nameFoodTv.getText().toString(),
+                               numberOfServingsEt.getText().toString());
 
                         infoFoodPresenter.addNewFood(food);
                     } else {
@@ -146,9 +146,9 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
     }
 
     @Override
-    public void setNutrients(String protein, String calories, String fat, String cabs,String name) {
-        proteinFoodTv.setText(protein);
+    public void setNutrients(String calories, String protein, String fat, String cabs,String name) {
         caloriesFoodTv.setText(calories);
+        proteinFoodTv.setText(protein);
         fatFoodTv.setText(fat);
         cabsFoodTv.setText(cabs);
         nameFoodTv.setText(name);
