@@ -16,7 +16,7 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 import retrofit.http.PUT;
 
-public interface LoginApi {
+public interface LoginService {
 
     @POST("/registration")
     void registrationUser(@Body RegistrationUser registrationUser, Callback<RegistrationResponse> Callback);

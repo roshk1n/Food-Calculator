@@ -39,7 +39,8 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter, DatePickerDialog.OnDateSetListener{
+public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
+        DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
@@ -59,9 +60,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private CoordinatorLayout coordinatorLayout;
     private CoordinatorLayout HintAddFoodLayout;
 
-    public DiaryFragment() { }
+    public DiaryFragment() {
+    }
 
-    public static DiaryFragment newInstance() { return new DiaryFragment(); }
+    public static DiaryFragment newInstance() {
+        return new DiaryFragment();
+    }
 
     public static DiaryFragment newInstance(long date) {
         DiaryFragment diaryFragment = new DiaryFragment();
@@ -79,8 +83,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         return diaryFragment;
     }
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +97,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         initUI();
 
-        ((MainActivity)view.getContext()).setUpDrawerMenu();
-        ((MainActivity)view.getContext()).enableMenuSwipe();
+        ((MainActivity) view.getContext()).setUpDrawerMenu();
+        ((MainActivity) view.getContext()).enableMenuSwipe();
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
 
@@ -109,85 +111,40 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this);
+        mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
         mRecyclerView.setAdapter(mAdapter);
 
         addFoodFab.show();
 
-        follow_day_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                diaryPresenter.setFollowDate();
-                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
-                        R.id.fragment_conteiner,
-                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
-                        R.anim.slide_in_right_enter,
-                        R.anim.slide_in_right_exit,
-                        false
-                        );
-            }
-        });
-
-        next_day_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                diaryPresenter.setNextDate();
-                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
-                        R.id.fragment_conteiner,
-                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
-                        R.anim.slide_in_left_enter,
-                        R.anim.slide_in_left_exit,
-                        false
-                );
-            }
-        });
-
-        date_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker();
-            }
-        });
+        follow_day_iv.setOnClickListener(this);
+        next_day_iv.setOnClickListener(this);
+        date_tv.setOnClickListener(this);
+        addFoodFab.setOnClickListener(this);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 Food removedFood = day.getFoods().remove(viewHolder.getAdapterPosition());
-                makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
+                makeSnackBarAction(viewHolder.getAdapterPosition(), removedFood);
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        addFoodFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFoodFab.hide();
-                hideHintAddAnim();
-                Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
-                        R.id.fragment_conteiner,
-                        SearchFragment.newInstance(diaryPresenter.getDate().getTime()),
-                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
-                        true);
-            }
-        });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
-            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-                if (dy >0) {
+                if (dy > 0) {
                     if (addFoodFab.isShown()) {
                         addFoodFab.hide();
                     }
-                }
-                else if (dy <0) {
+                } else if (dy < 0) {
                     if (!addFoodFab.isShown()) {
                         addFoodFab.show();
                     }
@@ -198,18 +155,61 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     @Override
+    public void onClick(View v) {
+        if (v == follow_day_iv) {
+            diaryPresenter.setFollowDate();
+            Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                    R.id.fragment_conteiner,
+                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    R.anim.slide_in_right_enter,
+                    R.anim.slide_in_right_exit,
+                    false);
+
+        } else if (v == next_day_iv) {
+            diaryPresenter.setNextDate();
+            Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                    R.id.fragment_conteiner,
+                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    R.anim.slide_in_left_enter,
+                    R.anim.slide_in_left_exit,
+                    false);
+
+        } else if (v == date_tv) {
+            showDatePicker();
+
+        } else if (v == addFoodFab) {
+            addFoodFab.hide();
+            hideHintAddAnim();
+            Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                    R.id.fragment_conteiner,
+                    SearchFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                    true);
+        }
+    }
+
+    @Override
+    public void navigateToInfoFood(Food food) {
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                InfoFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
+    }
+
+    @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Date date = new Date();
         date.setMonth(monthOfYear);
         date.setDate(dayOfMonth);
-        date.setYear(year-1900);
+        date.setYear(year - 1900);
 
         diaryPresenter.setDate(date);
         String str = diaryPresenter.getDateString();
         date_tv.setText(str);
 
         day = diaryPresenter.loadDay();
-        mAdapter = new RecyclerDiaryAdapter(day.getFoods(),this); //need new Recycler because load new foods
+        mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -229,12 +229,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     public void showDialog(String remaining, int checkLimit) {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle("Limit of calories"); //TODO text for dialog
-        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.test));
+        alertDialog.setMessage(getString(R.string.test,"WWWWW"));
 
         if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
                 "\n    Recommend will not eat today :(");
 
-        if(checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
+        if (checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
@@ -248,29 +248,27 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void hideHintAddAnim() {
         Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                ,R.anim.hide_hint_add_food);
+                , R.anim.hide_hint_add_food);
         hintCircleAddFood.startAnimation(animation);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animation animation) {}
 
-            }
             @Override
             public void onAnimationEnd(Animation animation) {
                 HintAddFoodLayout.setVisibility(View.GONE);
             }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
 
-            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
         });
     }
 
     @Override
     public void showHintAddAnim() {
         Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                ,R.anim.show_hint_add_food);
+                , R.anim.show_hint_add_food);
         hintCircleAddFood.startAnimation(animation1);
         HintAddFoodLayout.setVisibility(View.VISIBLE);
 
@@ -284,23 +282,23 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     private void makeSnackBarAction(final int position, final Food removedFood) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
-           @Override
-           public void onDismissed(Snackbar snackbar, int event) {
-               super.onDismissed(snackbar, event);
-               if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
-                   diaryPresenter.removeFoodDB(position);
-                   mAdapter.notifyItemRemoved(position);
-                   diaryPresenter.calculateCalories();
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                    diaryPresenter.removeFoodDB(position);
+                    mAdapter.notifyItemRemoved(position);
+                    diaryPresenter.calculateCalories();
 
-               }
-           }
-       }).setAction("Undo", new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               day.getFoods().add(position,removedFood);
-               mAdapter.notifyItemInserted(position);
-           }
-       }).setActionTextColor(Color.YELLOW);
+                }
+            }
+        }).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                day.getFoods().add(position, removedFood);
+                mAdapter.notifyItemInserted(position);
+            }
+        }).setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
@@ -311,9 +309,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         goal_calories_tv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
         eat_daily_calories_tv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
         remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
-        follow_day_iv= (ImageView) view.findViewById(R.id.follow_day_iv);
-        next_day_iv= (ImageView) view.findViewById(R.id.next_day_iv);
-        hintCircleAddFood =  getActivity().findViewById(R.id.hint_add_food_view);
+        follow_day_iv = (ImageView) view.findViewById(R.id.follow_day_iv);
+        next_day_iv = (ImageView) view.findViewById(R.id.next_day_iv);
+        hintCircleAddFood = getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
@@ -329,15 +327,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
-        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog" );
-    }
-
-    @Override
-    public void navigateToInfoFood(Food food) {
-        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
-                R.id.fragment_conteiner,
-                InfoFoodFragment.newInstance(food),
-                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
-                true);
+        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
     }
 }

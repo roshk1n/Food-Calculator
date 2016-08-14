@@ -5,6 +5,11 @@ import com.example.roshk1n.foodcalculator.Views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -35,12 +40,28 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     }
 
     @Override
-    public void updateUI(Food food, int numberOfServing) {
+    public void updateUI(Food food, int numberOfServing) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream  ous = new ObjectOutputStream(baos);
+        ous.writeObject(food);
 
-        float protein=0,cabs=0,fat=0,calories=0;
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Food clonFood = (Food)ois.readObject();
+
+        DecimalFormat format = new DecimalFormat("#0.0");
+        format.setDecimalSeparatorAlwaysShown(false);
+
+        for (int i = 0; i< food.getNutrients().size(); i++) {
+            if (isFloat(food.getNutrients().get(i).getValue())) {
+                float value = Float.valueOf(food.getNutrients().get(i).getValue()) * numberOfServing;
+                clonFood.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
+            }
+        }
+/*
 
         if (isFloat(food.getNutrients().get(1).getValue()))
-            calories = Integer.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
+            calories = Float.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
 
         if(isFloat(food.getNutrients().get(2).getValue()))
             protein = Float.valueOf(food.getNutrients().get(2).getValue()) * numberOfServing;
@@ -50,15 +71,15 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
         if(isFloat(food.getNutrients().get(4).getValue()))
             cabs = Float.valueOf(food.getNutrients().get(4).getValue()) * numberOfServing;
+*/
 
-        DecimalFormat format = new DecimalFormat();
-        format.setDecimalSeparatorAlwaysShown(false);
 
-        foodView.setNutrients(String.valueOf(format.format(calories))
-                ,String.valueOf(format.format(protein))
-                ,String.valueOf(format.format(fat))
-                ,String.valueOf(format.format(cabs))
-                ,food.getName());
+
+        foodView.setNutrients(clonFood.getNutrients().get(1).getValue()
+                ,clonFood.getNutrients().get(2).getValue()
+                ,clonFood.getNutrients().get(3).getValue()
+                ,clonFood.getNutrients().get(4).getValue()
+                ,clonFood.getName());
     }
 
     @Override

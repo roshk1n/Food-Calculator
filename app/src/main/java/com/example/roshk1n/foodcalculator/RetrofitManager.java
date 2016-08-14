@@ -18,14 +18,14 @@ public class RetrofitManager {
 
     public void searchFoodApi(String search) {
         final RestClient restClient = MyApplication.getRestClient();
-        restClient.getNdbApi().searchFood("json", search, "20"
+        restClient.getNdbService().searchFood("json", search, "20"
                 , restClient.getApi_key(), new Callback<ListFoodResponse>() {// get list id product
                     @Override
                     public void success(final ListFoodResponse listFoodResponse, Response response) {
                         for (int i = 0; i < listFoodResponse.getList().getItem().size(); i++) {
                             MyApplication
                                     .getRestClient()
-                                    .getNdbApi()
+                                    .getNdbService()
                                     .getNutrientsFood(restClient.getApi_key(),
                                             listFoodResponse.getList().getItem().get(i).getNdbno(),
                                             "b", new Callback<FoodResponse>() {

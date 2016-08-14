@@ -93,13 +93,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         mRecyclerView.setItemAnimator(itemAnimator);
 
-        searchEt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -108,7 +101,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
                         foods.clear();
                         mAdapter.notifyDataSetChanged();
                         searchPresenter.searchFood(searchEt.getText().toString());
-                        hideKeyboard();
+                        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
                     }
                     return true;
                 }
@@ -150,13 +143,5 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
         searchEt = (EditText) view.findViewById(R.id.et_food_name);
-    }
-
-    private void hideKeyboard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 }

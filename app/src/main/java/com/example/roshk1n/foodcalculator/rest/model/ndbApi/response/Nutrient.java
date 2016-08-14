@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
 
-public class Nutrient  implements Parcelable {
+import java.io.Serializable;
+
+public class Nutrient  implements Parcelable, Serializable {
     private String nutrient_id;
     private String name;
     private String unit;

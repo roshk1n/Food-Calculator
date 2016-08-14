@@ -23,6 +23,9 @@ import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.utils.Utils;
+
+import java.io.IOException;
 
 public class AddFoodFragment extends Fragment implements AddFoodView {
 
@@ -88,6 +91,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
                                nameFoodTv.getText().toString(),
                                numberOfServingsEt.getText().toString());
 
+                        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
                         infoFoodPresenter.addNewFood(food);
                     } else {
                         numberOfServingsEt.setError("Enter number of servings please.");
@@ -98,21 +102,22 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
         numberOfServingsEt.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length() != 0) {
-                    infoFoodPresenter.updateUI(food,Integer.valueOf(s.toString()));
+                    try {
+                        infoFoodPresenter.updateUI(food,Integer.valueOf(s.toString()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
-
         addFavoriteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -23,10 +23,6 @@ public class SingUpPresenterImpl implements SingUpPresenter {
 
     private User user;
 
-    public User getUser() { return user; }
-
-    public void setUser(User user) { this.user = user; }
-
     @Override
     public void setView(SingUpView view) { singUpView = view; }
 
@@ -44,7 +40,6 @@ public class SingUpPresenterImpl implements SingUpPresenter {
             FirebaseHelper.uploadImage(imageUser, email, new ResponseListentenerUpload() {
                 @Override
                 public void onSuccess(String urlPhoto) {
-
                     user = new User(surname, email, password, urlPhoto);
                     FirebaseHelper.createUser(user);
                     singUpView.navigateToLogin();

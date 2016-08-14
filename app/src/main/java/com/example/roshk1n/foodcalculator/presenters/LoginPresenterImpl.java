@@ -57,7 +57,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             if (!error){
                 LoginApiManager.login("roshk1n.ua@gmail.com", "132132132");
 //TODO:
-//                restClient.getLoginApi().login(loginUser, new Callback<com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse>() {
+//                restClient.getLoginService().login(loginUser, new Callback<com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse>() {
 //                    @Override
 //                    public void success(com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse loginResponse, Response response) {
 //                        loginResponse.getData();

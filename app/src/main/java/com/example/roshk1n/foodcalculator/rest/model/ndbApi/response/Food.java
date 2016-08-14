@@ -4,9 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Food  implements Parcelable {
+public class Food  implements Parcelable, Serializable {
     private String ndbno;
     private String name;
     private int portion = 1;

@@ -1,9 +1,13 @@
 package com.example.roshk1n.foodcalculator.utils;
 
-
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import com.example.roshk1n.foodcalculator.activities.MainActivity;
 
 public class Utils {
     public static void navigateToFragment(FragmentManager fragmentManager,
@@ -47,5 +51,11 @@ public class Utils {
                     .commit();
         }
 
+    }
+
+    public static void hideKeyboard(Context context, View field) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(field.getWindowToken(), 0);
     }
 }

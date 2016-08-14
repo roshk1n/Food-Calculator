@@ -4,6 +4,8 @@ import com.example.roshk1n.foodcalculator.Views.AddFoodView;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
+import java.io.IOException;
+
 /**
  * Created by roshk1n on 7/25/2016.
  */
@@ -14,7 +16,7 @@ public interface AddFoodPresenter {
 
     void addNewFood(Food food);
 
-    void updateUI(Food food, int numberOfServing);
+    void updateUI(Food food, int numberOfServing) throws IOException, ClassNotFoundException;
 
     Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number);
 

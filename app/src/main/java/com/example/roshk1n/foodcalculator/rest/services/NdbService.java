@@ -11,7 +11,7 @@ import retrofit.http.Query;
 /**
  * Created by roshk1n on 7/18/2016.
  */
-public interface NdbApi {
+public interface NdbService {
 
     @GET("/ndb/search/")
     void searchFood(@Query("format") String format,

@@ -1,8 +1,8 @@
 package com.example.roshk1n.foodcalculator.rest;
 
 
-import com.example.roshk1n.foodcalculator.rest.services.LoginApi;
-import com.example.roshk1n.foodcalculator.rest.services.NdbApi;
+import com.example.roshk1n.foodcalculator.rest.services.LoginService;
+import com.example.roshk1n.foodcalculator.rest.services.NdbService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,8 +13,8 @@ import retrofit.converter.GsonConverter;
  * Created by roshk1n on 7/14/2016.
  */
 public class RestClient {
-    private LoginApi loginApi;
-    private NdbApi ndbApi;
+    private LoginService loginService;
+    private NdbService ndbService;
     private final String api_key = "MmHcNZ8WUfr29ekyImQB7zPfDJSeX3Qnvi7KDcTJ";
 
     public RestClient() {
@@ -32,15 +32,15 @@ public class RestClient {
                 .setEndpoint("http://api.nal.usda.gov")
                 .build();
 
-        loginApi = loginRestAdapter.create(LoginApi.class);
-        ndbApi = ndbRestAdapter.create(NdbApi.class);
+        loginService = loginRestAdapter.create(LoginService.class);
+        ndbService = ndbRestAdapter.create(NdbService.class);
     }
 
     public String getApi_key() {
         return api_key;
     }
 
-    public LoginApi getLoginApi() { return loginApi; }
+    public LoginService getLoginService() { return loginService; }
 
-    public NdbApi getNdbApi() { return ndbApi; }
+    public NdbService getNdbService() { return ndbService; }
 }
