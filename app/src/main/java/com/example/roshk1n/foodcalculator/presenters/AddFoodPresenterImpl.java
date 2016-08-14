@@ -58,22 +58,6 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
                 clonFood.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
             }
         }
-/*
-
-        if (isFloat(food.getNutrients().get(1).getValue()))
-            calories = Float.valueOf(food.getNutrients().get(1).getValue()) * numberOfServing;
-
-        if(isFloat(food.getNutrients().get(2).getValue()))
-            protein = Float.valueOf(food.getNutrients().get(2).getValue()) * numberOfServing;
-
-        if(isFloat(food.getNutrients().get(3).getValue()))
-            fat = Float.valueOf(food.getNutrients().get(3).getValue()) * numberOfServing;
-
-        if(isFloat(food.getNutrients().get(4).getValue()))
-            cabs = Float.valueOf(food.getNutrients().get(4).getValue()) * numberOfServing;
-*/
-
-
 
         foodView.setNutrients(clonFood.getNutrients().get(1).getValue()
                 ,clonFood.getNutrients().get(2).getValue()

@@ -307,11 +307,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     diaryPresenter.removeFoodDB(position);
                     mAdapter.notifyItemRemoved(position);
                     diaryPresenter.calculateCalories();
-
                 }
             }
         }).setAction("Undo", new View.OnClickListener() {

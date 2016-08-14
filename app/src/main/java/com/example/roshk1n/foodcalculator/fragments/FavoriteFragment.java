@@ -1,12 +1,14 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,25 +20,33 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
+import com.example.roshk1n.foodcalculator.responseAdapter.CallbackFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.util.ArrayList;
 
-public class FavoriteFragment extends Fragment implements FavoriteView {
+public class FavoriteFragment extends Fragment implements FavoriteView, CallbackFavoriteAdapter {
 
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
-    private View view;
-    private CoordinatorLayout favoriteCoordinatorLayout;
-
+    private OnFavoriteListener mFavoriteListener;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
+
+    private View view;
+    private CoordinatorLayout favoriteCoordinatorLayout;
 
     public FavoriteFragment() {}
 
     public static Fragment newInstance() {
         return new FavoriteFragment();
+    }
+
+    public interface OnFavoriteListener {
+        void setDrawerMenu();
+        void enableMenuSwipe();
     }
 
     @Override
@@ -53,12 +63,17 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
 
         initUI();
 
+        if(mFavoriteListener != null) {
+            mFavoriteListener.setDrawerMenu();
+            mFavoriteListener.enableMenuSwipe();
+        }
+
         favoriteList = favoritePresenter.getFavoriteList();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerFavoriteAdapter(favoriteList);
+        mAdapter = new RecyclerFavoriteAdapter(favoriteList,this);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -80,6 +95,20 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFavoriteListener) {
+            mFavoriteListener = (OnFavoriteListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFavoriteListener = null;
+    }
+
+    @Override
     public void makeSnackBar(String text) {
         Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
     }
@@ -91,7 +120,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                if(event==Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
+                if(event!=Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     favoritePresenter.removeFavoriteFoodDB(position);
                 }
             }
@@ -106,10 +135,18 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
         snackbar.show();
     }
 
-
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
         favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite");
+    }
+
+    @Override
+    public void navigateToInfoFood(Food food) {
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                InfoFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
     }
 }

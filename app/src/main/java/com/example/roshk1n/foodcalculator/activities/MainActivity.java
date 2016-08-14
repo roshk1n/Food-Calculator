@@ -1,5 +1,5 @@
 package com.example.roshk1n.foodcalculator.activities;
-//TODO баг видалення продукту зміни дати , фото в профілі
+//TODO change profile photo
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +31,7 @@ import com.example.roshk1n.foodcalculator.fragments.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
 import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
+import com.example.roshk1n.foodcalculator.presenters.FavoritePresenter;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,7 +40,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
         SearchFragment.OnSearchListener, DiaryFragment.OnDiaryListener,
-        ProfileFragment.OnProfileListener, InfoFoodFragment.OnInfoFoodListener{
+        ProfileFragment.OnProfileListener, InfoFoodFragment.OnInfoFoodListener,
+        FavoriteFragment.OnFavoriteListener {
 
     private View mHeader;
     private Toolbar mToolbar;
@@ -85,7 +87,6 @@ public class MainActivity extends AppCompatActivity
 /*        fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);*/
 
-//Realm
     }
 
     @Override

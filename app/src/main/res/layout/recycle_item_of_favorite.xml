@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/favorite_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginBottom="1dp"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/name_favorite_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="50dp"
+            android:text="@string/Potato"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/value_por_favorite_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_favorite_tv"
+            android:text="@string/_100_g"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/amount_cal_favorite_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/value_por_favorite_tv"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/value_por_favorite_tv"
+            android:text="@string/_320_cal"
+            android:textSize="15sp"
+            android:textColor="@color/colorSecondaryText" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

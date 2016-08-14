@@ -29,7 +29,7 @@ import java.io.IOException;
 
 public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener {
 
-    private AddFoodPresenterImpl infoFoodPresenter;
+    private AddFoodPresenterImpl presenter;
     private Food food;
 
     private View view;
@@ -61,8 +61,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        infoFoodPresenter = new AddFoodPresenterImpl();
-        infoFoodPresenter.setView(this);
+        presenter = new AddFoodPresenterImpl();
+        presenter.setView(this);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
         if (getArguments() != null) {
             food = getArguments().getParcelable("food");
-            infoFoodPresenter.isExistFavorite(food);
+            presenter.isExistFavorite(food);
             setNutrients(food.getNutrients().get(1).getValue(), food.getNutrients().get(2).getValue(),
                     food.getNutrients().get(3).getValue(), food.getNutrients().get(4).getValue(),
                     food.getName());
@@ -92,7 +92,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     try {
-                        infoFoodPresenter.updateUI(food, Integer.valueOf(s.toString()));
+                        presenter.updateUI(food, Integer.valueOf(s.toString()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -146,11 +146,11 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             if (addFavoriteIv.getDrawable().getConstantState() == getResources()
                     .getDrawable(R.drawable.ic_favorite_border_black_24dp)
                     .getConstantState()) {
-                infoFoodPresenter.addToFavorite(food);
+                presenter.addToFavorite(food);
                 addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
                 Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
             } else {
-                infoFoodPresenter.removeFromFavorite(food.getNdbno());
+                presenter.removeFromFavorite(food.getNdbno());
                 addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
             }
@@ -158,7 +158,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         } else if (v == mAddFoodBtn) {
             if (food != null) {
                 if (!numberOfServingsEt.getText().toString().equals("")) {
-                    food = infoFoodPresenter.updateFood(food, caloriesFoodTv.getText().toString(),
+                    food = presenter.updateFood(food, caloriesFoodTv.getText().toString(),
                             proteinFoodTv.getText().toString(),
                             fatFoodTv.getText().toString(),
                             cabsFoodTv.getText().toString(),
@@ -166,7 +166,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
                             numberOfServingsEt.getText().toString());
 
                     Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
-                    infoFoodPresenter.addNewFood(food);
+                    presenter.addNewFood(food);
                 } else {
                     numberOfServingsEt.setError("Enter number of servings please.");
                 }

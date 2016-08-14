@@ -9,4 +9,5 @@ import java.util.ArrayList;
  */
 public interface InfoFoodView {
 
+    void updateFavoriteImage(boolean b);
 }

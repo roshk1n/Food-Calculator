@@ -27,13 +27,15 @@ public class LocalDataBaseManager {
 
     public Day loadDayData(Date date) {
         Day day = new Day();
+        boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(dayIsExist(date));
+                checkDay = true;
             }
         }
 
-        if (dayRealm != null) {
+        if (checkDay) {
             day = new Day(dayRealm);
         }
         return day;
