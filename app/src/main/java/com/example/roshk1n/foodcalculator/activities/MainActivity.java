@@ -30,6 +30,7 @@ import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -56,11 +57,12 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
-                .commit();//TODO окремий клас
+        Utils.navigateToFragment(getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                DiaryFragment.newInstance(),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                false);
+
         icoUserDrawerIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,10 +70,12 @@ public class MainActivity extends AppCompatActivity
                 Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
                 if(!(fr instanceof ProfileFragment)) {
                     coordinatorHintAdd.setVisibility(View.INVISIBLE);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_conteiner, ProfileFragment.newInstance())
-                            .addToBackStack(null)
-                            .commit();
+                    Utils.navigateToFragment(getSupportFragmentManager(),
+                            R.id.fragment_conteiner,
+                            ProfileFragment.newInstance(),
+                            FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                            false);
+
                     addFoodFab.hide();
                 }
             }
@@ -134,20 +138,20 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_diary) {
             if(!(fr instanceof DiaryFragment)) {
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Utils.navigateToFragment(getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        DiaryFragment.newInstance(),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        false);
             }
 
         }  else if (id == R.id.nav_favorites) {
             if(!(fr instanceof FavoriteFragment)) {
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, FavoriteFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Utils.navigateToFragment(getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        FavoriteFragment.newInstance(),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        false);
                 addFoodFab.hide();
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
@@ -156,23 +160,24 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_reminders) {
             if(!(fr instanceof RemindersFragment)) {
-                fragmentManager.beginTransaction()
-                        /*.setCustomAnimations(R.anim.slide_in_left_enter, R.anim.slide_in_left_exit)*/ //TODO anim slide
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, RemindersFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Utils.navigateToFragment(getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        RemindersFragment.newInstance(),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        false);
+
                 addFoodFab.hide();
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
         } else if (id == R.id.nav_profile) {
             if(!(fr instanceof ProfileFragment)) {
-                fragmentManager.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, ProfileFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Utils.navigateToFragment(getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        ProfileFragment.newInstance(),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        false);
+
                 addFoodFab.hide();
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }

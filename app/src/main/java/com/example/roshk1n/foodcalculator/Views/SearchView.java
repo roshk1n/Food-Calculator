@@ -1,9 +1,9 @@
 package com.example.roshk1n.foodcalculator.Views;
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public interface SearchView {
-    void setFoodNutrients(FoodResponse foodResponse);
+    void setFoodNutrients(Food foods);
 
     void setErrorNetwork();
 }

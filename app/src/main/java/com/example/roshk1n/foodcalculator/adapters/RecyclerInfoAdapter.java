@@ -22,27 +22,33 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title_nutrients_tv;
-        public TextView value_nutrients_tv;
+        private TextView title_nutrients_tv;
+        private TextView value_nutrients_tv;
+        private ArrayList<Nutrient> nutrients;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, ArrayList<Nutrient> nutrients) {
             super(view);
+            this.nutrients = nutrients;
             title_nutrients_tv = (TextView) view.findViewById(R.id.title_nutrients_tv);
             value_nutrients_tv = (TextView) view.findViewById(R.id.value_nutrients_tv);
+        }
+
+        public void setDate() {
+            Nutrient nutrient = nutrients.get(getAdapterPosition());
+            title_nutrients_tv.setText(nutrient.getName());
+            value_nutrients_tv.setText(nutrient.getValue() + " " + nutrient.getUnit());
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_info,parent,false);
-        return new ViewHolder(v);
+        return new ViewHolder(v,nutrients);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Nutrient nutrient = nutrients.get(position);
-        holder.title_nutrients_tv.setText(nutrient.getName());
-        holder.value_nutrients_tv.setText(nutrient.getValue() + " " + nutrient.getUnit());
+        holder.setDate();
     }
 
     @Override

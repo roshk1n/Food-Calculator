@@ -88,21 +88,6 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.setData();
         holder.setUpListeners();
-
-/*        holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callbackReminderAdapter.createPicker(holder.getAdapterPosition()
-                        , reminders.get(holder.getAdapterPosition()).getName());
-            }
-        });
-
-        holder.reminder_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                callbackReminderAdapter.updateSwitch(isChecked,holder.getAdapterPosition());
-            }
-        });*/
     }
 
     @Override

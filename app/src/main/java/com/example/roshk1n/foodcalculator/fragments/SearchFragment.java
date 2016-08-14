@@ -29,6 +29,7 @@ import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
-    private ArrayList<FoodResponse> foodResponses = new ArrayList<>();
+    private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
 
     private EditText searchEt;
@@ -86,7 +87,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(foodResponses, mdate,this);
+        mAdapter = new RecyclerSearchAdapter(foods, mdate,this);
         mRecyclerView.setAdapter(mAdapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -104,7 +105,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (searchEt.getText().length() != 0) {
-                        foodResponses.clear();
+                        foods.clear();
                         mAdapter.notifyDataSetChanged();
                         searchPresenter.searchFood(searchEt.getText().toString());
                         hideKeyboard();
@@ -127,9 +128,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void setFoodNutrients(FoodResponse nutrientBasicFood) {
-        this.foodResponses.add(nutrientBasicFood);
-        mAdapter.notifyItemInserted(this.foodResponses.size());
+    public void setFoodNutrients(Food foods) {
+        this.foods.add(foods);
+        mAdapter.notifyItemInserted(this.foods.size());
     }
 
     @Override
@@ -139,11 +140,11 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
     @Override
     public void navigateToAddFood(Food food) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment_conteiner, AddFoodFragment.newInstance(food))
-                .addToBackStack(null)
-                .commit();
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                AddFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
     }
 
     private void initUI() {

@@ -32,6 +32,7 @@ import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 
@@ -117,12 +118,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             @Override
             public void onClick(View v) {
                 diaryPresenter.setFollowDate();
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right_enter,R.anim.slide_in_right_exit)
-                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(diaryPresenter.getDate().getTime()))
-                        .commit();
-
+                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                        R.anim.slide_in_right_enter,
+                        R.anim.slide_in_right_exit,
+                        false
+                        );
             }
         });
 
@@ -130,11 +132,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             @Override
             public void onClick(View v) {
                 diaryPresenter.setNextDate();
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left_enter,R.anim.slide_in_left_exit)
-                        .replace(R.id.fragment_conteiner, DiaryFragment.newInstance(diaryPresenter.getDate().getTime()))
-                        .commit();
+                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                        R.anim.slide_in_left_enter,
+                        R.anim.slide_in_left_exit,
+                        false
+                );
             }
         });
 
@@ -166,11 +170,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             public void onClick(View view) {
                 addFoodFab.hide();
                 hideHintAddAnim();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_conteiner, SearchFragment.newInstance(diaryPresenter.getDate().getTime()))
-                        .addToBackStack(null)
-                        .commit();
+                Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        SearchFragment.newInstance(diaryPresenter.getDate().getTime()),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        true);
             }
         });
 
@@ -330,10 +334,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void navigateToInfoFood(Food food) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment_conteiner, InfoFoodFragment.newInstance(food))
-                .addToBackStack(null)
-                .commit();
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                InfoFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
     }
 }

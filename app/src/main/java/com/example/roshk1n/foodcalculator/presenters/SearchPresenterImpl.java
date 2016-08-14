@@ -8,9 +8,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodRespons
 public class SearchPresenterImpl implements SearchPresenter, CallbackRetrofit{
 
     private RetrofitManager retrofitManager = new RetrofitManager(this);
-
-    private FoodResponse nutrientBasic;
-
     private SearchView searchView;
 
     public SearchPresenterImpl() {}
@@ -25,9 +22,8 @@ public class SearchPresenterImpl implements SearchPresenter, CallbackRetrofit{
     }
 
     @Override
-    public void addFood(FoodResponse nutrientBasic) {
-        this.nutrientBasic = nutrientBasic;
-        searchView.setFoodNutrients(nutrientBasic);
+    public void addFood(FoodResponse foodResponse) {
+        searchView.setFoodNutrients(foodResponse.getReport().getFood());
     }
 
     @Override

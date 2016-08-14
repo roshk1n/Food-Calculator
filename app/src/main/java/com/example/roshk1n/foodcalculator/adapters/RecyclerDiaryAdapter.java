@@ -17,48 +17,60 @@ import java.util.ArrayList;
 public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdapter.ViewHolder> {
 
     private ArrayList<Food> foods;
-
     private CallbackDiaryAdapter callbackDiaryAdapter;
+    private View v;
 
     public RecyclerDiaryAdapter(ArrayList<Food> foods, CallbackDiaryAdapter callbackDiaryAdapter) {
         this.foods = foods;
         this.callbackDiaryAdapter = callbackDiaryAdapter;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameFoodTv;
-        public TextView valuePorTv;
-        public TextView amountCalTv;
-        public CardView contentCv;
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ArrayList<Food> foods;
+        private CallbackDiaryAdapter callbackDiaryAdapter;
+        private TextView nameFoodTv;
+        private TextView valuePorTv;
+        private TextView amountCalTv;
+        private CardView contentCv;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, ArrayList<Food> foods, CallbackDiaryAdapter callbackDiaryAdapter ) {
             super(v);
+            this.foods = foods;
+            this.callbackDiaryAdapter = callbackDiaryAdapter;
             nameFoodTv = (TextView) v.findViewById(R.id.t_view_food_name);
             valuePorTv = (TextView) v.findViewById(R.id.tv_value_por_diary);
             amountCalTv = (TextView) v.findViewById(R.id.tv_amout_cal_diary);
             contentCv = (CardView) v.findViewById(R.id.item_diary_card_view);
         }
+
+        public void setUpListeners() {
+            contentCv.setOnClickListener(this);
+        }
+
+        public void setData() {
+            nameFoodTv.setText(foods.get(getAdapterPosition()).getName());
+            amountCalTv.setText(String.valueOf(Math.round(Float.parseFloat(foods.get(getAdapterPosition()).getNutrients().get(1).getValue()))));
+            valuePorTv.setText(foods.get(getAdapterPosition()).getPortion()*100 + " g.");
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == contentCv) {
+                callbackDiaryAdapter.navigateToInfoFood(foods.get(getAdapterPosition()));
+            }
+        }
     }
 
     @Override
     public RecyclerDiaryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_list_of_meal,parent,false);
-        return  new ViewHolder(v);
+        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_list_of_meal,parent,false);
+        return  new ViewHolder(v,foods,callbackDiaryAdapter);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        holder.nameFoodTv.setText(foods.get(position).getName());
-        holder.amountCalTv.setText(String.valueOf(Math.round(Float.parseFloat(foods.get(position).getNutrients().get(1).getValue()))));
-        holder.valuePorTv.setText(foods.get(position).getPortion()*100 + " g.");
-
-        holder.contentCv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callbackDiaryAdapter.navigateToInfoFood(foods.get(position));
-            }
-        });
+        holder.setData();
+        holder.setUpListeners();
     }
 
     @Override

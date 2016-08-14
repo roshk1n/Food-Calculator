@@ -72,25 +72,13 @@ public class ReceiverNotification extends BroadcastReceiver {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
         calendar.set(Calendar.MINUTE,timeNotify.getMinutes());
-        calendar.set(Calendar.SECOND,0);
-        calendarNow.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
-        calendarNow.set(Calendar.MINUTE,timeNotify.getMinutes());
-        calendarNow.set(Calendar.SECOND,0);
+        calendar.set(Calendar.SECOND,timeNotify.getSeconds());
 
-        if(calendarNow.getTime().getHours() > timeNotify.getHours()) {
-            if(calendarNow.getTime().getHours() == timeNotify.getHours()
-                    && calendarNow.getTime().getMinutes() > timeNotify.getMinutes()) {
-                am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY
-                        , AlarmManager.INTERVAL_DAY, contentIntent);
-
-            } else {
-                am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()
-                        , AlarmManager.INTERVAL_DAY, contentIntent);
-            }
+        if(calendarNow.getTime().getTime() >= calendar.getTime().getTime()) {
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY
                     , AlarmManager.INTERVAL_DAY, contentIntent);
-
         } else {
+
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis()
                     , AlarmManager.INTERVAL_DAY, contentIntent);
         }

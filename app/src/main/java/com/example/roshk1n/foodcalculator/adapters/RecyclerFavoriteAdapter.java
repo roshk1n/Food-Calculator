@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class RecyclerFavoriteAdapter extends RecyclerView.Adapter<RecyclerFavoriteAdapter.ViewHolder> {
 
     private ArrayList<Food> favoriteList;
-
     private View v;
 
     public RecyclerFavoriteAdapter(ArrayList<Food> favoriteList) {
@@ -25,29 +24,35 @@ public class RecyclerFavoriteAdapter extends RecyclerView.Adapter<RecyclerFavori
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView tvName;
-        public TextView tvValuePor;
-        public TextView tvAmountCal;
+        private TextView tvName;
+        private TextView tvValuePor;
+        private TextView tvAmountCal;
+        private ArrayList<Food> favoriteList;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, ArrayList<Food> favoriteList) {
             super(v);
+            this.favoriteList = favoriteList;
             tvName = (TextView) v.findViewById(R.id.tvSearchName);
             tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
             tvAmountCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
+        }
+
+        public void setDate() {
+            tvName.setText(favoriteList.get(getAdapterPosition()).getName());
+            tvAmountCal.setText(favoriteList.get(getAdapterPosition()).getNutrients().get(1).getValue() + " cal.");
+            tvValuePor.setText("100" + " g, ");
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_of_search,parent,false);
-        return  new ViewHolder(v);
+        return  new ViewHolder(v,favoriteList);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvName.setText(favoriteList.get(position).getName());
-        holder.tvAmountCal.setText(favoriteList.get(position).getNutrients().get(1).getValue() + " cal.");
-        holder.tvValuePor.setText("100" + " g, ");
+        holder.setDate();
     }
 
     @Override
