@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
     private final static String FOOD_KEY = "food";
     private InfoFoodPresenterImpl infoFoodPresenter;
     private Food food;
+    private OnInfoFoodListener mInfoListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -53,6 +55,11 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
         return infoFoodFragment;
     }
 
+    public interface OnInfoFoodListener {
+        void setArrowToolbar();
+        void disabledMenuSwipe();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +77,11 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
 
         initUI();
 
+        if(mInfoListener != null) {
+            mInfoListener.setArrowToolbar();
+            mInfoListener.disabledMenuSwipe();
+        }
+
         setNutrients(); //set filed from parcelable
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -79,6 +91,20 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView {
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnInfoFoodListener) {
+            mInfoListener = (OnInfoFoodListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mInfoListener = null;
     }
 
     private void initUI() {

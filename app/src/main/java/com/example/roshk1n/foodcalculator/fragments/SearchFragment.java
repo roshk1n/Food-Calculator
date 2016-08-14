@@ -1,6 +1,8 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,7 +29,6 @@ import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
+    private OnSearchListener mListener;
 
     private EditText searchEt;
     private View view;
@@ -59,6 +60,11 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         return searchFragment;
     }
 
+    public interface OnSearchListener {
+        void setArrowToolbar();
+        void disabledMenuSwipe();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +81,10 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         initUI();
 
-        ((MainActivity)view.getContext()).setUpToolbarArrow();
-        ((MainActivity)view.getContext()).disableMenuSwipe();
+        if(mListener != null) {
+            mListener.setArrowToolbar();
+            mListener.disabledMenuSwipe();
+        }
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
 
@@ -109,6 +117,20 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
             }
         });
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSearchListener) {
+            mListener = (OnSearchListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override

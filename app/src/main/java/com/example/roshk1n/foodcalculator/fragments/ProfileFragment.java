@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,12 +27,13 @@ import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
 
-public class ProfileFragment extends Fragment implements ProfileView {
+public class ProfileFragment extends Fragment implements ProfileView, View.OnClickListener {
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
 
     private ProfilePresenterImpl profilePresenter;
+    private OnProfileListener mProfileListener;
 
     private CoordinatorLayout coordinatorLayout;
     private View view;
@@ -57,6 +59,10 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     public static ProfileFragment newInstance() { return new ProfileFragment(); }
 
+    public interface OnProfileListener {
+        void updateDrawer();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,27 +80,24 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
         profilePresenter.loadUser();
 
-        profile_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (full_name_et.isEnabled()) {
-                    createPickerPhoto();
-                } else {
-                    Snackbar.make(coordinatorLayout, "First, turn on editing mode.", Snackbar.LENGTH_SHORT).show();
-                }
+        profile_iv.setOnClickListener(this);
+        edit_profile_fab.setOnClickListener(this);
 
-            }
-        });
-
-        edit_profile_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveUserProfile(full_name_et.isEnabled());
-                changeEnable(full_name_et.isEnabled());
-                changeIcon();
-            }
-        });
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnProfileListener) {
+            mProfileListener = (OnProfileListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mProfileListener = null;
     }
 
     @Override
@@ -106,6 +109,22 @@ public class ProfileFragment extends Fragment implements ProfileView {
         }
         if(requestCode==MAKE_PHOTO && resultCode==Activity.RESULT_OK) {
             profilePresenter.setUserPhotoCamera(data);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == profile_iv) {
+            if (full_name_et.isEnabled()) {
+                createPickerPhoto();
+            } else {
+                Snackbar.make(coordinatorLayout, "First, turn on editing mode.", Snackbar.LENGTH_SHORT).show();
+            }
+
+        } else if(v == edit_profile_fab) {
+            saveUserProfile(full_name_et.isEnabled());
+            changeEnable(full_name_et.isEnabled());
+            changeIcon();
         }
     }
 
@@ -134,7 +153,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     @Override
     public void CompleteUpdateAndRefreshDrawer() {
-        ((MainActivity)view.getContext()).updateDrawer();
+        mProfileListener.updateDrawer();
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 

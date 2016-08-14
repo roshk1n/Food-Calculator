@@ -23,13 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.BlankFragment;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
+import com.example.roshk1n.foodcalculator.fragments.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
+import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,7 +38,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
-        BlankFragment.OnFragmentInteractionListener {
+        SearchFragment.OnSearchListener, DiaryFragment.OnDiaryListener,
+        ProfileFragment.OnProfileListener, InfoFoodFragment.OnInfoFoodListener{
 
     private View mHeader;
     private Toolbar mToolbar;
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView icoUserDrawerIv;
     private TextView fullNameDrawerTv;
     private FloatingActionButton addFoodFab;
-    private FragmentManager fragmentManager;
     private CoordinatorLayout coordinatorHintAdd;
 
     @Override
@@ -85,11 +86,6 @@ public class MainActivity extends AppCompatActivity
         Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);*/
 
 //Realm
-        updateDrawer();
-////////////
-
-        setUpDrawerMenu();
-        enableMenuSwipe();
     }
 
     @Override
@@ -113,19 +109,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id)
-        {
-            case R.id.action_logout:
-            {
-                FirebaseAuth.getInstance().signOut();
-                Session.destroy();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                finish();
-            } break;
-
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -199,33 +182,8 @@ public class MainActivity extends AppCompatActivity
         onBackPressed();
     }
 
-    private void initUI() {
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mHeader=mNavigationView.getHeaderView(0);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        icoUserDrawerIv = (CircleImageView) mHeader.findViewById(R.id.imageView);
-        fullNameDrawerTv = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
-        addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
-        coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
-
-    }
-
-    public void setUpToolbarArrow() {
-        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha));
-        mToolbar.setNavigationOnClickListener(this);
-    }
-
-    public void disableMenuSwipe() {
-        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    public void enableMenuSwipe() {
-        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    public void setUpDrawerMenu() {
-
+    @Override
+    public void setDrawerMenu() {
         mNavigationView.setItemIconTintList(null);
         mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -250,6 +208,12 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
+    @Override
+    public void enableMenuSwipe() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
     public void updateDrawer() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
         Bitmap imageUser = null;
@@ -263,7 +227,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void setArrowToolbar() {
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+        mToolbar.setNavigationOnClickListener(this);
+    }
 
+    @Override
+    public void disabledMenuSwipe() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    private void initUI() {
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mHeader=mNavigationView.getHeaderView(0);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        icoUserDrawerIv = (CircleImageView) mHeader.findViewById(R.id.imageView);
+        fullNameDrawerTv = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
+        addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
+        coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
     }
 }

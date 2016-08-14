@@ -90,7 +90,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
-    public void onSignUpClicked (View view) { //реєстрація користувача в firebase
+    public void onSignUpClicked (View view) { //via firebase
         singUpPresenter.singUpFirebase(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
     }
@@ -103,8 +103,6 @@ public class SingUpActivity extends Activity implements SingUpView {
         ivUser = (CircleImageView) findViewById(R.id.ivUser);
         singUpRealmBtn = (Button) findViewById(R.id.button_user_sign_up_Realm);
     }
-
-    public void onSignUpAPIClicked(View view) {}
 
     public void onChoosePhoto(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

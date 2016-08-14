@@ -10,8 +10,6 @@ public interface LoginPresenter {
 
     void setView(LoginView view);
 
-    void loginWithApi(String login, String password);
-
     void checkLogin();
 
     void loginWithEmail(String email, String passwod);

@@ -83,10 +83,13 @@
     <string name="calories">Calories</string>
     <string name="_1660">1600</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="test">dawd %1$s dwad </string>
     <string name="roshk1n_ua_gmail_com">roshk1n.ua@gmail.com</string>
     <string name="_176">176</string>
     <string name="_70">70</string>
+    <string name="alert2">     You almost reached the limit today.\n     You have %1$s calories.</string>
+    <string name="alert3">     You reached the limit today.\n     Recommend will not eat today :(</string>
+    <string name="alert4">     You exceeded the limit greatly today!"</string>
+    <string name="title_limit">Limit of calories</string>
 
     <array name="photo">
         <item>Choose from Gallery</item>
@@ -107,6 +110,5 @@
         <item>Female</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

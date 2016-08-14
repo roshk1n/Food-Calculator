@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
@@ -47,6 +47,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
+    private OnDiaryListener mDiaryListener;
 
     private View view;
     private TextView date_tv;
@@ -83,6 +84,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         return diaryFragment;
     }
 
+    public interface OnDiaryListener {
+        void setDrawerMenu();
+        void enableMenuSwipe();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +103,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         initUI();
 
-        ((MainActivity) view.getContext()).setUpDrawerMenu();
-        ((MainActivity) view.getContext()).enableMenuSwipe();
+        if(mDiaryListener != null) {
+            mDiaryListener.setDrawerMenu();
+            mDiaryListener.enableMenuSwipe();
+        }
 
         if (getArguments() != null) {
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
@@ -152,6 +160,20 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             }
         });
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDiaryListener) {
+            mDiaryListener = (OnDiaryListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mDiaryListener = null;
     }
 
     @Override
@@ -228,13 +250,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void showDialog(String remaining, int checkLimit) {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle("Limit of calories"); //TODO text for dialog
-        alertDialog.setMessage(getString(R.string.test,"WWWWW"));
+        alertDialog.setTitle(getString(R.string.title_limit));
 
-        if (checkLimit == 3) alertDialog.setMessage("    You reached the limit today." +
-                "\n    Recommend will not eat today :(");
+        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.alert2,remaining));
 
-        if (checkLimit == 4) alertDialog.setMessage("     You exceeded the limit greatly today!");
+        if (checkLimit == 3) alertDialog.setMessage(getString(R.string.alert3));
+
+        if (checkLimit == 4) alertDialog.setMessage(getString(R.string.alert4));
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {

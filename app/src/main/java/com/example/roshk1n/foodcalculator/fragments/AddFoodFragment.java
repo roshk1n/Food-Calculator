@@ -27,7 +27,7 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.io.IOException;
 
-public class AddFoodFragment extends Fragment implements AddFoodView {
+public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener {
 
     private AddFoodPresenterImpl infoFoodPresenter;
     private Food food;
@@ -55,7 +55,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         return new AddFoodFragment();
     }
 
-    public AddFoodFragment() {}
+    public AddFoodFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,43 +72,27 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
         initUI();
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             food = getArguments().getParcelable("food");
             infoFoodPresenter.isExistFavorite(food);
-            setNutrients(food.getNutrients().get(1).getValue(),food.getNutrients().get(2).getValue(),
-                    food.getNutrients().get(3).getValue(),food.getNutrients().get(4).getValue(),
+            setNutrients(food.getNutrients().get(1).getValue(), food.getNutrients().get(2).getValue(),
+                    food.getNutrients().get(3).getValue(), food.getNutrients().get(4).getValue(),
                     food.getName());
         }
 
-        mAddFoodBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (food != null) {
-                    if (!numberOfServingsEt.getText().toString().equals("")) {
-                       food = infoFoodPresenter.updateFood(food, caloriesFoodTv.getText().toString(),
-                               proteinFoodTv.getText().toString(),
-                               fatFoodTv.getText().toString(),
-                               cabsFoodTv.getText().toString(),
-                               nameFoodTv.getText().toString(),
-                               numberOfServingsEt.getText().toString());
-
-                        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
-                        infoFoodPresenter.addNewFood(food);
-                    } else {
-                        numberOfServingsEt.setError("Enter number of servings please.");
-                    }
-                }
-            }
-        });
+        addFavoriteIv.setOnClickListener(this);
+        mAddFoodBtn.setOnClickListener(this);
 
         numberOfServingsEt.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() != 0) {
+                if (s.length() != 0) {
                     try {
-                        infoFoodPresenter.updateUI(food,Integer.valueOf(s.toString()));
+                        infoFoodPresenter.updateUI(food, Integer.valueOf(s.toString()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -115,26 +100,12 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
                     }
                 }
             }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        addFavoriteIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(addFavoriteIv.getDrawable().getConstantState() == getResources()
-                        .getDrawable(R.drawable.ic_favorite_border_black_24dp )
-                        .getConstantState()) {
-                    infoFoodPresenter.addToFavorite(food);
-                    addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    infoFoodPresenter.removeFromFavorite(food.getNdbno());
-                    addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
-                }
-            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
+
         return view;
     }
 
@@ -144,14 +115,14 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
         getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         View view = getActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
-    public void setNutrients(String calories, String protein, String fat, String cabs,String name) {
+    public void setNutrients(String calories, String protein, String fat, String cabs, String name) {
         caloriesFoodTv.setText(calories);
         proteinFoodTv.setText(protein);
         fatFoodTv.setText(fat);
@@ -161,11 +132,45 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
     @Override
     public void updateFavoriteImage(boolean existIn) {
-        if(existIn) {
+        if (existIn) {
             addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
 
         } else {
             addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == addFavoriteIv) {
+            if (addFavoriteIv.getDrawable().getConstantState() == getResources()
+                    .getDrawable(R.drawable.ic_favorite_border_black_24dp)
+                    .getConstantState()) {
+                infoFoodPresenter.addToFavorite(food);
+                addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
+                Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
+            } else {
+                infoFoodPresenter.removeFromFavorite(food.getNdbno());
+                addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
+            }
+
+        } else if (v == mAddFoodBtn) {
+            if (food != null) {
+                if (!numberOfServingsEt.getText().toString().equals("")) {
+                    food = infoFoodPresenter.updateFood(food, caloriesFoodTv.getText().toString(),
+                            proteinFoodTv.getText().toString(),
+                            fatFoodTv.getText().toString(),
+                            cabsFoodTv.getText().toString(),
+                            nameFoodTv.getText().toString(),
+                            numberOfServingsEt.getText().toString());
+
+                    Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
+                    infoFoodPresenter.addNewFood(food);
+                } else {
+                    numberOfServingsEt.setError("Enter number of servings please.");
+                }
+            }
         }
     }
 
@@ -182,4 +187,6 @@ public class AddFoodFragment extends Fragment implements AddFoodView {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");
     }
+
+
 }

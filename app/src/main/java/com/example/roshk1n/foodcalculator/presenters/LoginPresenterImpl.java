@@ -19,16 +19,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import io.realm.Realm;
 
 public class LoginPresenterImpl implements LoginPresenter {
 
     private final static String TAG = "MyLog";
-    private MyApplication myApplication;
     private CallbackManager callbackManager;
     private LoginView loginVew;
 
-    public LoginPresenterImpl() {}
+    public LoginPresenterImpl() {
+    }
 
     @Override
     public void setView(LoginView view) {
@@ -39,10 +40,10 @@ public class LoginPresenterImpl implements LoginPresenter {
         return callbackManager;
     }
 
-    @Override
+
     public void loginWithApi(String email, String password) {
         boolean error = false;
-        if(loginVew != null) {
+        if (loginVew != null) {
 //            TODO: email validation
             if (TextUtils.isEmpty(email)) {
                 loginVew.setEmailError();
@@ -53,20 +54,8 @@ public class LoginPresenterImpl implements LoginPresenter {
                 loginVew.setPasswordError();
                 error = true;
             }
-
-            if (!error){
+            if (!error) {
                 LoginApiManager.login("roshk1n.ua@gmail.com", "132132132");
-//TODO:
-//                restClient.getLoginService().login(loginUser, new Callback<com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse>() {
-//                    @Override
-//                    public void success(com.example.roshk1n.foodcalculator.rest.model.loginApi.response.LoginResponse loginResponse, Response response) {
-//                        loginResponse.getData();
-//                    }
-//                    @Override
-//                    public void failure(RetrofitError error) {
-//
-//                    }
-//                });
             }
         }
     }
@@ -78,7 +67,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null) {
+                if (user != null) {
                     FirebaseHelper.setmFirebaseUser(FirebaseHelper.getmAuth().getCurrentUser());
                     loginVew.navigateToHome();
                 }
@@ -90,7 +79,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void loginWithEmail(String email, String password) {
 
         boolean error = false;
-        if(loginVew != null) {
+        if (loginVew != null) {
             if (TextUtils.isEmpty(email)) {
                 loginVew.setEmailError();
                 error = true;
@@ -101,18 +90,17 @@ public class LoginPresenterImpl implements LoginPresenter {
                 error = true;
             }
 
-            if (!error){
-
+            if (!error) {
                 FirebaseHelper.logInWhithEmail(email, password, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                            if(!task.isSuccessful()) {
-                                loginVew.showToast("Authentication failed. Try again please!");
-                            } else {
-                                loginVew.navigateToHome();
-                            }
-                            Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            loginVew.showToast("Authentication failed. Try again please!");
+                        } else {
+                            loginVew.navigateToHome();
                         }
+                        Log.d(TAG, "signInWithEmail:" + task.isSuccessful());
+                    }
                 });
             }
         }
@@ -127,6 +115,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             public void onSuccess(LoginResult loginResult) {
                 loginVew.showToast("Login attempt succeed.");
             }
+
             @Override
             public void onCancel() {
                 loginVew.showToast("Login attempt canceled.");
@@ -141,13 +130,12 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     @Override
     public void loginRealm(String email, String password) {
-
         Realm realm = Realm.getDefaultInstance();
         UserRealm userRealms = realm.where(UserRealm.class)
-                .equalTo("email",email)
-                .equalTo("password",password).findFirst();
+                .equalTo("email", email)
+                .equalTo("password", password).findFirst();
 
-        if(userRealms!= null) {
+        if (userRealms != null) {
             Session.startSession();
             Session.getInstance().setEmail(userRealms.getEmail());
             Session.getInstance().setFullname(userRealms.getFullname());
