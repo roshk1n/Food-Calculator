@@ -27,7 +27,8 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         this.callbackReminderAdapter = callbackReminderAdapter;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            CompoundButton.OnCheckedChangeListener {
 
         private final CallbackReminderAdapter callbackReminderAdapter;
         private final TextView title_reminder_tv;
@@ -47,8 +48,8 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         }
 
         public void setUpListeners() {
-//            reminder_switch.setOnClickListener(this);
             reminder_cv.setOnClickListener(this);
+            reminder_switch.setOnCheckedChangeListener(this);
         }
 
         public void setData() {
@@ -64,11 +65,16 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
 
         @Override
         public void onClick(View v) {
-            if (v == reminder_switch) {
-
-            } else if (v == reminder_cv) {
-
+            if (v == reminder_cv) {
+                callbackReminderAdapter.createPicker(
+                        getAdapterPosition(),
+                        reminders.get(getAdapterPosition()).getName());
             }
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            callbackReminderAdapter.updateSwitch(isChecked, getAdapterPosition());
         }
     }
 
@@ -83,7 +89,7 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         holder.setData();
         holder.setUpListeners();
 
-        holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
+/*        holder.reminder_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callbackReminderAdapter.createPicker(holder.getAdapterPosition()
@@ -96,7 +102,7 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 callbackReminderAdapter.updateSwitch(isChecked,holder.getAdapterPosition());
             }
-        });
+        });*/
     }
 
     @Override

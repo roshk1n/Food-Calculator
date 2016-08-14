@@ -73,9 +73,9 @@ public class ReceiverNotification extends BroadcastReceiver {
         calendar.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
         calendar.set(Calendar.MINUTE,timeNotify.getMinutes());
         calendar.set(Calendar.SECOND,0);
-        calendar.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
-        calendar.set(Calendar.MINUTE,timeNotify.getMinutes());
-        calendar.set(Calendar.SECOND,0);
+        calendarNow.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
+        calendarNow.set(Calendar.MINUTE,timeNotify.getMinutes());
+        calendarNow.set(Calendar.SECOND,0);
 
         if(calendarNow.getTime().getHours() > timeNotify.getHours()) {
             if(calendarNow.getTime().getHours() == timeNotify.getHours()

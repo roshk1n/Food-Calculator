@@ -188,15 +188,20 @@ public class LocalDataBaseManager {
         return remindersRealm.get(position).getState();
     }
 
-    public void saveReminders(ArrayList<Reminder> reminders) {
-        remindersRealm = new RealmList<>();
-        for (Reminder reminder : reminders) {
-            remindersRealm.add(new ReminderReaml(reminder));
-        }
+    public void saveReminders(final ArrayList<Reminder> reminders) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                for (Reminder reminder : reminders) {
+                    remindersRealm.add(new ReminderReaml(reminder));
+                }
+            }
+        });
     }
 
     public Reminder getNotification(int positionAdapter) {
-        return new Reminder(getCurrentUserRealm().getReminders().get(positionAdapter));
+        remindersRealm = getCurrentUserRealm().getReminders();
+        return new Reminder(remindersRealm.get(positionAdapter));
     }
 
     public com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User loadUser() {
