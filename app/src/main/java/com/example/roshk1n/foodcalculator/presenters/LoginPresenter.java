@@ -12,10 +12,8 @@ public interface LoginPresenter {
 
     void checkLogin();
 
-    void loginWithEmail(String email, String passwod);
-
     void loginFacebookListner(LoginButton loginButton);
 
-    void loginRealm(String email, String password);
+    void login(String email, String password);
 
 }

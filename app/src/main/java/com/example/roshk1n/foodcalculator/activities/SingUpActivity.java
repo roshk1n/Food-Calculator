@@ -45,13 +45,13 @@ public class SingUpActivity extends Activity implements SingUpView {
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
 
-        singUpRealmBtn.setOnClickListener(new View.OnClickListener() {
+/*        singUpRealmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 singUpPresenter.singUpRealm(surname.getText().toString(),email.getText().toString()
                         ,password.getText().toString(),confirmPassword.getText().toString());
             }
-        });
+        });*/
     }
 
     @Override

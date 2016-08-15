@@ -7,6 +7,7 @@ import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.*;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 
 
 import java.util.ArrayList;
@@ -23,6 +24,20 @@ public class LocalDataBaseManager {
     private final Realm realm = Realm.getDefaultInstance();
 
     public LocalDataBaseManager() {
+    }
+
+    public void loginUser(String email, String password, CallbackLocalManager callbackLocal) {
+        User user;
+        UserRealm userRealms = realm.where(UserRealm.class)
+                .equalTo("email", email)
+                .equalTo("password", password).findFirst();
+
+        if(userRealms != null) {
+            user = new User(userRealms);
+            callbackLocal.LoginRealmSuccess(user);
+        } else {
+            callbackLocal.showToast("Authentication failed. Try again please!");
+        }
     }
 
     public Day loadDayData(Date date) {
@@ -158,7 +173,6 @@ public class LocalDataBaseManager {
         return new FoodRealm(food).isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
     }
 
-    // reminders
     public ArrayList<Reminder> loadReminders() {
         remindersRealm = getCurrentUserRealm().getReminders();
         ArrayList<Reminder> reminders = new ArrayList<>();

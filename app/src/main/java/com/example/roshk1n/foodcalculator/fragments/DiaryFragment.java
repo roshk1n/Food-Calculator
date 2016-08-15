@@ -293,13 +293,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 , R.anim.show_hint_add_food);
         hintCircleAddFood.startAnimation(animation1);
         HintAddFoodLayout.setVisibility(View.VISIBLE);
-
-  /*      final Animation animation = new AlphaAnimation(1, 0.6f);  // light fab
-        animation.setDuration(800);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(4);
-        animation.setRepeatMode(Animation.REVERSE);
-        addFoodFab.startAnimation(animation);*/
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {

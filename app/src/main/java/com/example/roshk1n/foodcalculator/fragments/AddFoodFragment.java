@@ -113,11 +113,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     public void navigateToDiary() {
         String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
         getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(MainActivity.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
         Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }
 

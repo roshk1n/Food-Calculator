@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -51,6 +52,11 @@ public class Utils {
                     .commit();
         }
 
+    }
+
+    public static boolean isConnectNetwork(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     public static void hideKeyboard(Context context, View field) {

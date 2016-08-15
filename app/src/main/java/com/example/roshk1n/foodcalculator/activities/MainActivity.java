@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
@@ -32,6 +33,7 @@ import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
 import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenter;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
+
+
         Utils.navigateToFragment(getSupportFragmentManager(),
                 R.id.fragment_conteiner,
                 DiaryFragment.newInstance(),
@@ -83,9 +87,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        //Firebase
-/*        fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-        Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);*/
+
+        updateDrawer();
 
     }
 
@@ -216,15 +219,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateDrawer() {
-        fullNameDrawerTv.setText(Session.getInstance().getFullname());
-        Bitmap imageUser = null;
-        try {
-            byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
-            imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch(Exception e) {
-            e.getMessage();
+        if(Utils.isConnectNetwork(getApplicationContext())) {
+            fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+            Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);
+        } else {
+            fullNameDrawerTv.setText(Session.getInstance().getFullname());
+            Bitmap imageUser = null;
+            try {
+                byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
+                imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch(Exception e) {
+                e.getMessage();
+            }
+            icoUserDrawerIv.setImageBitmap(imageUser);
         }
-        icoUserDrawerIv.setImageBitmap(imageUser);
     }
 
     @Override

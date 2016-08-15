@@ -57,40 +57,15 @@
                 android:textColor="@color/colorPrimaryText" />
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnLoginApi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="onLogInApi"
-                android:text="@string/log_in_api"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryText" />
-
-            <Button
-                android:id="@+id/login_realm_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="onLogIn"
-                android:text="@string/log_in_realm"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryText" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="onLogIn"
-                android:text="@string/log_in"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryText" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="onLogIn"
+            android:text="@string/log_in"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryText" />
 
         <TextView
             android:id="@+id/tbOR"

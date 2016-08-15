@@ -61,9 +61,18 @@ public class FirebaseHelper {
         mAuth.addAuthStateListener(mAuthListner);
     }
 
-    public static void logInWhithEmail(String email, String password, OnCompleteListener listner) {
-
-         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(listner);
+    public static void logInWithEmail(String email, String password, final CallbackFirebase callback) {
+         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+             @Override
+             public void onComplete(@NonNull Task<AuthResult> task) {
+                 if(task.isSuccessful()) {
+                     callback.loginSuccessful();
+                     FirebaseHelper.setmFirebaseUser(getmFirebaseUser());
+                 } else {
+                     callback.showToast("Authentication failed. Try again please!");
+                 }
+             }
+         });
     }
 
     public static void createUser(final User user) {

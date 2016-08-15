@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class FavoritePresenterImpl implements FavoritePresenter {
 
-    LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    ArrayList<Food> favoriteFood = new ArrayList<>();
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private ArrayList<Food> favoriteFood = new ArrayList<>();
 
     private FavoriteView favoriteView;
 
