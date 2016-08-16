@@ -164,7 +164,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
                     Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
                     presenter.addNewFood(food);
-                    FirebaseHelper.addFood(food);
+                  //  FirebaseHelper.addFood(food);
                 } else {
                     numberOfServingsEt.setError("Enter number of servings please.");
                 }

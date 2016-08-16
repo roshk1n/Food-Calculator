@@ -21,12 +21,17 @@ public class LocalDataBaseManager {
     private DayRealm dayRealm;
     private FavoriteListRealm favoriteListRealm;
     private RealmList<ReminderReaml> remindersRealm;
+    private CallbackLocalManager callbackLocal;
     private final Realm realm = Realm.getDefaultInstance();
 
     public LocalDataBaseManager() {
     }
 
-    public void loginUser(String email, String password, CallbackLocalManager callbackLocal) {
+    public LocalDataBaseManager(CallbackLocalManager callbackLocalManager) {
+        this.callbackLocal = callbackLocalManager;
+    }
+
+    public void loginUser(String email, String password) {
         User user;
         UserRealm userRealms = realm.where(UserRealm.class)
                 .equalTo("email", email)
@@ -34,7 +39,11 @@ public class LocalDataBaseManager {
 
         if(userRealms != null) {
             user = new User(userRealms);
-            callbackLocal.LoginRealmSuccess(user);
+            Session.startSession();
+            Session.getInstance().setEmail(user.getEmail());
+            Session.getInstance().setFullname(user.getFullname());
+            Session.getInstance().setUrlPhoto(user.getPhotoUrl());
+            callbackLocal.loginSuccessful();
         } else {
             callbackLocal.showToast("Authentication failed. Try again please!");
         }
@@ -45,7 +54,7 @@ public class LocalDataBaseManager {
         boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
-                dayRealm = getCurrentUserRealm().getDayRealms().get(dayIsExist(date));
+                dayRealm = getCurrentUserRealm().getDayRealms().get(i);
                 checkDay = true;
             }
         }

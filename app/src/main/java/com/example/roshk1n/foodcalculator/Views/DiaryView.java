@@ -1,5 +1,7 @@
 package com.example.roshk1n.foodcalculator.Views;
 
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
+
 public interface DiaryView {
 
     void updateCalories(String eat,String remaining, int color);
@@ -11,4 +13,6 @@ public interface DiaryView {
     void showHintAddAnim();
 
     void hideHintAddAnim();
+
+    void setDay(Day day);
 }

@@ -6,7 +6,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();;
+    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
     private InfoFoodView infoFoodView;
 
     @Override

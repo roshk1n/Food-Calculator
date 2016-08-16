@@ -2,10 +2,10 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Color;
 
+import com.example.roshk1n.foodcalculator.CallbackLoadDay;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 
 import java.text.SimpleDateFormat;
@@ -13,6 +13,8 @@ import java.util.Date;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private DataManager dataManager = new DataManager();
+
     private Day day;
     private Date date = new Date();
     private DiaryView diaryView;
@@ -35,14 +37,18 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     @Override
-    public Day loadDay() {
-        day = localDataBaseManager.loadDayData(date);
-        if(day.getFoods().size()==0) {
+    public void loadDay() {
+        dataManager.loadDayData(date, new CallbackLoadDay() {
+            @Override
+            public void setDay(Day day) {
+                diaryView.setDay(day);
+            }
+        });
+    /*    if(day.getFoods().size()==0) {
             diaryView.showHintAddAnim();
         } else {
             diaryView.hideHintAddAnim();
-        }
-        return day;
+        }*/
     }
 
     @Override
@@ -66,7 +72,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void removeFoodDB(final int indexRemove) {
 
-        localDataBaseManager.removeFood(indexRemove);
+        dataManager.removeFood(indexRemove);
     }
 
     @Override

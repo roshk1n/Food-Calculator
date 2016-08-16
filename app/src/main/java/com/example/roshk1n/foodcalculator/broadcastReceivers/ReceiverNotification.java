@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.roshk1n.foodcalculator.CallbackLocalManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
@@ -54,7 +55,17 @@ public class ReceiverNotification extends BroadcastReceiver {
 
     public void createNotification(Context context, int positionAdapter) {
 
-        Reminder reminder = (new LocalDataBaseManager()).getNotification(positionAdapter);
+        Reminder reminder = (new LocalDataBaseManager(new CallbackLocalManager() {
+            @Override
+            public void showToast(String text) {
+
+            }
+
+            @Override
+            public void loginSuccessful() {
+
+            }
+        })).getNotification(positionAdapter);
         Date timeNotify = new Date(reminder.getTime());
         String nameNotification = reminder.getName();
 

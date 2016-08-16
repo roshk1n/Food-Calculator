@@ -7,9 +7,11 @@ import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.User;
+import com.example.roshk1n.foodcalculator.Views.CallbackLoadDayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.singup.ResponseListentenerUpload;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +39,7 @@ import java.util.List;
 public class FirebaseHelper {
     private Date date = new Date();
     private DayFirebase dayFirebase = new DayFirebase();
-    private List<FoodFirebase> foodss = new ArrayList<>();
+    private List<FoodFirebase> foodsUpdate = new ArrayList<>();
     private static FirebaseAuth mAuth;
     private static FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseUser mFirebaseUser;
@@ -96,8 +98,13 @@ public class FirebaseHelper {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    callbackFirebase.loginSuccessful();
                     setmFirebaseUser(getmFirebaseUser());
+                    setmFirebaseUser(getmAuth().getCurrentUser());
+                    Session.startSession();
+                    Session.getInstance().setEmail(getmFirebaseUser().getEmail());
+                    Session.getInstance().setFullname(getmFirebaseUser().getDisplayName());
+                    Session.getInstance().setUrlPhoto(String.valueOf(getmFirebaseUser().getPhotoUrl()));
+                    callbackFirebase.loginSuccessful();
                 } else {
                     callbackFirebase.showToast("Authentication failed. Try again please!");
                 }
@@ -169,10 +176,10 @@ public class FirebaseHelper {
         if (date.getDate() == date3.getDate()
                 && date.getMonth() == date3.getMonth()
                 && date.getYear() == date3.getYear()) {
-            dayFirebase.setFoods(foodss);
+            dayFirebase.setFoods(foodsUpdate);
             dayFirebase.getFoods().add(new FoodFirebase(food));
         } else {
-            dayFirebase.setFoods(foodss);
+            dayFirebase.setFoods(foodsUpdate);
             dayFirebase.getFoods().add(new FoodFirebase(food));
             date = date3;
         }
@@ -207,27 +214,31 @@ public class FirebaseHelper {
         //   userRef.setValue(dayFirebase);
     }
 
-    public void loadDay(final Date date) {
+    public void loadDay(final Date date, final CallbackLoadDayFirebase callbackLoadDay) {
         DatabaseReference reference = database.getReference("users");
-        DatabaseReference userRef = reference
+        final DatabaseReference dayRef = reference
                 .child(getmAuth().getCurrentUser().getUid())
                 .child("days")
-                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
-                .child("foods");
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear());
+        DatabaseReference foodRef = dayRef.child("foods");
+        foodRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count ", "" + dataSnapshot.getChildrenCount());
-                foodss = new ArrayList<>();
+                Day day = new Day();
+                ArrayList<Food> foods = new ArrayList<Food>();
+                foodsUpdate = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    foodss.add(postSnapshot.getValue(FoodFirebase.class));
-                    Log.e("Get Data", foodss.get(0).getName() + "");
+                    foodsUpdate.add(postSnapshot.getValue(FoodFirebase.class));
+                    foods.add(new Food(postSnapshot.getValue(FoodFirebase.class)));
+                    Log.e("Get Data", foodsUpdate.get(0).getName() + "");
                 }
+                day.setFoods(foods);
+                callbackLoadDay.loadComplete(day);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }

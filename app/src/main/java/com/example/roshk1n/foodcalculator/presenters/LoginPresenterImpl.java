@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginPresenterImpl implements LoginPresenter, CallbackData {
 
     private final static String TAG = "MyLog";
-    private DataManager dataManager = new DataManager();
+    private DataManager dataManager = new DataManager(this);
     private CallbackManager callbackManager;
     private LoginView loginVew;
 
@@ -83,29 +84,8 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackData {
             }
 
             if (!error) {
-                if(Utils.isConnectNetwork(loginVew.getContext())) {
-                    FirebaseHelper.logInWithEmail(email, password);
-
-                } else {
-                    localDataBaseManager.loginUser(email,password);
-                }
+                dataManager.loginWithLogin(email,password);
             }
-        }
-    }
-
-    @Override
-    public void loginSuccessful() {
-
-    }
-
-    @Override
-    public void LoginRealmSuccess(User user) {
-        if (user != null) {
-            Session.startSession();
-            Session.getInstance().setEmail(user.getEmail());
-            Session.getInstance().setFullname(user.getFullname());
-            Session.getInstance().setUrlPhoto(user.getPhotoUrl());
-            loginVew.navigateToHome();
         }
     }
 
@@ -114,4 +94,13 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackData {
         loginVew.showToast("Authentication failed. Try again please!");
     }
 
+    @Override
+    public void navigateToHome() {
+        loginVew.navigateToHome();
+    }
+
+    @Override
+    public Context getContext() {
+        return loginVew.getContext();
+    }
 }

@@ -39,7 +39,7 @@ public class SingUpPresenterImpl implements SingUpPresenter {
             singUpView.showToast("Password and confirm password don`t match.");
         } else {
             final Bitmap imageUser = singUpView.getBitmapIv();
-
+/*
             FirebaseHelper.uploadImage(imageUser, email, new ResponseListentenerUpload() {
                 @Override
                 public void onSuccess(String urlPhoto) {
@@ -59,7 +59,7 @@ public class SingUpPresenterImpl implements SingUpPresenter {
                     realm.commitTransaction();
                     singUpView.navigateToLogin();
                 }
-            });
+            });*/
         }
     }
 

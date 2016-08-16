@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.activities;
 //TODO change profile photo
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.Views.MainView;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.fragments.InfoFoodFragment;
@@ -33,6 +35,8 @@ import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
 import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenter;
+import com.example.roshk1n.foodcalculator.presenters.MainPresenter;
+import com.example.roshk1n.foodcalculator.presenters.MainPresenterImpl;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,8 +47,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
         SearchFragment.OnSearchListener, DiaryFragment.OnDiaryListener,
         ProfileFragment.OnProfileListener, InfoFoodFragment.OnInfoFoodListener,
-        FavoriteFragment.OnFavoriteListener {
+        FavoriteFragment.OnFavoriteListener, MainView {
 
+    private MainPresenterImpl presenter;
     private View mHeader;
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initUI();
 
+        presenter = new MainPresenterImpl();
+        presenter.setView(this);
+
         setSupportActionBar(mToolbar);
 
         Utils.navigateToFragment(getSupportFragmentManager(),
@@ -73,7 +81,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 mDrawer.closeDrawers();
                 Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
-                if(!(fr instanceof ProfileFragment)) {
+                if (!(fr instanceof ProfileFragment)) {
                     coordinatorHintAdd.setVisibility(View.INVISIBLE);
                     Utils.navigateToFragment(getSupportFragmentManager(),
                             R.id.fragment_conteiner,
@@ -122,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fr = getSupportFragmentManager().findFragmentById(R.id.fragment_conteiner);
 
         if (id == R.id.nav_diary) {
-            if(!(fr instanceof DiaryFragment)) {
+            if (!(fr instanceof DiaryFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),
                         R.id.fragment_conteiner,
                         DiaryFragment.newInstance(),
@@ -130,8 +138,8 @@ public class MainActivity extends AppCompatActivity
                         false);
             }
 
-        }  else if (id == R.id.nav_favorites) {
-            if(!(fr instanceof FavoriteFragment)) {
+        } else if (id == R.id.nav_favorites) {
+            if (!(fr instanceof FavoriteFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),
                         R.id.fragment_conteiner,
                         FavoriteFragment.newInstance(),
@@ -144,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_statistic) {
 
         } else if (id == R.id.nav_reminders) {
-            if(!(fr instanceof RemindersFragment)) {
+            if (!(fr instanceof RemindersFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),
                         R.id.fragment_conteiner,
                         RemindersFragment.newInstance(),
@@ -156,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_profile) {
-            if(!(fr instanceof ProfileFragment)) {
+            if (!(fr instanceof ProfileFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),
                         R.id.fragment_conteiner,
                         ProfileFragment.newInstance(),
@@ -170,7 +178,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Session.destroy();
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -194,7 +202,7 @@ public class MainActivity extends AppCompatActivity
                 mDrawer,
                 mToolbar,
                 R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close){
+                R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -217,18 +225,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateDrawer() {
-        if(Utils.isConnectNetwork(getApplicationContext())) {
- //           fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-//            Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);
+        fullNameDrawerTv.setText(Session.getInstance().getFullname());
+        if (Utils.isConnectNetwork(getApplicationContext())) {
+            Glide.with(this).load(Session.getInstance().getUrlPhoto()).into(icoUserDrawerIv);
         } else {
-            fullNameDrawerTv.setText(Session.getInstance().getFullname());
-            Bitmap imageUser = null;
-            try {
-                byte [] encodeByte=Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
-                imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            } catch(Exception e) {
-                e.getMessage();
-            }
+            Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
             icoUserDrawerIv.setImageBitmap(imageUser);
         }
     }
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mHeader=mNavigationView.getHeaderView(0);
+        mHeader = mNavigationView.getHeaderView(0);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         icoUserDrawerIv = (CircleImageView) mHeader.findViewById(R.id.imageView);

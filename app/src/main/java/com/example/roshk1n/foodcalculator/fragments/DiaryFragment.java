@@ -25,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.CallbackData;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
@@ -41,7 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
-        DatePickerDialog.OnDateSetListener, View.OnClickListener {
+        DatePickerDialog.OnDateSetListener, View.OnClickListener{
 
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
@@ -113,16 +114,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
 
-        day = diaryPresenter.loadDay();
-        FirebaseHelper.loadDay(diaryPresenter.getDate());
+        diaryPresenter.loadDay();
+        //FirebaseHelper.loadDay(diaryPresenter.getDate());
         date_tv.setText(diaryPresenter.getDateString());
         diaryPresenter.getGoalCalories();
-        diaryPresenter.calculateCalories();
+       // diaryPresenter.calculateCalories();
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
-        mRecyclerView.setAdapter(mAdapter);
+
 
         addFoodFab.show();
 
@@ -232,7 +230,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         String str = diaryPresenter.getDateString();
         date_tv.setText(str);
 
-        day = diaryPresenter.loadDay();
+        diaryPresenter.loadDay();
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this); //need new Recycler because load new foods
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -290,6 +288,15 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     @Override
+    public void setDay(Day day) {
+        this.day = day;
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
     public void showHintAddAnim() {
         Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                 , R.anim.show_hint_add_food);
@@ -304,9 +311,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     diaryPresenter.removeFoodDB(position);
-                    FirebaseHelper.removeFood(position);
+                    //FirebaseHelper.removeFood(position);
                     mAdapter.notifyItemRemoved(position);
-                    diaryPresenter.calculateCalories();
+                   // diaryPresenter.calculateCalories();
                 }
             }
         }).setAction("Undo", new View.OnClickListener() {

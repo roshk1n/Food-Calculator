@@ -27,7 +27,7 @@ public interface DiaryPresenter  {
 
     void getGoalCalories();
 
-    Day loadDay();
+    void loadDay();
 
     void setFollowDate();
 
