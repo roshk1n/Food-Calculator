@@ -3,7 +3,9 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.example.roshk1n.foodcalculator.CallbackData;
 import com.example.roshk1n.foodcalculator.CallbackLocalManager;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
@@ -19,10 +21,10 @@ import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginPresenterImpl implements LoginPresenter, CallbackFirebase, CallbackLocalManager {
+public class LoginPresenterImpl implements LoginPresenter, CallbackData {
 
     private final static String TAG = "MyLog";
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private DataManager dataManager = new DataManager();
     private CallbackManager callbackManager;
     private LoginView loginVew;
 
@@ -40,21 +42,7 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackFirebase, Cal
 
     @Override
     public void checkLogin() {
-        FirebaseHelper.setmAuth(FirebaseAuth.getInstance());
-        FirebaseHelper.setmAuthListner(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    FirebaseHelper.setmFirebaseUser(FirebaseHelper.getmAuth().getCurrentUser());
-                    Session.startSession();
-                    Session.getInstance().setEmail(FirebaseHelper.getmAuth().getCurrentUser().getEmail());
-                    Session.getInstance().setFullname(FirebaseHelper.getmAuth().getCurrentUser().getDisplayName());
-                    Session.getInstance().setUrlPhoto(FirebaseHelper.getmAuth().getCurrentUser().toString());
-                    loginVew.navigateToHome();
-                }
-                }
-        });
+        dataManager.checkLogin();
     }
 
     @Override
@@ -96,10 +84,10 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackFirebase, Cal
 
             if (!error) {
                 if(Utils.isConnectNetwork(loginVew.getContext())) {
-                    FirebaseHelper.logInWithEmail(email, password, this);
+                    FirebaseHelper.logInWithEmail(email, password);
 
                 } else {
-                    localDataBaseManager.loginUser(email,password,this);
+                    localDataBaseManager.loginUser(email,password);
                 }
             }
         }
@@ -107,11 +95,7 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackFirebase, Cal
 
     @Override
     public void loginSuccessful() {
-        Session.startSession();
-        Session.getInstance().setEmail(FirebaseHelper.getmFirebaseUser().getEmail());
-        Session.getInstance().setFullname(FirebaseHelper.getmFirebaseUser().getDisplayName());
-        Session.getInstance().setUrlPhoto(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString());
-        loginVew.navigateToHome();
+
     }
 
     @Override
@@ -129,4 +113,5 @@ public class LoginPresenterImpl implements LoginPresenter, CallbackFirebase, Cal
     public void showToast(String text) {
         loginVew.showToast("Authentication failed. Try again please!");
     }
+
 }

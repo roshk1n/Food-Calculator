@@ -4,6 +4,10 @@ import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
+import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
+import com.example.roshk1n.foodcalculator.remoteDB.model.ReminderFirebase;
+import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
 
 import java.util.ArrayList;
 
@@ -52,6 +56,27 @@ public class User {
             reminders.add(new Reminder(reminderReaml));
         }
 
+    }
+
+    public User(UserFirebase userFirebase) {
+        setAge((int)(long)userFirebase.getAge());
+        setWeight((int)(long)userFirebase.getWeight());
+        setHeight((int)(long)userFirebase.getHeight());
+        setGoalCalories((int)(long)userFirebase.getGoalCalories());
+        setSex(userFirebase.getSex());
+        setActiveLevel(userFirebase.getActiveLevel());
+
+        for (FoodFirebase foodFirebase : userFirebase.getFavoriteFood()) {
+            favoriteFood.add(new Food(foodFirebase));
+        }
+
+        for (DayFirebase dayFirebase : userFirebase.getDays()) {
+            days.add(new Day(dayFirebase));
+        }
+
+        for (ReminderFirebase reminderFirebase : userFirebase.getReminders()) {
+            reminders.add(new Reminder(reminderFirebase));
+        }
     }
 
     public String getEmail() {

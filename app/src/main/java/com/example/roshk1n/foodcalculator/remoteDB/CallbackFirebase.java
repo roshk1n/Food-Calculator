@@ -5,5 +5,6 @@ package com.example.roshk1n.foodcalculator.remoteDB;
  */
 public interface CallbackFirebase {
     void loginSuccessful();
+
     void showToast(String text);
 }

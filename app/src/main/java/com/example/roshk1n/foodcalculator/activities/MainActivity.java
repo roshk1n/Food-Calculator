@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
-
-
         Utils.navigateToFragment(getSupportFragmentManager(),
                 R.id.fragment_conteiner,
                 DiaryFragment.newInstance(),
@@ -220,8 +218,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void updateDrawer() {
         if(Utils.isConnectNetwork(getApplicationContext())) {
-            fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
-            Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);
+ //           fullNameDrawerTv.setText(FirebaseHelper.getmFirebaseUser().getDisplayName());
+//            Glide.with(this).load(FirebaseHelper.getmFirebaseUser().getPhotoUrl().toString()).into(icoUserDrawerIv);
         } else {
             fullNameDrawerTv.setText(Session.getInstance().getFullname());
             Bitmap imageUser = null;

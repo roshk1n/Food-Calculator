@@ -4,6 +4,8 @@ import android.graphics.Color;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
+import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +18,10 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     private DiaryView diaryView;
 
     public Date getDate() {
+        Date d = new Date();
+        date.setHours(d.getHours());
+        date.setMinutes(d.getMinutes());
+        date.setSeconds(d.getSeconds());
         return date;
     }
 
@@ -41,11 +47,19 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void setFollowDate() {
+        Date d = new Date();
+        date.setHours(d.getHours());
+        date.setMinutes(d.getMinutes());
+        date.setSeconds(d.getSeconds());
         date.setDate(date.getDate()-1);
     }
 
     @Override
     public void setNextDate() {
+        Date d = new Date();
+        date.setHours(d.getHours());
+        date.setMinutes(d.getMinutes());
+        date.setSeconds(d.getSeconds());
         date.setDate(date.getDate()+1);
     }
 
@@ -80,7 +94,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
             int color = getColor(checkLimit);
 
             if (checkLimit != 1) { //if need dialog for limit
-                diaryView.showDialog(remainingCalories, checkLimit);
+               // diaryView.showDialog(remainingCalories, checkLimit);
             }
             diaryView.updateCalories(eatCalories, remainingCalories, color);
         }

@@ -90,7 +90,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
-    public void onSignUpClicked (View view) { //via firebase
+    public void onSignUpClicked (View view) {
         singUpPresenter.singUpFirebase(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
     }

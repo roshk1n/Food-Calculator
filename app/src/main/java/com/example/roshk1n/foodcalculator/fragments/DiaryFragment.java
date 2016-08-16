@@ -29,6 +29,7 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -113,6 +114,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         }
 
         day = diaryPresenter.loadDay();
+        FirebaseHelper.loadDay(diaryPresenter.getDate());
         date_tv.setText(diaryPresenter.getDateString());
         diaryPresenter.getGoalCalories();
         diaryPresenter.calculateCalories();
@@ -302,6 +304,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     diaryPresenter.removeFoodDB(position);
+                    FirebaseHelper.removeFood(position);
                     mAdapter.notifyItemRemoved(position);
                     diaryPresenter.calculateCalories();
                 }

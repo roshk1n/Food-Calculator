@@ -22,6 +22,7 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
+import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
@@ -163,6 +164,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
                     Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
                     presenter.addNewFood(food);
+                    FirebaseHelper.addFood(food);
                 } else {
                     numberOfServingsEt.setError("Enter number of servings please.");
                 }

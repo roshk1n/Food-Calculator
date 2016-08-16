@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.example.roshk1n.foodcalculator.remoteDB.model.ReminderFirebase;
 
 /**
  * Created by roshk1n on 8/12/2016.
@@ -17,6 +18,12 @@ public class Reminder {
         setName(reminderReaml.getName());
         setState(reminderReaml.getState());
         setTime(reminderReaml.getTime());
+    }
+
+    public Reminder(ReminderFirebase reminderFirebase) {
+        setName(reminderFirebase.getName());
+        setTime(reminderFirebase.getTime());
+        setState(reminderFirebase.getState());
     }
 
     public String getName() {
