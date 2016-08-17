@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.roshk1n.foodcalculator.CallbackData;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -41,6 +41,9 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
         DatePickerDialog.OnDateSetListener, View.OnClickListener{
 
@@ -49,7 +52,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
-    private OnDiaryListener mDiaryListener;
+    private OnFragmenеListener mFragmentListener;
+
+    private  ItemTouchHelper itemTouchHelper;
+    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
     private View view;
     private TextView date_tv;
@@ -86,11 +92,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         return diaryFragment;
     }
 
-    public interface OnDiaryListener {
-        void setDrawerMenu();
-        void enableMenuSwipe();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,9 +106,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         initUI();
 
-        if(mDiaryListener != null) {
-            mDiaryListener.setDrawerMenu();
-            mDiaryListener.enableMenuSwipe();
+        if(mFragmentListener != null) {
+            mFragmentListener.setDrawerMenu();
+            mFragmentListener.enableMenuSwipe();
         }
 
         if (getArguments() != null) {
@@ -129,21 +130,29 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         date_tv.setOnClickListener(this);
         addFoodFab.setOnClickListener(this);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
+            public boolean isItemViewSwipeEnabled() {
+                return super.isItemViewSwipeEnabled();
+            }
+
+            @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Food removedFood = day.getFoods().remove(viewHolder.getAdapterPosition());
-                makeSnackBarAction(viewHolder.getAdapterPosition(), removedFood);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                int position = viewHolder.getAdapterPosition();
+                Food removedFood = day.getFoods().remove(position);
+                mAdapter.notifyItemRemoved(position);
+                makeSnackBarAction(position, removedFood);
             }
         };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        Log.d("Myyy",simpleItemTouchCallback.isItemViewSwipeEnabled()+"");
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -165,15 +174,15 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnDiaryListener) {
-            mDiaryListener = (OnDiaryListener) context;
+        if (context instanceof OnFragmenеListener) {
+            mFragmentListener = (OnFragmenеListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mDiaryListener = null;
+        mFragmentListener = null;
     }
 
     @Override
@@ -305,22 +314,24 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {
+        itemTouchHelper.attachToRecyclerView(null);
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     diaryPresenter.removeFoodDB(position);
-                    //FirebaseHelper.removeFood(position);
-                    mAdapter.notifyItemRemoved(position);
-                   // diaryPresenter.calculateCalories();
+         //           itemTouchHelper.attachToRecyclerView(mRecyclerView);
+                  //  diaryPresenter.calculateCalories();
                 }
+
             }
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 day.getFoods().add(position, removedFood);
                 mAdapter.notifyItemInserted(position);
+                itemTouchHelper.attachToRecyclerView(mRecyclerView);
             }
         }).setActionTextColor(Color.YELLOW);
         snackbar.show();
@@ -353,4 +364,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
         datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
     }
+
+
+
+
 }

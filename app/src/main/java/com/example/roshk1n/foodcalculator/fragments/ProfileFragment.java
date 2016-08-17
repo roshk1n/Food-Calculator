@@ -14,7 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
 
@@ -33,7 +32,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private static final int MAKE_PHOTO = 1;
 
     private ProfilePresenterImpl profilePresenter;
-    private OnProfileListener mProfileListener;
+    private OnFragmenеListener mFragmentListener;
 
     private CoordinatorLayout coordinatorLayout;
     private View view;
@@ -59,9 +58,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     public static ProfileFragment newInstance() { return new ProfileFragment(); }
 
-    public interface OnProfileListener {
-        void updateDrawer();
-    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,15 +86,15 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnProfileListener) {
-            mProfileListener = (OnProfileListener) context;
+        if (context instanceof OnFragmenеListener) {
+            mFragmentListener = (OnFragmenеListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mProfileListener = null;
+        mFragmentListener = null;
     }
 
     @Override
@@ -153,7 +150,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     @Override
     public void CompleteUpdateAndRefreshDrawer() {
-        mProfileListener.updateDrawer();
+        mFragmentListener.updateDrawer();
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 

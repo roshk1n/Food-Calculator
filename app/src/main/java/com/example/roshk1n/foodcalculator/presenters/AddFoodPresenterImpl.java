@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import com.example.roshk1n.foodcalculator.DataManaget;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -16,6 +17,7 @@ import java.util.Date;
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private DataManaget dataManaget = new DataManaget();
 
     private AddFoodView foodView;
 
@@ -35,8 +37,9 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
             localDataBaseManager.createDay(food.getTime());
             localDataBaseManager.addFood(food);
         }
-
+        dataManaget.addFood(food);
         foodView.navigateToDiary();
+
     }
 
     @Override

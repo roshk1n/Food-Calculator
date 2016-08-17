@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
@@ -30,7 +31,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
-    private OnFavoriteListener mFavoriteListener;
+    private OnFragmenеListener mFragmentListener;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
@@ -44,10 +45,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         return new FavoriteFragment();
     }
 
-    public interface OnFavoriteListener {
-        void setDrawerMenu();
-        void enableMenuSwipe();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,9 +60,9 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
         initUI();
 
-        if(mFavoriteListener != null) {
-            mFavoriteListener.setDrawerMenu();
-            mFavoriteListener.enableMenuSwipe();
+        if(mFragmentListener != null) {
+            mFragmentListener.setDrawerMenu();
+            mFragmentListener.enableMenuSwipe();
         }
 
         favoriteList = favoritePresenter.getFavoriteList();
@@ -83,6 +80,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                favoritePresenter.removeFavoriteFoodDB(viewHolder.getAdapterPosition());
                 Food removedFood = favoriteList.remove(viewHolder.getAdapterPosition());
                 makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
@@ -97,15 +95,15 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFavoriteListener) {
-            mFavoriteListener = (OnFavoriteListener) context;
+        if (context instanceof OnFragmenеListener) {
+            mFragmentListener = (OnFragmenеListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mFavoriteListener = null;
+        mFragmentListener = null;
     }
 
     @Override

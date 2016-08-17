@@ -10,8 +10,6 @@ import android.util.Base64;
 import com.example.roshk1n.foodcalculator.User;
 import com.example.roshk1n.foodcalculator.Views.SingUpView;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.singup.ResponseListentenerUpload;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

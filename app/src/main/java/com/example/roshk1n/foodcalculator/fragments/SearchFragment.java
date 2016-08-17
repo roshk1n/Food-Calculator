@@ -2,7 +2,6 @@ package com.example.roshk1n.foodcalculator.fragments;
 
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
@@ -40,7 +40,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
-    private OnSearchListener mListener;
+    private OnFragmenеListener mFragmentListener;
 
     private EditText searchEt;
     private View view;
@@ -59,11 +59,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         return searchFragment;
     }
 
-    public interface OnSearchListener {
-        void setArrowToolbar();
-        void disabledMenuSwipe();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +75,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         initUI();
 
-        if(mListener != null) {
-            mListener.setArrowToolbar();
-            mListener.disabledMenuSwipe();
+        if(mFragmentListener != null) {
+            mFragmentListener.setArrowToolbar();
+            mFragmentListener.disabledMenuSwipe();
         }
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
@@ -121,15 +116,15 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnSearchListener) {
-            mListener = (OnSearchListener) context;
+        if (context instanceof OnFragmenеListener) {
+            mFragmentListener = (OnFragmenеListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mFragmentListener = null;
     }
 
     @Override

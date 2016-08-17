@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 
 import java.util.ArrayList;
 

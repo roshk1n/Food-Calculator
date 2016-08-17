@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator;
 
+import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -7,7 +8,6 @@ import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.*;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
-import com.example.roshk1n.foodcalculator.utils.Utils;
 
 
 import java.util.ArrayList;
@@ -18,20 +18,16 @@ import io.realm.RealmList;
 
 public class LocalDataBaseManager {
 
-    private DayRealm dayRealm;
-    private FavoriteListRealm favoriteListRealm;
-    private RealmList<ReminderReaml> remindersRealm;
-    private CallbackLocalManager callbackLocal;
-    private final Realm realm = Realm.getDefaultInstance();
+    private static FavoriteListRealm favoriteListRealm;
+    private static RealmList<ReminderReaml> remindersRealm;
+    private static LocalManagerCallback callbackLocal;
+    private static final Realm realm = Realm.getDefaultInstance();
+    private static DayRealm dayRealm;
 
     public LocalDataBaseManager() {
     }
 
-    public LocalDataBaseManager(CallbackLocalManager callbackLocalManager) {
-        this.callbackLocal = callbackLocalManager;
-    }
-
-    public void loginUser(String email, String password) {
+    public static void loginUser(String email, String password) {
         User user;
         UserRealm userRealms = realm.where(UserRealm.class)
                 .equalTo("email", email)
@@ -49,7 +45,7 @@ public class LocalDataBaseManager {
         }
     }
 
-    public Day loadDayData(Date date) {
+    public static Day loadDayData(Date date) {
         Day day = new Day();
         boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
@@ -65,7 +61,7 @@ public class LocalDataBaseManager {
         return day;
     }
 
-    public int dayIsExist(Date date) {
+    public static int dayIsExist(Date date) {
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(i);
@@ -99,7 +95,7 @@ public class LocalDataBaseManager {
 
     }
 
-    public void removeFood(final int indexRemove) {
+    public static void removeFood(final int indexRemove) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -112,6 +108,7 @@ public class LocalDataBaseManager {
         if (getCurrentUserRealm().getFavoriteList() != null) {
             favoriteListRealm = getCurrentUserRealm().getFavoriteList();
         }
+
         ArrayList<Food> favoriteList = new ArrayList<>(); //convert to base model
         for (FoodRealm foodRealm : favoriteListRealm.getFoods()) {
             favoriteList.add(new Food(foodRealm));
@@ -151,13 +148,13 @@ public class LocalDataBaseManager {
         }
     }
 
-    private UserRealm getCurrentUserRealm() {
+    private static UserRealm getCurrentUserRealm() {
         return realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
     }
 
-    private boolean compareLongAndDate(Long UserDate, Date date) {
+    private static boolean compareLongAndDate(Long UserDate, Date date) {
         Date userDayDate = new Date(UserDate);
         return (userDayDate.getDate() == date.getDate()
                 && userDayDate.getYear() == date.getYear()
@@ -224,7 +221,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public Reminder getNotification(int positionAdapter) {
+    public static Reminder getNotification(int positionAdapter) {
         remindersRealm = getCurrentUserRealm().getReminders();
         return new Reminder(remindersRealm.get(positionAdapter));
     }
@@ -246,6 +243,25 @@ public class LocalDataBaseManager {
                 getCurrentUserRealm().setSex(user.getSex());
                 getCurrentUserRealm().setActiveLevel(user.getActiveLevel());
                 getCurrentUserRealm().setGoalCalories(user.getGoalCalories());
+            }
+        });
+    }
+
+    public static void updateDays(final Day day) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                int i = dayIsExist(new Date(day.getDate()));
+                if(i!=-1) {
+
+                    DayRealm newDayReam = new DayRealm(day);
+                    getCurrentUserRealm().getDayRealms().get(i).deleteFromRealm();
+                    getCurrentUserRealm().getDayRealms().add(newDayReam);
+                    dayRealm = getCurrentUserRealm().getDayRealms().last();
+                    /*getCurrentUserRealm().getDayRealms().get(i) = newDayReam;
+                    getCurrentUserRealm().getDayRealms().add(i,newDayReam);*/
+                   // dayRealm = newDayReam;
+                }
             }
         });
     }

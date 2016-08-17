@@ -2,8 +2,8 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Color;
 
-import com.example.roshk1n.foodcalculator.CallbackLoadDay;
-import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
+import com.example.roshk1n.foodcalculator.DataManaget;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private DataManager dataManager = new DataManager();
+    private DataManaget dataManager = new DataManaget();
 
     private Day day;
     private Date date = new Date();
@@ -38,9 +38,9 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void loadDay() {
-        dataManager.loadDayData(date, new CallbackLoadDay() {
+        dataManager.loadDayData(date, new LoadDayCallback() {
             @Override
-            public void setDay(Day day) {
+            public void loadComplete(Day day) {
                 diaryView.setDay(day);
             }
         });

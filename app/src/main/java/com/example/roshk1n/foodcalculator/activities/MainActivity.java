@@ -2,15 +2,11 @@ package com.example.roshk1n.foodcalculator.activities;
 //TODO change profile photo
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -18,26 +14,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.MainView;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
-import com.example.roshk1n.foodcalculator.fragments.InfoFoodFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
-import com.example.roshk1n.foodcalculator.fragments.SearchFragment;
-import com.example.roshk1n.foodcalculator.presenters.FavoritePresenter;
-import com.example.roshk1n.foodcalculator.presenters.MainPresenter;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.presenters.MainPresenterImpl;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -45,9 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
-        SearchFragment.OnSearchListener, DiaryFragment.OnDiaryListener,
-        ProfileFragment.OnProfileListener, InfoFoodFragment.OnInfoFoodListener,
-        FavoriteFragment.OnFavoriteListener, MainView {
+        OnFragmenеListener, MainView {
 
     private MainPresenterImpl presenter;
     private View mHeader;
@@ -95,7 +83,6 @@ public class MainActivity extends AppCompatActivity
         });
 
         updateDrawer();
-
     }
 
     @Override
@@ -225,12 +212,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateDrawer() {
-        fullNameDrawerTv.setText(Session.getInstance().getFullname());
+//        fullNameDrawerTv.setText(Session.getInstance().getFullname());
         if (Utils.isConnectNetwork(getApplicationContext())) {
-            Glide.with(this).load(Session.getInstance().getUrlPhoto()).into(icoUserDrawerIv);
+     //       Glide.with(this).load(Session.getInstance().getUrlPhoto()).into(icoUserDrawerIv);
         } else {
-            Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
-            icoUserDrawerIv.setImageBitmap(imageUser);
+     //       Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
+     //      icoUserDrawerIv.setImageBitmap(imageUser);
         }
     }
 
@@ -255,4 +242,6 @@ public class MainActivity extends AppCompatActivity
         addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
     }
+
+
 }

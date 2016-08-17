@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator;
 
+import com.example.roshk1n.foodcalculator.interfaces.RetrofitCallback;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.ListFoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
@@ -10,10 +11,10 @@ import retrofit.client.Response;
 
 public class RetrofitManager {
 
-    CallbackRetrofit callbackRetrofit;
+    RetrofitCallback retrofitCallback;
 
-    public RetrofitManager(CallbackRetrofit callbackRetrofit) {
-        this.callbackRetrofit = callbackRetrofit;
+    public RetrofitManager(RetrofitCallback retrofitCallback) {
+        this.retrofitCallback = retrofitCallback;
     }
 
     public void searchFoodApi(String search) {
@@ -32,12 +33,12 @@ public class RetrofitManager {
                                                 @Override
                                                 public void success(FoodResponse foodResponse,
                                                                     Response response) {
-                                                    callbackRetrofit.addFood(foodResponse);
+                                                    retrofitCallback.addFood(foodResponse);
                                                 }
 
                                                 @Override
                                                 public void failure(RetrofitError error) {
-                                                    callbackRetrofit.errorNetwork();
+                                                    retrofitCallback.errorNetwork();
                                                 }
                                             });
                         }

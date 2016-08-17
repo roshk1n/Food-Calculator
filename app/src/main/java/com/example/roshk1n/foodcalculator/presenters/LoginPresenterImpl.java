@@ -1,31 +1,21 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.example.roshk1n.foodcalculator.CallbackData;
-import com.example.roshk1n.foodcalculator.CallbackLocalManager;
-import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.interfaces.DataCallback;
+import com.example.roshk1n.foodcalculator.DataManaget;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
-import com.example.roshk1n.foodcalculator.remoteDB.CallbackFirebase;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
-import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class LoginPresenterImpl implements LoginPresenter, CallbackData {
+public class LoginPresenterImpl implements LoginPresenter, DataCallback {
 
     private final static String TAG = "MyLog";
-    private DataManager dataManager = new DataManager(this);
+    private DataManaget dataManager = new DataManaget(this);
     private CallbackManager callbackManager;
     private LoginView loginVew;
 

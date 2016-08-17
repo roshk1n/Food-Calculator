@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerInfoAdapter;
 import com.example.roshk1n.foodcalculator.presenters.InfoFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -26,7 +27,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private final static String FOOD_KEY = "food";
     private InfoFoodPresenterImpl presenter;
     private Food food;
-    private OnInfoFoodListener mInfoListener;
+    private OnFragmenеListener mFragmentListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -55,11 +56,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         return infoFoodFragment;
     }
 
-    public interface OnInfoFoodListener {
-        void setArrowToolbar();
-        void disabledMenuSwipe();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +70,9 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
 
         initUI();
 
-        if(mInfoListener != null) {
-            mInfoListener.setArrowToolbar();
-            mInfoListener.disabledMenuSwipe();
+        if(mFragmentListener != null) {
+            mFragmentListener.setArrowToolbar();
+            mFragmentListener.disabledMenuSwipe();
         }
 
         if(getArguments() != null) {
@@ -97,15 +93,15 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInfoFoodListener) {
-            mInfoListener = (OnInfoFoodListener) context;
+        if (context instanceof OnFragmenеListener) {
+            mFragmentListener = (OnFragmenеListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mInfoListener = null;
+        mFragmentListener = null;
     }
 
     @Override

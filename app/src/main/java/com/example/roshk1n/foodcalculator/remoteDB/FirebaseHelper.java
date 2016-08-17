@@ -7,13 +7,15 @@ import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.User;
-import com.example.roshk1n.foodcalculator.Views.CallbackLoadDayFirebase;
+import com.example.roshk1n.foodcalculator.interfaces.FirebaseCallback;
+import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
+import com.example.roshk1n.foodcalculator.interfaces.LoadDayFirebaseCallback;
 import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.singup.ResponseListentenerUpload;
+import com.example.roshk1n.foodcalculator.interfaces.ResponseListentenerUpload;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,19 +39,19 @@ import java.util.Date;
 import java.util.List;
 
 public class FirebaseHelper {
-    private Date date = new Date();
+    private static Date date = new Date();
     private DayFirebase dayFirebase = new DayFirebase();
-    private List<FoodFirebase> foodsUpdate = new ArrayList<>();
+    private static List<FoodFirebase> foodsUpdate = new ArrayList<>();
     private static FirebaseAuth mAuth;
     private static FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseUser mFirebaseUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private CallbackFirebase callbackFirebase;
+    private FirebaseCallback firebaseCallback;
 
-    public FirebaseHelper(CallbackFirebase callback) {
-        this.callbackFirebase = callback;
+    public FirebaseHelper(FirebaseCallback callback) {
+        this.firebaseCallback = callback;
     }
 
 
@@ -104,9 +106,9 @@ public class FirebaseHelper {
                     Session.getInstance().setEmail(getmFirebaseUser().getEmail());
                     Session.getInstance().setFullname(getmFirebaseUser().getDisplayName());
                     Session.getInstance().setUrlPhoto(String.valueOf(getmFirebaseUser().getPhotoUrl()));
-                    callbackFirebase.loginSuccessful();
+                    firebaseCallback.loginSuccessful();
                 } else {
-                    callbackFirebase.showToast("Authentication failed. Try again please!");
+                    firebaseCallback.showToast("Authentication failed. Try again please!");
                 }
             }
         });
@@ -191,8 +193,9 @@ public class FirebaseHelper {
         DatabaseReference foodRef = dayRef.child("foods").child(food.getTime()+"");
         DatabaseReference nutrientsRef = foodRef.child("nutrients");
 */
-
+        dayFirebase.setDate(food.getTime());
         userRef.setValue(dayFirebase);
+
    /*     foodRef.child("ndbno").setValue(food.getNdbno());
         foodRef.child("name").setValue(food.getName());
         foodRef.child("portion").setValue(food.getPortion());
@@ -209,12 +212,14 @@ public class FirebaseHelper {
 
     public void removeFood(int position) {
         DatabaseReference reference = database.getReference("users");
-        DatabaseReference userRef = reference.child(getmAuth().getCurrentUser().getUid());
-        // dayFirebase.getFoods().remove(position);
-        //   userRef.setValue(dayFirebase);
+        Date date = new Date(dayFirebase.getDate());
+        DatabaseReference userRef = reference.child(getmAuth().getCurrentUser().getUid()).child("days").child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear());
+        dayFirebase.getFoods().remove(position);
+        foodsUpdate.remove(position);
+        userRef.setValue(dayFirebase);
     }
 
-    public void loadDay(final Date date, final CallbackLoadDayFirebase callbackLoadDay) {
+    public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
         DatabaseReference reference = database.getReference("users");
         final DatabaseReference dayRef = reference
                 .child(getmAuth().getCurrentUser().getUid())
@@ -225,16 +230,30 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count ", "" + dataSnapshot.getChildrenCount());
-                Day day = new Day();
+                final Day day = new Day();
                 ArrayList<Food> foods = new ArrayList<Food>();
-                foodsUpdate = new ArrayList<>();
+                foodsUpdate.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     foodsUpdate.add(postSnapshot.getValue(FoodFirebase.class));
                     foods.add(new Food(postSnapshot.getValue(FoodFirebase.class)));
                     Log.e("Get Data", foodsUpdate.get(0).getName() + "");
                 }
                 day.setFoods(foods);
-                callbackLoadDay.loadComplete(day);
+                dayRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.child("date").getValue() != null) {
+                            day.setDate((long) dataSnapshot.child("date").getValue());
+                            dayFirebase = new DayFirebase(day);
+                            loadDayCallback.loadComplete(day);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -255,7 +274,7 @@ public class FirebaseHelper {
                     Session.getInstance().setEmail(user.getEmail());
                     Session.getInstance().setFullname(user.getDisplayName());
                     Session.getInstance().setUrlPhoto(String.valueOf(user.getPhotoUrl()));
-                    callbackFirebase.loginSuccessful();
+                    firebaseCallback.loginSuccessful();
                 }
             }
         });
