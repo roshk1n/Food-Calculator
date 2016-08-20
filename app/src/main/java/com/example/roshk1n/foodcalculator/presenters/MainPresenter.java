@@ -11,4 +11,6 @@ public interface MainPresenter {
     void setView (MainView view);
 
     Bitmap stringToBitmap(String photoUrl);
+
+    void addLocalImage(Bitmap resource);
 }

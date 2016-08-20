@@ -17,7 +17,6 @@ public class UserRealm extends RealmObject {
     @PrimaryKey
     private String email;
     private String fullname;
-    private String password;
     private String photoUrl;
     private int age;
     private int weight;
@@ -32,19 +31,15 @@ public class UserRealm extends RealmObject {
 
     public UserRealm() { }
 
-    public UserRealm(String fullname, String email, String password, String photo, String sex, String activeLevel ) {
+    public UserRealm(String fullname, String email, String photo ) {
         this.fullname = fullname;
         this.email = email;
-        this.password = password;
         this.photoUrl = photo;
-        this.sex = sex;
-        this.activeLevel = activeLevel;
     }
 
     public UserRealm(User user) {
         setEmail(user.getEmail());
         setFullname(user.getFullname());
-        setPassword(user.getPassword());
         setPhotoUrl(user.getPhotoUrl());
         setAge(user.getAge());
         setWeight(user.getWeight());
@@ -80,14 +75,6 @@ public class UserRealm extends RealmObject {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhotoUrl() {

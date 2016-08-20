@@ -2,8 +2,9 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Color;
 
+import com.example.roshk1n.foodcalculator.interfaces.DataDiaryCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
-import com.example.roshk1n.foodcalculator.DataManaget;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
@@ -11,9 +12,9 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DiaryPresenterImpl implements DiaryPresenter {
+public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private DataManaget dataManager = new DataManaget();
+    private DataManager dataManager = new DataManager(this);
 
     private Day day;
     private Date date = new Date();
@@ -40,15 +41,17 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     public void loadDay() {
         dataManager.loadDayData(date, new LoadDayCallback() {
             @Override
-            public void loadComplete(Day day) {
-                diaryView.setDay(day);
+            public void loadComplete(Day d) {
+                day = d;
+                diaryView.setDay(d);
+          /*      if(day.getFoods().size()==0) {
+                    diaryView.showHintAddAnim();
+                } else {
+                    diaryView.hideHintAddAnim();
+                }*/
             }
         });
-    /*    if(day.getFoods().size()==0) {
-            diaryView.showHintAddAnim();
-        } else {
-            diaryView.hideHintAddAnim();
-        }*/
+
     }
 
     @Override
@@ -84,15 +87,16 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void calculateCalories() {
-        if(day.getFoods().size() != 0) {
+    /*    if(day.getFoods().size() != 0) {
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {
                 eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
             }
-            int goalCalories = localDataBaseManager.loadGoalCalories();
+            int goalCalories = dataManager.loadGoalCalories();
+
             day.setRemainingCalories(goalCalories - eat_calories);
 
-            localDataBaseManager.updateCalories(eat_calories, day.getRemainingCalories());
+            dataManager.updateCalories(eat_calories,day.getRemainingCalories(),day.getDate());
 
             String remainingCalories = String.valueOf(day.getRemainingCalories());
             String eatCalories = String.valueOf(eat_calories);
@@ -103,7 +107,15 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                // diaryView.showDialog(remainingCalories, checkLimit);
             }
             diaryView.updateCalories(eatCalories, remainingCalories, color);
-        }
+
+        } else {
+            int goalCalories = dataManager.loadGoalCalories();
+            day.setRemainingCalories(goalCalories);
+            int checkLimit = checkLimit(day.getRemainingCalories());
+            int color = getColor(checkLimit);
+            dataManager.updateCalories(0,day.getRemainingCalories(),day.getDate());
+            diaryView.updateCalories("0",String.valueOf(goalCalories), color);
+        }*/
     }
 
     @Override
@@ -135,5 +147,10 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         if(checkLimit==4) color = Color.parseColor("#a40f0f");
 
         return color;
+    }
+
+    @Override
+    public void loadCaloriesSuccess(int goal) {
+
     }
 }

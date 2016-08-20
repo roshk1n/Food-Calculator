@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.activities;
 //TODO change profile photo
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.Views.MainView;
@@ -212,12 +216,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateDrawer() {
-//        fullNameDrawerTv.setText(Session.getInstance().getFullname());
+        fullNameDrawerTv.setText(Session.getInstance().getFullname());
         if (Utils.isConnectNetwork(getApplicationContext())) {
-     //       Glide.with(this).load(Session.getInstance().getUrlPhoto()).into(icoUserDrawerIv);
+            Glide
+                    .with(this)
+                    .load(Session.getInstance().getUrlPhoto())
+                    .asBitmap()
+                    .centerCrop()
+                    .into(new SimpleTarget<Bitmap>(100,100) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                            icoUserDrawerIv.setImageBitmap(resource);
+                            presenter.addLocalImage(resource);
+                        }
+                    });
         } else {
-     //       Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
-     //      icoUserDrawerIv.setImageBitmap(imageUser);
+            Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
+            icoUserDrawerIv.setImageBitmap(imageUser);
         }
     }
 

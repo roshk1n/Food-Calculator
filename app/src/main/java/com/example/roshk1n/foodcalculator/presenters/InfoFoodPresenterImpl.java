@@ -1,12 +1,14 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
+import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
+import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private DataManager dataManager = new DataManager();
     private InfoFoodView infoFoodView;
 
     @Override
@@ -16,18 +18,33 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
     @Override
     public void addToFavorite(Food food) {
-        localDataBaseManager.addFavoriteFood(food);
-        infoFoodView.updateFavoriteImage(true);
+        dataManager.addFavoriteFood(food, new StateItemCallback() {
+            @Override
+            public void updateImageFavorite(boolean state) {
+                infoFoodView.updateFavoriteImage(state);
+            }
+        });
     }
 
     @Override
     public void removeFromFavorite(String ndbno) {
-        localDataBaseManager.removeFavoriteFoodDB(ndbno);
-        infoFoodView.updateFavoriteImage(false);
+        dataManager.removeFavoriteFoodDB(ndbno, new StateItemCallback() {
+            @Override
+            public void updateImageFavorite(boolean state) {
+                infoFoodView.updateFavoriteImage(state);
+            }
+        });
     }
 
     @Override
     public void isExistFavorite(Food food) {
-        infoFoodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
+        dataManager.isExistInFavorite(food, new DataAddFoodCallback() {
+            @Override
+            public void setExistFavorite(boolean existInFavotite) {
+                infoFoodView.updateFavoriteImage(existInFavotite);
+            }
+        });
+
+      //  infoFoodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
     }
 }

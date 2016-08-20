@@ -65,13 +65,10 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             mFragmentListener.enableMenuSwipe();
         }
 
-        favoriteList = favoritePresenter.getFavoriteList();
+        favoritePresenter.getFavoriteList();
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new RecyclerFavoriteAdapter(favoriteList,this);
-        mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -80,7 +77,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             }
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                favoritePresenter.removeFavoriteFoodDB(viewHolder.getAdapterPosition());
                 Food removedFood = favoriteList.remove(viewHolder.getAdapterPosition());
                 makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
                 mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
@@ -109,6 +105,13 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     @Override
     public void makeSnackBar(String text) {
         Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setFavoriteList(ArrayList<Food> favFoods) {
+        favoriteList = favFoods;
+        mAdapter = new RecyclerFavoriteAdapter(favoriteList,this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void makeSnackBarAction(final int position, final Food removed) {

@@ -88,17 +88,4 @@ public class UserProfile {
     public void setActive_level(String active_level) {
         this.active_level = active_level;
     }
-
-    public UserRealm convertToRealm() {
-        UserRealm userRealm = new UserRealm();
-        userRealm.setEmail(this.getEmail());
-        userRealm.setPassword(this.getPassword());
-        userRealm.setFullname(this.getFullname());
-        userRealm.setWeight(this.getWeight());
-        userRealm.setHeight(this.getHeight());
-        userRealm.setAge(this.getAge());
-        userRealm.setSex(this.getSex());
-        userRealm.setActiveLevel(this.getActive_level());
-        return userRealm;
-    }
 }

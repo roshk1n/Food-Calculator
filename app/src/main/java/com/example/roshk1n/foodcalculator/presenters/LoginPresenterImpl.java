@@ -3,8 +3,8 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.example.roshk1n.foodcalculator.interfaces.DataCallback;
-import com.example.roshk1n.foodcalculator.DataManaget;
+import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -12,10 +12,10 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-public class LoginPresenterImpl implements LoginPresenter, DataCallback {
+public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
 
     private final static String TAG = "MyLog";
-    private DataManaget dataManager = new DataManaget(this);
+    private DataManager dataManager = new DataManager(this);
     private CallbackManager callbackManager;
     private LoginView loginVew;
 
@@ -74,14 +74,14 @@ public class LoginPresenterImpl implements LoginPresenter, DataCallback {
             }
 
             if (!error) {
-                dataManager.loginWithLogin(email,password);
+                dataManager.login(email,password);
             }
         }
     }
 
     @Override
     public void showToast(String text) {
-        loginVew.showToast("Authentication failed. Try again please!");
+        loginVew.showToast(text);
     }
 
     @Override

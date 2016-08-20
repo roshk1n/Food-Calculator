@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
@@ -22,10 +24,10 @@ public class LoginActivity extends Activity implements LoginView {
     private final static String TAG = "MyLog";
 
     private LoginPresenterImpl loginPresenter;
-    private Button loginBtn;
     private EditText emailEt;
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
+    private ProgressDialog loginProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,27 +43,19 @@ public class LoginActivity extends Activity implements LoginView {
         loginPresenter.checkLogin();
 
         loginPresenter.loginFacebookListner(btnLogInFacebook);
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginPresenter.login(emailEt.getText().toString(),etPassword.getText().toString());
-            }
-        });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(FirebaseHelper.getmAuthListner() != null) {
-            FirebaseHelper.removeListner();
-        }
+        if(FirebaseHelper.getInstance().getmAuthListner() != null)
+            FirebaseHelper.getInstance().removeListner();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseHelper.addListner();
+        FirebaseHelper.getInstance().addListner();
     }
 
     @Override
@@ -71,22 +65,27 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     public void setEmailError() {
+        loginProgress.dismiss();
         emailEt.setError("Enter email please");
     }
 
     @Override
     public void setPasswordError() {
+        loginProgress.dismiss();
         etPassword.setError("Enter password please");
     }
 
     @Override
     public void navigateToHome() {
+        loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
         finish();
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
+
     @Override
     public void showToast(String message) {
+        loginProgress.dismiss();
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
@@ -96,9 +95,13 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     public void onLogIn(View view) {
+        loginProgress.setMessage("Login");
+        loginProgress.setCanceledOnTouchOutside(false);
+        loginProgress.show();
         loginPresenter.login(emailEt.getText().toString(),etPassword.getText().toString());
     }
-    public void onGoSingInActivityClicked(View view) {
+
+    public void onSingInActivityClicked(View view) {
         startActivity(new Intent(getApplicationContext(), SingUpActivity.class));
     }
 
@@ -106,6 +109,6 @@ public class LoginActivity extends Activity implements LoginView {
         emailEt = (EditText) findViewById(R.id.etLogin);
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
-        loginBtn = (Button) findViewById(R.id.login_btn);
+        loginProgress = new ProgressDialog(this);
     }
 }

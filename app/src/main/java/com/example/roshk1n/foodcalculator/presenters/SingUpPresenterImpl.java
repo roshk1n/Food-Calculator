@@ -5,22 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
-import android.util.Base64;
 
-import com.example.roshk1n.foodcalculator.User;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.Views.SingUpView;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
-
-import java.io.ByteArrayOutputStream;
+import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import io.realm.Realm;
-
-public class SingUpPresenterImpl implements SingUpPresenter {
+public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback {
     private SingUpView singUpView;
-
-    private User user;
+    private DataManager dataManager = new DataManager(this);
 
     @Override
     public void setView(SingUpView view) {
@@ -28,36 +22,16 @@ public class SingUpPresenterImpl implements SingUpPresenter {
     }
 
     @Override
-    public void singUpFirebase(final String fullname, final String email, final String password, final String congirmPassword) {
+    public void singUp(final String fullname, final String email, final String password, final String confirmPassword) {
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(fullname)
-                || TextUtils.isEmpty(password) || TextUtils.isEmpty(congirmPassword)) {
+                || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             singUpView.showToast("Enter all fields, please.");
 
-        } else if (!password.equals(congirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             singUpView.showToast("Password and confirm password don`t match.");
         } else {
             final Bitmap imageUser = singUpView.getBitmapIv();
-/*
-            FirebaseHelper.uploadImage(imageUser, email, new ResponseListentenerUpload() {
-                @Override
-                public void onSuccess(String urlPhoto) {
-                    user = new User(fullname, email, password, urlPhoto);
-                    FirebaseHelper.createUser(user);
-
-                    Realm realm = Realm.getDefaultInstance();
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imageUser.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    byte[] b = baos.toByteArray();
-                    String image = Base64.encodeToString(b, Base64.DEFAULT);
-
-                    UserRealm userRealm = new UserRealm(fullname, email, password, image, "none", "none");
-                    realm.beginTransaction();
-                    realm.copyToRealm(userRealm);
-                    realm.commitTransaction();
-                    singUpView.navigateToLogin();
-                }
-            });*/
+            dataManager.createUser(email,password,fullname,imageUser);
         }
     }
 
@@ -81,27 +55,7 @@ public class SingUpPresenterImpl implements SingUpPresenter {
     }
 
     @Override
-    public void singUpRealm(String fullname, String email, String password, String confirmPassword) {
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(fullname)
-                || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            singUpView.showToast("Enter all fields, please.");
-
-        } else if (!password.equals(confirmPassword)) {
-            singUpView.showToast("Password and confirm password don`t match.");
-        } else {
-            Realm realm = Realm.getDefaultInstance();
-
-            Bitmap userIco = singUpView.getBitmapIv();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            userIco.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] b = baos.toByteArray();
-            String image = Base64.encodeToString(b, Base64.DEFAULT);
-
-            UserRealm userRealm = new UserRealm(fullname, email, password, image, "none", "none");
-            realm.beginTransaction();
-            realm.copyToRealm(userRealm);
-            realm.commitTransaction();
-            singUpView.navigateToLogin();
-        }
+    public void createUserSuccess() {
+        singUpView.navigateToLogin();
     }
 }

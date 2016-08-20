@@ -110,22 +110,22 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
             if (favorites_iv.getDrawable().getConstantState() == getResources()
                     .getDrawable(R.drawable.ic_favorite_border_black_24dp)
                     .getConstantState()) {
+                favorites_iv.setClickable(false);
                 presenter.addToFavorite(food);
-                favorites_iv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
             } else {
+                favorites_iv.setClickable(false);
                 presenter.removeFromFavorite(food.getNdbno());
-                favorites_iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Deleting a food from favorites...", Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void updateFavoriteImage(boolean existIn) {
+        favorites_iv.setClickable(true);
         if (existIn) {
             favorites_iv.setImageResource(R.drawable.ic_favorite_black_24dp);
-
         } else {
             favorites_iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }

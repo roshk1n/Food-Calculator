@@ -1,10 +1,11 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.DataManaget;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.AddFoodView;
+import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
+import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,8 +17,7 @@ import java.util.Date;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private DataManaget dataManaget = new DataManaget();
+    private DataManager dataManager = new DataManager();
 
     private AddFoodView foodView;
 
@@ -28,16 +28,16 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     @Override
     public void addNewFood(Food food) {
-        int indexDay = localDataBaseManager.dayIsExist(new Date(food.getTime()));
-        localDataBaseManager.loadDayData(new Date(food.getTime()));
+        int indexDay = LocalDataBaseManager.dayIsExist(new Date(food.getTime()));
+        LocalDataBaseManager.loadDayData(new Date(food.getTime())); //TODO check if need
         if(indexDay!=-1) {
-            localDataBaseManager.addFood(food);
+            LocalDataBaseManager.addFood(food);
 
         } else {
-            localDataBaseManager.createDay(food.getTime());
-            localDataBaseManager.addFood(food);
+            LocalDataBaseManager.createDay(food.getTime());
+            LocalDataBaseManager.addFood(food);
         }
-        dataManaget.addFood(food);
+        dataManager.addFood(food);
         foodView.navigateToDiary();
 
     }
@@ -83,19 +83,33 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     @Override
     public void addToFavorite(Food food) {
-        localDataBaseManager.addFavoriteFood(food);
-        foodView.updateFavoriteImage(true);
+        dataManager.addFavoriteFood(food, new StateItemCallback() {
+            @Override
+            public void updateImageFavorite(boolean state) {
+                foodView.updateFavoriteImage(state);
+            }
+        });
+
     }
 
     @Override
     public void removeFromFavorite(String ndbno) {
-        localDataBaseManager.removeFavoriteFoodDB(ndbno);
-        foodView.updateFavoriteImage(false);
+        dataManager.removeFavoriteFoodDB(ndbno, new StateItemCallback() {
+            @Override
+            public void updateImageFavorite(boolean state) {
+                foodView.updateFavoriteImage(state);
+            }
+        });
     }
 
     @Override
     public void isExistFavorite(Food food) {
-        foodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
+        dataManager.isExistInFavorite(food, new DataAddFoodCallback() {
+            @Override
+            public void setExistFavorite(boolean existInFavotite) {
+                foodView.updateFavoriteImage(existInFavotite);
+            }
+        });
     }
 
    private boolean isFloat(String str) {

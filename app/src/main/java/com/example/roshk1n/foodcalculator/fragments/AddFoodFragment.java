@@ -129,6 +129,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     @Override
     public void updateFavoriteImage(boolean existIn) {
+        addFavoriteIv.setClickable(true);
         if (existIn) {
             addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
 
@@ -143,13 +144,14 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             if (addFavoriteIv.getDrawable().getConstantState() == getResources()
                     .getDrawable(R.drawable.ic_favorite_border_black_24dp)
                     .getConstantState()) {
+                addFavoriteIv.setClickable(false);
                 presenter.addToFavorite(food);
-                addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                Snackbar.make(coordinatorLayout, "Adding a food to favorites is complete.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
+
             } else {
+                addFavoriteIv.setClickable(false);
                 presenter.removeFromFavorite(food.getNdbno());
-                addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                Snackbar.make(coordinatorLayout, "Deleting a food from favorites is complete.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, "Deleting a food from favorites...", Snackbar.LENGTH_SHORT).show();
             }
 
         } else if (v == mAddFoodBtn) {
@@ -181,7 +183,6 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
         addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_add_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");
     }
 

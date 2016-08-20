@@ -1,14 +1,16 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
+import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCalback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;
 
-public class FavoritePresenterImpl implements FavoritePresenter {
+public class FavoritePresenterImpl implements FavoritePresenter{
 
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
+    private DataManager dataManager = new DataManager();
     private ArrayList<Food> favoriteFood = new ArrayList<>();
 
     private FavoriteView favoriteView;
@@ -20,12 +22,17 @@ public class FavoritePresenterImpl implements FavoritePresenter {
 
     @Override
     public ArrayList<Food> getFavoriteList() {
-        favoriteFood = localDataBaseManager.loadFavoriteFood();
+        dataManager.loadFavoriteList(new DataFavoriteCalback() {
+            @Override
+            public void setFavoriteList(ArrayList<Food> favFoods) {
+                favoriteView.setFavoriteList(favFoods);
+            }
+        });
         return favoriteFood;
     }
 
     @Override
     public void removeFavoriteFoodDB(int position) {
-        localDataBaseManager.removeFavoriteFoodDB(position);
+        dataManager.removeFavoriteFoodDB(position);
     }
 }

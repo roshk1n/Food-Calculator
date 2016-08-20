@@ -12,4 +12,6 @@
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#B6B6B6</color>
     <color name="colorBackground">#FFF5F5F5</color>
+    <color name="colorSingUpHint">#FFFFFFFF</color>
+    <color name="colorAccentLogin">#FFEB3B</color>
 </resources>

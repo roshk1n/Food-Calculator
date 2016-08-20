@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class User {
     private String email;
     private String fullname;
-    private String password;
     private String photoUrl;
     private int age;
     private int weight;
@@ -35,7 +34,6 @@ public class User {
     public User(UserRealm userRealm) {
         setEmail(userRealm.getEmail());
         setFullname(userRealm.getFullname());
-        setPassword(userRealm.getPassword());
         setPhotoUrl(userRealm.getPhotoUrl());
         setAge(userRealm.getAge());
         setWeight(userRealm.getWeight());
@@ -93,14 +91,6 @@ public class User {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhotoUrl() {

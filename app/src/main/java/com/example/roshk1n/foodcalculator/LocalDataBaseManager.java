@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator;
 
+
 import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
@@ -20,15 +21,24 @@ public class LocalDataBaseManager {
 
     private static FavoriteListRealm favoriteListRealm;
     private static RealmList<ReminderReaml> remindersRealm;
-    private static LocalManagerCallback callbackLocal;
     private static final Realm realm = Realm.getDefaultInstance();
     private static DayRealm dayRealm;
 
     public LocalDataBaseManager() {
     }
 
-    public static void loginUser(String email, String password) {
-        User user;
+    public static void createUser(String fullname, String email, String image) {
+        final UserRealm userRealm = new UserRealm(fullname, email, image);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(userRealm);
+            }
+        });
+    }
+
+    public static void loginUser(String email, String password, LocalManagerCallback callback) {
+  /*      User user;
         UserRealm userRealms = realm.where(UserRealm.class)
                 .equalTo("email", email)
                 .equalTo("password", password).findFirst();
@@ -39,17 +49,17 @@ public class LocalDataBaseManager {
             Session.getInstance().setEmail(user.getEmail());
             Session.getInstance().setFullname(user.getFullname());
             Session.getInstance().setUrlPhoto(user.getPhotoUrl());
-            callbackLocal.loginSuccessful();
+            callback.loginSuccessful();
         } else {
-            callbackLocal.showToast("Authentication failed. Try again please!");
-        }
+            callback.showToast("Authentication failed. Try again please!");
+        }*/
     }
 
     public static Day loadDayData(Date date) {
         Day day = new Day();
         boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
+            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) { //TODO dayIsExist
                 dayRealm = getCurrentUserRealm().getDayRealms().get(i);
                 checkDay = true;
             }
@@ -71,7 +81,7 @@ public class LocalDataBaseManager {
         return -1;
     }
 
-    public void addFood(final Food food) {
+    public static void addFood(final Food food) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -80,7 +90,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public void createDay(final Long date) {
+    public static void createDay(final Long date) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -104,7 +114,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public ArrayList<Food> loadFavoriteFood() {
+    public static ArrayList<Food> loadFavoriteFood() {
         if (getCurrentUserRealm().getFavoriteList() != null) {
             favoriteListRealm = getCurrentUserRealm().getFavoriteList();
         }
@@ -116,7 +126,7 @@ public class LocalDataBaseManager {
         return favoriteList;
     }
 
-    public void addFavoriteFood(final Food food) {
+    public static void addFavoriteFood(final Food food) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -125,7 +135,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public void removeFavoriteFoodDB(final int position) {
+    public static void removeFavoriteFoodDB(final int position) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -134,7 +144,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public void removeFavoriteFoodDB(String ndbno) {
+    public static void removeFavoriteFoodDB(String ndbno) {
         for (int i = 0; i < getCurrentUserRealm().getFavoriteList().getFoods().size(); i++) {
             if (ndbno.equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
                 final int finalI = i;
@@ -148,34 +158,23 @@ public class LocalDataBaseManager {
         }
     }
 
-    private static UserRealm getCurrentUserRealm() {
-        return realm.where(UserRealm.class)
-                .equalTo("email", Session.getInstance().getEmail())
-                .findFirst();
-    }
-
-    private static boolean compareLongAndDate(Long UserDate, Date date) {
-        Date userDayDate = new Date(UserDate);
-        return (userDayDate.getDate() == date.getDate()
-                && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth() == date.getMonth());
-    }
-
-    public int loadGoalCalories() {
+    public static int loadGoalCalories() {
         return getCurrentUserRealm().getGoalCalories();
     }
 
-    public void updateCalories(final int eat_calories, final int remainingCalories) {
+    public static void updateCalories(final int eat_calories, final int remainingCalories) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                dayRealm.setEatDailyCalories(eat_calories);
-                dayRealm.setRemainingCalories(remainingCalories);
+                if(dayRealm != null) {
+                    dayRealm.setEatDailyCalories(eat_calories);
+                    dayRealm.setRemainingCalories(remainingCalories);
+                }
             }
         });
     }
 
-    public boolean isExistInFavotite(Food food) {
+    public static boolean isExistInFavotite(Food food) {
         return new FoodRealm(food).isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
     }
 
@@ -252,17 +251,51 @@ public class LocalDataBaseManager {
             @Override
             public void execute(Realm realm) {
                 int i = dayIsExist(new Date(day.getDate()));
+                DayRealm newDayReam = new DayRealm(day);
                 if(i!=-1) {
-
-                    DayRealm newDayReam = new DayRealm(day);
                     getCurrentUserRealm().getDayRealms().get(i).deleteFromRealm();
                     getCurrentUserRealm().getDayRealms().add(newDayReam);
                     dayRealm = getCurrentUserRealm().getDayRealms().last();
-                    /*getCurrentUserRealm().getDayRealms().get(i) = newDayReam;
-                    getCurrentUserRealm().getDayRealms().add(i,newDayReam);*/
-                   // dayRealm = newDayReam;
+                } else {
+                    getCurrentUserRealm().getDayRealms().add(newDayReam);
+                    dayRealm = getCurrentUserRealm().getDayRealms().last();
                 }
             }
         });
+    }
+
+    public static void checkLocalUser() {
+        UserRealm user = realm.where(UserRealm.class)
+                .equalTo("email",Session.getInstance().getEmail())
+                .findFirst();
+        if(user == null) {
+            final UserRealm userRealm = new UserRealm(Session.getInstance().getFullname(),
+                    Session.getInstance().getEmail(), "");
+
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealm(userRealm);
+                }
+            });
+        }
+    }
+
+    public static void addLocalUserImage(String image) {
+        if(getCurrentUserRealm().getPhotoUrl().equals(""))
+            getCurrentUserRealm().setPhotoUrl(image);
+    }
+
+    private static UserRealm getCurrentUserRealm() {
+        return realm.where(UserRealm.class)
+                .equalTo("email", Session.getInstance().getEmail())
+                .findFirst();
+    }
+
+    private static boolean compareLongAndDate(Long UserDate, Date date) {
+        Date userDayDate = new Date(UserDate);
+        return (userDayDate.getDate() == date.getDate()
+                && userDayDate.getYear() == date.getYear()
+                && userDayDate.getMonth() == date.getMonth());
     }
 }

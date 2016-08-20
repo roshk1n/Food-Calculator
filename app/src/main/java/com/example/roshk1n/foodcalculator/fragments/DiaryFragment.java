@@ -49,12 +49,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
+    private boolean checkUndo = true;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
     private OnFragmenеListener mFragmentListener;
 
-    private  ItemTouchHelper itemTouchHelper;
+    private ItemTouchHelper itemTouchHelper;
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
     private View view;
@@ -114,13 +115,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         if (getArguments() != null) {
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
-
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
         diaryPresenter.loadDay();
-        //FirebaseHelper.loadDay(diaryPresenter.getDate());
         date_tv.setText(diaryPresenter.getDateString());
-        diaryPresenter.getGoalCalories();
-       // diaryPresenter.calculateCalories();
-
 
 
         addFoodFab.show();
@@ -146,6 +144,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 int position = viewHolder.getAdapterPosition();
                 Food removedFood = day.getFoods().remove(position);
                 mAdapter.notifyItemRemoved(position);
+                diaryPresenter.calculateCalories();
                 makeSnackBarAction(position, removedFood);
             }
         };
@@ -299,10 +298,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void setDay(Day day) {
         this.day = day;
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
         mRecyclerView.setAdapter(mAdapter);
+
+        diaryPresenter.getGoalCalories();
+        diaryPresenter.calculateCalories();
     }
 
     @Override
@@ -314,24 +315,26 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {
-        itemTouchHelper.attachToRecyclerView(null);
+        checkUndo = true;
         Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item was removed successfully.", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     diaryPresenter.removeFoodDB(position);
-         //           itemTouchHelper.attachToRecyclerView(mRecyclerView);
-                  //  diaryPresenter.calculateCalories();
                 }
 
             }
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                day.getFoods().add(position, removedFood);
-                mAdapter.notifyItemInserted(position);
-                itemTouchHelper.attachToRecyclerView(mRecyclerView);
+                if(checkUndo) {
+                    day.getFoods().add(position, removedFood);
+                    mAdapter.notifyItemInserted(position);
+                    diaryPresenter.calculateCalories();
+                    itemTouchHelper.attachToRecyclerView(mRecyclerView);
+                    checkUndo = false;
+                }
             }
         }).setActionTextColor(Color.YELLOW);
         snackbar.show();

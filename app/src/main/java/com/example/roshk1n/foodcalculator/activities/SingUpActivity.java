@@ -31,7 +31,6 @@ public class SingUpActivity extends Activity implements SingUpView {
     private EditText password;
     private EditText confirmPassword;
     private CircleImageView ivUser;
-    private Button singUpRealmBtn;
 
     private SingUpPresenterImpl singUpPresenter;
 
@@ -44,20 +43,11 @@ public class SingUpActivity extends Activity implements SingUpView {
 
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
-
-/*        singUpRealmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                singUpPresenter.singUpRealm(surname.getText().toString(),email.getText().toString()
-                        ,password.getText().toString(),confirmPassword.getText().toString());
-            }
-        });*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode==PICK_PHOTO_FOR_AVATAR&& resultCode==Activity.RESULT_OK) {
            singUpPresenter.setUserPhotoSD(data,getApplicationContext().getContentResolver());
         }
@@ -91,7 +81,7 @@ public class SingUpActivity extends Activity implements SingUpView {
     }
 
     public void onSignUpClicked (View view) {
-        singUpPresenter.singUpFirebase(surname.getText().toString(),email.getText().toString()
+        singUpPresenter.singUp(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
     }
 
@@ -101,7 +91,6 @@ public class SingUpActivity extends Activity implements SingUpView {
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         ivUser = (CircleImageView) findViewById(R.id.ivUser);
-        singUpRealmBtn = (Button) findViewById(R.id.button_user_sign_up_Realm);
     }
 
     public void onChoosePhoto(View view) {
