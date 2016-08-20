@@ -121,9 +121,9 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
         });
     }
 
-    public void removeFood(int indexRemove) {
-        LocalDataBaseManager.removeFood(indexRemove);
-        firebaseHelper.removeFood(indexRemove);
+    public void removeFood(int index, long time) {
+        LocalDataBaseManager.removeFood(index);
+        firebaseHelper.removeFood(time);
     }
 
     public void addFood(Food food) {

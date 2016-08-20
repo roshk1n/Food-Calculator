@@ -44,8 +44,6 @@ import java.util.List;
 public class FirebaseHelper {
     private static FirebaseHelper instance;
     private Date date = new Date();
-    private DayFirebase dayFirebase = new DayFirebase();
-    private List<FoodFirebase> foodsUpdate = new ArrayList<>();
     private List<FoodFirebase> favoriteFoodUpdate = new ArrayList<>();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner;
@@ -199,38 +197,54 @@ public class FirebaseHelper {
         });
     }
 
-    public void addFood(Food food) {
-        Date dateFood = new Date(food.getTime());
-        dayFirebase = new DayFirebase();
-        if (date.getDate() == dateFood.getDate()
-                && date.getMonth() == dateFood.getMonth()
-                && date.getYear() == dateFood.getYear()) {
-            dayFirebase.setFoods(foodsUpdate); //TODO check if need
-            dayFirebase.getFoods().add(new FoodFirebase(food));
-        } else {
-            dayFirebase.setFoods(foodsUpdate);
-            dayFirebase.getFoods().add(new FoodFirebase(food));
-            date = dateFood;
-        }
-
+    public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
         DatabaseReference reference = database.getReference("users");
-        DatabaseReference userRef = reference
+        final DatabaseReference foodRef = reference
                 .child(getmAuth().getCurrentUser().getUid())
                 .child("days")
-                .child(dateFood.getDate() + "_" + dateFood.getMonth() + "_" + dateFood.getYear());
+                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
+                .child("foods");
 
-        dayFirebase.setDate(food.getTime());
-        userRef.setValue(dayFirebase);
+        foodRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Count ", "" + dataSnapshot.getChildrenCount());
+                final Day day = new Day();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    day.getFoods().add(new Food(postSnapshot.getValue(FoodFirebase.class)));
+                }
+                day.setDate(date.getTime());
+                loadDayCallback.loadComplete(day);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
-    public void removeFood(int position) {
+    public void addFood(Food food) {
+        Date dateFood = new Date(food.getTime());
         DatabaseReference reference = database.getReference("users");
-        Date date = new Date(dayFirebase.getDate());
-        DatabaseReference userRef = reference.child(getmAuth().getCurrentUser().getUid()).child("days").child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear());
-        userRef.child("foods").child(position + "").removeValue();
-        dayFirebase.getFoods().remove(position);
-        foodsUpdate.remove(position);
-        userRef.setValue(dayFirebase);
+        DatabaseReference foodsRef = reference
+                .child(getmAuth().getCurrentUser().getUid())
+                .child("days")
+                .child(dateFood.getDate() + "_" + dateFood.getMonth() + "_" + dateFood.getYear())
+                .child("foods");
+
+        foodsRef.child(food.getTime()+"").setValue(new FoodFirebase(food));
+    }
+
+    public void removeFood(long time) {
+        DatabaseReference userRef= database.getReference("users")
+                .child(getmAuth().getCurrentUser().getUid());
+        Date date = new Date(time);
+
+        DatabaseReference foodRef = userRef.child("days")
+                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
+                .child("foods");
+
+        foodRef.child(time+"").removeValue();
     }
 
     public void loadFavoriteFood(final DataFavoriteCalback callback) {
@@ -344,76 +358,6 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
-    public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
-        DatabaseReference reference = database.getReference("users");
-        final DatabaseReference dayRef = reference
-                .child(getmAuth().getCurrentUser().getUid())
-                .child("days")
-                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear());
-        final DatabaseReference foodRef = dayRef.child("foods");
-
-        foodRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Count ", "" + dataSnapshot.getChildrenCount());
-                final Day day = new Day();
-                ArrayList<Food> foods = new ArrayList<Food>();
-                foodsUpdate.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    foodsUpdate.add(postSnapshot.getValue(FoodFirebase.class));
-                    foods.add(new Food(postSnapshot.getValue(FoodFirebase.class)));
-                }
-                day.setFoods(foods);
-
-                dayRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        day.setDate(date.getTime());
-                        dayFirebase = new DayFirebase(day);
-                        loadDayCallback.loadComplete(day);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        foodsUpdate.clear();
-        final Day day = new Day();
-        foodRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("mmmmmm","jj");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }

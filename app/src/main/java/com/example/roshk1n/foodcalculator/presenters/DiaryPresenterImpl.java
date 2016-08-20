@@ -8,6 +8,7 @@ import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,9 +74,8 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
     }
 
     @Override
-    public void removeFoodDB(final int indexRemove) {
-
-        dataManager.removeFood(indexRemove);
+    public void removeFoodDB(int index, long time) {
+        dataManager.removeFood(index, time);
     }
 
     @Override

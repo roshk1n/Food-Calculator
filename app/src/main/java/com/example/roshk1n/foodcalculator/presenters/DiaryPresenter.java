@@ -21,7 +21,7 @@ public interface DiaryPresenter  {
 
     String getDateString();
 
-    void removeFoodDB(int index);
+    void removeFoodDB(int index, long time);
 
     void calculateCalories();
 
