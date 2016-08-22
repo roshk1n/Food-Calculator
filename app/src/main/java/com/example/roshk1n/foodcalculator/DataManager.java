@@ -1,13 +1,16 @@
 package com.example.roshk1n.foodcalculator;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.NetworkInfo;
 import android.util.Base64;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataDiaryCallback;
-import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCalback;
+import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
@@ -15,10 +18,16 @@ import com.example.roshk1n.foodcalculator.interfaces.FirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
 import com.example.roshk1n.foodcalculator.interfaces.ResponseListentenerUpload;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
+import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 import com.example.roshk1n.foodcalculator.utils.Utils;
+import com.facebook.AccessToken;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -30,7 +39,7 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
     private DataSingUpCallback dataSingUpCallback;
     private DataDiaryCallback dataDiaryCallback;
     private DataAddFoodCallback dataAddFoodCallback;
-    private DataFavoriteCalback dataFavoriteCallback;
+    private DataFavoriteCallback dataFavoriteCallback;
 
     public DataManager() {
     }
@@ -51,7 +60,7 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
         this.dataAddFoodCallback = dataAddFoodCallback;
     }
 
-    public DataManager(DataFavoriteCalback dataFavoriteCallback) {
+    public DataManager(DataFavoriteCallback dataFavoriteCallback) {
         this.dataFavoriteCallback = dataFavoriteCallback;
     }
 
@@ -70,6 +79,11 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
 
                         LocalDataBaseManager.createUser(fullname, email, image);
                         dataSingUpCallback.createUserSuccess();
+                    }
+
+                    @Override
+                    public void createError(String message) {
+                        dataSingUpCallback.createUserError(message);
                     }
                 });
             }
@@ -96,7 +110,7 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
 
     @Override
     public void showToast(String text) {
-        dataLoginCallback.showToast("Authentication failed. Try again please!");
+        dataLoginCallback.showToast(text);
     }
 
     @Override
@@ -112,7 +126,8 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
     public void loadDayData(final Date date, final LoadDayCallback callback) {
         Day day = LocalDataBaseManager.loadDayData(date);
         callback.loadComplete(day);
-        firebaseHelper.loadDay(date, new LoadDayCallback() {
+
+        firebaseHelper.loadDay(date, new LoadDayCallback() { //TODO need new thread
             @Override
             public void loadComplete(Day dayFire) {
                 callback.loadComplete(dayFire);
@@ -137,36 +152,96 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
     }
 
     public void updateCalories(int eat_calories, int remainingCalories, long date) {
-        LocalDataBaseManager.updateCalories(eat_calories,remainingCalories);
-        firebaseHelper.updateCalories(eat_calories,remainingCalories,date);
+        LocalDataBaseManager.updateCalories(eat_calories, remainingCalories);
     }
 
     public void addFavoriteFood(Food food, StateItemCallback callback) {
-       //callback.updateImageFavorite(LocalDataBaseManager.addFavoriteFood(food););
-        firebaseHelper.addFavoriteFood(food,callback);
+        //callback.updateImageFavorite(LocalDataBaseManager.addFavoriteFood(food););
+        firebaseHelper.addFavoriteFood(food, callback);
     }
 
     public void isExistInFavorite(Food food, DataAddFoodCallback callback) {
-      //  dataAddFoodCallback.setExistFavorite(LocalDataBaseManager.isExistInFavotite(food)); //null intargace for firebase
+        //  dataAddFoodCallback.setExistFavorite(LocalDataBaseManager.isExistInFavotite(food)); //null intargace for firebase
         firebaseHelper.isExistInFavorite(food, callback);
     }
 
     public void removeFavoriteFoodDB(String ndbno, StateItemCallback callback) {
-      // callback.updateImageFavorite(LocalDataBaseManager.removeFavoriteFoodDB(ndbno));
+        // callback.updateImageFavorite(LocalDataBaseManager.removeFavoriteFoodDB(ndbno));
         firebaseHelper.removeFavoriteFood(ndbno, callback);
     }
 
-    public void removeFavoriteFoodDB(int position) {
-       // LocalDataBaseManager.removeFavoriteFoodDB(position);
-        firebaseHelper.removeFavoriteFood(position);
+    public void removeFavoriteFoodDB(int position, String ndbno) {
+        // LocalDataBaseManager.removeFavoriteFoodDB(position);
+        firebaseHelper.removeFavoriteFood(ndbno);
     }
 
-    public void loadFavoriteList(final DataFavoriteCalback callback) {
+    public void loadFavoriteList(final DataFavoriteCallback callback) {
         //callback.setFavoriteList(LocalDataBaseManager.loadFavoriteFood());
-        firebaseHelper.loadFavoriteFood(new DataFavoriteCalback() {
+        firebaseHelper.loadFavoriteFood(new DataFavoriteCallback() {
             @Override
             public void setFavoriteList(ArrayList<Food> favFoods) {
                 callback.setFavoriteList(favFoods);
+            }
+        });
+    }
+
+    public void loadUserProfile(final Context context, final UserProfileCallback callback) {
+        callback.loadProfileSuccess(LocalDataBaseManager.loadUser());
+        if (Utils.isConnectNetwork(context)) {
+            firebaseHelper.loadUserProfile(new UserProfileCallback() {
+                @Override
+                public void loadProfileSuccess(final User user) { // load remote user and update local
+                    Glide
+                            .with(context)
+                            .load(user.getPhotoUrl())
+                            .asBitmap()
+                            .centerCrop()
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    user.setPhotoUrl(bitmapToString(resource));
+                                    LocalDataBaseManager.updateUserProfile(user);
+                                    callback.loadProfileSuccess(user);
+                                }
+                            });
+                }
+            });
+        }
+    }
+
+    private String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] b = outputStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public void updateUserProfile(User user, Bitmap image, OnCompleteCallback callback) {
+        LocalDataBaseManager.updateUserProfile(user);
+
+        firebaseHelper.updateUserProfile(user, image, callback);
+    }
+
+    public void updateInfoUser(final String image) {
+        firebaseHelper.loadUserProfile(new UserProfileCallback() {
+            @Override
+            public void loadProfileSuccess(User user) {
+                user.setPhotoUrl(image);
+                LocalDataBaseManager.updateUserProfile(user);
+            }
+        });
+    }
+
+    public void loginFacebook(AccessToken access, final JSONObject object, final OnCompleteCallback callback) {
+        firebaseHelper.loginFacebook(access, new CreateUserFirebaseCallback() {
+            @Override
+            public void createSuccess() {
+                firebaseHelper.createProfile(object,callback);
+            }
+
+            @Override
+            public void createError(String message) {
+                dataLoginCallback.showToast(message);
             }
         });
     }

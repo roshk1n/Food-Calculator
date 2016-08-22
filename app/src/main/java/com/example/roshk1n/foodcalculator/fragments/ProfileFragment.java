@@ -3,10 +3,12 @@ package com.example.roshk1n.foodcalculator.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -25,6 +27,7 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 
 public class ProfileFragment extends Fragment implements ProfileView, View.OnClickListener {
 
@@ -51,14 +54,13 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private ImageView height_ico_iv;
     private ImageView active_level_ico_iv;
     private ImageView sex_ico_profile_iv;
+    private ProgressDialog saveDateProgress;
 
     private FloatingActionButton edit_profile_fab;
 
     public ProfileFragment() { }
 
     public static ProfileFragment newInstance() { return new ProfileFragment(); }
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,14 +121,27 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             }
 
         } else if(v == edit_profile_fab) {
-            saveUserProfile(full_name_et.isEnabled());
-            changeEnable(full_name_et.isEnabled());
-            changeIcon();
+            if(Utils.isConnectNetwork(getActivity().getApplicationContext())) {
+                saveUserProfile(full_name_et.isEnabled());
+                changeEnable(full_name_et.isEnabled());
+                changeIcon();
+
+            } else {
+                Snackbar.make(coordinatorLayout, "You need internet connection for update profile.", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
-    public void setProfile(String photoUrl, String email, String fullname, int age, int height, int weight, String sex, String activeLevel) {
+    public void setProfile(String photoUrl,
+                           String email,
+                           String fullname,
+                           int age,
+                           int height,
+                           int weight,
+                           String sex,
+                           String activeLevel) {
+
         full_name_et.setText(fullname);
         weight_et.setText(String.valueOf(weight));
         height_et .setText(String .valueOf(height));
@@ -137,10 +152,9 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         int positionSex = profilePresenter.getPositionInArray(sex,
                 getResources().getStringArray(R.array.sex));
-
         active_level__profile_sp.setSelection(positionActive);
         sex_profile_sp.setSelection(positionSex);
-        profile_iv.setImageBitmap( profilePresenter.stringToBitmap(photoUrl) ); //convert to Bitmap
+        profile_iv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl) ); //convert to Bitmap
     }
 
     @Override
@@ -150,7 +164,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     @Override
     public void CompleteUpdateAndRefreshDrawer() {
-        mFragmentListener.updateDrawer();
+        mFragmentListener.updateDrawerLight();
+        saveDateProgress.dismiss();
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -185,15 +200,17 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     private void saveUserProfile(boolean isEnable) {
         if (isEnable) {
-            profile_iv.setDrawingCacheEnabled(true);// get Bitmap from ImageView
-            profile_iv.buildDrawingCache();
+            saveDateProgress = ProgressDialog.show(getActivity(), "", "Wait please...");
+            saveDateProgress.setCanceledOnTouchOutside(false);
+            saveDateProgress.setCancelable(false);
+            Bitmap bitmap = ((BitmapDrawable)profile_iv.getDrawable()).getBitmap();
             profilePresenter.updateUserProfile(
                     full_name_et.getText().toString(),
                     weight_et.getText().toString(),
                     height_et.getText().toString(),
                     age_et.getText().toString(),
                     email_et.getText().toString(),
-                    profile_iv.getDrawingCache(), //TODO same image
+                    bitmap,
                     sex_profile_sp.getSelectedItem().toString(),
                     active_level__profile_sp.getSelectedItem().toString()
             );
@@ -231,7 +248,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         if(!isEnable) {
             edit_profile_fab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_LONG).show();
         } else {
             full_name_et.clearFocus(); // clear focus after saving
             weight_et.clearFocus();

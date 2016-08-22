@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by roshk1n on 8/19/2016.
  */
-public interface DataFavoriteCalback {
+public interface DataFavoriteCallback {
 
     void setFavoriteList(ArrayList<Food> favFoods);
 

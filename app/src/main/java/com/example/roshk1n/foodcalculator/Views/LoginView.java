@@ -16,4 +16,6 @@ public interface LoginView {
     void showToast(String message);
 
     Context getContext();
+
+    void loginSuccessFacebook();
 }

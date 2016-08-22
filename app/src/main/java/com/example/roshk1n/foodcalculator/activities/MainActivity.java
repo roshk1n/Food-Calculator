@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,9 +16,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
+        updateDrawer();
+
         Utils.navigateToFragment(getSupportFragmentManager(),
                 R.id.fragment_conteiner,
                 DiaryFragment.newInstance(),
@@ -80,13 +85,10 @@ public class MainActivity extends AppCompatActivity
                             ProfileFragment.newInstance(),
                             FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                             false);
-
                     addFoodFab.hide();
                 }
             }
         });
-
-        updateDrawer();
     }
 
     @Override
@@ -206,7 +208,6 @@ public class MainActivity extends AppCompatActivity
         };
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-        mNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -218,22 +219,38 @@ public class MainActivity extends AppCompatActivity
     public void updateDrawer() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
         if (Utils.isConnectNetwork(getApplicationContext())) {
-            Glide
-                    .with(this)
-                    .load(Session.getInstance().getUrlPhoto())
-                    .asBitmap()
-                    .centerCrop()
-                    .into(new SimpleTarget<Bitmap>(100,100) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                            icoUserDrawerIv.setImageBitmap(resource);
-                            presenter.addLocalImage(resource);
-                        }
-                    });
-        } else {
-            Bitmap imageUser = presenter.stringToBitmap(Session.getInstance().getUrlPhoto());
-            icoUserDrawerIv.setImageBitmap(imageUser);
-        }
+                Log.d("myy",Session.getInstance().getUrlPhoto());
+                Glide
+                        .with(getApplicationContext())
+                        .load(Session.getInstance().getUrlPhoto())
+                        .asBitmap()
+                        .fitCenter()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                icoUserDrawerIv.setImageBitmap(resource);
+                                final Bitmap bitmap = ((BitmapDrawable)icoUserDrawerIv.getDrawable()).getBitmap();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                       presenter.updateInfoUser(bitmap);
+                                    }
+                                }).start();
+                            }
+                        });
+
+            } else {
+                Bitmap imageUser = presenter.getLocalImage();
+                icoUserDrawerIv.setImageBitmap(imageUser);
+            }
+    }
+
+
+    @Override
+    public void updateDrawerLight() {
+        fullNameDrawerTv.setText(Session.getInstance().getFullname());
+        Bitmap imageUser = presenter.getLocalImage();
+        icoUserDrawerIv.setImageBitmap(imageUser);
     }
 
     @Override

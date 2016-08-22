@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ public class SingUpActivity extends Activity implements SingUpView {
     private EditText password;
     private EditText confirmPassword;
     private CircleImageView ivUser;
+    private ProgressDialog singUpProgress;
 
     private SingUpPresenterImpl singUpPresenter;
 
@@ -70,17 +72,22 @@ public class SingUpActivity extends Activity implements SingUpView {
 
     @Override
     public void showToast(String message) {
+        singUpProgress.dismiss();
         Toast.makeText(SingUpActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void navigateToLogin() {
+        singUpProgress.dismiss();
         startActivity(new Intent(SingUpActivity.this,LoginActivity.class));
         finish();
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
     public void onSignUpClicked (View view) {
+        singUpProgress = ProgressDialog.show(this, "", "Wait please...");
+        singUpProgress.setCanceledOnTouchOutside(false);
+        singUpProgress.setCancelable(false);
         singUpPresenter.singUp(surname.getText().toString(),email.getText().toString()
                 ,password.getText().toString(),confirmPassword.getText().toString());
     }

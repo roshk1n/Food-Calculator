@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
+import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
 import com.example.roshk1n.foodcalculator.realm.UserRealm;
 
 /**

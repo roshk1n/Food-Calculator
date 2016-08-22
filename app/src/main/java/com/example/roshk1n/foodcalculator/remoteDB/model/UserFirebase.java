@@ -1,6 +1,8 @@
 package com.example.roshk1n.foodcalculator.remoteDB.model;
 
 
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
+
 import java.util.ArrayList;
 
 public class UserFirebase {
@@ -14,6 +16,17 @@ public class UserFirebase {
     private ArrayList<FoodFirebase> favoriteFood = new ArrayList<>();
     private ArrayList<ReminderFirebase> reminders = new ArrayList<>();
     private ArrayList<DayFirebase> days = new ArrayList<>();
+
+    public UserFirebase() {}
+
+    public UserFirebase (User user) {
+        setAge((long)user.getAge());
+        setWeight((long)user.getWeight());
+        setHeight((long)user.getHeight());
+        setGoalCalories((long)user.getGoalCalories());
+        setSex(user.getSex());
+        setActiveLevel(user.getActiveLevel());
+    }
 
     public Long getAge() {
         return age;

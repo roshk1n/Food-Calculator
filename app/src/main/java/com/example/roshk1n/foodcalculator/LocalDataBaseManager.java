@@ -225,11 +225,11 @@ public class LocalDataBaseManager {
         return new Reminder(remindersRealm.get(positionAdapter));
     }
 
-    public com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User loadUser() {
+    public static User loadUser() {
         return new User(getCurrentUserRealm());
     }
 
-    public void updateUserProfile(final User user) {
+    public static void updateUserProfile(final User user) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -237,11 +237,11 @@ public class LocalDataBaseManager {
                 getCurrentUserRealm().setWeight(user.getWeight());
                 getCurrentUserRealm().setHeight(user.getHeight());
                 getCurrentUserRealm().setAge(user.getAge());
-                getCurrentUserRealm().setEmail(user.getEmail());
                 getCurrentUserRealm().setPhotoUrl(user.getPhotoUrl());
                 getCurrentUserRealm().setSex(user.getSex());
                 getCurrentUserRealm().setActiveLevel(user.getActiveLevel());
                 getCurrentUserRealm().setGoalCalories(user.getGoalCalories());
+                getCurrentUserRealm().setEmail(user.getEmail());
             }
         });
     }
@@ -270,7 +270,7 @@ public class LocalDataBaseManager {
                 .findFirst();
         if(user == null) {
             final UserRealm userRealm = new UserRealm(Session.getInstance().getFullname(),
-                    Session.getInstance().getEmail(), "");
+                    Session.getInstance().getEmail(),Session.getInstance().getUrlPhoto());
 
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -281,9 +281,13 @@ public class LocalDataBaseManager {
         }
     }
 
-    public static void addLocalUserImage(String image) {
-        if(getCurrentUserRealm().getPhotoUrl().equals(""))
-            getCurrentUserRealm().setPhotoUrl(image);
+    public static void addLocalUserImage(final String image) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                getCurrentUserRealm().setPhotoUrl(image);
+            }
+        });
     }
 
     private static UserRealm getCurrentUserRealm() {
@@ -297,5 +301,9 @@ public class LocalDataBaseManager {
         return (userDayDate.getDate() == date.getDate()
                 && userDayDate.getYear() == date.getYear()
                 && userDayDate.getMonth() == date.getMonth());
+    }
+
+    public static String getLocalUserImage() {
+        return getCurrentUserRealm().getPhotoUrl();
     }
 }

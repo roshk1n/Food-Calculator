@@ -13,4 +13,6 @@ public interface OnFragmenеListener {
     void disabledMenuSwipe();
 
     void updateDrawer();
+
+    void updateDrawerLight();
 }

@@ -4,8 +4,12 @@ package com.example.roshk1n.foodcalculator.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +35,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
 
@@ -41,6 +46,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
     private OnFragmenеListener mFragmentListener;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     private EditText searchEt;
     private View view;

@@ -12,5 +12,7 @@ public interface MainPresenter {
 
     Bitmap stringToBitmap(String photoUrl);
 
-    void addLocalImage(Bitmap resource);
+    void updateInfoUser(Bitmap resource);
+
+    Bitmap getLocalImage();
 }

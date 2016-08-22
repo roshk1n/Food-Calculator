@@ -19,6 +19,9 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.Arrays;
+
+//TODO progress dialog
 public class LoginActivity extends Activity implements LoginView {
 
     private final static String TAG = "MyLog";
@@ -42,14 +45,21 @@ public class LoginActivity extends Activity implements LoginView {
 
         loginPresenter.checkLogin();
 
-        loginPresenter.loginFacebookListner(btnLogInFacebook);
+        btnLogInFacebook.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
+        btnLogInFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseHelper.getInstance().removeListner();
+                loginPresenter.loginFacebookListner(btnLogInFacebook);
+            }
+        });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(FirebaseHelper.getInstance().getmAuthListner() != null)
-            FirebaseHelper.getInstance().removeListner();
+        FirebaseHelper.getInstance().removeListner();
     }
 
     @Override
@@ -60,6 +70,10 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        FirebaseHelper.getInstance().removeListner();
+        loginProgress = ProgressDialog.show(this, "", "Wait please...");
+        loginProgress.setCanceledOnTouchOutside(false);
+        loginProgress.setCancelable(false);
        loginPresenter.getCallbackManager().onActivityResult(requestCode,resultCode,data);
     }
 
@@ -86,6 +100,8 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     public void showToast(String message) {
         loginProgress.dismiss();
+        if(FirebaseHelper.getInstance().getmAuthListner() == null)
+        FirebaseHelper.getInstance().addListner();
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
@@ -94,10 +110,15 @@ public class LoginActivity extends Activity implements LoginView {
         return getApplicationContext();
     }
 
+    @Override
+    public void loginSuccessFacebook() {
+        FirebaseHelper.getInstance().addListner();
+    }
+
     public void onLogIn(View view) {
-        loginProgress.setMessage("Login");
+        loginProgress = ProgressDialog.show(this, "", "Wait please...");
         loginProgress.setCanceledOnTouchOutside(false);
-        loginProgress.show();
+        loginProgress.setCancelable(false);
         loginPresenter.login(emailEt.getText().toString(),etPassword.getText().toString());
     }
 

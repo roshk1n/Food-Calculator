@@ -14,5 +14,5 @@ public interface FavoritePresenter {
 
     ArrayList<Food> getFavoriteList();
 
-    void removeFavoriteFoodDB(int position);
+    void removeFavoriteFoodDB(int position, String ndbno);
 }

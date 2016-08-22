@@ -1,16 +1,29 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
 import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.Views.LoginView;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
+import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
 
@@ -42,8 +55,24 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                loginVew.showToast("Login attempt succeed.");
+            public void onSuccess(final LoginResult loginResult) {
+                final GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                dataManager.loginFacebook(loginResult.getAccessToken(),object, new OnCompleteCallback() {
+                                    @Override
+                                    public void success() {
+                                        loginVew.loginSuccessFacebook();
+                                    }
+                                });
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday,picture.type(large)");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -62,7 +91,6 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
     public void login(String email, String password) {
         boolean error = false;
         if (loginVew != null) {
-            //            TODO: email validation
             if (TextUtils.isEmpty(email)) {
                 loginVew.setEmailError();
                 error = true;
@@ -74,7 +102,7 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
             }
 
             if (!error) {
-                dataManager.login(email,password);
+                dataManager.login(email, password);
             }
         }
     }
@@ -93,4 +121,5 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
     public Context getContext() {
         return loginVew.getContext();
     }
+
 }

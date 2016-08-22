@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.interfaces;
 
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 
 import java.util.ArrayList;
 

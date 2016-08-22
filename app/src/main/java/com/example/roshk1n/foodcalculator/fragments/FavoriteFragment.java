@@ -122,7 +122,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if(event!=Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    favoritePresenter.removeFavoriteFoodDB(position);
+                    favoritePresenter.removeFavoriteFoodDB(position,removed.getNdbno());
                 }
             }
         }).setAction("Undo", new View.OnClickListener() {

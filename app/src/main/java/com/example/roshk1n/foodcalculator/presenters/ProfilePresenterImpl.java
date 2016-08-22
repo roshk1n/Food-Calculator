@@ -6,9 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Session;
+import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
+import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 
 import java.io.ByteArrayOutputStream;
@@ -17,8 +18,7 @@ import java.io.InputStream;
 
 public class ProfilePresenterImpl implements ProfilePresenter {
 
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-    private User user;
+    private DataManager dataManager = new DataManager();
     private final String SEX_NONE = "None";
     private final String SEX_MALE = "Male";
     private final String SEX_FEMALE = "Female";
@@ -39,21 +39,26 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     @Override
     public void loadUser() {
-        user = localDataBaseManager.loadUser();
-        profileView.setProfile(user.getPhotoUrl(), user.getEmail(), user.getFullname(), user.getAge(),
-                user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+        dataManager.loadUserProfile(profileView.getContext(),new UserProfileCallback() {
+            @Override
+            public void loadProfileSuccess(User user) {
+                profileView.setProfile(user.getPhotoUrl(), user.getEmail(), user.getFullname(), user.getAge(),
+                        user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+            }
+        });
+
     }
 
     @Override
     public Bitmap stringToBitmap(String photoUrl) {
-        Bitmap image = null;
+        Bitmap imageUser = null;
         try {
-            byte [] encodeByte= Base64.decode(Session.getInstance().getUrlPhoto(), Base64.DEFAULT);
-            image = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte [] encodeByte=Base64.decode(photoUrl, Base64.DEFAULT);
+            imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         } catch(Exception e) {
             e.getMessage();
         }
-        return image;
+        return imageUser;
     }
 
     @Override
@@ -84,8 +89,9 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final String sex,
                                   final String active_level) {
 
-        String image_profile = bitmapToString(image);//convert to string
+        final String image_profile = bitmapToString(image);//convert to string
         int goalCalories = updateLimitCalories(sex,active_level,weight,height,age);
+        User user = new User();
         user.setFullname(fullname);
         user.setWeight(Integer.parseInt(weight));
         user.setHeight(Integer.parseInt(height));
@@ -95,13 +101,12 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         user.setSex(sex);
         user.setActiveLevel(active_level);
         user.setGoalCalories(goalCalories);
-        localDataBaseManager.updateUserProfile(user);
-
-        Session.getInstance().setEmail(email);
-        Session.getInstance().setFullname(fullname);
-        Session.getInstance().setUrlPhoto(image_profile);
-
-        profileView.CompleteUpdateAndRefreshDrawer();
+        dataManager.updateUserProfile(user,image, new OnCompleteCallback() {
+            @Override
+            public void success() {
+                profileView.CompleteUpdateAndRefreshDrawer();
+            }
+        });
     }
 
     @Override

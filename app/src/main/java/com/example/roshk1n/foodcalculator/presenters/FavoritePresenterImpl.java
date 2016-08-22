@@ -1,9 +1,8 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
-import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCalback;
+import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class FavoritePresenterImpl implements FavoritePresenter{
 
     @Override
     public ArrayList<Food> getFavoriteList() {
-        dataManager.loadFavoriteList(new DataFavoriteCalback() {
+        dataManager.loadFavoriteList(new DataFavoriteCallback() {
             @Override
             public void setFavoriteList(ArrayList<Food> favFoods) {
                 favoriteView.setFavoriteList(favFoods);
@@ -32,7 +31,7 @@ public class FavoritePresenterImpl implements FavoritePresenter{
     }
 
     @Override
-    public void removeFavoriteFoodDB(int position) {
-        dataManager.removeFavoriteFoodDB(position);
+    public void removeFavoriteFoodDB(int position, String ndbno) {
+        dataManager.removeFavoriteFoodDB(position,ndbno);
     }
 }

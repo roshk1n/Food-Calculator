@@ -71,7 +71,6 @@
                         android:enabled="false"
                         android:hint="@string/full_name"
                         android:inputType="textPersonName"
-                        android:text="@string/oleh_roshka"
                         android:textColor="@color/colorPrimaryText" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -104,7 +103,6 @@
                         android:enabled="false"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
-                        android:text="@string/roshk1n_ua_gmail_com"
                         android:textColor="@color/colorPrimaryText" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -138,7 +136,6 @@
                         android:enabled="false"
                         android:hint="@string/age"
                         android:inputType="number"
-                        android:text="@string/_20"
                         android:textColor="@color/colorPrimaryText" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -172,7 +169,6 @@
                         android:enabled="false"
                         android:hint="@string/height"
                         android:inputType="number"
-                        android:text="@string/_176"
                         android:textColor="@color/colorPrimaryText" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -206,7 +202,6 @@
                         android:enabled="false"
                         android:hint="@string/weight"
                         android:inputType="number"
-                        android:text="@string/_70"
                         android:textColor="@color/colorPrimaryText" />
 
                 </android.support.design.widget.TextInputLayout>

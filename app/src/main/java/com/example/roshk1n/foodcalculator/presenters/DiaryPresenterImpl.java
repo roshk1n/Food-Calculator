@@ -87,7 +87,7 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
 
     @Override
     public void calculateCalories() {
-    /*    if(day.getFoods().size() != 0) {
+        if(day.getFoods().size() != 0) {
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {
                 eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
@@ -113,14 +113,13 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
             day.setRemainingCalories(goalCalories);
             int checkLimit = checkLimit(day.getRemainingCalories());
             int color = getColor(checkLimit);
-            dataManager.updateCalories(0,day.getRemainingCalories(),day.getDate());
             diaryView.updateCalories("0",String.valueOf(goalCalories), color);
-        }*/
+        }
     }
 
     @Override
     public void getGoalCalories() {
-        int goalCalories = localDataBaseManager.loadGoalCalories();
+        int goalCalories = LocalDataBaseManager.loadGoalCalories();
         diaryView.setGoalCalories(String.valueOf(goalCalories));
     }
 
