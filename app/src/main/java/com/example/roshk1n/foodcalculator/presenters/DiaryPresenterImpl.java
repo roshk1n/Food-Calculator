@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
-    private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
     private DataManager dataManager = new DataManager(this);
 
     private Day day;

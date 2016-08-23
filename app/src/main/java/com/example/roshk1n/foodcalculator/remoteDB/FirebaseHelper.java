@@ -44,8 +44,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class FirebaseHelper {
     private static final String USERS_CHILD = "users";
@@ -195,24 +199,60 @@ public class FirebaseHelper {
         });
     }
 
-    public void createProfile(final JSONObject object, final OnCompleteCallback callback) {
-        String email = null;
-        String photo  = null;
-        String name = null;
+    private User buildUserByJSON(JSONObject object) {
+        User user = new User();
+        String gender = "none";
+        String birthday = "0";
+        int old=0;
         try {
-             email = object.getString("email");
-             photo = object.getJSONObject("picture").getJSONObject("data").getString("url");
-             name = object.getString("name");
+            if (object.has("email"))
+                user.setEmail(object.getString("email"));
+            if (object.has("picture"))
+                user.setPhotoUrl(object.getJSONObject("picture").getJSONObject("data").getString("url"));
+            if (object.has("name"))
+                user.setFullname(object.getString("name"));
+            if (object.has("gender"))
+                gender = object.getString("gender");
+            if (object.has("birthday"))
+                birthday = object.getString("birthday");
+
+            if (gender != null && gender.equals("male")) {
+                gender = "Male";
+            } else  if (gender != null) {
+                gender = "Female";
+            }
+
+            if(!birthday.equals("0")) {
+                DateFormat format = new SimpleDateFormat("M/d/yyyy");
+                Date date = null;
+                try {
+                    date = format.parse(birthday);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date dateNow = new Date();
+                old = dateNow.getYear() - date.getYear();
+            }
+            user.setSex(gender);
+            user.setAge(old);
+            user.setActiveLevel("none");
+            user.setHeight(0);
+            user.setWeight(0);
+            user.setGoalCalories(0);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return user;
+    }
+
+    public void createProfileFacebook(final JSONObject object, final OnCompleteCallback callback) {
+        final User user = buildUserByJSON(object);
+        final UserFirebase userFirebase = new UserFirebase(user);
         final DatabaseReference reference = database.getReference()
                 .child("users");
         reference.keepSynced(true);
         final DatabaseReference userRef = reference.child(getmAuth().getCurrentUser().getUid());
-        final String finalPhoto = photo;
-        final String finalEmail = email;
-        final String finalName = name;
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -225,21 +265,13 @@ public class FirebaseHelper {
                     }
                 }
                 if(!check) {
-                    UserFirebase user = new UserFirebase();
-                    user.setAge(0l);
-                    user.setActiveLevel("none");
-                    user.setHeight(0l);
-                    user.setSex("none");
-                    user.setWeight(0l);
-                    user.setGoalCalories(0l);
-                    userRef.setValue(user);
+                    userRef.setValue(userFirebase);
                 }
-                Session.startSession();
-                Session.getInstance().setFullname(finalName);
-                Session.getInstance().setEmail(finalEmail);
-                Session.getInstance().setUrlPhoto(finalPhoto);
-
-
+//                Session.startSession();
+//                Session.getInstance().setFullname(user.getFullname());
+//                Session.getInstance().setEmail(user.getEmail());
+//                Session.getInstance().setUrlPhoto(user.getPhotoUrl());
+                callback.success();
             }
 
             @Override
@@ -247,7 +279,7 @@ public class FirebaseHelper {
 
             }
         });
-        callback.success();
+
     }
 
     public void checkLogin() {

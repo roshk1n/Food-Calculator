@@ -40,6 +40,7 @@ public class LoginActivity extends Activity implements LoginView {
 
         initUI();
 
+
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
 
@@ -71,10 +72,9 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         FirebaseHelper.getInstance().removeListner();
-        loginProgress = ProgressDialog.show(this, "", "Wait please...");
-        loginProgress.setCanceledOnTouchOutside(false);
-        loginProgress.setCancelable(false);
-       loginPresenter.getCallbackManager().onActivityResult(requestCode,resultCode,data);
+        loginProgress.setMessage("Wait please...");
+        loginProgress.show();
+        loginPresenter.getCallbackManager().onActivityResult(requestCode,resultCode,data);
     }
 
     @Override
@@ -116,9 +116,8 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     public void onLogIn(View view) {
-        loginProgress = ProgressDialog.show(this, "", "Wait please...");
-        loginProgress.setCanceledOnTouchOutside(false);
-        loginProgress.setCancelable(false);
+        loginProgress.setMessage("Wait please...");
+        loginProgress.show();
         loginPresenter.login(emailEt.getText().toString(),etPassword.getText().toString());
     }
 
@@ -131,5 +130,7 @@ public class LoginActivity extends Activity implements LoginView {
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
         loginProgress = new ProgressDialog(this);
+        loginProgress.setCanceledOnTouchOutside(false);
+        loginProgress.setCancelable(false);
     }
 }

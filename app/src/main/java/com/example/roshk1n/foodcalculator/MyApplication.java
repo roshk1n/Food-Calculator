@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 
         Realm.setDefaultConfiguration(realmConfig);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-   /*     Realm realm = Realm.getDefaultInstance();
+/*           Realm realm = Realm.getDefaultInstance();
 
         realm.executeTransaction(new Realm.Transaction() {
                                      @Override
