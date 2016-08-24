@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
@@ -35,7 +33,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
 
@@ -45,12 +42,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
-    private OnFragmenеListener mFragmentListener;
+    private String querySearch;
+    private OnFragmentListener mFragmentListener;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-    private EditText searchEt;
     private View view;
 
     public SearchFragment() {}
@@ -59,10 +53,11 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         return new SearchFragment();
     }
 
-    public static SearchFragment newInstance(long date) {
+    public static SearchFragment newInstance(long date, String query) {
         SearchFragment searchFragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putLong("date", date);
+        bundle.putString("query", query);
         searchFragment.setArguments(bundle);
         return searchFragment;
     }
@@ -92,6 +87,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         if(getArguments() != null) {
             mdate = getArguments().getLong("date");
+            querySearch = getArguments().getString("query");
         }
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -100,32 +96,24 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         mAdapter = new RecyclerSearchAdapter(foods, mdate,this);
         mRecyclerView.setAdapter(mAdapter);
 
+        if(querySearch != null) {
+            Log.d("Myy",querySearch);
+            foods.clear();
+            mAdapter.notifyDataSetChanged();
+            searchPresenter.searchFood(querySearch);
+            Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
+        }
+
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         mRecyclerView.setItemAnimator(itemAnimator);
-
-        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (searchEt.getText().length() != 0) {
-                        foods.clear();
-                        mAdapter.notifyDataSetChanged();
-                        searchPresenter.searchFood(searchEt.getText().toString());
-                        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmenеListener) {
-            mFragmentListener = (OnFragmenеListener) context;
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
         }
     }
 
@@ -166,6 +154,5 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
-        searchEt = (EditText) view.findViewById(R.id.et_food_name);
     }
 }

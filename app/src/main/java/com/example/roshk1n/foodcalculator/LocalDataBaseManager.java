@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator;
 
 
 import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
 import com.example.roshk1n.foodcalculator.realm.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realm.FoodRealm;
@@ -264,7 +265,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public static void checkLocalUser() {
+    public static void checkLocalUser(final OnCompleteCallback callback) {
         UserRealm user = realm.where(UserRealm.class)
                 .equalTo("email",Session.getInstance().getEmail())
                 .findFirst();
@@ -279,6 +280,7 @@ public class LocalDataBaseManager {
                 }
             });
         }
+        callback.success();
     }
 
     public static void addLocalUserImage(final String image) {

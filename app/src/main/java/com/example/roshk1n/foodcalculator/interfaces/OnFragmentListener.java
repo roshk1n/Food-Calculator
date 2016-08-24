@@ -3,7 +3,7 @@ package com.example.roshk1n.foodcalculator.interfaces;
 /**
  * Created by roshk1n on 8/17/2016.
  */
-public interface OnFragmenеListener {
+public interface OnFragmentListener {
     void setDrawerMenu();
 
     void setArrowToolbar();
@@ -15,4 +15,8 @@ public interface OnFragmenеListener {
     void updateDrawer();
 
     void updateDrawerLight();
+
+    void hideToolbar();
+
+    void showToolbar();
 }

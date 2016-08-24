@@ -104,8 +104,13 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
 
     @Override
     public void loginSuccessful() {
-        LocalDataBaseManager.checkLocalUser();
-        dataLoginCallback.navigateToHome();
+        LocalDataBaseManager.checkLocalUser(new OnCompleteCallback() {
+            @Override
+            public void success() {
+                dataLoginCallback.navigateToHome();
+            }
+        });
+
     }
 
     @Override

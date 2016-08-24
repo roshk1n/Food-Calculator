@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerInfoAdapter;
 import com.example.roshk1n.foodcalculator.presenters.InfoFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -27,7 +27,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private final static String FOOD_KEY = "food";
     private InfoFoodPresenterImpl presenter;
     private Food food;
-    private OnFragmenеListener mFragmentListener;
+    private OnFragmentListener mFragmentListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -93,8 +93,8 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmenеListener) {
-            mFragmentListener = (OnFragmenеListener) context;
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
         }
     }
 

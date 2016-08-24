@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.DiaryView;
@@ -49,7 +49,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
-    private OnFragmenеListener mFragmentListener;
+    private OnFragmentListener mFragmentListener;
 
     private ItemTouchHelper itemTouchHelper;
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
@@ -166,8 +166,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmenеListener) {
-            mFragmentListener = (OnFragmenеListener) context;
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
         }
     }
 
@@ -205,7 +205,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             hideHintAddAnim();
             Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                     R.id.fragment_conteiner,
-                    SearchFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    TabSearchFragment.newInstance(diaryPresenter.getDate().getTime()),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                     true);
         }

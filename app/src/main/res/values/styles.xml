@@ -30,4 +30,11 @@
         <item name="android:theme">@style/StyledTilEditTextTheme</item>
     </style>
 
+    <style name="FacebookLoginButton">
+        <item name="android:background">@drawable/facebook_ico_24dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
 </resources>

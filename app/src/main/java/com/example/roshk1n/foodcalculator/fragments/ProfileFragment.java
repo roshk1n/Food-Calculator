@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.ProfileView;
 import com.example.roshk1n.foodcalculator.utils.Utils;
@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private static final int MAKE_PHOTO = 1;
 
     private ProfilePresenterImpl profilePresenter;
-    private OnFragmenеListener mFragmentListener;
+    private OnFragmentListener mFragmentListener;
 
     private CoordinatorLayout coordinatorLayout;
     private View view;
@@ -88,8 +88,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmenеListener) {
-            mFragmentListener = (OnFragmenеListener) context;
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
         }
     }
 

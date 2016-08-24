@@ -49,7 +49,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class FirebaseHelper {
     private static final String USERS_CHILD = "users";
@@ -70,6 +69,7 @@ public class FirebaseHelper {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseCallback firebaseCallback;
+    private boolean flag = true;
 
     private FirebaseHelper() {
     }
@@ -100,35 +100,35 @@ public class FirebaseHelper {
         this.storage = storage;
     }
 
-    public FirebaseAuth getmAuth() {
+    public FirebaseAuth getAuth() {
         return mAuth;
     }
 
-    public void setmAuth(FirebaseAuth mAuth) {
+    public void setAuth(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
     }
 
-    public FirebaseAuth.AuthStateListener getmAuthListner() {
+    public FirebaseAuth.AuthStateListener getAuthListener() {
         return mAuthListner;
     }
 
-    public void setmAuthListner(FirebaseAuth.AuthStateListener mAuthListner) {
+    public void setAuthListener(FirebaseAuth.AuthStateListener mAuthListner) {
         this.mAuthListner = mAuthListner;
     }
 
-    public FirebaseUser getmFirebaseUser() {
+    public FirebaseUser getFirebaseUser() {
         return mFirebaseUser;
     }
 
-    public void setmFirebaseUser(FirebaseUser mFirebaseUser) {
+    public void setFirebaseUser(FirebaseUser mFirebaseUser) {
         this.mFirebaseUser = mFirebaseUser;
     }
 
-    public void removeListner() {
+    public void removeListener() {
         mAuth.removeAuthStateListener(mAuthListner);
     }
 
-    public void addListner() {
+    public void addListener() {
         mAuth.addAuthStateListener(mAuthListner);
     }
 
@@ -137,11 +137,12 @@ public class FirebaseHelper {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    setmFirebaseUser(getmAuth().getCurrentUser());
+                    setFirebaseUser(getAuth().getCurrentUser());
                     Session.startSession();
-                    Session.getInstance().setEmail(getmFirebaseUser().getEmail());
-                    Session.getInstance().setFullname(getmFirebaseUser().getDisplayName());
-                    Session.getInstance().setUrlPhoto(String.valueOf(getmFirebaseUser().getPhotoUrl()));
+                    Session.getInstance().setEmail(getFirebaseUser().getEmail());
+                    Session.getInstance().setFullname(getFirebaseUser().getDisplayName());
+                    Session.getInstance().setUrlPhoto(String.valueOf(getFirebaseUser().getPhotoUrl()));
+                    Log.d("LoginActivity", "login success");
                     firebaseCallback.loginSuccessful();
 
                 } else {
@@ -176,7 +177,7 @@ public class FirebaseHelper {
                                             if (task.isSuccessful()) {
                                                 final DatabaseReference reference = database.getReference()
                                                         .child("users")
-                                                        .child(getmAuth().getCurrentUser().getUid());
+                                                        .child(getAuth().getCurrentUser().getUid());
                                                 UserFirebase user = new UserFirebase();
                                                 user.setAge(0l);
                                                 user.setActiveLevel("none");
@@ -252,14 +253,14 @@ public class FirebaseHelper {
         final DatabaseReference reference = database.getReference()
                 .child("users");
         reference.keepSynced(true);
-        final DatabaseReference userRef = reference.child(getmAuth().getCurrentUser().getUid());
+        final DatabaseReference userRef = reference.child(getAuth().getCurrentUser().getUid());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean check = false;
                 Log.d("Myy",dataSnapshot.getChildrenCount()+"");
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    if(data.getKey().equals(getmAuth().getCurrentUser().getUid())) {
+                    if(data.getKey().equals(getAuth().getCurrentUser().getUid())) {
                         check = true;
                         break;
                     }
@@ -283,18 +284,20 @@ public class FirebaseHelper {
     }
 
     public void checkLogin() {
-        setmAuth(FirebaseAuth.getInstance());
-        setmAuthListner(new FirebaseAuth.AuthStateListener() {
+        flag = true;
+        setAuth(FirebaseAuth.getInstance());
+        setAuthListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    setmFirebaseUser(getmAuth().getCurrentUser());
+                if (user != null && flag) {
+                    setFirebaseUser(getAuth().getCurrentUser());
                     Session.startSession();
                     Session.getInstance().setEmail(user.getEmail());
                     Session.getInstance().setFullname(user.getDisplayName());
                     Session.getInstance().setUrlPhoto(String.valueOf(user.getPhotoUrl()));
                     firebaseCallback.loginSuccessful();
+                    flag = false;
                 }
             }
         });
@@ -327,16 +330,16 @@ public class FirebaseHelper {
     public void loadUserProfile(final UserProfileCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         final DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
 
         userRef.keepSynced(true);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = new User();
-                user.setEmail(getmAuth().getCurrentUser().getEmail());
-                user.setFullname(getmAuth().getCurrentUser().getDisplayName());
-                user.setPhotoUrl(getmAuth().getCurrentUser().getPhotoUrl().toString());
+                user.setEmail(getAuth().getCurrentUser().getEmail());
+                user.setFullname(getAuth().getCurrentUser().getDisplayName());
+                user.setPhotoUrl(getAuth().getCurrentUser().getPhotoUrl().toString());
                 user.setAge(Integer.valueOf(dataSnapshot.child(AGE_CHILD).getValue().toString()));
                 user.setWeight(Integer.valueOf(dataSnapshot.child(WEIGHT_CHILD).getValue().toString()));
                 user.setHeight(Integer.valueOf(dataSnapshot.child(HEIGHT_CHILD).getValue().toString()));
@@ -358,7 +361,7 @@ public class FirebaseHelper {
         UserFirebase userFire = new UserFirebase(user);
         DatabaseReference reference = database.getReference(USERS_CHILD);
         final DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         userRef.keepSynced(true);
 
         userRef.child(AGE_CHILD).setValue(userFire.getAge());
@@ -406,7 +409,7 @@ public class FirebaseHelper {
     public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         final DatabaseReference foodRef = reference
-                .child(getmAuth().getCurrentUser().getUid())
+                .child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
                 .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
                 .child(FOODS_CHILD);
@@ -433,7 +436,7 @@ public class FirebaseHelper {
         Date dateFood = new Date(food.getTime());
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference foodsRef = reference
-                .child(getmAuth().getCurrentUser().getUid())
+                .child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
                 .child(dateFood.getDate() + "_" + dateFood.getMonth() + "_" + dateFood.getYear())
                 .child(FOODS_CHILD);
@@ -443,7 +446,7 @@ public class FirebaseHelper {
 
     public void removeFood(long time) {
         DatabaseReference userRef = database.getReference(USERS_CHILD)
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         Date date = new Date(time);
         DatabaseReference foodRef = userRef.child(DAYS_CHILD)
                 .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
@@ -455,7 +458,7 @@ public class FirebaseHelper {
     public void loadFavoriteFood(final DataFavoriteCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         final DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
         userRef.keepSynced(true);
         favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -477,7 +480,7 @@ public class FirebaseHelper {
     public void addFavoriteFood(final Food food, final StateItemCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         userRef.keepSynced(true);
         final DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
         favoriteRef.child(food.getNdbno()).setValue(food);
@@ -487,7 +490,7 @@ public class FirebaseHelper {
     public void removeFavoriteFood(final String ndbno, final StateItemCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         final DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
         favoriteRef.keepSynced(true);
         favoriteRef.child(ndbno).removeValue();
@@ -497,7 +500,7 @@ public class FirebaseHelper {
     public void removeFavoriteFood(String ndbno) { //this method needs for swipe delete
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
         favoriteRef.keepSynced(true);
         favoriteRef.child(ndbno).removeValue();
@@ -506,7 +509,7 @@ public class FirebaseHelper {
     public void isExistInFavorite(final Food food, final DataAddFoodCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
-                .child(getmAuth().getCurrentUser().getUid());
+                .child(getAuth().getCurrentUser().getUid());
         DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
         favoriteRef.keepSynced(true);
         favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {

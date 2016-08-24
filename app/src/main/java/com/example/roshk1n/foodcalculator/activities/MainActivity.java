@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,16 +32,19 @@ import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
 import com.example.roshk1n.foodcalculator.fragments.ProfileFragment;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.MainPresenterImpl;
 import com.example.roshk1n.foodcalculator.utils.Utils;
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
-        OnFragmenеListener, MainView {
+        OnFragmentListener, MainView {
 
     private MainPresenterImpl presenter;
     private View mHeader;
@@ -170,6 +172,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
+            if(AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null)
+                LoginManager.getInstance().logOut();
             Session.destroy();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
@@ -251,6 +255,16 @@ public class MainActivity extends AppCompatActivity
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
         Bitmap imageUser = presenter.getLocalImage();
         icoUserDrawerIv.setImageBitmap(imageUser);
+    }
+
+    @Override
+    public void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToolbar() {
+        mToolbar.setVisibility(View.VISIBLE);
     }
 
     @Override

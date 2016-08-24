@@ -16,9 +16,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmenеListener;
+import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAddAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAdapter;
+import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenter;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenterImpl;
 import com.example.roshk1n.foodcalculator.Views.FavoriteView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackFavoriteAdapter;
@@ -31,25 +34,38 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
-    private OnFragmenеListener mFragmentListener;
+    private OnFragmentListener mFragmentListener;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
+    private RecyclerFavoriteAddAdapter mAddAdapter;
+    private boolean addOrInfo = false;
+    private long date;
 
     private View view;
     private CoordinatorLayout favoriteCoordinatorLayout;
 
-    public FavoriteFragment() {}
+    public FavoriteFragment() {
+    }
 
     public static Fragment newInstance() {
         return new FavoriteFragment();
+    }
+
+    public static Fragment newInstance(long date, boolean addOrInfo) {
+        FavoriteFragment favoriteFragment = new FavoriteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("check", addOrInfo);
+        bundle.putLong("date",date);
+        favoriteFragment.setArguments(bundle);
+        return favoriteFragment;
     }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        favoritePresenter  = new FavoritePresenterImpl();
+        favoritePresenter = new FavoritePresenterImpl();
         favoritePresenter.setView(this);
     }
 
@@ -60,9 +76,14 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
         initUI();
 
-        if(mFragmentListener != null) {
+        if (mFragmentListener != null) {
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
+        }
+
+        if (getArguments() != null) {
+            addOrInfo = getArguments().getBoolean("check");
+            date = getArguments().getLong("date");
         }
 
         favoritePresenter.getFavoriteList();
@@ -70,20 +91,24 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Food removedFood = favoriteList.remove(viewHolder.getAdapterPosition());
-                makeSnackBarAction(viewHolder.getAdapterPosition(),removedFood);
-                mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        if (!addOrInfo) {
+            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    Food removedFood = favoriteList.remove(viewHolder.getAdapterPosition());
+                    makeSnackBarAction(viewHolder.getAdapterPosition(), removedFood);
+                    mAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                }
+            };
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+            itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        }
+
 
         return view;
     }
@@ -91,8 +116,8 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmenеListener) {
-            mFragmentListener = (OnFragmenеListener) context;
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
         }
     }
 
@@ -104,14 +129,19 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
     @Override
     public void makeSnackBar(String text) {
-        Snackbar.make(favoriteCoordinatorLayout,text,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(favoriteCoordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void setFavoriteList(ArrayList<Food> favFoods) {
         favoriteList = favFoods;
-        mAdapter = new RecyclerFavoriteAdapter(favoriteList,this);
-        mRecyclerView.setAdapter(mAdapter);
+        if (!addOrInfo) {
+            mAdapter = new RecyclerFavoriteAdapter(favoriteList, this);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAddAdapter = new RecyclerFavoriteAddAdapter(favoriteList,this);
+            mRecyclerView.setAdapter(mAddAdapter);
+        }
     }
 
     private void makeSnackBarAction(final int position, final Food removed) {
@@ -121,14 +151,14 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                if(event!=Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    favoritePresenter.removeFavoriteFoodDB(position,removed.getNdbno());
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    favoritePresenter.removeFavoriteFoodDB(position, removed.getNdbno());
                 }
             }
         }).setAction("Undo", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favoriteList.add(position,removed);
+                favoriteList.add(position, removed);
                 mAdapter.notifyItemInserted(position);
 
             }
@@ -147,6 +177,16 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                 R.id.fragment_conteiner,
                 InfoFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
+    }
+
+    @Override
+    public void navigateToAddFood(Food food) {
+        food.setTime(date);
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                AddFoodFragment.newInstance(food),
                 FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                 true);
     }

@@ -25,12 +25,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/food_in_blue" />
 
-        <TextView
-            android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryText" />
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,23 +80,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            <com.facebook.login.widget.LoginButton
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/btnLogInFacebook"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="10dp"
-
-                android:height="20dp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-        <!--        <com.facebook.login.widget.ProfilePictureView
-                    android:id="@+id/ProfilePhotoFac"
-                    android:layout_width="wrap_content"
-
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    />-->
-
     </LinearLayout>
 
     <TextView

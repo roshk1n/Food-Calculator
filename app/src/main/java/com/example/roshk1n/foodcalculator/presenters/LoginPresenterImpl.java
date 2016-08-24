@@ -52,7 +52,6 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
     @Override
     public void loginFacebookListner(LoginButton loginButton) {
         callbackManager = CallbackManager.Factory.create();
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
