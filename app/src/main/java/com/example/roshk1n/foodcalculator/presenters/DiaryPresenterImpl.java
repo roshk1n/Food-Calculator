@@ -85,7 +85,7 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
     }
 
     @Override
-    public void calculateCalories() {
+    public void calculateCalories() { //TODO lll
         if(day.getFoods().size() != 0) {
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {

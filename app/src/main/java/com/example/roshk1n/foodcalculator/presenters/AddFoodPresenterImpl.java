@@ -39,7 +39,6 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         }
         dataManager.addFood(food);
         foodView.navigateToDiary();
-
     }
 
     @Override

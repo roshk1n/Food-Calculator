@@ -165,6 +165,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        addFoodFab.hide();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentListener) {

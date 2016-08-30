@@ -185,6 +185,4 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");
     }
-
-
 }

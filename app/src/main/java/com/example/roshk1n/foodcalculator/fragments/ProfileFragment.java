@@ -39,24 +39,24 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     private CoordinatorLayout coordinatorLayout;
     private View view;
-    private ImageView profile_iv;
-    private EditText full_name_et;
-    private EditText age_et;
-    private EditText height_et;
-    private EditText weight_et;
-    private EditText email_et;
-    private Spinner sex_profile_sp;
-    private Spinner active_level__profile_sp;
-    private ImageView full_name_ico_iv;
-    private ImageView email_ico_iv;
-    private ImageView age_ico_iv;
-    private ImageView weight_ico_iv;
-    private ImageView height_ico_iv;
-    private ImageView active_level_ico_iv;
-    private ImageView sex_ico_profile_iv;
-    private ProgressDialog saveDateProgress;
+    private ImageView profileIv;
+    private EditText fullNameEt;
+    private EditText ageEt;
+    private EditText heightEt;
+    private EditText weightEt;
+    private EditText emailEt;
+    private Spinner sexProfileSp;
+    private Spinner activeLevelProfileSp;
+    private ImageView fullNameIcoIv;
+    private ImageView emailIcoIv;
+    private ImageView ageIcoIv;
+    private ImageView weightIcoIv;
+    private ImageView heightIcoIv;
+    private ImageView activeLevelIcoIv;
+    private ImageView sexIcoProfileIv;
+    private ProgressDialog saveDatePd;
 
-    private FloatingActionButton edit_profile_fab;
+    private FloatingActionButton editProfileFab;
 
     public ProfileFragment() { }
 
@@ -79,8 +79,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         profilePresenter.loadUser();
 
-        profile_iv.setOnClickListener(this);
-        edit_profile_fab.setOnClickListener(this);
+        profileIv.setOnClickListener(this);
+        editProfileFab.setOnClickListener(this);
 
         return view;
     }
@@ -113,17 +113,17 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     @Override
     public void onClick(View v) {
-        if(v == profile_iv) {
-            if (full_name_et.isEnabled()) {
+        if(v == profileIv) {
+            if (fullNameEt.isEnabled()) {
                 createPickerPhoto();
             } else {
                 Snackbar.make(coordinatorLayout, "First, turn on editing mode.", Snackbar.LENGTH_SHORT).show();
             }
 
-        } else if(v == edit_profile_fab) {
+        } else if(v == editProfileFab) {
             if(Utils.isConnectNetwork(getActivity().getApplicationContext())) {
-                saveUserProfile(full_name_et.isEnabled());
-                changeEnable(full_name_et.isEnabled());
+                saveUserProfile(fullNameEt.isEnabled());
+                changeEnable(fullNameEt.isEnabled());
                 changeIcon();
 
             } else {
@@ -142,30 +142,32 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                            String sex,
                            String activeLevel) {
 
-        full_name_et.setText(fullname);
-        weight_et.setText(String.valueOf(weight));
-        height_et .setText(String .valueOf(height));
-        age_et.setText(String.valueOf(age));
-        email_et.setText(email);
-        int positionActive = profilePresenter.getPositionInArray(activeLevel,
-                getResources().getStringArray(R.array.active_level));
+        if(isVisible()) {
+            fullNameEt.setText(fullname);
+            weightEt.setText(String.valueOf(weight));
+            heightEt.setText(String.valueOf(height));
+            ageEt.setText(String.valueOf(age));
+            emailEt.setText(email);
+            int positionActive = profilePresenter.getPositionInArray(activeLevel,
+                    getResources().getStringArray(R.array.active_level));
 
-        int positionSex = profilePresenter.getPositionInArray(sex,
-                getResources().getStringArray(R.array.sex));
-        active_level__profile_sp.setSelection(positionActive);
-        sex_profile_sp.setSelection(positionSex);
-        profile_iv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl) ); //convert to Bitmap
+            int positionSex = profilePresenter.getPositionInArray(sex,
+                    getResources().getStringArray(R.array.sex));
+            activeLevelProfileSp.setSelection(positionActive);
+            sexProfileSp.setSelection(positionSex);
+            profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
+        }
     }
 
     @Override
     public void setUserPhoto(Bitmap bitmap) {
-        profile_iv.setImageBitmap(bitmap);
+        profileIv.setImageBitmap(bitmap);
     }
 
     @Override
     public void CompleteUpdateAndRefreshDrawer() {
         mFragmentListener.updateDrawerLight();
-        saveDateProgress.dismiss();
+        saveDatePd.dismiss();
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -200,92 +202,92 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     private void saveUserProfile(boolean isEnable) {
         if (isEnable) {
-            saveDateProgress = ProgressDialog.show(getActivity(), "", "Wait please...");
-            saveDateProgress.setCanceledOnTouchOutside(false);
-            saveDateProgress.setCancelable(false);
-            Bitmap bitmap = ((BitmapDrawable)profile_iv.getDrawable()).getBitmap();
+            saveDatePd = ProgressDialog.show(getActivity(), "", "Wait please...");
+            saveDatePd.setCanceledOnTouchOutside(false);
+            saveDatePd.setCancelable(false);
+            Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
             profilePresenter.updateUserProfile(
-                    full_name_et.getText().toString(),
-                    weight_et.getText().toString(),
-                    height_et.getText().toString(),
-                    age_et.getText().toString(),
-                    email_et.getText().toString(),
+                    fullNameEt.getText().toString(),
+                    weightEt.getText().toString(),
+                    heightEt.getText().toString(),
+                    ageEt.getText().toString(),
+                    emailEt.getText().toString(),
                     bitmap,
-                    sex_profile_sp.getSelectedItem().toString(),
-                    active_level__profile_sp.getSelectedItem().toString()
+                    sexProfileSp.getSelectedItem().toString(),
+                    activeLevelProfileSp.getSelectedItem().toString()
             );
         }
     }
 
     private void changeIcon() {
-        if(full_name_et.isEnabled()) {
-            full_name_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_accent_24dp));
-            email_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_accent_24dp));
-            age_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_age_accent_24dp));
-            weight_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_accent_24dp));
-            height_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_accent_24dp));
-            active_level_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_accent_24dp));
-            sex_ico_profile_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_accent_24dp));
+        if(fullNameEt.isEnabled()) {
+            fullNameIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_accent_24dp));
+            emailIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_accent_24dp));
+            ageIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_age_accent_24dp));
+            weightIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_accent_24dp));
+            heightIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_accent_24dp));
+            activeLevelIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_accent_24dp));
+            sexIcoProfileIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_accent_24dp));
         } else {
-            full_name_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_primary_24dp));
-            email_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_primary_24dp));
-            age_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_age_primary_24dp));
-            weight_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_primary_24dp));
-            height_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_primary_24dp));
-            active_level_ico_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_primary_24dp));
-            sex_ico_profile_iv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_primary_24dp));
+            fullNameIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_primary_24dp));
+            emailIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_primary_24dp));
+            ageIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_age_primary_24dp));
+            weightIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_weight_primary_24dp));
+            heightIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_ruler_primary_24dp));
+            activeLevelIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_active_level_primary_24dp));
+            sexIcoProfileIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_male_female_primary_24dp));
         }
     }
 
     private void changeEnable(boolean isEnable) {
-        full_name_et.setEnabled(!isEnable); //set enable or disable change
-        weight_et.setEnabled(!isEnable);
-        height_et.setEnabled(!isEnable);
-        age_et.setEnabled(!isEnable);
-        email_et.setEnabled(!isEnable);
-        sex_profile_sp.setEnabled(!isEnable);
-        active_level__profile_sp.setEnabled(!isEnable);
+        fullNameEt.setEnabled(!isEnable); //set enable or disable change
+        weightEt.setEnabled(!isEnable);
+        heightEt.setEnabled(!isEnable);
+        ageEt.setEnabled(!isEnable);
+        emailEt.setEnabled(!isEnable);
+        sexProfileSp.setEnabled(!isEnable);
+        activeLevelProfileSp.setEnabled(!isEnable);
 
         if(!isEnable) {
-            edit_profile_fab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
+            editProfileFab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
             Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
         } else {
-            full_name_et.clearFocus(); // clear focus after saving
-            weight_et.clearFocus();
-            height_et.clearFocus();
-            email_et.clearFocus();
-            age_et.clearFocus();
-            sex_profile_sp.clearFocus();
-            active_level__profile_sp.clearFocus();
-            edit_profile_fab.setImageDrawable(getActivity()
+            fullNameEt.clearFocus(); // clear focus after saving
+            weightEt.clearFocus();
+            heightEt.clearFocus();
+            emailEt.clearFocus();
+            ageEt.clearFocus();
+            sexProfileSp.clearFocus();
+            activeLevelProfileSp.clearFocus();
+            editProfileFab.setImageDrawable(getActivity()
                     .getResources()
                     .getDrawable(R.drawable.ic_create_white_24dp));
         }
     }
 
     private void initUI() {
-        edit_profile_fab = (FloatingActionButton) view.findViewById(R.id.edit_profile_fab);
+        editProfileFab = (FloatingActionButton) view.findViewById(R.id.edit_profile_fab);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.profile_coordinator_layout);
 
-        full_name_et = (EditText) view.findViewById(R.id.full_name_profile_et);
-        weight_et = (EditText) view.findViewById(R.id.weight_profile_et);
-        height_et = (EditText) view.findViewById(R.id.height_profile_et);
-        age_et = (EditText) view.findViewById(R.id.age_profile_et);
-        email_et = (EditText) view.findViewById(R.id.email_profile_et);
+        fullNameEt = (EditText) view.findViewById(R.id.full_name_profile_et);
+        weightEt = (EditText) view.findViewById(R.id.weight_profile_et);
+        heightEt = (EditText) view.findViewById(R.id.height_profile_et);
+        ageEt = (EditText) view.findViewById(R.id.age_profile_et);
+        emailEt = (EditText) view.findViewById(R.id.email_profile_et);
 
-        sex_profile_sp = (Spinner) view.findViewById(R.id.sex_profile_sp) ;
-        active_level__profile_sp = (Spinner) view.findViewById(R.id.active_level_profile_sp) ;
+        sexProfileSp = (Spinner) view.findViewById(R.id.sex_profile_sp) ;
+        activeLevelProfileSp = (Spinner) view.findViewById(R.id.active_level_profile_sp) ;
 
-        profile_iv = (ImageView) view.findViewById(R.id.profile_iv);
-        full_name_ico_iv = (ImageView) view.findViewById(R.id.full_name_ico_profile_iv);
-        email_ico_iv = (ImageView) view.findViewById(R.id.email_ico_profile_iv);
-        age_ico_iv = (ImageView) view.findViewById(R.id.age_ico_profile_iv);
-        weight_ico_iv = (ImageView) view.findViewById(R.id.weight_ico_profile_iv);
-        height_ico_iv = (ImageView) view.findViewById(R.id.height_ico_profile_iv);
-        active_level_ico_iv = (ImageView) view.findViewById(R.id.active_level_ico_profile_iv);
-        sex_ico_profile_iv = (ImageView) view.findViewById(R.id.sex_ico_profile_iv);
+        profileIv = (ImageView) view.findViewById(R.id.profile_iv);
+        fullNameIcoIv = (ImageView) view.findViewById(R.id.full_name_ico_profile_iv);
+        emailIcoIv = (ImageView) view.findViewById(R.id.email_ico_profile_iv);
+        ageIcoIv = (ImageView) view.findViewById(R.id.age_ico_profile_iv);
+        weightIcoIv = (ImageView) view.findViewById(R.id.weight_ico_profile_iv);
+        heightIcoIv = (ImageView) view.findViewById(R.id.height_ico_profile_iv);
+        activeLevelIcoIv = (ImageView) view.findViewById(R.id.active_level_ico_profile_iv);
+        sexIcoProfileIv = (ImageView) view.findViewById(R.id.sex_ico_profile_iv);
 
-        sex_profile_sp.setEnabled(full_name_et.isEnabled());
-        active_level__profile_sp.setEnabled(full_name_et.isEnabled());
+        sexProfileSp.setEnabled(fullNameEt.isEnabled());
+        activeLevelProfileSp.setEnabled(fullNameEt.isEnabled());
     }
 }

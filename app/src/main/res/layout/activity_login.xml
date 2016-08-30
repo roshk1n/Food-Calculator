@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".activities.LoginActivity">
 
@@ -28,11 +28,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/StyledTilEditText"
             android:gravity="center">
 
             <EditText
                 android:id="@+id/etLogin"
                 android:layout_width="wrap_content"
+                android:textColor="@drawable/edit_text_sing_up_state"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:ems="14"
@@ -44,6 +46,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/StyledTilEditText"
             android:gravity="center">
 
             <EditText
@@ -53,18 +56,23 @@
                 android:ems="14"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColor="@color/colorPrimaryText" />
+                android:textColor="@drawable/edit_text_sing_up_state" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="#d0ff00"
             android:onClick="onLogIn"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
             android:text="@string/log_in"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryText" />
+            android:textAllCaps="false" />
 
         <TextView
             android:id="@+id/tbOR"
@@ -73,7 +81,7 @@
             android:layout_marginBottom="10dp"
             android:text="@string/or"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="#FFFFFF"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -81,7 +89,6 @@
             android:layout_height="wrap_content">
 
             <com.facebook.login.widget.LoginButton
-                xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/btnLogInFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -98,6 +105,6 @@
         android:clickable="true"
         android:onClick="onSingInActivityClicked"
         android:text="@string/sing_up"
-        android:textColor="@color/com_facebook_blue"
-        android:textSize="20sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 </RelativeLayout>
