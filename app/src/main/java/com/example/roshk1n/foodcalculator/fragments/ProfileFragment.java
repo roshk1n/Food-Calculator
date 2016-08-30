@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                 changeIcon();
 
             } else {
-                Snackbar.make(coordinatorLayout, "You need internet connection for update profile.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout, "You need internet connection for update profile.", Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -248,7 +248,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         if(!isEnable) {
             edit_profile_fab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
         } else {
             full_name_et.clearFocus(); // clear focus after saving
             weight_et.clearFocus();

@@ -6,17 +6,6 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-   <!-- <EditText
-        android:id="@+id/et_food_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/search_for_a_food"
-        android:textSize="17sp"
-        android:imeOptions="actionSearch"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimaryText"
-        android:paddingLeft="15dp" />-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_search"
         android:layout_width="match_parent"

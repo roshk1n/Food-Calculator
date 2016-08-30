@@ -81,7 +81,7 @@ public class TabSearchFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbarSearchTab);
 
-        mToolbar.setTitle("Search");
+       mToolbar.setTitle("Search");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(getContext(), R.drawable.abc_ic_ab_back_mtrl_am_alpha));
