@@ -3,15 +3,10 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Session;
-import com.example.roshk1n.foodcalculator.Views.MainView;
+import com.example.roshk1n.foodcalculator.views.MainView;
 
 import java.io.ByteArrayOutputStream;
 

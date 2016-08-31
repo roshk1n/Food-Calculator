@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
+import com.example.roshk1n.foodcalculator.views.InfoFoodView;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerInfoAdapter;
 import com.example.roshk1n.foodcalculator.presenters.InfoFoodPresenterImpl;

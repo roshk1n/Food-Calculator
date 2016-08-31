@@ -27,7 +27,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
-import com.example.roshk1n.foodcalculator.Views.MainView;
+import com.example.roshk1n.foodcalculator.fragments.ChartFragment;
+import com.example.roshk1n.foodcalculator.views.MainView;
 import com.example.roshk1n.foodcalculator.fragments.DiaryFragment;
 import com.example.roshk1n.foodcalculator.fragments.FavoriteFragment;
 import com.example.roshk1n.foodcalculator.fragments.RemindersFragment;
@@ -144,8 +145,14 @@ public class MainActivity extends AppCompatActivity
                 coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
 
-        } else if (id == R.id.nav_statistic) {
-
+        } else if (id == R.id.nav_chart) {
+            if(!(fr instanceof ChartFragment)) {
+                Utils.navigateToFragment(getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        ChartFragment.newInstance(),
+                        FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                        false);
+            }
         } else if (id == R.id.nav_reminders) {
             if (!(fr instanceof RemindersFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),

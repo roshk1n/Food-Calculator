@@ -3,14 +3,11 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
 import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.Views.LoginView;
+import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
-import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -19,11 +16,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
 

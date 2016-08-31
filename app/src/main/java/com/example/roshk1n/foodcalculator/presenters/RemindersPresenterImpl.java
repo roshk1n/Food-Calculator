@@ -1,20 +1,13 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Session;
-import com.example.roshk1n.foodcalculator.Views.RemindersView;
-import com.example.roshk1n.foodcalculator.presenters.RemindersPresenter;
-import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import io.realm.Realm;
-import io.realm.RealmList;
 
 public class RemindersPresenterImpl implements RemindersPresenter {
 

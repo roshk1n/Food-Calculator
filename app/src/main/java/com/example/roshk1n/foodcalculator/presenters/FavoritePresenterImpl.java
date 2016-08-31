@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.Views.FavoriteView;
+import com.example.roshk1n.foodcalculator.views.FavoriteView;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 

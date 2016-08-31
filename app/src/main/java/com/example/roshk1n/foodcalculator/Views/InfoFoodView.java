@@ -1,8 +1,4 @@
-package com.example.roshk1n.foodcalculator.Views;
-
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
-
-import java.util.ArrayList;
+package com.example.roshk1n.foodcalculator.views;
 
 /**
  * Created by roshk1n on 8/11/2016.

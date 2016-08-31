@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.roshk1n.foodcalculator.activities.LoginActivity;
 import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
@@ -34,7 +35,7 @@ public class ReceiverNotification extends BroadcastReceiver {
         int notify_id = intent.getExtras().getInt(NOTIFICATION_ID);
         String name = intent.getExtras().getString(NOTIFICATION_NAME);
 
-        Intent intent1 = new Intent(context,MainActivity.class);
+        Intent intent1 = new Intent(context,LoginActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 intent1, 0);
         NotificationCompat.Builder mBuilder =

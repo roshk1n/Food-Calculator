@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.Views.LoginView;
+import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.facebook.login.widget.LoginButton;
 
 /**

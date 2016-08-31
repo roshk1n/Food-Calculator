@@ -1,13 +1,9 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.Views.RemindersView;
-import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.util.ArrayList;
-
-import io.realm.RealmList;
 
 public interface RemindersPresenter {
 

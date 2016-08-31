@@ -15,7 +15,7 @@ import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerReminderAdapter;
 import com.example.roshk1n.foodcalculator.broadcastReceivers.ReceiverNotification;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.RemindersView;
+import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;

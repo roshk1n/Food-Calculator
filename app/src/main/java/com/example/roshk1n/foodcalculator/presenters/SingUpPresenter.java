@@ -3,7 +3,7 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.content.ContentResolver;
 import android.content.Intent;
 
-import com.example.roshk1n.foodcalculator.Views.SingUpView;
+import com.example.roshk1n.foodcalculator.views.SingUpView;
 
 public interface SingUpPresenter {
 

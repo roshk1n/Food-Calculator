@@ -4,31 +4,25 @@ package com.example.roshk1n.foodcalculator.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.SearchView;
+import com.example.roshk1n.foodcalculator.views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 

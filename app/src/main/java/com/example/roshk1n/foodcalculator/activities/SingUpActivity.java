@@ -11,13 +11,12 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.SingUpPresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.SingUpView;
+import com.example.roshk1n.foodcalculator.views.SingUpView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.ProfileView;
+import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
 public class ProfileFragment extends Fragment implements ProfileView, View.OnClickListener {

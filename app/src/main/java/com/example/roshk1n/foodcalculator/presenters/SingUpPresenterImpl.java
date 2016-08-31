@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.Views.SingUpView;
+import com.example.roshk1n.foodcalculator.views.SingUpView;
 import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
 
 import java.io.FileNotFoundException;

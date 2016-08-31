@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.Views;
+package com.example.roshk1n.foodcalculator.views;
 
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 

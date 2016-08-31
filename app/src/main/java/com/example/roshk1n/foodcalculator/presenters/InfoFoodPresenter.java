@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.Views.InfoFoodView;
+import com.example.roshk1n.foodcalculator.views.InfoFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public interface InfoFoodPresenter {

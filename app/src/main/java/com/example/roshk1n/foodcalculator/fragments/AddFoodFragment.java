@@ -12,17 +12,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.AddFoodView;
-import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
+import com.example.roshk1n.foodcalculator.views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 

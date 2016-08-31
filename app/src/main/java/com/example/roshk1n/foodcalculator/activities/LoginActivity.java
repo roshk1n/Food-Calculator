@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
-import com.example.roshk1n.foodcalculator.Views.LoginView;
+import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.example.roshk1n.foodcalculator.remoteDB.FirebaseHelper;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;

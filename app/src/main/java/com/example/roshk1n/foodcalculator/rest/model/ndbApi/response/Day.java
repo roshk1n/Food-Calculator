@@ -33,8 +33,6 @@ public class Day {
 
     public Day (DayFirebase dayFirebase) {
         setDate(dayFirebase.getDate());
-        setEatDailyCalories((int)(long)dayFirebase.getEatDailyCalories());
-        setRemainingCalories(Integer.valueOf(dayFirebase.getRemainingCalories()));
         ArrayList<Food> foodArray = new ArrayList<>();
         for (FoodFirebase foodFirebase : dayFirebase.getFoods()) {
             foodArray.add(new Food(foodFirebase));

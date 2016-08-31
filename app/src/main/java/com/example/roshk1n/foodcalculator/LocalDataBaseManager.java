@@ -1,6 +1,8 @@
 package com.example.roshk1n.foodcalculator;
 
 
+import android.util.Log;
+
 import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.realm.DayRealm;
@@ -13,10 +15,12 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class LocalDataBaseManager {
 
@@ -38,24 +42,6 @@ public class LocalDataBaseManager {
         });
     }
 
-    public static void loginUser(String email, String password, LocalManagerCallback callback) {
-  /*      User user;
-        UserRealm userRealms = realm.where(UserRealm.class)
-                .equalTo("email", email)
-                .equalTo("password", password).findFirst();
-
-        if(userRealms != null) {
-            user = new User(userRealms);
-            Session.startSession();
-            Session.getInstance().setEmail(user.getEmail());
-            Session.getInstance().setFullname(user.getFullname());
-            Session.getInstance().setUrlPhoto(user.getPhotoUrl());
-            callback.loginSuccessful();
-        } else {
-            callback.showToast("Authentication failed. Try again please!");
-        }*/
-    }
-
     public static Day loadDayData(Date date) {
         Day day = new Day();
         boolean checkDay = false;
@@ -68,6 +54,8 @@ public class LocalDataBaseManager {
 
         if (checkDay) {
             day = new Day(dayRealm);
+        } else {
+            dayRealm = null;
         }
         return day;
     }
@@ -167,7 +155,7 @@ public class LocalDataBaseManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                if(dayRealm != null) {
+                if (dayRealm != null) {
                     dayRealm.setEatDailyCalories(eat_calories);
                     dayRealm.setRemainingCalories(remainingCalories);
                 }
@@ -253,13 +241,15 @@ public class LocalDataBaseManager {
             public void execute(Realm realm) {
                 int i = dayIsExist(new Date(day.getDate()));
                 DayRealm newDayReam = new DayRealm(day);
-                if(i!=-1) {
-                    getCurrentUserRealm().getDayRealms().get(i).deleteFromRealm();
-                    getCurrentUserRealm().getDayRealms().add(newDayReam);
-                    dayRealm = getCurrentUserRealm().getDayRealms().last();
+                if (i != -1) {
+                    getCurrentUserRealm().getDayRealms().get(i).getFoods().deleteAllFromRealm();
+                    getCurrentUserRealm().getDayRealms().get(i).getFoods().addAll(newDayReam.getFoods());
+                    dayRealm = getCurrentUserRealm().getDayRealms().get(i);
                 } else {
-                    getCurrentUserRealm().getDayRealms().add(newDayReam);
-                    dayRealm = getCurrentUserRealm().getDayRealms().last();
+                    if (newDayReam.getFoods().size() > 0) {
+                        getCurrentUserRealm().getDayRealms().add(newDayReam);
+                        dayRealm = getCurrentUserRealm().getDayRealms().last();
+                    }
                 }
             }
         });
@@ -267,11 +257,11 @@ public class LocalDataBaseManager {
 
     public static void checkLocalUser(final OnCompleteCallback callback) {
         UserRealm user = realm.where(UserRealm.class)
-                .equalTo("email",Session.getInstance().getEmail())
+                .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
-        if(user == null) {
+        if (user == null) {
             final UserRealm userRealm = new UserRealm(Session.getInstance().getFullname(),
-                    Session.getInstance().getEmail(),Session.getInstance().getUrlPhoto());
+                    Session.getInstance().getEmail(), Session.getInstance().getUrlPhoto());
 
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -307,5 +297,23 @@ public class LocalDataBaseManager {
 
     public static String getLocalUserImage() {
         return getCurrentUserRealm().getPhotoUrl();
+    }
+
+    public static ArrayList<Day> loadDataForChart() {
+        ArrayList<Day> listDay = new ArrayList<>();
+        Calendar date = Calendar.getInstance();
+        Calendar nowDate = Calendar.getInstance();
+        int yearNow = nowDate.get(Calendar.YEAR);
+        int weekOfYearNow = nowDate.get(Calendar.WEEK_OF_YEAR);
+        for (DayRealm day : getCurrentUserRealm().getDayRealms()) {
+            date.setTimeInMillis(day.getDate());
+            int weekOfYear = date.get(Calendar.WEEK_OF_YEAR);
+            int year = date.get(Calendar.YEAR);
+            Log.d("Week",year+"and Now"+yearNow+"year "+weekOfYear+"and Now"+weekOfYearNow);
+            if(year == yearNow && weekOfYear == weekOfYearNow) {
+                listDay.add(new Day(day));
+            }
+        }
+        return listDay;
     }
 }

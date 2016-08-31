@@ -135,8 +135,9 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
         firebaseHelper.loadDay(date, new LoadDayCallback() { //TODO need new thread
             @Override
             public void loadComplete(Day dayFire) {
-                callback.loadComplete(dayFire);
                 LocalDataBaseManager.updateDays(dayFire);
+                callback.loadComplete(dayFire);
+
             }
         });
     }
@@ -249,5 +250,9 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
                 dataLoginCallback.showToast(message);
             }
         });
+    }
+
+    public ArrayList<Day> loadDataForChart() {
+        return LocalDataBaseManager.loadDataForChart();
     }
 }

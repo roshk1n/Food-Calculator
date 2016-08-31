@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="@string/my_favorites" />
         <item
-            android:id="@+id/nav_statistic"
+            android:id="@+id/nav_chart"
             android:icon="@drawable/ic_chart_primary_24dp"
             android:title="Chart" />
 

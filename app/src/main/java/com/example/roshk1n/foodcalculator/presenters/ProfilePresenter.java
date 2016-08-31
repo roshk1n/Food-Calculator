@@ -4,9 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import com.example.roshk1n.foodcalculator.Views.ProfileView;
-import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.views.ProfileView;
 
 /**
  * Created by roshk1n on 8/5/2016.

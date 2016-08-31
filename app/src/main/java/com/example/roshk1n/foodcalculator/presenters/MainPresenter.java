@@ -2,7 +2,7 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Bitmap;
 
-import com.example.roshk1n.foodcalculator.Views.MainView;
+import com.example.roshk1n.foodcalculator.views.MainView;
 
 /**
  * Created by roshk1n on 8/16/2016.

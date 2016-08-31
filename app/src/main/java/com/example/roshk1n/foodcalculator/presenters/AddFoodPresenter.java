@@ -1,7 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.Views.AddFoodView;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.io.IOException;

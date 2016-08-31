@@ -6,9 +6,8 @@ import com.example.roshk1n.foodcalculator.interfaces.DataDiaryCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
 import com.example.roshk1n.foodcalculator.DataManager;
 import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
-import com.example.roshk1n.foodcalculator.Views.DiaryView;
+import com.example.roshk1n.foodcalculator.views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
             public void loadComplete(Day d) {
                 day = d;
                 diaryView.setDay(d);
-          /*      if(day.getFoods().size()==0) {
+   /*             if(day.getFoods().size()==0) {
                     diaryView.showHintAddAnim();
                 } else {
                     diaryView.hideHintAddAnim();
@@ -85,8 +84,8 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
     }
 
     @Override
-    public void calculateCalories() { //TODO lll
-        if(day.getFoods().size() != 0) {
+    public void calculateCalories() {
+       /* if(day.getFoods().size() != 0) {*/
             int eat_calories = 0;
             for (int j = 0; j < day.getFoods().size(); j++) {
                 eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
@@ -107,13 +106,13 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
             }
             diaryView.updateCalories(eatCalories, remainingCalories, color);
 
-        } else {
+  /*      } else {
             int goalCalories = dataManager.loadGoalCalories();
             day.setRemainingCalories(goalCalories);
             int checkLimit = checkLimit(day.getRemainingCalories());
             int color = getColor(checkLimit);
             diaryView.updateCalories("0",String.valueOf(goalCalories), color);
-        }
+        }*/
     }
 
     @Override
