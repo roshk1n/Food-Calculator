@@ -234,6 +234,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         date.setDate(dayOfMonth);
         date.setYear(year - 1900);
 
+
         diaryPresenter.setDate(date);
         String str = diaryPresenter.getDateString();
         date_tv.setText(str);
