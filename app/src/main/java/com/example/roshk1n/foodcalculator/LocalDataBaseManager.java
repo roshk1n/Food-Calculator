@@ -301,18 +301,8 @@ public class LocalDataBaseManager {
 
     public static ArrayList<Day> loadDataForChart() {
         ArrayList<Day> listDay = new ArrayList<>();
-        Calendar date = Calendar.getInstance();
-        Calendar nowDate = Calendar.getInstance();
-        int yearNow = nowDate.get(Calendar.YEAR);
-        int weekOfYearNow = nowDate.get(Calendar.WEEK_OF_YEAR);
         for (DayRealm day : getCurrentUserRealm().getDayRealms()) {
-            date.setTimeInMillis(day.getDate());
-            int weekOfYear = date.get(Calendar.WEEK_OF_YEAR);
-            int year = date.get(Calendar.YEAR);
-            Log.d("Week",year+"and Now"+yearNow+"year "+weekOfYear+"and Now"+weekOfYearNow);
-            if(year == yearNow && weekOfYear == weekOfYearNow) {
-                listDay.add(new Day(day));
-            }
+            listDay.add(new Day(day));
         }
         return listDay;
     }

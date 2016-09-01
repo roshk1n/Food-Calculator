@@ -1,7 +1,8 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.EntryEatChar;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.EntryEatChart;
 import com.example.roshk1n.foodcalculator.views.ChartView;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 
@@ -11,5 +12,7 @@ import java.util.ArrayList;
 public interface ChartPresenter {
     void setView(ChartView view);
 
-    ArrayList<EntryEatChar> loadData();
+    ArrayList<Entry> loadData(int period);
+
+    ArrayList<String> formatLabelsMonth();
 }

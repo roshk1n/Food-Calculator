@@ -3,14 +3,14 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class EntryEatChar implements Comparable<EntryEatChar> {
+public class EntryEatChart implements Comparable<EntryEatChart> {
     private int eatCalories;
     private int date;
 
-    public EntryEatChar() {
+    public EntryEatChart() {
     }
 
-    public EntryEatChar(int eatCalories, int date) {
+    public EntryEatChart(int eatCalories, int date) {
         this.eatCalories = eatCalories;
         this.date = date;
     }
@@ -33,7 +33,7 @@ public class EntryEatChar implements Comparable<EntryEatChar> {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public int compareTo(EntryEatChar another) {
+    public int compareTo(EntryEatChart another) {
         return Integer.compare(this.date, another.date);
     }
 }
