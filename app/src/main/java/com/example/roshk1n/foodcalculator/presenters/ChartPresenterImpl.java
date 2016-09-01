@@ -20,6 +20,11 @@ public class ChartPresenterImpl implements ChartPresenter {
     @Override
     public ArrayList<EntryEatChar> loadData() {
         ArrayList<Day> listDay = dataManager.loadDataForChart();
+
+
+
+
+
         ArrayList<EntryEatChar> entryEatChars = new ArrayList<>();
         Calendar date = Calendar.getInstance();
         for (Day day : listDay) {

@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -109,8 +110,13 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     @Override
     public void navigateToDiary() {
-        String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
-        getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                DiaryFragment.newInstance(food.getTime()),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                false);
+/*        String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
+        getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
         Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
         Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }

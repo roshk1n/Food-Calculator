@@ -190,9 +190,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     @Override
-    public void onClick(View v) {
+    public void onClick(View v) { // back for arrow item menu
         onBackPressed();
     }
 

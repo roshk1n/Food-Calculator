@@ -64,4 +64,8 @@ public class Utils {
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(field.getWindowToken(), 0);
     }
+
+    public static void clearBackStack(FragmentManager supportFragmentManager) {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
 }

@@ -26,5 +26,4 @@ public interface NdbService {
                           @Query("type") String type,
                           Callback<FoodResponse> callback
                                );
-
 }

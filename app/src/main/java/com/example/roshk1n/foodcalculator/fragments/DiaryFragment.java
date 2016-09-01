@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -102,6 +103,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
+        Utils.clearBackStack(getActivity().getSupportFragmentManager());
+
         initUI();
 
         if(mFragmentListener != null) {
@@ -166,8 +169,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onStop() {
-        super.onStop();
         addFoodFab.hide();
+        super.onStop();
     }
 
     @Override
@@ -233,7 +236,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         date.setMonth(monthOfYear);
         date.setDate(dayOfMonth);
         date.setYear(year - 1900);
-
 
         diaryPresenter.setDate(date);
         String str = diaryPresenter.getDateString();

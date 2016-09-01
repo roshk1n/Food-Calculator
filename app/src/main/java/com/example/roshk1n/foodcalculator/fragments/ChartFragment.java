@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.ChartPresenterImpl;
@@ -28,6 +31,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 //import com.github.mikephil.charting.utils.EntryXComparator;
 import com.github.mikephil.charting.utils.FileUtils;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +41,8 @@ import java.util.Date;
 public class ChartFragment extends Fragment implements ChartView {
     private ChartPresenterImpl presenter;
     private View view;
+    private MaterialSpinner peridoSp;
+    private TextView caloriesTv;
 
     public static ChartFragment newInstance() {
         return new ChartFragment();
@@ -63,6 +69,16 @@ public class ChartFragment extends Fragment implements ChartView {
         view = inflater.inflate(R.layout.fragment_chart, container, false);
 
         LineChart lineChart = (LineChart) view.findViewById(R.id.eat_chart);
+        peridoSp = (MaterialSpinner) view.findViewById(R.id.period_sp);
+        caloriesTv = (TextView) view.findViewById(R.id.calories_chart_tv);
+
+        peridoSp.setItems("Week", "Month", "Year");
+        peridoSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+
+            }
+        });
 
         ArrayList<EntryEatChar> entries = presenter.loadData();
 
@@ -76,16 +92,16 @@ public class ChartFragment extends Fragment implements ChartView {
         for (int i = 0; i < entries.size(); i++)
             entriesChart.add(new Entry(entries.get(i).getEatCalories(), entries.get(i).getDate()));
 
-        //   Collections.sort(entriesChart, new EntryXComparator());
-
-        LineDataSet dataSet = new LineDataSet(entriesChart, "Calories");
-
+        LineDataSet dataSet = new LineDataSet(entriesChart,"");
+        //dataSet.setDrawHighlightIndicators(false);
         //dataSet.setDrawCubic(true);
         dataSet.setDrawFilled(true);
-        dataSet.setColor(Color.RED);
+        dataSet.setColor(getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
         lineChart.setDescription("");
+        lineChart.setGridBackgroundColor(getResources().getColor(R.color.mdtp_white));
+        lineChart.getLegend().setEnabled(false);
 
         ArrayList<String> labels = new ArrayList<>();
         labels.add("Sun");
@@ -96,10 +112,14 @@ public class ChartFragment extends Fragment implements ChartView {
         labels.add("Fri");
         labels.add("Sat");
 
-
-        LineData data = new LineData(labels, dataSet);
+        LineData data = new LineData(labels,dataSet);
         lineChart.setData(data);
+
         dataSet.setDrawFilled(true);
+        dataSet.setDrawVerticalHighlightIndicator(false);
+        dataSet.setDrawHorizontalHighlightIndicator(false);
+        dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
+
 
         LimitLine ll1 = new LimitLine(1800f, "Limit");
         ll1.setLineWidth(3f);
@@ -108,25 +128,24 @@ public class ChartFragment extends Fragment implements ChartView {
         ll1.setTextSize(12f);
         ll1.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
         leftAxis.addLimitLine(ll1);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        //leftAxis.setDrawZeroLine(true);
+        leftAxis.setStartAtZero(true);
         leftAxis.setXOffset(10f);
-
 
         YAxis yAxis = lineChart.getAxisRight();
         yAxis.setEnabled(false);
 
         XAxis xAxis = lineChart.getXAxis();
-        //  xAxis.setGranularity(1f);
         xAxis.setDrawLabels(true);
-//        xAxis.setLabelRotationAngle(60);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setXOffset(20f);
+        xAxis.setYOffset(10f);
         lineChart.animateY(1000);
 
         return view;
     }
 }
+

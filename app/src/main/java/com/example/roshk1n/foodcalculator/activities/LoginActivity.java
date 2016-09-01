@@ -124,9 +124,9 @@ public class LoginActivity extends Activity implements LoginView {
 
     public void onLogIn(View view) {
         FirebaseHelper.getInstance().removeListener();
-        loginProgress.setMessage("Wait please...");
+      /*  loginProgress.setMessage("Wait please...");
         Log.d(TAG, "onLogIn will show loader");
-        loginProgress.show();
+        loginProgress.show();*/
 //        loginPresenter.login(emailEt.getText().toString(), etPassword.getText().toString());
         loginPresenter.login("ee@gmail.com", "132132132");
     }
