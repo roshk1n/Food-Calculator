@@ -113,6 +113,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="days">Days</string>
+    <string name="amount_calories">Amount calories:</string>
+    <string name="_2500">2500</string>
 
 
 </resources>

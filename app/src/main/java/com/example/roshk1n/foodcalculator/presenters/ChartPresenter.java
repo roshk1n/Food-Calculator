@@ -15,4 +15,6 @@ public interface ChartPresenter {
     ArrayList<Entry> loadData(int period);
 
     ArrayList<String> formatLabelsMonth();
+
+    int getLimitCalories();
 }

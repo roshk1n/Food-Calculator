@@ -3,7 +3,6 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.EntryEatChart;
 import com.example.roshk1n.foodcalculator.views.ChartView;
@@ -15,6 +14,7 @@ import java.util.Collections;
 
 public class ChartPresenterImpl implements ChartPresenter {
     private ChartView chartView;
+    private int amountCalories;
     private DataManager dataManager = new DataManager();
 
     @Override
@@ -27,28 +27,46 @@ public class ChartPresenterImpl implements ChartPresenter {
         ArrayList<Day> listDay = dataManager.loadDataForChart(); //load day user
         ArrayList<EntryEatChart> entryEatCharts;
         ArrayList<Entry> entriesChart = new ArrayList<>();
+        amountCalories = 0;
         if (period == 0) {
             entryEatCharts = getCurrentWeekEntry(listDay); // choose day for current week
-            for (int i = 0; i < entryEatCharts.size(); i++) // convert to EntryChart
+            for (int i = 0; i < entryEatCharts.size(); i++) { // convert to EntryChart
                 entriesChart.add(new Entry(entryEatCharts.get(i).getEatCalories(), entryEatCharts.get(i).getDate()));
+                amountCalories += entryEatCharts.get(i).getEatCalories();
+            }
 
         } else if (period == 1) {
             entryEatCharts = getCurrentMonthEntry(listDay);
-            for (int i = 0; i < entryEatCharts.size(); i++)
-                entriesChart.add(new Entry(entryEatCharts.get(i).getEatCalories(), entryEatCharts.get(i).getDate()-1));
+            for (int i = 0; i < entryEatCharts.size(); i++) {
+                entriesChart.add(new Entry(entryEatCharts.get(i).getEatCalories(), entryEatCharts.get(i).getDate() - 1));
+                amountCalories += entryEatCharts.get(i).getEatCalories();
+            }
+
+        } else if (period == 2) {
+            entryEatCharts = getCurrentYearEntry(listDay);
+            for (int i = 0; i < entryEatCharts.size(); i++) {
+                entriesChart.add(new Entry(entryEatCharts.get(i).getEatCalories(), entryEatCharts.get(i).getDate()));
+                amountCalories += entryEatCharts.get(i).getEatCalories();
+            }
         }
         return entriesChart;
     }
 
-    @Override
-    public ArrayList<String> formatLabelsMonth() {
-        ArrayList<String> labels = new ArrayList<>();
-        Calendar date = Calendar.getInstance();
-        int month = date.get(Calendar.MONTH) + 1; // start with 0
-        for (int i = 0; i < date.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            labels.add(i + 1 + "/" + month);
+    private ArrayList<EntryEatChart> getCurrentYearEntry(ArrayList<Day> listDay) {
+
+        ArrayList<EntryEatChart> entryEatCharts = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            entryEatCharts.add(new EntryEatChart(0, i));
         }
-        return labels;
+
+        for (Day day : listDay) {
+            Calendar date = Calendar.getInstance();
+            date.setTimeInMillis(day.getDate());
+            int month = date.get(Calendar.MONTH);
+            int eatCalories = entryEatCharts.get(month).getEatCalories();
+            entryEatCharts.get(month).setEatCalories(eatCalories + day.getEatDailyCalories());
+        }
+        return entryEatCharts;
     }
 
     private ArrayList<EntryEatChart> getCurrentMonthEntry(ArrayList<Day> listDay) {
@@ -73,6 +91,7 @@ public class ChartPresenterImpl implements ChartPresenter {
                 entryEatCharts.add(new EntryEatChart(0, i));
             }
         }
+
         Collections.sort(entryEatCharts);
         return entryEatCharts;
     }
@@ -90,7 +109,7 @@ public class ChartPresenterImpl implements ChartPresenter {
             if (year == yearNow && weekOfYear == weekOfYearNow) {
                 EntryEatChart entryEatChart = new EntryEatChart();
                 entryEatChart.setEatCalories(day.getEatDailyCalories());
-                entryEatChart.setDate(date.get(Calendar.DAY_OF_WEEK)-1);
+                entryEatChart.setDate(date.get(Calendar.DAY_OF_WEEK) - 1);
                 entryEatCharts.add(entryEatChart);
             }
         }
@@ -103,12 +122,33 @@ public class ChartPresenterImpl implements ChartPresenter {
         return entryEatCharts;
     }
 
+    @Override
+    public ArrayList<String> formatLabelsMonth() {
+        ArrayList<String> labels = new ArrayList<>();
+        Calendar date = Calendar.getInstance();
+        int month = date.get(Calendar.MONTH) + 1; // start with 0
+        for (int i = 0; i < date.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+            labels.add(i + 1 + "/" + month);
+        }
+        return labels;
+    }
+
+    @Override
+    public int getLimitCalories() {
+        return dataManager.loadGoalCalories();
+    }
+
     private boolean contains(int day, ArrayList<EntryEatChart> list) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getDate() == day)
                 return true;
         }
         return false;
+    }
+
+
+    public int getAmountCalories() {
+        return amountCalories;
     }
 }
 

@@ -26,13 +26,16 @@ import java.util.ArrayList;
 
 public class ChartFragment extends Fragment implements ChartView {
     private ChartPresenterImpl presenter;
-    private View view;
-    private MaterialSpinner peridoSp;
-    private TextView caloriesTv;
-    private LineChart lineChart;
+    private ArrayList<Entry> entries;
     private LineDataSet dataSet;
     private LineData data;
-    private  ArrayList<Entry> entries;
+    private int userLimit;
+
+    private View view;
+    private MaterialSpinner periodSp;
+    private TextView dayTv;
+    private TextView amountCal;
+    private LineChart lineChart;
 
     public static ChartFragment newInstance() {
         return new ChartFragment();
@@ -50,14 +53,12 @@ public class ChartFragment extends Fragment implements ChartView {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chart, container, false);
 
-        lineChart = (LineChart) view.findViewById(R.id.eat_chart);
-        peridoSp = (MaterialSpinner) view.findViewById(R.id.period_sp);
-        caloriesTv = (TextView) view.findViewById(R.id.calories_chart_tv);
+        initUI();
 
-        peridoSp.setItems("Week", "Month", "Year");
-
+        userLimit = presenter.getLimitCalories();
+        periodSp.setItems("Week", "Month", "Year");
         entries = presenter.loadData(0);
-
+        amountCal.setText(presenter.getAmountCalories()+"");
         final ArrayList<String> labels = new ArrayList<>(); // list for week labels
         labels.add("Sun");
         labels.add("Mon");
@@ -66,30 +67,31 @@ public class ChartFragment extends Fragment implements ChartView {
         labels.add("Thu");
         labels.add("Fri");
         labels.add("Sat");
+
         // configuration chart
         dataSet = new LineDataSet(entries, "");
         data = new LineData(labels, dataSet);
-        configureChart();
-        lineChart.invalidate();
+        configureChart(true, 0, 0, 0, 0);
 
-        peridoSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+        periodSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 entries = presenter.loadData(position);
+                amountCal.setText(presenter.getAmountCalories()+"");
                 dataSet = new LineDataSet(entries, "");
                 if (position == 0) {
                     data = new LineData(labels, dataSet);
-                    configureChart();
-                    lineChart.invalidate();
+                    dayTv.setText("Days");
+                    configureChart(true, 0, 0, 0, 0);
 
                 } else if (position == 1) {
                     ArrayList<String> labelsMonth = presenter.formatLabelsMonth();
                     data = new LineData(labelsMonth, dataSet);
-                    configureChart();
-                    lineChart.zoom(2,0,0,0);
-                    lineChart.invalidate();
+                    dayTv.setText("Days");
+                    configureChart(true, 5, 0, 0, 0);
 
                 } else if (position == 2) {
+                    dayTv.setText("Months");
                     ArrayList<String> labelsMonth = new ArrayList<>(); // list for week labels
                     labelsMonth.add("Jan");
                     labelsMonth.add("Feb");
@@ -104,15 +106,22 @@ public class ChartFragment extends Fragment implements ChartView {
                     labelsMonth.add("Nov");
                     labelsMonth.add("Dec");
                     data = new LineData(labelsMonth, dataSet);
-                    configureChart();
-                    lineChart.invalidate();
+                    configureChart(false, 0, 0, 0, 0);
                 }
             }
         });
 
         return view;
     }
-    private void configureChart(){
+
+    private void initUI() {
+        lineChart = (LineChart) view.findViewById(R.id.eat_chart);
+        periodSp = (MaterialSpinner) view.findViewById(R.id.period_sp);
+        dayTv = (TextView) view.findViewById(R.id.day_chart_tv);
+        amountCal = (TextView) view.findViewById(R.id.amount_calories_chart_tv);
+    }
+
+    private void configureChart(boolean enableLimitLine, float scaleX, float scaleY, float x, float y) {
         dataSet.setDrawCubic(true);
         dataSet.setDrawFilled(true);
         dataSet.setColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -122,13 +131,15 @@ public class ChartFragment extends Fragment implements ChartView {
         dataSet.setDrawFilled(true);
         dataSet.setValueTextSize(10);
 
+
         lineChart.setDescription("");
         lineChart.setGridBackgroundColor(getResources().getColor(R.color.mdtp_white));
         lineChart.getLegend().setEnabled(false);
         lineChart.animateY(1000);
         lineChart.setData(data);
+        lineChart.zoom(scaleX, scaleY, x, y);
 
-        LimitLine ll1 = new LimitLine(500, "Limit");
+        LimitLine ll1 = new LimitLine(userLimit, "Limit");
         ll1.setLineWidth(2f);
         ll1.enableDashedLine(20f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -137,11 +148,16 @@ public class ChartFragment extends Fragment implements ChartView {
 
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
-        leftAxis.addLimitLine(ll1);
+        if (enableLimitLine) {
+            leftAxis.addLimitLine(ll1);
+        }
+
         leftAxis.setTextSize(11f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setStartAtZero(true);
         leftAxis.setXOffset(10f);
+        leftAxis.setDrawTopYLabelEntry(true);
+
 
         YAxis yAxis = lineChart.getAxisRight();
         yAxis.setEnabled(false);
@@ -151,6 +167,7 @@ public class ChartFragment extends Fragment implements ChartView {
         xAxis.setTextSize(11.5f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setYOffset(10f);
+        lineChart.invalidate();
     }
 }
 
