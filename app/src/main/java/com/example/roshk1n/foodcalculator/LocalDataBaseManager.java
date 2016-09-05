@@ -215,7 +215,8 @@ public class LocalDataBaseManager {
     }
 
     public static User loadUser() {
-        return new User(getCurrentUserRealm());
+        User user = new User(getCurrentUserRealm());
+        return user;
     }
 
     public static void updateUserProfile(final User user) {

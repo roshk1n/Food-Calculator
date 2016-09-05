@@ -39,7 +39,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     @Override
     public void loadUser() {
-        dataManager.loadUserProfile(profileView.getContext(),new UserProfileCallback() {
+        dataManager.loadUserProfile(profileView.getContext(), new UserProfileCallback() {
             @Override
             public void loadProfileSuccess(User user) {
                 profileView.setProfile(user.getPhotoUrl(), user.getEmail(), user.getFullname(), user.getAge(),
@@ -53,9 +53,9 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public Bitmap stringToBitmap(String photoUrl) {
         Bitmap imageUser = null;
         try {
-            byte [] encodeByte=Base64.decode(photoUrl, Base64.DEFAULT);
+            byte[] encodeByte = Base64.decode(photoUrl, Base64.DEFAULT);
             imageUser = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
         }
         return imageUser;
@@ -88,85 +88,96 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final Bitmap image,
                                   final String sex,
                                   final String active_level) {
+          if (!fullname.isEmpty() && !weight.isEmpty() && !height.isEmpty()
+                && !age.isEmpty() && !email.isEmpty()) {
 
-        final String image_profile = bitmapToString(image);//convert to string
-        int goalCalories = updateLimitCalories(sex,active_level,weight,height,age);
-        User user = new User();
-        user.setFullname(fullname);
-        user.setWeight(Integer.parseInt(weight));
-        user.setHeight(Integer.parseInt(height));
-        user.setAge(Integer.parseInt(age));
-        user.setEmail(email);
-        user.setPhotoUrl(image_profile);
-        user.setSex(sex);
-        user.setActiveLevel(active_level);
-        user.setGoalCalories(goalCalories);
-        dataManager.updateUserProfile(user,image, new OnCompleteCallback() {
-            @Override
-            public void success() {
-                profileView.CompleteUpdateAndRefreshDrawer();
-            }
-        });
+            final String image_profile = bitmapToString(image);//convert to string
+            int goalCalories = updateLimitCalories(sex, active_level, weight, height, age);
+            User user = new User();
+            user.setFullname(fullname);
+            user.setWeight(Integer.parseInt(weight));
+            user.setHeight(Integer.parseInt(height));
+            user.setAge(Integer.parseInt(age));
+            user.setEmail(email);
+            user.setPhotoUrl(image_profile);
+            user.setSex(sex);
+            user.setActiveLevel(active_level);
+            user.setGoalCalories(goalCalories);
+            dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
+                @Override
+                public void success() {
+                    profileView.CompleteUpdateAndRefreshDrawer();
+                }
+            });
+        } else {
+            profileView.showToast("Enter all fields, please !");
+        }
     }
 
     @Override
-    public int getPositionInArray(String active, String [] array) {
+    public int getPositionInArray(String active, String[] array) {
         int position = 0;
-        for (int i= 0; i<array.length;i++) {
-            if(array[i].equals(active)) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(active)) {
                 position = i;
             }
         }
         return position;
     }
 
-    private int updateLimitCalories(String sex, String active_level, String _weight, String _height, String _age ) {
+    private int updateLimitCalories(String sex, String active_level, String _weight, String _height, String _age) {
         short maleOrFemaleCof = 0;
         float activeLevelCof = 1;// none active
         int weight = Integer.parseInt(_weight);
         int height = Integer.parseInt(_height);
         int age = Integer.parseInt(_age);
         switch (sex) {
-            case SEX_NONE : {
+            case SEX_NONE: {
                 maleOrFemaleCof = 0;
             }
-            case SEX_MALE : {
+            case SEX_MALE: {
                 maleOrFemaleCof = 5;
 
-            } break;
-            case SEX_FEMALE : {
+            }
+            break;
+            case SEX_FEMALE: {
                 maleOrFemaleCof = -161;
             }
         }
 
         switch (active_level) {
-            case NONE__LEVEL : {
+            case NONE__LEVEL: {
                 activeLevelCof = 1f;
-            } break;
-            case NOT_VERY_ACTIVE_LEVEL : {
+            }
+            break;
+            case NOT_VERY_ACTIVE_LEVEL: {
                 activeLevelCof = 1.2f;
-            } break;
+            }
+            break;
 
-            case LIGHTLY_ACTIVE_LEVEL : {
+            case LIGHTLY_ACTIVE_LEVEL: {
                 activeLevelCof = 1.375f;
-            }break;
-            case  ACTIVE_LEVEL :{
+            }
+            break;
+            case ACTIVE_LEVEL: {
                 activeLevelCof = 1.6375f;
-            } break;
+            }
+            break;
             case VERY_ACTIVE_LEVEL: {
                 activeLevelCof = 1.9f;
-            }break;
+            }
+            break;
 
         }
-        float goalCaloriesFloat = (10 * weight + 6.25f * height - 5 * age + maleOrFemaleCof)*activeLevelCof; // calculate limit
+        float goalCaloriesFloat = (10 * weight + 6.25f * height - 5 * age + maleOrFemaleCof) * activeLevelCof; // calculate limit
 
         return Math.round(goalCaloriesFloat);
     }
 
     private String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, outputStream);
-        byte [] b = outputStream.toByteArray();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] b = outputStream.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 }

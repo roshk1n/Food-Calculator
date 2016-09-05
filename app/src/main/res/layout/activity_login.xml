@@ -1,110 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:gravity="center"
     android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="35dp"
+    android:paddingRight="35dp"
+    android:paddingTop="16dp"
     tools:context=".activities.LoginActivity">
 
-    <android.support.v4.widget.ContentLoadingProgressBar
-        android:id="@+id/login_progressBar"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"/>
+        android:src="@drawable/food_in_blue" />
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/StyledTilEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/email"
+            android:inputType="textPersonName"
+            android:textColor="@drawable/edit_text_sing_up_state" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        style="@style/StyledTilEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="@drawable/edit_text_sing_up_state" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorAccentLogin"
+        android:onClick="onLogIn"
+        android:text="@string/log_in"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center">
 
-        <ImageView
+        <TextView
+            android:id="@+id/reset_password_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/food_in_blue" />
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onResetPassword"
+            android:text="@string/reset_password"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/StyledTilEditText"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:clickable="true"
+            android:onClick="onSingInActivityClicked"
+            android:text="@string/sing_up"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/etLogin"
-                android:layout_width="wrap_content"
-                android:textColor="@drawable/edit_text_sing_up_state"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:ems="14"
-                android:hint="@string/email"
-                android:inputType="textPersonName" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/StyledTilEditText"
-            android:gravity="center">
-
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="14"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColor="@drawable/edit_text_sing_up_state" />
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:background="#d0ff00"
-            android:onClick="onLogIn"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:text="@string/log_in"
-            android:textAllCaps="false" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:background="@color/mdtp_white">
+        </View>
 
         <TextView
             android:id="@+id/tbOR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@color/colorPrimary"
+            android:layout_centerInParent="true"
             android:text="@string/or"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp" />
+            android:textColor="#FFFFFF"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/btnLogInFacebook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+    </RelativeLayout>
 
-        </LinearLayout>
-    </LinearLayout>
+    android:textSize="25sp" />
 
-    <TextView
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnLogInFacebook"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:onClick="onSingInActivityClicked"
-        android:text="@string/sing_up"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
-</RelativeLayout>
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

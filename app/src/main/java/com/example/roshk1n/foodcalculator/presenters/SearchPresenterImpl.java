@@ -27,7 +27,7 @@ public class SearchPresenterImpl implements SearchPresenter, RetrofitCallback {
     }
 
     @Override
-    public void errorNetwork() {
-        searchView.setErrorNetwork();
+    public void error(String message) {
+        searchView.showToast(message);
     }
 }

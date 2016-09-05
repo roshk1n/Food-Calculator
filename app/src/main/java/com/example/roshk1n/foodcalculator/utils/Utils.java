@@ -51,7 +51,6 @@ public class Utils {
                     .replace(container, fragment)
                     .commit();
         }
-
     }
 
     public static boolean isConnectNetwork(Context context) {
@@ -66,6 +65,7 @@ public class Utils {
     }
 
     public static void clearBackStack(FragmentManager supportFragmentManager) {
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentManager.BackStackEntry first = supportFragmentManager.getBackStackEntryAt(0);
+        supportFragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

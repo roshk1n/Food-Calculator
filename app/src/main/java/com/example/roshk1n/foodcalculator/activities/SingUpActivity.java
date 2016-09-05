@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
@@ -30,7 +31,8 @@ public class SingUpActivity extends Activity implements SingUpView {
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
-    private CircleImageView ivUser;
+    private TextView alreadyAccoutTv;
+    private CircleImageView userIv;
     private ProgressDialog singUpProgress;
 
     private SingUpPresenterImpl singUpPresenter;
@@ -44,51 +46,58 @@ public class SingUpActivity extends Activity implements SingUpView {
 
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
+
+        alreadyAccoutTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==PICK_PHOTO_FOR_AVATAR&& resultCode==Activity.RESULT_OK) {
-           singUpPresenter.setUserPhotoSD(data,getApplicationContext().getContentResolver());
+        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+            singUpPresenter.setUserPhotoSD(data, getApplicationContext().getContentResolver());
         }
-        if(requestCode==MAKE_PHOTO && resultCode==Activity.RESULT_OK) {
+        if (requestCode == MAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             singUpPresenter.setUserPhotoCamera(data);
         }
     }
 
     @Override
     public void setUserPhoto(Bitmap bitmap) {
-        ivUser.setImageBitmap(bitmap);
+        userIv.setImageBitmap(bitmap);
     }
 
     @Override
     public Bitmap getBitmapIv() {
-        ivUser.setDrawingCacheEnabled(true);
-        ivUser.buildDrawingCache();
-        return ivUser.getDrawingCache();
+        userIv.setDrawingCacheEnabled(true);
+        userIv.buildDrawingCache();
+        return userIv.getDrawingCache();
     }
 
     @Override
     public void showToast(String message) {
         singUpProgress.dismiss();
-        Toast.makeText(SingUpActivity.this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(SingUpActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void navigateToLogin() {
         singUpProgress.dismiss();
-        startActivity(new Intent(SingUpActivity.this,LoginActivity.class));
+        startActivity(new Intent(SingUpActivity.this, LoginActivity.class));
         finish();
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
-    public void onSignUpClicked (View view) {
+    public void onSignUpClicked(View view) {
         singUpProgress = ProgressDialog.show(this, "", "Wait please...");
         singUpProgress.setCanceledOnTouchOutside(false);
         singUpProgress.setCancelable(false);
-        singUpPresenter.singUp(surname.getText().toString(),email.getText().toString()
-                ,password.getText().toString(),confirmPassword.getText().toString());
+        singUpPresenter.singUp(surname.getText().toString(), email.getText().toString()
+                , password.getText().toString(), confirmPassword.getText().toString());
     }
 
     private void initUI() {
@@ -96,7 +105,8 @@ public class SingUpActivity extends Activity implements SingUpView {
         email = (EditText) findViewById(R.id.edit_text_new_email);
         password = (EditText) findViewById(R.id.edit_text_new_password);
         confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
-        ivUser = (CircleImageView) findViewById(R.id.ivUser);
+        userIv = (CircleImageView) findViewById(R.id.ivUser);
+        alreadyAccoutTv = (TextView) findViewById(R.id.already_account_tv);
     }
 
     public void onChoosePhoto(View view) {
@@ -104,7 +114,7 @@ public class SingUpActivity extends Activity implements SingUpView {
         builder.setTitle("Photo")
                 .setItems(R.array.photo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if(which==0) {
+                        if (which == 0) {
                             Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                             getIntent.setType("image/*");
 
@@ -113,12 +123,10 @@ public class SingUpActivity extends Activity implements SingUpView {
                             pickIntent.setType("image/*");
 
                             Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-                            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+                            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
                             startActivityForResult(chooserIntent, PICK_PHOTO_FOR_AVATAR);
-                        }
-                        else
-                        {
+                        } else {
                             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(cameraIntent, MAKE_PHOTO);
                         }

@@ -12,12 +12,12 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
-    private DataManager dataManager = new DataManager(this);
-
+public class DiaryPresenterImpl implements DiaryPresenter {
+    private DataManager dataManager = new DataManager();
     private Day day;
     private Date date = new Date();
     private DiaryView diaryView;
+    private boolean checkForAnim = true;
 
     public Date getDate() {
         Date d = new Date();
@@ -38,19 +38,22 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
 
     @Override
     public void loadDay() {
+        checkForAnim = true;
         dataManager.loadDayData(date, new LoadDayCallback() {
             @Override
             public void loadComplete(Day d) {
                 day = d;
                 diaryView.setDay(d);
-   /*             if(day.getFoods().size()==0) {
-                    diaryView.showHintAddAnim();
+                if (day.getFoods().size() == 0) {
+                    if (checkForAnim) {
+                        checkForAnim = false;
+                        diaryView.showHintAddAnim();
+                    }
                 } else {
                     diaryView.hideHintAddAnim();
-                }*/
+                }
             }
         });
-
     }
 
     @Override
@@ -59,7 +62,7 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
         date.setHours(d.getHours());
         date.setMinutes(d.getMinutes());
         date.setSeconds(d.getSeconds());
-        date.setDate(date.getDate()-1);
+        date.setDate(date.getDate() - 1);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
         date.setHours(d.getHours());
         date.setMinutes(d.getMinutes());
         date.setSeconds(d.getSeconds());
-        date.setDate(date.getDate()+1);
+        date.setDate(date.getDate() + 1);
     }
 
     @Override
@@ -85,34 +88,25 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
 
     @Override
     public void calculateCalories() {
-       /* if(day.getFoods().size() != 0) {*/
-            int eat_calories = 0;
-            for (int j = 0; j < day.getFoods().size(); j++) {
-                eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
-            }
-            int goalCalories = dataManager.loadGoalCalories();
+        int eat_calories = 0;
+        for (int j = 0; j < day.getFoods().size(); j++) {
+            eat_calories += Math.round(Float.valueOf(day.getFoods().get(j).getNutrients().get(1).getValue()));
+        }
+        int goalCalories = dataManager.loadGoalCalories();
 
-            day.setRemainingCalories(goalCalories - eat_calories);
+        day.setRemainingCalories(goalCalories - eat_calories);
 
-            dataManager.updateCalories(eat_calories,day.getRemainingCalories(),day.getDate());
+        dataManager.updateCalories(eat_calories, day.getRemainingCalories(), day.getDate());
 
-            String remainingCalories = String.valueOf(day.getRemainingCalories());
-            String eatCalories = String.valueOf(eat_calories);
-            int checkLimit = checkLimit(day.getRemainingCalories());
-            int color = getColor(checkLimit);
+        String remainingCalories = String.valueOf(day.getRemainingCalories());
+        String eatCalories = String.valueOf(eat_calories);
+        int checkLimit = checkLimit(day.getRemainingCalories());
+        int color = getColor(checkLimit);
 
-            if (checkLimit != 1) { //if need dialog for limit
-               // diaryView.showDialog(remainingCalories, checkLimit);
-            }
-            diaryView.updateCalories(eatCalories, remainingCalories, color);
-
-  /*      } else {
-            int goalCalories = dataManager.loadGoalCalories();
-            day.setRemainingCalories(goalCalories);
-            int checkLimit = checkLimit(day.getRemainingCalories());
-            int color = getColor(checkLimit);
-            diaryView.updateCalories("0",String.valueOf(goalCalories), color);
-        }*/
+        if (checkLimit != 1 && day.getEatDailyCalories() != 0) { //if need dialog for limit
+            diaryView.showDialog(remainingCalories, checkLimit);
+        }
+        diaryView.updateCalories(eatCalories, remainingCalories, color);
     }
 
     @Override
@@ -125,11 +119,11 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
 
         int checkLimit = 1;// if limit not reached
 
-        if(remaining<=300) checkLimit = 2; // if almost reach limit
+        if (remaining <= 300) checkLimit = 2; // if almost reach limit
 
-        if(remaining<=0) checkLimit = 3; // if limit reached
+        if (remaining <= 0) checkLimit = 3; // if limit reached
 
-        if(remaining<=-500) checkLimit = 4; // if limit quite a a lot
+        if (remaining <= -500) checkLimit = 4; // if limit quite a a lot
 
         return checkLimit;
     }
@@ -137,17 +131,12 @@ public class DiaryPresenterImpl implements DiaryPresenter, DataDiaryCallback {
     private int getColor(int checkLimit) {
         int color = Color.parseColor("#212121");
 
-        if(checkLimit==2) color = Color.parseColor("#7cab26");
+        if (checkLimit == 2) color = Color.parseColor("#7cab26");
 
-        if(checkLimit==3) color = Color.parseColor("#d30b0b");
+        if (checkLimit == 3) color = Color.parseColor("#d30b0b");
 
-        if(checkLimit==4) color = Color.parseColor("#a40f0f");
+        if (checkLimit == 4) color = Color.parseColor("#a40f0f");
 
         return color;
-    }
-
-    @Override
-    public void loadCaloriesSuccess(int goal) {
-
     }
 }

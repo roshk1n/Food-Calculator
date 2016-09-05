@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.views.FavoriteView;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -31,7 +32,12 @@ public class FavoritePresenterImpl implements FavoritePresenter{
     }
 
     @Override
-    public void removeFavoriteFoodDB(int position, String ndbno) {
-        dataManager.removeFavoriteFoodDB(position,ndbno);
+    public void removeFavoriteFoodDB(String ndbno) {
+        dataManager.removeFavoriteFoodDB(ndbno, new StateItemCallback() {
+            @Override
+            public void updateImageFavorite(boolean state) {
+                //remove success
+            }
+        });
     }
 }

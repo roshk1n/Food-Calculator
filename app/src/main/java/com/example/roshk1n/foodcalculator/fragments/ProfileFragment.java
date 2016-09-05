@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
@@ -122,10 +123,11 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         } else if(v == editProfileFab) {
             if(Utils.isConnectNetwork(getActivity().getApplicationContext())) {
-                saveUserProfile(fullNameEt.isEnabled());
+                if(fullNameEt.isEnabled()){
+                    saveUserProfile();
+                }
                 changeEnable(fullNameEt.isEnabled());
                 changeIcon();
-
             } else {
                 Snackbar.make(coordinatorLayout, "You need internet connection for update profile.", Snackbar.LENGTH_SHORT).show();
             }
@@ -171,6 +173,14 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showToast(String s) {
+        saveDatePd.dismiss();
+        changeEnable(fullNameEt.isEnabled());
+        changeIcon();
+        Snackbar.make(coordinatorLayout, s, Snackbar.LENGTH_SHORT).show();
+    }
+
     private void createPickerPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Photo")
@@ -200,23 +210,20 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         alertDialog.show();
     }
 
-    private void saveUserProfile(boolean isEnable) {
-        if (isEnable) {
-            saveDatePd = ProgressDialog.show(getActivity(), "", "Wait please...");
-            saveDatePd.setCanceledOnTouchOutside(false);
-            saveDatePd.setCancelable(false);
-            Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
-            profilePresenter.updateUserProfile(
-                    fullNameEt.getText().toString(),
-                    weightEt.getText().toString(),
-                    heightEt.getText().toString(),
-                    ageEt.getText().toString(),
-                    emailEt.getText().toString(),
-                    bitmap,
-                    sexProfileSp.getSelectedItem().toString(),
-                    activeLevelProfileSp.getSelectedItem().toString()
-            );
-        }
+    private void saveUserProfile() {
+        saveDatePd.setMessage("Wait please...");
+        saveDatePd.show();
+        Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
+        profilePresenter.updateUserProfile(
+                fullNameEt.getText().toString(),
+                weightEt.getText().toString(),
+                heightEt.getText().toString(),
+                ageEt.getText().toString(),
+                emailEt.getText().toString(),
+                bitmap,
+                sexProfileSp.getSelectedItem().toString(),
+                activeLevelProfileSp.getSelectedItem().toString()
+        );
     }
 
     private void changeIcon() {
@@ -250,7 +257,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         if(!isEnable) {
             editProfileFab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-            Snackbar.make(coordinatorLayout, "You can edit data, but remember save them.", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, "Remember, enter all fields.", Snackbar.LENGTH_SHORT).show();
         } else {
             fullNameEt.clearFocus(); // clear focus after saving
             weightEt.clearFocus();
@@ -289,5 +296,9 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         sexProfileSp.setEnabled(fullNameEt.isEnabled());
         activeLevelProfileSp.setEnabled(fullNameEt.isEnabled());
+
+        saveDatePd = new ProgressDialog(getContext());
+        saveDatePd.setCanceledOnTouchOutside(false);
+        saveDatePd.setCancelable(false);
     }
 }

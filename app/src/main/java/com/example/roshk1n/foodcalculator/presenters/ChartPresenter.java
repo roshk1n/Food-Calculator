@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public interface ChartPresenter {
     void setView(ChartView view);
 
-    ArrayList<Entry> loadData(int period);
+    void loadData(int period);
 
     ArrayList<String> formatLabelsMonth();
 

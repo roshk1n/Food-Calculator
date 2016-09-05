@@ -68,10 +68,7 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
             }
 
             @Override
-            public void onCancel() {
-                loginVew.showToast("Login attempt canceled.");
-            }
-
+            public void onCancel() {}
             @Override
             public void onError(FacebookException error) {
                 loginVew.showToast("Login attempt failed.");

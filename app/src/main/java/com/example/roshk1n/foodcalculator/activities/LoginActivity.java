@@ -106,7 +106,7 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     public void showToast(String message) {
         FirebaseHelper.getInstance().addListener();
-        Log.d(TAG, "showToast will hide loader");
+        Log.d(TAG, "showToastLogin will hide loader");
         loginProgress.dismiss();
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
@@ -124,9 +124,9 @@ public class LoginActivity extends Activity implements LoginView {
 
     public void onLogIn(View view) {
         FirebaseHelper.getInstance().removeListener();
-      /*  loginProgress.setMessage("Wait please...");
+        loginProgress.setMessage("Wait please...");
         Log.d(TAG, "onLogIn will show loader");
-        loginProgress.show();*/
+        loginProgress.show();
 //        loginPresenter.login(emailEt.getText().toString(), etPassword.getText().toString());
         loginPresenter.login("ee@gmail.com", "132132132");
     }
@@ -142,5 +142,9 @@ public class LoginActivity extends Activity implements LoginView {
         loginProgress = new ProgressDialog(this);
         loginProgress.setCanceledOnTouchOutside(false);
         loginProgress.setCancelable(false);
+    }
+
+    public void onResetPassword(View view) {
+        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
 }

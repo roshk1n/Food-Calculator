@@ -9,11 +9,14 @@ import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
+import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
+import com.example.roshk1n.foodcalculator.interfaces.ResetPasswordCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.FirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
+import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
@@ -48,6 +51,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class FirebaseHelper {
@@ -61,10 +65,13 @@ public class FirebaseHelper {
     private static final String FAVORITE_FOOD_CHILD = "favoriteFoods";
     private static final String DAYS_CHILD = "days";
     private static final String FOODS_CHILD = "foods";
+    private static final String EAT_CALORIES = "eatCalories";
+    private static final String REMAINING_CALORIES = "remainingCalories";
+    private ArrayList<Day> listDay = new ArrayList<>();
 
     private static FirebaseHelper instance;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListner;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mFirebaseUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -109,11 +116,11 @@ public class FirebaseHelper {
     }
 
     public FirebaseAuth.AuthStateListener getAuthListener() {
-        return mAuthListner;
+        return mAuthListener;
     }
 
     public void setAuthListener(FirebaseAuth.AuthStateListener mAuthListner) {
-        this.mAuthListner = mAuthListner;
+        this.mAuthListener = mAuthListner;
     }
 
     public FirebaseUser getFirebaseUser() {
@@ -125,11 +132,11 @@ public class FirebaseHelper {
     }
 
     public void removeListener() {
-        mAuth.removeAuthStateListener(mAuthListner);
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     public void addListener() {
-        mAuth.addAuthStateListener(mAuthListner);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     public void logInWithEmail(String email, final String password) {
@@ -146,10 +153,24 @@ public class FirebaseHelper {
                     firebaseCallback.loginSuccessful();
 
                 } else {
-                    firebaseCallback.showToast("Authentication failed. Try again please!");
+                    firebaseCallback.showToastLogin("Authentication failed. Try again please!");
                 }
             }
         });
+    }
+
+    public void resetPassword(String email, final ResetPasswordCallback callback) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            callback.showToast("New password sent successful.");
+                        } else {
+                            callback.showToast("Error reset password.");
+                        }
+                    }
+                });
     }
 
     public void createUser(final String email,
@@ -204,7 +225,7 @@ public class FirebaseHelper {
         User user = new User();
         String gender = "none";
         String birthday = "0";
-        int old=0;
+        int old = 0;
         try {
             if (object.has("email"))
                 user.setEmail(object.getString("email"));
@@ -219,11 +240,11 @@ public class FirebaseHelper {
 
             if (gender != null && gender.equals("male")) {
                 gender = "Male";
-            } else  if (gender != null) {
+            } else if (gender != null) {
                 gender = "Female";
             }
 
-            if(!birthday.equals("0")) {
+            if (!birthday.equals("0")) {
                 DateFormat format = new SimpleDateFormat("M/d/yyyy");
                 Date date = null;
                 try {
@@ -258,14 +279,14 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean check = false;
-                Log.d("Myy",dataSnapshot.getChildrenCount()+"");
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    if(data.getKey().equals(getAuth().getCurrentUser().getUid())) {
+                Log.d("Myy", dataSnapshot.getChildrenCount() + "");
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (data.getKey().equals(getAuth().getCurrentUser().getUid())) {
                         check = true;
                         break;
                     }
                 }
-                if(!check) {
+                if (!check) {
                     userRef.setValue(userFirebase);
                 }
 //                Session.startSession();
@@ -328,34 +349,38 @@ public class FirebaseHelper {
     }
 
     public void loadUserProfile(final UserProfileCallback callback) {
-        DatabaseReference reference = database.getReference(USERS_CHILD);
-        final DatabaseReference userRef = reference
-                .child(getAuth().getCurrentUser().getUid());
-
-        userRef.keepSynced(true);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = new User();
-                user.setEmail(getAuth().getCurrentUser().getEmail());
-                user.setFullname(getAuth().getCurrentUser().getDisplayName());
-                user.setPhotoUrl(getAuth().getCurrentUser().getPhotoUrl().toString());
-                user.setAge(Integer.valueOf(dataSnapshot.child(AGE_CHILD).getValue().toString()));
-                user.setWeight(Integer.valueOf(dataSnapshot.child(WEIGHT_CHILD).getValue().toString()));
-                user.setHeight(Integer.valueOf(dataSnapshot.child(HEIGHT_CHILD).getValue().toString()));
-                user.setGoalCalories(Integer.valueOf(dataSnapshot.child(GOAL_CALORIES_CHILD).getValue().toString()));
-                user.setSex(dataSnapshot.child(SEX_CHILD).getValue().toString());
-                user.setActiveLevel(dataSnapshot.child(ACTIVE_CHILD).getValue().toString());
-                callback.loadProfileSuccess(user);
-            }
+            public void run() {
+                DatabaseReference reference = database.getReference(USERS_CHILD);
+                final DatabaseReference userRef = reference
+                        .child(getAuth().getCurrentUser().getUid());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                userRef.keepSynced(true);
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = new User();
+                        user.setEmail(getAuth().getCurrentUser().getEmail());
+                        user.setFullname(getAuth().getCurrentUser().getDisplayName());
+                        user.setPhotoUrl(getAuth().getCurrentUser().getPhotoUrl().toString());
+                        user.setAge(Integer.valueOf(dataSnapshot.child(AGE_CHILD).getValue().toString()));
+                        user.setWeight(Integer.valueOf(dataSnapshot.child(WEIGHT_CHILD).getValue().toString()));
+                        user.setHeight(Integer.valueOf(dataSnapshot.child(HEIGHT_CHILD).getValue().toString()));
+                        user.setGoalCalories(Integer.valueOf(dataSnapshot.child(GOAL_CALORIES_CHILD).getValue().toString()));
+                        user.setSex(dataSnapshot.child(SEX_CHILD).getValue().toString());
+                        user.setActiveLevel(dataSnapshot.child(ACTIVE_CHILD).getValue().toString());
+                        callback.loadProfileSuccess(user);
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
-        });
+        }).start();
     }
-
 
     public void updateUserProfile(final User user, Bitmap image, final OnCompleteCallback callback) {
         UserFirebase userFire = new UserFirebase(user);
@@ -407,11 +432,13 @@ public class FirebaseHelper {
     }
 
     public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
+        Calendar dateFood = Calendar.getInstance();
+        dateFood.setTimeInMillis(date.getTime());
         DatabaseReference reference = database.getReference(USERS_CHILD);
         final DatabaseReference foodRef = reference
                 .child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
-                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
                 .child(FOODS_CHILD);
         foodRef.keepSynced(true);
 
@@ -433,12 +460,13 @@ public class FirebaseHelper {
     }
 
     public void addFood(Food food) {
-        Date dateFood = new Date(food.getTime());
+        Calendar dateFood = Calendar.getInstance();
+        dateFood.setTimeInMillis(food.getTime());
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference foodsRef = reference
                 .child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
-                .child(dateFood.getDate() + "_" + dateFood.getMonth() + "_" + dateFood.getYear())
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
                 .child(FOODS_CHILD);
         foodsRef.keepSynced(true);
         foodsRef.child(food.getTime() + "").setValue(new FoodFirebase(food));
@@ -447,9 +475,10 @@ public class FirebaseHelper {
     public void removeFood(long time) {
         DatabaseReference userRef = database.getReference(USERS_CHILD)
                 .child(getAuth().getCurrentUser().getUid());
-        Date date = new Date(time);
+        Calendar dateFood = Calendar.getInstance();
+        dateFood.setTimeInMillis(time);
         DatabaseReference foodRef = userRef.child(DAYS_CHILD)
-                .child(date.getDate() + "_" + date.getMonth() + "_" + date.getYear())
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
                 .child(FOODS_CHILD);
         foodRef.keepSynced(true);
         foodRef.child(time + "").removeValue();
@@ -497,15 +526,6 @@ public class FirebaseHelper {
         callback.updateImageFavorite(false);
     }
 
-    public void removeFavoriteFood(String ndbno) { //this method needs for swipe delete
-        DatabaseReference reference = database.getReference(USERS_CHILD);
-        DatabaseReference userRef = reference
-                .child(getAuth().getCurrentUser().getUid());
-        DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
-        favoriteRef.keepSynced(true);
-        favoriteRef.child(ndbno).removeValue();
-    }
-
     public void isExistInFavorite(final Food food, final DataAddFoodCallback callback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
@@ -545,6 +565,56 @@ public class FirebaseHelper {
                         }
                     }
                 });
+    }
+
+    public void loadDataForChart(final LoadDaysCallback callback) {
+        DatabaseReference reference = database.getReference(USERS_CHILD);
+        final DatabaseReference daysRef = reference
+                .child(getAuth().getCurrentUser().getUid())
+                .child(DAYS_CHILD);
+        listDay.clear();
+        daysRef.keepSynced(true);
+        daysRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot oneDay : dataSnapshot.getChildren()) {
+                    Day day = new Day();
+                    String[] s = oneDay.getKey().split("_");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.YEAR,Integer.valueOf(s[0]));
+                    calendar.set(Calendar.MONTH,Integer.valueOf(s[1]));
+                    calendar.set(Calendar.DAY_OF_MONTH,Integer.valueOf(s[2]));
+                    day.setDate(calendar.getTime().getTime());
+                    day.setEatDailyCalories(Integer.valueOf(oneDay.child(EAT_CALORIES).getValue().toString()));
+                    day.setRemainingCalories(Integer.valueOf(oneDay.child(REMAINING_CALORIES).getValue().toString()));
+                    for (DataSnapshot food : oneDay.child(FOODS_CHILD).getChildren()) {
+                        day.getFoods().add(new Food(food.getValue(FoodFirebase.class)));
+                    }
+                    listDay.add(day);
+                }
+                callback.loadDaysComplete(listDay);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateCalories(int eat_calories, int remainingCalories, long date) {
+        Calendar dateFood = Calendar.getInstance();
+        dateFood.setTimeInMillis(date);
+        DatabaseReference reference = database.getReference(USERS_CHILD);
+        reference.child(getAuth().getCurrentUser().getUid())
+                .child(DAYS_CHILD)
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
+                .child(EAT_CALORIES).setValue(eat_calories+"");
+
+        reference.child(getAuth().getCurrentUser().getUid())
+                .child(DAYS_CHILD)
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
+                .child(REMAINING_CALORIES).setValue(remainingCalories+"");
     }
 }
 

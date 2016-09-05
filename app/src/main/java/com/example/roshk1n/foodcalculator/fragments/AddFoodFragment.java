@@ -1,12 +1,12 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -92,9 +92,10 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
                 if (s.length() != 0) {
                     try {
                         presenter.updateUI(food, Integer.valueOf(s.toString()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
                     } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -110,14 +111,9 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     @Override
     public void navigateToDiary() {
-        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
-                R.id.fragment_conteiner,
-                DiaryFragment.newInstance(food.getTime()),
-                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
-                false);
-/*        String name = getActivity().getSupportFragmentManager().getBackStackEntryAt(1).getName();
-        getActivity().getSupportFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
-        Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
+        Utils.clearBackStack(getActivity().getSupportFragmentManager());
+
+        Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
         Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -144,9 +140,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     @Override
     public void onClick(View v) {
         if (v == addFavoriteIv) {
-            if (addFavoriteIv.getDrawable().getConstantState() == getResources()
-                    .getDrawable(R.drawable.ic_favorite_border_black_24dp)
-                    .getConstantState()) {
+            if (addFavoriteIv.getDrawable().getConstantState().equals
+                    (getContext().getDrawable(R.drawable.ic_favorite_border_black_24dp).getConstantState())) {
                 addFavoriteIv.setClickable(false);
                 presenter.addToFavorite(food);
                 Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();

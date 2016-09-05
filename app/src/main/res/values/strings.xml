@@ -115,6 +115,13 @@
     <string name="days">Days</string>
     <string name="amount_calories">Amount calories:</string>
     <string name="_2500">2500</string>
+    <string name="reset_password"><u>reset password</u></string>
+    <string name="reset_password1">Reset password</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="reset_hint">In order to receive your new password, please enter the address you provide during the registration process.</string>
+    <string name="already_have_a_account"><u>Already have an account?</u></string>
+    <string name="back_to_login"><u>Back to login</u></string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.fragments;
 //TODO fix bag with snackbar is show change day
 //TODO need twice change day for see update remote
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -11,14 +12,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +102,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
-        Utils.clearBackStack(getActivity().getSupportFragmentManager());
-
         initUI();
 
         if(mFragmentListener != null) {
@@ -115,9 +112,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         if (getArguments() != null) {
             diaryPresenter.setDate(new Date(getArguments().getLong("date")));
         }
+
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         diaryPresenter.loadDay();
+        diaryPresenter.calculateCalories();
         date_tv.setText(diaryPresenter.getDateString());
 
         addFoodFab.show();
@@ -169,7 +168,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onStop() {
-        addFoodFab.hide();
         super.onStop();
     }
 
@@ -213,11 +211,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         } else if (v == addFoodFab) {
             addFoodFab.hide();
             hideHintAddAnim();
+
             Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                     R.id.fragment_conteiner,
                     TabSearchFragment.newInstance(diaryPresenter.getDate().getTime()),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                     true);
+            addFoodFab.hide();
         }
     }
 
@@ -228,6 +228,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 InfoFoodFragment.newInstance(food),
                 FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                 true);
+        addFoodFab.hide();
     }
 
     @Override
@@ -237,13 +238,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         date.setDate(dayOfMonth);
         date.setYear(year - 1900);
 
-        diaryPresenter.setDate(date);
-        String str = diaryPresenter.getDateString();
-        date_tv.setText(str);
-
-        diaryPresenter.loadDay();
-        mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this); //need new Recycler because load new foods
-        mRecyclerView.setAdapter(mAdapter);
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                DiaryFragment.newInstance(date.getTime()),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                false);
     }
 
     @Override
@@ -256,7 +255,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void setGoalCalories(String goalCalories) {
         goal_calories_tv.setText(goalCalories);
-        diaryPresenter.calculateCalories();
     }
 
     @Override
@@ -287,7 +285,8 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -295,8 +294,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
+
     }
 
     @Override
@@ -311,10 +312,10 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showHintAddAnim() {
-        Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                , R.anim.show_hint_add_food);
-        hintCircleAddFood.startAnimation(animation1);
-        HintAddFoodLayout.setVisibility(View.VISIBLE);
+            Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                    , R.anim.show_hint_add_food);
+            hintCircleAddFood.startAnimation(animation1);
+            HintAddFoodLayout.setVisibility(View.VISIBLE);
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {

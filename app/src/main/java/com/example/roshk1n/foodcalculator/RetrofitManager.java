@@ -10,7 +10,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class RetrofitManager {
-
     RetrofitCallback retrofitCallback;
 
     public RetrofitManager(RetrofitCallback retrofitCallback) {
@@ -38,13 +37,17 @@ public class RetrofitManager {
 
                                                 @Override
                                                 public void failure(RetrofitError error) {
-                                                    retrofitCallback.errorNetwork();
                                                 }
                                             });
                         }
                     }
+
                     @Override
                     public void failure(RetrofitError error) {
+                        if(error.isNetworkError())
+                            retrofitCallback.error("Error network connection.");
+                        else
+                            retrofitCallback.error("Result is empty, change search parameter.");
                     }
                 });
     }

@@ -11,6 +11,7 @@ import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataDiaryCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
+import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
@@ -35,6 +36,7 @@ import java.util.Date;
 
 public class DataManager implements FirebaseCallback, LocalManagerCallback {
     private FirebaseHelper firebaseHelper = FirebaseHelper.getInstance(this);
+
     private DataLoginCallback dataLoginCallback;
     private DataSingUpCallback dataSingUpCallback;
     private DataDiaryCallback dataDiaryCallback;
@@ -103,6 +105,11 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
     }
 
     @Override
+    public void showToast(String text) {
+
+    }
+
+    @Override
     public void loginSuccessful() {
         LocalDataBaseManager.checkLocalUser(new OnCompleteCallback() {
             @Override
@@ -114,7 +121,7 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
     }
 
     @Override
-    public void showToast(String text) {
+    public void showToastLogin(String text) {
         dataLoginCallback.showToast(text);
     }
 
@@ -137,7 +144,6 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
             public void loadComplete(Day dayFire) {
                 LocalDataBaseManager.updateDays(dayFire);
                 callback.loadComplete(dayFire);
-
             }
         });
     }
@@ -159,30 +165,23 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
 
     public void updateCalories(int eat_calories, int remainingCalories, long date) {
         LocalDataBaseManager.updateCalories(eat_calories, remainingCalories);
+        firebaseHelper.updateCalories(eat_calories,remainingCalories,date);
+
     }
 
     public void addFavoriteFood(Food food, StateItemCallback callback) {
-        //callback.updateImageFavorite(LocalDataBaseManager.addFavoriteFood(food););
         firebaseHelper.addFavoriteFood(food, callback);
     }
 
     public void isExistInFavorite(Food food, DataAddFoodCallback callback) {
-        //  dataAddFoodCallback.setExistFavorite(LocalDataBaseManager.isExistInFavotite(food)); //null intargace for firebase
         firebaseHelper.isExistInFavorite(food, callback);
     }
 
     public void removeFavoriteFoodDB(String ndbno, StateItemCallback callback) {
-        // callback.updateImageFavorite(LocalDataBaseManager.removeFavoriteFoodDB(ndbno));
         firebaseHelper.removeFavoriteFood(ndbno, callback);
     }
 
-    public void removeFavoriteFoodDB(int position, String ndbno) {
-        // LocalDataBaseManager.removeFavoriteFoodDB(position);
-        firebaseHelper.removeFavoriteFood(ndbno);
-    }
-
     public void loadFavoriteList(final DataFavoriteCallback callback) {
-        //callback.setFavoriteList(LocalDataBaseManager.loadFavoriteFood());
         firebaseHelper.loadFavoriteFood(new DataFavoriteCallback() {
             @Override
             public void setFavoriteList(ArrayList<Food> favFoods) {
@@ -252,7 +251,7 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
         });
     }
 
-    public ArrayList<Day> loadDataForChart() {
-        return LocalDataBaseManager.loadDataForChart();
+    public void loadDataForChart(Context context, LoadDaysCallback callback) {
+           firebaseHelper.loadDataForChart(callback);
     }
 }

@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public interface FirebaseCallback {
     void loginSuccessful();
 
-    void showToast(String text);
+    void showToastLogin(String text);
 
     void setExistFavorite(boolean checkExistFood);
+
 }

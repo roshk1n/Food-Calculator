@@ -23,4 +23,6 @@ public interface ProfileView {
     void CompleteUpdateAndRefreshDrawer();
 
     Context getContext();
+
+    void showToast(String s);
 }

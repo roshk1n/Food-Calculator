@@ -16,7 +16,7 @@
     <color name="colorAccentLogin">#FFEB3B</color>-->
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#0097A7</color>
-    <color name="colorPrimaryLight">#C5CAE9 </color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
     <color name="colorAccent">#536DFE</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorText">#FFFFFFFF</color>
@@ -26,5 +26,6 @@
     <color name="colorBackground">#FFF5F5F5</color>
     <color name="colorSingUpHint">#FFFFFFFF</color>
     <color name="colorAccentLogin">#FFEB3B</color>
+    <color name="colorYellow">#d0ff00</color>
 
 </resources>

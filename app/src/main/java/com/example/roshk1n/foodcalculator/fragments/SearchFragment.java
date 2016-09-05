@@ -1,9 +1,11 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
@@ -38,6 +41,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private long mdate=0;
     private String querySearch;
     private OnFragmentListener mFragmentListener;
+    private ProgressDialog searchProgress;
 
     private View view;
 
@@ -94,6 +98,8 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
             Log.d("Myy",querySearch);
             foods.clear();
             mAdapter.notifyDataSetChanged();
+            searchProgress.setMessage("Wait please...");
+            searchProgress.show();
             searchPresenter.searchFood(querySearch);
             Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
         }
@@ -130,11 +136,13 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     public void setFoodNutrients(Food foods) {
         this.foods.add(foods);
         mAdapter.notifyItemInserted(this.foods.size());
+        searchProgress.dismiss();
     }
 
     @Override
-    public void setErrorNetwork() {
-        Log.d("Myy","error network");
+    public void showToast(String message) {
+        Snackbar.make(view,message,Snackbar.LENGTH_SHORT).show();
+        searchProgress.dismiss();
     }
 
     @Override
@@ -148,5 +156,8 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_search);
+        searchProgress = new ProgressDialog(getActivity());
+        searchProgress.setCanceledOnTouchOutside(false);
+        searchProgress.setCancelable(false);
     }
 }

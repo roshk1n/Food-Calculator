@@ -1,5 +1,5 @@
 package com.example.roshk1n.foodcalculator.activities;
-//TODO change profile photo
+//TODO detach fragment view
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity
                         ChartFragment.newInstance(),
                         FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                         false);
+                addFoodFab.hide();
+                coordinatorHintAdd.setVisibility(View.INVISIBLE);
             }
         } else if (id == R.id.nav_reminders) {
             if (!(fr instanceof RemindersFragment)) {

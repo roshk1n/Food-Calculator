@@ -107,8 +107,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
             itemTouchHelper.attachToRecyclerView(mRecyclerView);
         }
-
-
         return view;
     }
 
@@ -151,7 +149,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    favoritePresenter.removeFavoriteFoodDB(position, removed.getNdbno());
+                    favoritePresenter.removeFavoriteFoodDB(removed.getNdbno());
                 }
             }
         }).setAction("Undo", new View.OnClickListener() {

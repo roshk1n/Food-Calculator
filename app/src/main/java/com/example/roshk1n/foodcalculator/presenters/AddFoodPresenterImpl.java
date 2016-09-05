@@ -88,7 +88,6 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
                 foodView.updateFavoriteImage(state);
             }
         });
-
     }
 
     @Override

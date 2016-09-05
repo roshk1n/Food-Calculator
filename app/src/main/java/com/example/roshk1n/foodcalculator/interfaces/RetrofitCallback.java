@@ -9,5 +9,5 @@ public interface RetrofitCallback {
 
     void addFood(FoodResponse nutrientBasic);
 
-    void errorNetwork();
+    void error(String message);
 }
