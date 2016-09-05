@@ -30,7 +30,6 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment implements FavoriteView, CallbackFavoriteAdapter {
-
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
     private OnFragmentListener mFragmentListener;
@@ -59,7 +58,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         favoriteFragment.setArguments(bundle);
         return favoriteFragment;
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

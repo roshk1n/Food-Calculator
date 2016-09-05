@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                            String sex,
                            String activeLevel) {
 
-        if(isVisible()) {
+      /*  if(isVisible()) {*/
             fullNameEt.setText(fullname);
             weightEt.setText(String.valueOf(weight));
             heightEt.setText(String.valueOf(height));
@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             activeLevelProfileSp.setSelection(positionActive);
             sexProfileSp.setSelection(positionSex);
             profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
-        }
+      //  }
     }
 
     @Override
