@@ -30,6 +30,7 @@ public class LoginActivity extends Activity implements LoginView {
     private LoginButton btnLogInFacebook;
     private ProgressDialog loginProgress;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class LoginActivity extends Activity implements LoginView {
 
         initUI();
 
+        Log.d("onCreate","onCreate");
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
 
@@ -67,7 +69,6 @@ public class LoginActivity extends Activity implements LoginView {
         super.onStart();
         Log.d("LoginActivity", "OnStart add listener");
         FirebaseHelper.getInstance().addListener();
-
     }
 
     @Override
@@ -76,6 +77,7 @@ public class LoginActivity extends Activity implements LoginView {
         Log.d(TAG, "onActivityResult will show loader");
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

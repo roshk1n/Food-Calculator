@@ -28,6 +28,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private InfoFoodPresenterImpl presenter;
     private Food food;
     private OnFragmentListener mFragmentListener;
+    private boolean isExistFravorite;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -61,6 +62,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         super.onCreate(savedInstanceState);
         presenter = new InfoFoodPresenterImpl();
         presenter.setView(this);
+        isExistFravorite = false;
     }
 
     @Override
@@ -107,9 +109,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     @Override
     public void onClick(View v) {
         if (v == favorites_iv) {
-            if (favorites_iv.getDrawable().getConstantState() == getResources()
-                    .getDrawable(R.drawable.ic_favorite_border_black_24dp)
-                    .getConstantState()) {
+            if (!isExistFravorite) {
                 favorites_iv.setClickable(false);
                 presenter.addToFavorite(food);
                 Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
@@ -125,8 +125,10 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     public void updateFavoriteImage(boolean existIn) {
         favorites_iv.setClickable(true);
         if (existIn) {
+            isExistFravorite = true;
             favorites_iv.setImageResource(R.drawable.ic_favorite_black_24dp);
         } else {
+            isExistFravorite = false;
             favorites_iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
     }

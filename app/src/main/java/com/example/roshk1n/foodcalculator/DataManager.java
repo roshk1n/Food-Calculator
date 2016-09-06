@@ -117,7 +117,6 @@ public class DataManager implements FirebaseCallback, LocalManagerCallback {
                 dataLoginCallback.navigateToHome();
             }
         });
-
     }
 
     @Override

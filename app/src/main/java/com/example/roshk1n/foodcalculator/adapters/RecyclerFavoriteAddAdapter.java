@@ -13,9 +13,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshk1n on 8/2/2016.
- */
 public class RecyclerFavoriteAddAdapter extends RecyclerView.Adapter<RecyclerFavoriteAddAdapter.ViewHolder> {
 
     private ArrayList<Food> favoriteList;
