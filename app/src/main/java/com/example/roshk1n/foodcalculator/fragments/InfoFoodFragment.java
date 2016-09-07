@@ -71,6 +71,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         initUI();
 
         if(mFragmentListener != null) {
+            mFragmentListener.setTitle("Info Food");
             mFragmentListener.setArrowToolbar();
             mFragmentListener.disabledMenuSwipe();
         }
@@ -140,7 +141,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         favoritesIv = (ImageView) view.findViewById(R.id.favorites_add_info_iv);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_info_food);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Info Food");
     }
     private void setNutrients() {
         nameFoodTv.setText(food.getName());

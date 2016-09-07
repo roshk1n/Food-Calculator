@@ -73,11 +73,10 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         initUI();
 
         if(mFragmentListener != null) {
+            mFragmentListener.setTitle("Search");
             mFragmentListener.setArrowToolbar();
             mFragmentListener.disabledMenuSwipe();
         }
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Search");
 
         if(getArguments() != null) {
             mdate = getArguments().getLong("date");

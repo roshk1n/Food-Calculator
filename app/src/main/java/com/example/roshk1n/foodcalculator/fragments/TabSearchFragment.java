@@ -63,9 +63,12 @@ public class TabSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tab_search, container, false);
-        mFragmentListener.hideToolbar();
 
         initUI();
+
+        if(mFragmentListener != null) {
+            mFragmentListener.hideToolbar();
+        }
 
         if (getArguments() != null) {
             date = getArguments().getLong("date");

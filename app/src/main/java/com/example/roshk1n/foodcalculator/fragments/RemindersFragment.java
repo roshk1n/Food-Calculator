@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerReminderAdapter;
 import com.example.roshk1n.foodcalculator.broadcastReceivers.ReceiverNotification;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
@@ -27,6 +29,7 @@ import java.util.Calendar;
 public class RemindersFragment extends Fragment  implements RemindersView, CallbackReminderAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
 
     private RemindersPresenterImpl remindersPresenter;
+    private OnFragmentListener mFragmentListener;
     private ArrayList<Reminder> reminders;
 
     private ReceiverNotification receiverNotification;
@@ -59,6 +62,10 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
         initUI();
 
+        if(mFragmentListener != null) {
+            mFragmentListener.setTitle("Reminders");
+        }
+
         reminders = remindersPresenter.loadReminder();
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -68,6 +75,20 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFragmentListener = null;
     }
 
     @Override
@@ -118,7 +139,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_reminders);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reminders");
     }
 
     @Override

@@ -259,6 +259,11 @@ public class MainActivity extends AppCompatActivity
         mToolbar.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void setTitle(String title) {
+        mToolbar.setTitle(title);
+    }
+
     @SuppressLint("PrivateResource")
     @Override
     public void setArrowToolbar() {
@@ -280,7 +285,6 @@ public class MainActivity extends AppCompatActivity
         fullNameDrawerTv = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
         addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
+        mToolbar.setTitle("Diary");
     }
-
-
 }

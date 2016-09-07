@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
@@ -56,9 +57,12 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     private FloatingActionButton editProfileFab;
 
-    public ProfileFragment() { }
+    public ProfileFragment() {
+    }
 
-    public static ProfileFragment newInstance() { return new ProfileFragment(); }
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +74,13 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view  = inflater.inflate(R.layout.fragment_profile, container, false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initUI();
+
+        if (mFragmentListener != null) {
+            mFragmentListener.setTitle("Profile");
+        }
 
         profilePresenter.loadUser();
 
@@ -101,26 +108,26 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==PICK_PHOTO_FOR_AVATAR&& resultCode== Activity.RESULT_OK) {
-            profilePresenter.setUserPhotoSD(data,getActivity().getApplicationContext().getContentResolver());
+        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+            profilePresenter.setUserPhotoSD(data, getActivity().getApplicationContext().getContentResolver());
         }
-        if(requestCode==MAKE_PHOTO && resultCode==Activity.RESULT_OK) {
+        if (requestCode == MAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             profilePresenter.setUserPhotoCamera(data);
         }
     }
 
     @Override
     public void onClick(View v) {
-        if(v == profileIv) {
+        if (v == profileIv) {
             if (fullNameEt.isEnabled()) {
                 createPickerPhoto();
             } else {
                 Snackbar.make(coordinatorLayout, "First, turn on editing mode.", Snackbar.LENGTH_SHORT).show();
             }
 
-        } else if(v == editProfileFab) {
-            if(Utils.isConnectNetwork(getActivity().getApplicationContext())) {
-                if(fullNameEt.isEnabled()){
+        } else if (v == editProfileFab) {
+            if (Utils.isConnectNetwork(getActivity().getApplicationContext())) {
+                if (fullNameEt.isEnabled()) {
                     saveUserProfile();
                 }
                 changeEnable(fullNameEt.isEnabled());
@@ -142,20 +149,20 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                            String activeLevel) {
 
       /*  if(isVisible()) {*/
-            fullNameEt.setText(fullname);
-            weightEt.setText(String.valueOf(weight));
-            heightEt.setText(String.valueOf(height));
-            ageEt.setText(String.valueOf(age));
-            emailEt.setText(email);
-            int positionActive = profilePresenter.getPositionInArray(activeLevel,
-                    getResources().getStringArray(R.array.active_level));
+        fullNameEt.setText(fullname);
+        weightEt.setText(String.valueOf(weight));
+        heightEt.setText(String.valueOf(height));
+        ageEt.setText(String.valueOf(age));
+        emailEt.setText(email);
+        int positionActive = profilePresenter.getPositionInArray(activeLevel,
+                getResources().getStringArray(R.array.active_level));
 
-            int positionSex = profilePresenter.getPositionInArray(sex,
-                    getResources().getStringArray(R.array.sex));
-            activeLevelProfileSp.setSelection(positionActive);
-            sexProfileSp.setSelection(positionSex);
-            profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
-      //  }
+        int positionSex = profilePresenter.getPositionInArray(sex,
+                getResources().getStringArray(R.array.sex));
+        activeLevelProfileSp.setSelection(positionActive);
+        sexProfileSp.setSelection(positionSex);
+        profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
+        //  }
     }
 
     @Override
@@ -183,7 +190,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         builder.setTitle("Photo")
                 .setItems(R.array.photo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if(which==0) {
+                        if (which == 0) {
                             Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                             getIntent.setType("image/*");
 
@@ -192,12 +199,10 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                             pickIntent.setType("image/*");
 
                             Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-                            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+                            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
                             startActivityForResult(chooserIntent, PICK_PHOTO_FOR_AVATAR);
-                        }
-                        else
-                        {
+                        } else {
                             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(cameraIntent, MAKE_PHOTO);
                         }
@@ -224,7 +229,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     }
 
     private void changeIcon() {
-        if(fullNameEt.isEnabled()) {
+        if (fullNameEt.isEnabled()) {
             fullNameIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_person_accent_24dp));
             emailIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_mail_accent_24dp));
             ageIcoIv.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_age_accent_24dp));
@@ -252,7 +257,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         sexProfileSp.setEnabled(!isEnable);
         activeLevelProfileSp.setEnabled(!isEnable);
 
-        if(!isEnable) {
+        if (!isEnable) {
             editProfileFab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
             Snackbar.make(coordinatorLayout, "Remember, enter all fields.", Snackbar.LENGTH_SHORT).show();
         } else {
@@ -279,8 +284,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         ageEt = (EditText) view.findViewById(R.id.age_profile_et);
         emailEt = (EditText) view.findViewById(R.id.email_profile_et);
 
-        sexProfileSp = (Spinner) view.findViewById(R.id.sex_profile_sp) ;
-        activeLevelProfileSp = (Spinner) view.findViewById(R.id.active_level_profile_sp) ;
+        sexProfileSp = (Spinner) view.findViewById(R.id.sex_profile_sp);
+        activeLevelProfileSp = (Spinner) view.findViewById(R.id.active_level_profile_sp);
 
         profileIv = (ImageView) view.findViewById(R.id.profile_iv);
         fullNameIcoIv = (ImageView) view.findViewById(R.id.full_name_ico_profile_iv);

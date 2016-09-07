@@ -99,6 +99,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         initUI();
 
         if (mFragmentListener != null) {
+            mFragmentListener.setTitle("Diary");
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
         }
@@ -354,7 +355,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         hintCircleAddFood = getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Diary");
     }
 
     public void showDatePicker() {

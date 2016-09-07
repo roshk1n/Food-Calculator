@@ -16,4 +16,6 @@ public interface OnFragmentListener {
     void hideToolbar();
 
     void showToolbar();
+
+    void setTitle(String title);
 }

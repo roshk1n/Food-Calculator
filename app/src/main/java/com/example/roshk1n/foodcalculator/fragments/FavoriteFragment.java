@@ -72,6 +72,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         initUI();
 
         if (mFragmentListener != null) {
+            mFragmentListener.setTitle("Favorite");
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
         }
@@ -162,7 +163,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
         favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorite");
     }
 
     @Override

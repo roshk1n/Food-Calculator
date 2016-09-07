@@ -28,7 +28,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     private AddFoodPresenterImpl presenter;
     private Food food;
-    private boolean isExistFravorite;
+    private boolean isExistFavorite;
 
     private View view;
     private CoordinatorLayout coordinatorLayout;
@@ -128,18 +128,18 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         addFavoriteIv.setClickable(true);
         if (existIn) {
             addFavoriteIv.setImageResource(R.drawable.ic_favorite_black_24dp);
-            isExistFravorite = true;
+            isExistFavorite = true;
 
         } else {
             addFavoriteIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            isExistFravorite = false;
+            isExistFavorite = false;
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v == addFavoriteIv) {
-            if (!isExistFravorite) {
+            if (!isExistFavorite) {
                 addFavoriteIv.setClickable(false);
                 presenter.addToFavorite(food);
                 Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();

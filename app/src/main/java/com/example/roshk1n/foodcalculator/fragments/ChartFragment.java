@@ -1,6 +1,7 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ChartPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.ChartView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -29,6 +31,8 @@ public class ChartFragment extends Fragment implements ChartView {
     private LineDataSet dataSet;
     private LineData data;
     private int userLimit;
+
+    private OnFragmentListener mFragmentListener;
 
     private View view;
     private MaterialSpinner periodSp;
@@ -51,8 +55,12 @@ public class ChartFragment extends Fragment implements ChartView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chart, container, false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Chart");
+
         initUI();
+
+        if (mFragmentListener != null) {
+            mFragmentListener.setTitle("Chart");
+        }
 
         userLimit = presenter.getLimitCalories();
         periodSp.setItems("Week", "Month", "Year");
@@ -70,6 +78,20 @@ public class ChartFragment extends Fragment implements ChartView {
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFragmentListener = null;
     }
 
     private void initUI() {
