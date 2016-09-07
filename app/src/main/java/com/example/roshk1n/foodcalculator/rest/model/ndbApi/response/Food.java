@@ -21,7 +21,7 @@ public class Food implements Parcelable, Serializable {
     private String name;
     private int portion = 1;
     private long time;
-    private ArrayList<Nutrient> nutrients = new ArrayList<Nutrient>();
+    private ArrayList<Nutrient> nutrients = new ArrayList<>();
 
     public Food() {
     }

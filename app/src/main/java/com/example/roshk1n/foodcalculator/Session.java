@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator;
 
-/**
- * Created by roshk1n on 7/23/2016.
- */
 public class Session {
     private static Session instance;
 

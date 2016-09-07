@@ -6,9 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
 
 public class Utils {
     public static void navigateToFragment(FragmentManager fragmentManager,

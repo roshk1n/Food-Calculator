@@ -12,7 +12,7 @@ public class FoodRealm extends RealmObject {
     private String name;
     private long time;
     private int portion = 1;
-    private RealmList<NutrientRealm> nutrients = new RealmList<NutrientRealm>();
+    private RealmList<NutrientRealm> nutrients = new RealmList<>();
 
     public FoodRealm() {
     }

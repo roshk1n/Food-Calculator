@@ -3,9 +3,6 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 import com.example.roshk1n.foodcalculator.realmModel.ReminderReaml;
 import com.example.roshk1n.foodcalculator.remoteDB.model.ReminderFirebase;
 
-/**
- * Created by roshk1n on 8/12/2016.
- */
 public class Reminder {
     private String name;
     private long time;

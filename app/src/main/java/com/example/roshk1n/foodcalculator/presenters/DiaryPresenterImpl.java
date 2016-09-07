@@ -7,27 +7,26 @@ import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
-
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
     private DataManager dataManager = new DataManager();
     private Day day;
-    private Date date = new Date();
+    private Calendar date = Calendar.getInstance();
     private DiaryView diaryView;
     private boolean checkForAnim = true;
 
-    public Date getDate() {
-        Date d = new Date();
-        date.setHours(d.getHours());
-        date.setMinutes(d.getMinutes());
-        date.setSeconds(d.getSeconds());
+    public Calendar getDate() {
+        Calendar dateNow = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(Long date) {
+        this.date.setTimeInMillis(date);
     }
 
     @Override
@@ -57,20 +56,26 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void setFollowDate() {
-        Date d = new Date();
-        date.setHours(d.getHours());
+        Calendar dateNow = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
+
+        date.set(Calendar.DAY_OF_MONTH,date.get(Calendar.DAY_OF_MONTH)-1);
+/*        date.setHours(d.getHours());
         date.setMinutes(d.getMinutes());
         date.setSeconds(d.getSeconds());
-        date.setDate(date.getDate() - 1);
+        date.setDate(date.getDate() - 1);*/
     }
 
     @Override
     public void setNextDate() {
-        Date d = new Date();
-        date.setHours(d.getHours());
-        date.setMinutes(d.getMinutes());
-        date.setSeconds(d.getSeconds());
-        date.setDate(date.getDate() + 1);
+        Calendar dateNow = Calendar.getInstance();
+        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
+
+        date.set(Calendar.DAY_OF_MONTH,date.get(Calendar.DAY_OF_MONTH)+1);
     }
 
     @Override
@@ -82,7 +87,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     public String getDateString() {
         SimpleDateFormat format1 = new SimpleDateFormat();
         format1.applyPattern("EEEE, dd MMMM");
-        return format1.format(date);
+        return format1.format(date.getTime());
     }
 
     @Override

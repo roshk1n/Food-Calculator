@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.activities;
 //TODO detach fragment view
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity
         OnFragmentListener, MainView {
 
     private MainPresenterImpl presenter;
-    private View mHeader;
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
     private DrawerLayout mDrawer;
@@ -111,11 +110,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -208,15 +202,6 @@ public class MainActivity extends AppCompatActivity
                 mToolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
         };
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -274,9 +259,10 @@ public class MainActivity extends AppCompatActivity
         mToolbar.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("PrivateResource")
     @Override
     public void setArrowToolbar() {
-        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+        mToolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.arrow_back_white));
         mToolbar.setNavigationOnClickListener(this);
     }
 
@@ -287,7 +273,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initUI() {
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mHeader = mNavigationView.getHeaderView(0);
+        View mHeader = mNavigationView.getHeaderView(0);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         icoUserDrawerIv = (CircleImageView) mHeader.findViewById(R.id.imageView);

@@ -119,8 +119,6 @@
 
     </RelativeLayout>
 
-    android:textSize="25sp" />
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnLogInFacebook"
         android:layout_marginTop="10dp"

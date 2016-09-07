@@ -1,9 +1,5 @@
 package com.example.roshk1n.foodcalculator.views;
 
-/**
- * Created by roshk1n on 7/25/2016.
- */
-
 public interface AddFoodView {
 
     void navigateToDiary();

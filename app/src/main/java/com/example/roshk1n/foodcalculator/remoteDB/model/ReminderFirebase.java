@@ -2,9 +2,6 @@ package com.example.roshk1n.foodcalculator.remoteDB.model;
 
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
-/**
- * Created by roshk1n on 8/16/2016.
- */
 public class ReminderFirebase {
     private String name;
     private Long time;

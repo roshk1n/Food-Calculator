@@ -14,9 +14,7 @@ import com.example.roshk1n.foodcalculator.activities.LoginActivity;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
-
 import java.util.Calendar;
-import java.util.Date;
 
 public class ReceiverNotification extends BroadcastReceiver {
 
@@ -53,7 +51,8 @@ public class ReceiverNotification extends BroadcastReceiver {
     public void createNotification(Context context, int positionAdapter) {
 
         Reminder reminder = LocalDataBaseManager.getNotification(positionAdapter);
-        Date timeNotify = new Date(reminder.getTime());
+        Calendar timeNotify = Calendar.getInstance();
+        timeNotify.setTimeInMillis(reminder.getTime());
         String nameNotification = reminder.getName();
 
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -68,9 +67,9 @@ public class ReceiverNotification extends BroadcastReceiver {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,timeNotify.getHours());
-        calendar.set(Calendar.MINUTE,timeNotify.getMinutes());
-        calendar.set(Calendar.SECOND,timeNotify.getSeconds());
+        calendar.set(Calendar.HOUR_OF_DAY,timeNotify.get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE,timeNotify.get(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND,timeNotify.get(Calendar.SECOND));
 
         if(calendarNow.getTime().getTime() >= calendar.getTime().getTime()) {
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY

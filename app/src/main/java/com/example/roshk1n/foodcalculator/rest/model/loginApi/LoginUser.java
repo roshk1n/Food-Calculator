@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator.rest.model.loginApi;
 
-/**
- * Created by roshk1n on 7/15/2016.
- */
 public class LoginUser {
     private String u_email;
     private String u_password;

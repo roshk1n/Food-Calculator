@@ -20,14 +20,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-//import com.github.mikephil.charting.utils.EntryXComparator;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 
 public class ChartFragment extends Fragment implements ChartView {
     private ChartPresenterImpl presenter;
-    private ArrayList<Entry> entries;
     private LineDataSet dataSet;
     private LineData data;
     private int userLimit;
@@ -61,7 +59,7 @@ public class ChartFragment extends Fragment implements ChartView {
 
 
         presenter.loadData(0);
-        amountCalTv.setText(presenter.getAmountCalories()+"");
+        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
 
 
         periodSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -118,7 +116,6 @@ public class ChartFragment extends Fragment implements ChartView {
         leftAxis.setXOffset(10f);
         leftAxis.setDrawTopYLabelEntry(true);
 
-
         YAxis yAxis = lineChart.getAxisRight();
         yAxis.setEnabled(false);
 
@@ -132,8 +129,8 @@ public class ChartFragment extends Fragment implements ChartView {
 
     @Override
     public void setEntry(ArrayList<Entry> entriesChart, int period) {
-        entries = entriesChart;
-        amountCalTv.setText(presenter.getAmountCalories()+"");
+        ArrayList<Entry> entries = entriesChart;
+        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
         dataSet = new LineDataSet(entries, "");
         if (period == 0) {
             ArrayList<String> labels = new ArrayList<>(); // list for week labels

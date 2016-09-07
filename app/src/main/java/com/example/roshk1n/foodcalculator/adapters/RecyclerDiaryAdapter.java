@@ -50,7 +50,7 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
         public void setData() {
             nameFoodTv.setText(foods.get(getAdapterPosition()).getName());
             amountCalTv.setText(String.valueOf(Math.round(Float.parseFloat(foods.get(getAdapterPosition()).getNutrients().get(1).getValue()))));
-            valuePorTv.setText(foods.get(getAdapterPosition()).getPortion()*100 + " g.");
+            valuePorTv.setText(String.valueOf(foods.get(getAdapterPosition()).getPortion()*100) + " g.");
         }
 
         @Override

@@ -37,7 +37,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
     private View view;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerReminderAdapter mAdapter;
 
     public RemindersFragment() {}
@@ -62,7 +61,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
         reminders = remindersPresenter.loadReminder();
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RecyclerReminderAdapter(reminders,this);

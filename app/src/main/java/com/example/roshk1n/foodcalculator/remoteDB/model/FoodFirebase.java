@@ -6,15 +6,11 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.util.List;
 
-
-/**
- * Created by roshk1n on 8/16/2016.
- */
 public class FoodFirebase {
     private String ndbno;
     private String name;
     private Long time;
-    private Long portion = 1l;
+    private Long portion = 1L;
     private List<NutrientFirebase> nutrients = new ArrayList<>();
 
     public FoodFirebase() {

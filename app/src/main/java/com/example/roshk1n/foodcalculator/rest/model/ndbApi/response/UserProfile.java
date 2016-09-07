@@ -1,10 +1,6 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-/**
- * Created by roshk1n on 8/12/2016.
- */
 public class UserProfile {
-
     private String photoUrl;
     private String email;
     private String password;

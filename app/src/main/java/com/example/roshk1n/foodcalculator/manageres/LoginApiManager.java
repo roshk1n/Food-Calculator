@@ -18,9 +18,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by roshk1n on 7/10/2016.
- */
 public  class LoginApiManager {
 
     private static RestClient restClient;

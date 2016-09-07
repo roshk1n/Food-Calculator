@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator.rest.model.loginApi;
 
-/**
- * Created by roshk1n on 7/14/2016.
- */
 public class RegistrationUser {
     private String f_name;
     private String l_name;

@@ -1,26 +1,20 @@
 package com.example.roshk1n.foodcalculator.manageres;
 
-
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.realmModel.DayRealm;
-import com.example.roshk1n.foodcalculator.realmModel.FavoriteListRealm;
 import com.example.roshk1n.foodcalculator.realmModel.FoodRealm;
 import com.example.roshk1n.foodcalculator.realmModel.ReminderReaml;
 import com.example.roshk1n.foodcalculator.realmModel.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.*;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
-
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 
 public class LocalDataBaseManager {
-
-    private static FavoriteListRealm favoriteListRealm;
     private static RealmList<ReminderReaml> remindersRealm;
     private static final Realm realm = Realm.getDefaultInstance();
     private static DayRealm dayRealm;
@@ -38,7 +32,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public static Day loadDayData(Date date) {
+    public static Day loadDayData(Calendar date) {
         Day day = new Day();
         boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
@@ -56,7 +50,7 @@ public class LocalDataBaseManager {
         return day;
     }
 
-    public static int dayIsExist(Date date) {
+    public static int dayIsExist(Calendar date) {
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
             if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(i);
@@ -99,7 +93,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public static ArrayList<Food> loadFavoriteFood() {
+/*    public static ArrayList<Food> loadFavoriteFood() {
         if (getCurrentUserRealm().getFavoriteList() != null) {
             favoriteListRealm = getCurrentUserRealm().getFavoriteList();
         }
@@ -141,7 +135,7 @@ public class LocalDataBaseManager {
                 });
             }
         }
-    }
+    }*/
 
     public static int loadGoalCalories() {
         return getCurrentUserRealm().getGoalCalories();
@@ -158,10 +152,10 @@ public class LocalDataBaseManager {
             }
         });
     }
-
+/*
     public static boolean isExistInFavotite(Food food) {
         return new FoodRealm(food).isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
-    }
+    }*/
 
     public ArrayList<Reminder> loadReminders() {
         remindersRealm = getCurrentUserRealm().getReminders();
@@ -236,7 +230,9 @@ public class LocalDataBaseManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                int i = dayIsExist(new Date(day.getDate()));
+                Calendar date = Calendar.getInstance();
+                date.setTimeInMillis(day.getDate());
+                int i = dayIsExist(date);
                 DayRealm newDayReam = new DayRealm(day);
                 if (i != -1) {
                     getCurrentUserRealm().getDayRealms().get(i).getFoods().deleteAllFromRealm();
@@ -285,22 +281,23 @@ public class LocalDataBaseManager {
                 .findFirst();
     }
 
-    private static boolean compareLongAndDate(Long UserDate, Date date) {
-        Date userDayDate = new Date(UserDate);
-        return (userDayDate.getDate() == date.getDate()
-                && userDayDate.getYear() == date.getYear()
-                && userDayDate.getMonth() == date.getMonth());
+    private static boolean compareLongAndDate(Long UserDate, Calendar date) {
+        Calendar userDayDate = Calendar.getInstance();
+        userDayDate.setTimeInMillis(UserDate);
+        return (userDayDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                && userDayDate.get(Calendar.YEAR)== date.get(Calendar.YEAR)
+                && userDayDate.get(Calendar.MONTH)== date.get(Calendar.MONTH));
     }
 
     public static String getLocalUserImage() {
         return getCurrentUserRealm().getPhotoUrl();
     }
 
-    public static ArrayList<Day> loadDataForChart() {
+/*    public static ArrayList<Day> loadDataForChart() {
         ArrayList<Day> listDay = new ArrayList<>();
         for (DayRealm day : getCurrentUserRealm().getDayRealms()) {
             listDay.add(new Day(day));
         }
         return listDay;
-    }
+    }*/
 }

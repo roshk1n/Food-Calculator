@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -22,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;

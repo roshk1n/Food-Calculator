@@ -10,9 +10,6 @@ import com.example.roshk1n.foodcalculator.views.MainView;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by roshk1n on 8/16/2016.
- */
 public class MainPresenterImpl implements MainPresenter {
     private MainView mainView;
     private DataManager dataManager = new DataManager();
@@ -46,7 +43,6 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public Bitmap getLocalImage() {
         String image = LocalDataBaseManager.getLocalUserImage();
-        Bitmap bitmap = stringToBitmap(image);
-        return bitmap;
+        return stringToBitmap(image);
     }
 }

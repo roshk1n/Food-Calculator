@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
@@ -35,7 +32,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
     private SearchPresenterImpl searchPresenter;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
@@ -88,7 +84,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
             querySearch = getArguments().getString("query");
         }
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RecyclerSearchAdapter(foods, mdate,this);

@@ -25,7 +25,7 @@ public class ChartPresenterImpl implements ChartPresenter {
 
     @Override
     public void loadData(final int period) {
-       dataManager.loadDataForChart(chartView.getContext(), new LoadDaysCallback() {
+       dataManager.loadDataForChart(new LoadDaysCallback() {
             @Override
             public void loadDaysComplete(ArrayList<Day> days) {
                 ArrayList<EntryEatChart> entryEatCharts;

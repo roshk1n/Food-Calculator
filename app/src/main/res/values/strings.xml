@@ -1,41 +1,21 @@
 <resources>
     <string name="app_name">FoodCalculator</string>
-    <string name="food_calculator">Food Calculator</string>
     <string name="log_in">Log In</string>
     <string name="or">OR</string>
-    <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="facebook_app_id">724657607672906</string>
     <string name="sing_up"><u>Sing up</u></string>
-    <string name="title_activity_login_activitys">Sign in</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
     <string name="diary">Diary</string>
     <string name="my_favorites">My Favorites</string>
-    <string name="history">History</string>
-    <string name="diets">Diets</string>
     <string name="reminders">Reminders</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
-    <string name="search_for_a_food">Search...</string>
-    <string name="logout">LogOut</string>
     <string name="breakfast">Breakfast</string>
     <string name="Potato">Картопля</string>
     <string name="_247">247</string>
@@ -48,17 +28,13 @@
     <string name="_320_cal">320 cal</string>
     <string name="date">date</string>
     <string name="serving_size">Serving size:</string>
-    <string name="oleh_roshka">Oleh Roshka</string>
     <string name="add_a_new_food_for_your_day">Add a new food for your day.</string>
     <string name="_100">100</string>
     <string name="add_food">Add Food</string>
     <string name="g">g.</string>
-    <string name="log_in_api">Log in Api</string>
     <string name="age">Age</string>
     <string name="number_of_servings">Number of Servings:</string>
-    <string name="_20">20</string>
     <string name="_1">1</string>
-    <string name="_1600">1600</string>
     <string name="goal">Goal</string>
     <string name="food">Food</string>
     <string name="_0">0</string>
@@ -66,25 +42,15 @@
     <string name="height">Height</string>
     <string name="slide">-</string>
     <string name="_1_0">1,0</string>
-    <string name="_176_cm">176 cm</string>
     <string name="sign_up_now">Sign up Now</string>
     <string name="carbs_g">Carbs (g)</string>
-    <string name="sing_up_with_api">Sing up with API</string>
     <string name="weight">Weight</string>
     <string name="_17_0">17,0</string>
     <string name="equals">=</string>
-    <string name="_70_kg">70 kg</string>
     <string name="fat_g">Fat (g)</string>
-    <string name="sing_up_with_realm">Sing up with Realm</string>
-    <string name="active_level">Active Level</string>
     <string name="protein_g">Protein (g)</string>
-    <string name="active">Active</string>
     <string name="calories">Calories</string>
-    <string name="_1660">1600</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="roshk1n_ua_gmail_com">roshk1n.ua@gmail.com</string>
-    <string name="_176">176</string>
-    <string name="_70">70</string>
     <string name="alert2">     You almost reached the limit today.\n     You have %1$s calories.</string>
     <string name="alert3">     You reached the limit today.\n     Recommend will not eat today :(</string>
     <string name="alert4">     You exceeded the limit greatly today!"</string>
@@ -120,5 +86,8 @@
     <string name="reset_hint">In order to receive your new password, please enter the address you provide during the registration process.</string>
     <string name="already_have_a_account"><u>Already have an account?</u></string>
     <string name="back_to_login"><u>Back to login</u></string>
+    <string name="chart">Chart</string>
+    <string name="protein">Protein</string>
+    <string name="_6_38g">6.38g</string>
 
 </resources>

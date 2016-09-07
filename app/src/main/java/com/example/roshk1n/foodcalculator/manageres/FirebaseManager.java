@@ -45,14 +45,11 @@ import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class FirebaseManager {
     private static final String USERS_CHILD = "users";
@@ -67,9 +64,10 @@ public class FirebaseManager {
     private static final String FOODS_CHILD = "foods";
     private static final String EAT_CALORIES = "eatCalories";
     private static final String REMAINING_CALORIES = "remainingCalories";
+    private static FirebaseManager instance;
+
     private ArrayList<Day> listDay = new ArrayList<>();
 
-    private static FirebaseManager instance;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mFirebaseUser;
@@ -200,12 +198,12 @@ public class FirebaseManager {
                                                         .child("users")
                                                         .child(getAuth().getCurrentUser().getUid());
                                                 UserFirebase user = new UserFirebase();
-                                                user.setAge(0l);
+                                                user.setAge(0L);
                                                 user.setActiveLevel("none");
-                                                user.setHeight(0l);
+                                                user.setHeight(0L);
                                                 user.setSex("none");
-                                                user.setWeight(0l);
-                                                user.setGoalCalories(0l);
+                                                user.setWeight(0L);
+                                                user.setGoalCalories(0L);
                                                 reference.setValue(user);
                                                 callback.createSuccess();
                                             }
@@ -245,15 +243,16 @@ public class FirebaseManager {
             }
 
             if (!birthday.equals("0")) {
-                DateFormat format = new SimpleDateFormat("M/d/yyyy");
-                Date date = null;
+                SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy");
+                Calendar date = Calendar.getInstance();
                 try {
-                    date = format.parse(birthday);
+                    date.setTime(format.parse(birthday));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date dateNow = new Date();
-                old = dateNow.getYear() - date.getYear();
+                Calendar dateNow = Calendar.getInstance();
+
+                old = dateNow.get(Calendar.YEAR) - date.get(Calendar.YEAR);
             }
             user.setSex(gender);
             user.setAge(old);
@@ -431,14 +430,12 @@ public class FirebaseManager {
         });
     }
 
-    public void loadDay(final Date date, final LoadDayCallback loadDayCallback) {
-        Calendar dateFood = Calendar.getInstance();
-        dateFood.setTimeInMillis(date.getTime());
+    public void loadDay(final Calendar date, final LoadDayCallback loadDayCallback) {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         final DatabaseReference foodRef = reference
                 .child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
-                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
+                .child(date.get(Calendar.YEAR) + "_" + date.get(Calendar.MONTH) + "_" + date.get(Calendar.DAY_OF_MONTH))
                 .child(FOODS_CHILD);
         foodRef.keepSynced(true);
 
@@ -449,7 +446,7 @@ public class FirebaseManager {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     day.getFoods().add(new Food(postSnapshot.getValue(FoodFirebase.class)));
                 }
-                day.setDate(date.getTime());
+                day.setDate(date.getTime().getTime());
                 loadDayCallback.loadComplete(day);
             }
 

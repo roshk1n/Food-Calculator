@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapter.ViewHolder> {
     private ArrayList<Nutrient> nutrients;
     private View v;
-
 
     public RecyclerInfoAdapter(ArrayList<Nutrient> nutrients) {
         this.nutrients = nutrients;

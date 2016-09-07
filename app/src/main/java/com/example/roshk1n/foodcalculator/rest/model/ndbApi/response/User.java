@@ -11,9 +11,6 @@ import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshk1n on 8/13/2016.
- */
 public class User {
     private String email;
     private String fullname;

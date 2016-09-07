@@ -34,9 +34,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     private ArrayList<Food> favoriteList = new ArrayList<>();
     private OnFragmentListener mFragmentListener;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerFavoriteAdapter mAdapter;
-    private RecyclerFavoriteAddAdapter mAddAdapter;
     private boolean addOrInfo = false;
     private long date;
 
@@ -85,7 +83,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
         favoritePresenter.getFavoriteList();
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         if (!addOrInfo) {
@@ -134,7 +132,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
             mAdapter = new RecyclerFavoriteAdapter(favoriteList, this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
-            mAddAdapter = new RecyclerFavoriteAddAdapter(favoriteList,this);
+            RecyclerFavoriteAddAdapter mAddAdapter = new RecyclerFavoriteAddAdapter(favoriteList, this);
             mRecyclerView.setAdapter(mAddAdapter);
         }
     }

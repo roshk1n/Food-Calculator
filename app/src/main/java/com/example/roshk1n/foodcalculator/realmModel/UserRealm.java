@@ -1,7 +1,6 @@
 package com.example.roshk1n.foodcalculator.realmModel;
 
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
-import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 
@@ -9,9 +8,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by roshk1n on 7/22/2016.
- */
 public class UserRealm extends RealmObject {
     @PrimaryKey
     private String email;
@@ -24,9 +20,8 @@ public class UserRealm extends RealmObject {
     private String sex;
     private String activeLevel;
 
-    private FavoriteListRealm favoriteList = new FavoriteListRealm();
-    private RealmList<ReminderReaml> reminders = new RealmList<ReminderReaml>();
-    private RealmList<DayRealm> dayRealms = new RealmList<DayRealm>();
+    private RealmList<ReminderReaml> reminders = new RealmList<>();
+    private RealmList<DayRealm> dayRealms = new RealmList<>();
 
     public UserRealm() { }
 
@@ -46,10 +41,6 @@ public class UserRealm extends RealmObject {
         setGoalCalories(user.getGoalCalories());
         setSex(user.getSex());
         setActiveLevel(user.getActiveLevel());
-
-        for (Food food : user.getFavoriteFood()) {
-            favoriteList.getFoods().add(new FoodRealm(food));
-        }
 
         for (Reminder reminder : user.getReminders()) {
             reminders.add(new ReminderReaml(reminder));
@@ -116,20 +107,12 @@ public class UserRealm extends RealmObject {
         this.photoUrl = photoUrl;
     }
 
-    public FavoriteListRealm getFavoriteList() {
-        return favoriteList;
-    }
-
     public int getGoalCalories() {
         return goalCalories;
     }
 
     public void setGoalCalories(int limit_calories) {
         this.goalCalories = limit_calories;
-    }
-
-    public void setFavoriteList(FavoriteListRealm favoriteList) {
-        this.favoriteList = favoriteList;
     }
 
     public String getSex() {

@@ -5,10 +5,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.io.IOException;
 
-/**
- * Created by roshk1n on 7/25/2016.
- */
-
 public interface AddFoodPresenter {
 
     void setView(AddFoodView view);

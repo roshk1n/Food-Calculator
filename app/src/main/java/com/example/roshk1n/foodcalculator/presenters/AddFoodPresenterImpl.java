@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
@@ -28,8 +28,10 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
 
     @Override
     public void addNewFood(Food food) {
-        int indexDay = LocalDataBaseManager.dayIsExist(new Date(food.getTime()));
-        LocalDataBaseManager.loadDayData(new Date(food.getTime())); //TODO check if need
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(food.getTime());
+        int indexDay = LocalDataBaseManager.dayIsExist(calendar);
+        LocalDataBaseManager.loadDayData(calendar); //TODO check if need
         if(indexDay!=-1) {
             LocalDataBaseManager.addFood(food);
 

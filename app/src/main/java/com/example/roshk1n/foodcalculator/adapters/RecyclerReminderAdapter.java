@@ -14,8 +14,7 @@ import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapte
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.util.ArrayList;
-import java.util.Date;
-
+import java.util.Calendar;
 
 public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerReminderAdapter.ViewHolder> {
     private ArrayList<Reminder> reminders;
@@ -53,9 +52,10 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
         }
 
         public void setData() {
-            Date  date = new Date(reminders.get(getAdapterPosition()).getTime());
-            int minute= date.getMinutes();
-            final int hour = date.getHours();
+            Calendar date = Calendar.getInstance();
+            date.setTimeInMillis(reminders.get(getAdapterPosition()).getTime());
+            int minute= date.get(Calendar.MINUTE);
+            final int hour = date.get(Calendar.HOUR_OF_DAY);
             String time = (hour < 10 ? "0" + hour : hour)+":"+(minute < 10 ? "0" + minute : minute);
             Reminder reminder = reminders.get(getAdapterPosition());
             title_reminder_tv.setText(reminder.getName());

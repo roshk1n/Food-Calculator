@@ -153,10 +153,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="15dp"
+        android:paddingBottom="16dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="16dp"
         android:splitMotionEvents="true" />
 
 </LinearLayout>

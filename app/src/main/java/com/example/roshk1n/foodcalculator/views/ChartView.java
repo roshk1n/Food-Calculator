@@ -6,9 +6,6 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshk1n on 8/31/2016.
- */
 public interface ChartView {
     Context getContext();
 

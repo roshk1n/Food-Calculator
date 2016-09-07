@@ -26,10 +26,9 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.facebook.AccessToken;
 
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 public class DataManager implements FirebaseCallback {
     private FirebaseManager firebaseManager = FirebaseManager.getInstance(this);
@@ -100,7 +99,7 @@ public class DataManager implements FirebaseCallback {
         loginCallback.loginError(text);
     }
 
-    public void loadDayData(final Date date, final LoadDayCallback callback) {
+    public void loadDayData(final Calendar date, final LoadDayCallback callback) {
         Day day = LocalDataBaseManager.loadDayData(date);
         callback.loadComplete(day);
 
@@ -123,9 +122,8 @@ public class DataManager implements FirebaseCallback {
     }
 
     public int loadGoalCalories() {
-        int goal = LocalDataBaseManager.loadGoalCalories();
         //dataDiaryCallback.loadCaloriesSuccess(goal);
-        return goal;
+        return LocalDataBaseManager.loadGoalCalories();
     }
 
     public void updateCalories(int eat_calories, int remainingCalories, long date) {
@@ -216,7 +214,7 @@ public class DataManager implements FirebaseCallback {
         });
     }
 
-    public void loadDataForChart(Context context, LoadDaysCallback callback) {
+    public void loadDataForChart(LoadDaysCallback callback) {
            firebaseManager.loadDataForChart(callback);
     }
 }

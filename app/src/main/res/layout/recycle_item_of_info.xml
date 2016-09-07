@@ -21,7 +21,7 @@
             android:id="@+id/title_nutrients_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Protein"
+            android:text="@string/protein"
             android:layout_marginRight="100dp"
             android:textColor="@color/colorPrimaryText"
             android:textSize="14sp" />
@@ -30,7 +30,7 @@
             android:id="@+id/value_nutrients_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="6.38g"
+            android:text="@string/_6_38g"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorPrimaryText"
             android:textSize="14sp" />

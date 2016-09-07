@@ -1,8 +1,5 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-/**
- * Created by roshk1n on 7/18/2016.
- */
 public class ItemOfSearchFood {
     private int offset;
     private String group;

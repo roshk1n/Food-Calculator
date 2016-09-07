@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.RecyclerViewItemDecoration;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
@@ -38,23 +37,18 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-
 import java.util.Calendar;
-import java.util.Date;
 
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
         DatePickerDialog.OnDateSetListener, View.OnClickListener{
-
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
     private boolean checkUndo = true;
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerDiaryAdapter mAdapter;
     private OnFragmentListener mFragmentListener;
 
     private ItemTouchHelper itemTouchHelper;
-    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
     private View view;
     private TextView dateTv;
@@ -111,12 +105,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         }
 
         if (getArguments() != null) {
-            diaryPresenter.setDate(new Date(getArguments().getLong("date")));
+            diaryPresenter.setDate(getArguments().getLong("date"));
         }
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-    //    mRecyclerView.addItemDecoration(new RecyclerViewItemDecoration(30,0));
         diaryPresenter.loadDay();
         diaryPresenter.calculateCalories();
         dateTv.setText(diaryPresenter.getDateString());
@@ -128,15 +121,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         dateTv.setOnClickListener(this);
         addFoodFab.setOnClickListener(this);
 
-        simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
-            }
-
-            @Override
-            public boolean isItemViewSwipeEnabled() {
-                return super.isItemViewSwipeEnabled();
             }
 
             @Override
@@ -169,11 +158,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentListener) {
@@ -193,7 +177,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             diaryPresenter.setFollowDate();
             Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
                     R.id.fragment_conteiner,
-                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
                     R.anim.slide_in_right_enter,
                     R.anim.slide_in_right_exit,
                     false);
@@ -202,7 +186,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 diaryPresenter.setNextDate();
                 Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
                         R.id.fragment_conteiner,
-                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime()),
+                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
                         R.anim.slide_in_left_enter,
                         R.anim.slide_in_left_exit,
                         false);
@@ -216,7 +200,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
             Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                     R.id.fragment_conteiner,
-                    TabSearchFragment.newInstance(diaryPresenter.getDate().getTime()),
+                    TabSearchFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                     true);
             addFoodFab.hide();
@@ -235,14 +219,14 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Date date = new Date();
-        date.setMonth(monthOfYear);
-        date.setDate(dayOfMonth);
-        date.setYear(year - 1900);
+        Calendar date = Calendar.getInstance();
+        date.set(Calendar.MONTH,monthOfYear);
+        date.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        date.set(Calendar.YEAR,year);
 
         Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                 R.id.fragment_conteiner,
-                DiaryFragment.newInstance(date.getTime()),
+                DiaryFragment.newInstance(date.getTime().getTime()),
                 FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
                 false);
     }

@@ -92,9 +92,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
                     try {
                         presenter.updateUI(food, Integer.valueOf(s.toString()));
 
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
                 }

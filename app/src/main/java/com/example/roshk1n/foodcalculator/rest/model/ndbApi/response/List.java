@@ -2,10 +2,6 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import java.util.ArrayList;
 
-/**
- * Created by roshk1n on 7/18/2016.
- */
-
 public class List {
 
     private String q;
@@ -15,7 +11,7 @@ public class List {
     private int total;
     private String group;
     private String sort;
-    private ArrayList<ItemOfSearchFood> item = new ArrayList<ItemOfSearchFood>();
+    private ArrayList<ItemOfSearchFood> item = new ArrayList<>();
 
     public String getQ() {
         return q;

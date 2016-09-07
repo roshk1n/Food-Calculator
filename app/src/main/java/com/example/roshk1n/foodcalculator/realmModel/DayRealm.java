@@ -11,7 +11,7 @@ public class DayRealm extends RealmObject {
     private long date;
     private int eatDailyCalories;
     private int remainingCalories;
-    private RealmList<FoodRealm> foods = new RealmList<FoodRealm>();
+    private RealmList<FoodRealm> foods = new RealmList<>();
 
     public DayRealm() {
     }

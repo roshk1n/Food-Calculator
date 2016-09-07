@@ -31,8 +31,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private boolean isExistFavorite;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerInfoAdapter mAdapter;
 
     private View view;
     private CoordinatorLayout coordinatorLayout;
@@ -84,9 +82,9 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         }
 
         favoritesIv.setOnClickListener(this);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerInfoAdapter(food.getNutrients());
+        RecyclerInfoAdapter mAdapter = new RecyclerInfoAdapter(food.getNutrients());
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
