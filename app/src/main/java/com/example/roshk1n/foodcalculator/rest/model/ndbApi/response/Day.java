@@ -1,17 +1,13 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-
-import com.example.roshk1n.foodcalculator.realm.DayRealm;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
+import com.example.roshk1n.foodcalculator.realmModel.DayRealm;
+import com.example.roshk1n.foodcalculator.realmModel.FoodRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 

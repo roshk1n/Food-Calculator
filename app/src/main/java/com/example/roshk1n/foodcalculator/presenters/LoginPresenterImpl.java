@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.example.roshk1n.foodcalculator.interfaces.DataLoginCallback;
-import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.facebook.CallbackManager;
@@ -18,7 +18,7 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONObject;
 
-public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
+public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
 
     private final static String TAG = "MyLog";
     private DataManager dataManager = new DataManager(this);
@@ -97,12 +97,12 @@ public class LoginPresenterImpl implements LoginPresenter, DataLoginCallback {
     }
 
     @Override
-    public void showToast(String text) {
+    public void loginError(String text) {
         loginVew.showToast(text);
     }
 
     @Override
-    public void navigateToHome() {
+    public void loginSuccess() {
         loginVew.navigateToHome();
     }
 

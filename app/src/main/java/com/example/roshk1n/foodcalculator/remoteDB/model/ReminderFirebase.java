@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.remoteDB.model;
 
-import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 /**

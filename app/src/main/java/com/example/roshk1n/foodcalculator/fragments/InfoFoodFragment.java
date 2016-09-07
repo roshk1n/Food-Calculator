@@ -28,7 +28,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private InfoFoodPresenterImpl presenter;
     private Food food;
     private OnFragmentListener mFragmentListener;
-    private boolean isExistFravorite;
+    private boolean isExistFavorite;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -36,12 +36,12 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
 
     private View view;
     private CoordinatorLayout coordinatorLayout;
-    private TextView name_food_tv;
-    private TextView calories_food_tv;
-    private TextView cabs_food_tv;
-    private TextView protein_food_tv;
-    private TextView fat_food_tv;
-    private ImageView favorites_iv;
+    private TextView nameFoodTv;
+    private TextView caloriesFoodTv;
+    private TextView cabsFoodTv;
+    private TextView proteinFoodTv;
+    private TextView fatFoodTv;
+    private ImageView favoritesIv;
 
     public InfoFoodFragment() {}
 
@@ -62,7 +62,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         super.onCreate(savedInstanceState);
         presenter = new InfoFoodPresenterImpl();
         presenter.setView(this);
-        isExistFravorite = false;
+        isExistFavorite = false;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
             setNutrients(); //set filed from parcelable
         }
 
-        favorites_iv.setOnClickListener(this);
+        favoritesIv.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerInfoAdapter(food.getNutrients());
@@ -108,13 +108,13 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
 
     @Override
     public void onClick(View v) {
-        if (v == favorites_iv) {
-            if (!isExistFravorite) {
-                favorites_iv.setClickable(false);
+        if (v == favoritesIv) {
+            if (!isExistFavorite) {
+                favoritesIv.setClickable(false);
                 presenter.addToFavorite(food);
                 Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
             } else {
-                favorites_iv.setClickable(false);
+                favoritesIv.setClickable(false);
                 presenter.removeFromFavorite(food.getNdbno());
                 Snackbar.make(coordinatorLayout, "Deleting a food from favorites...", Snackbar.LENGTH_SHORT).show();
             }
@@ -123,32 +123,32 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
 
     @Override
     public void updateFavoriteImage(boolean existIn) {
-        favorites_iv.setClickable(true);
+        favoritesIv.setClickable(true);
         if (existIn) {
-            isExistFravorite = true;
-            favorites_iv.setImageResource(R.drawable.ic_favorite_black_24dp);
+            isExistFavorite = true;
+            favoritesIv.setImageResource(R.drawable.ic_favorite_black_24dp);
         } else {
-            isExistFravorite = false;
-            favorites_iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            isExistFavorite = false;
+            favoritesIv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
     }
 
     private void initUI() {
-        name_food_tv = (TextView) view.findViewById(R.id.name_food_info_tv);
-        calories_food_tv = (TextView) view.findViewById(R.id.calories_food_info_tv);
-        cabs_food_tv = (TextView) view.findViewById(R.id.cabs_food_info_tv);
-        protein_food_tv = (TextView) view.findViewById(R.id.protein_food_info_tv);
-        fat_food_tv = (TextView) view.findViewById(R.id.fat_food_info_tv);
-        favorites_iv = (ImageView) view.findViewById(R.id.favorites_add_info_iv);
+        nameFoodTv = (TextView) view.findViewById(R.id.name_food_info_tv);
+        caloriesFoodTv = (TextView) view.findViewById(R.id.calories_food_info_tv);
+        cabsFoodTv = (TextView) view.findViewById(R.id.cabs_food_info_tv);
+        proteinFoodTv = (TextView) view.findViewById(R.id.protein_food_info_tv);
+        fatFoodTv = (TextView) view.findViewById(R.id.fat_food_info_tv);
+        favoritesIv = (ImageView) view.findViewById(R.id.favorites_add_info_iv);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_info_food);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Info Food");
     }
     private void setNutrients() {
-        name_food_tv.setText(food.getName());
-        calories_food_tv.setText(food.getNutrients().get(1).getValue());
-        protein_food_tv.setText(food.getNutrients().get(2).getValue());
-        fat_food_tv.setText(food.getNutrients().get(3).getValue());
-        cabs_food_tv.setText(food.getNutrients().get(4).getValue());
+        nameFoodTv.setText(food.getName());
+        caloriesFoodTv.setText(food.getNutrients().get(1).getValue());
+        proteinFoodTv.setText(food.getNutrients().get(2).getValue());
+        fatFoodTv.setText(food.getNutrients().get(3).getValue());
+        cabsFoodTv.setText(food.getNutrients().get(4).getValue());
     }
 }

@@ -35,7 +35,7 @@ public class ChartFragment extends Fragment implements ChartView {
     private View view;
     private MaterialSpinner periodSp;
     private TextView dayTv;
-    private TextView amountCal;
+    private TextView amountCalTv;
     private LineChart lineChart;
 
     public static ChartFragment newInstance() {
@@ -61,7 +61,7 @@ public class ChartFragment extends Fragment implements ChartView {
 
 
         presenter.loadData(0);
-        amountCal.setText(presenter.getAmountCalories()+"");
+        amountCalTv.setText(presenter.getAmountCalories()+"");
 
 
         periodSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -78,7 +78,7 @@ public class ChartFragment extends Fragment implements ChartView {
         lineChart = (LineChart) view.findViewById(R.id.eat_chart);
         periodSp = (MaterialSpinner) view.findViewById(R.id.period_sp);
         dayTv = (TextView) view.findViewById(R.id.day_chart_tv);
-        amountCal = (TextView) view.findViewById(R.id.amount_calories_chart_tv);
+        amountCalTv = (TextView) view.findViewById(R.id.amount_calories_chart_tv);
     }
 
     private void configureChart(boolean enableLimitLine, float scaleX, float scaleY, float x, float y) {
@@ -133,7 +133,7 @@ public class ChartFragment extends Fragment implements ChartView {
     @Override
     public void setEntry(ArrayList<Entry> entriesChart, int period) {
         entries = entriesChart;
-        amountCal.setText(presenter.getAmountCalories()+"");
+        amountCalTv.setText(presenter.getAmountCalories()+"");
         dataSet = new LineDataSet(entries, "");
         if (period == 0) {
             ArrayList<String> labels = new ArrayList<>(); // list for week labels

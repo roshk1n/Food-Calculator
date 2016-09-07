@@ -56,12 +56,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
 
     private View view;
-    private TextView date_tv;
-    private TextView goal_calories_tv;
-    private TextView eat_daily_calories_tv;
-    private TextView remaining_calories_tv;
-    private ImageView follow_day_iv;
-    private ImageView next_day_iv;
+    private TextView dateTv;
+    private TextView goalCaloriesTv;
+    private TextView eatDailyCaloriesTv;
+    private TextView remainingCaloriesTv;
+    private ImageView followDayIv;
+    private ImageView nextDayIv;
     private View hintCircleAddFood;
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorLayout;
@@ -117,13 +117,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         mRecyclerView.setLayoutManager(mLayoutManager);
         diaryPresenter.loadDay();
         diaryPresenter.calculateCalories();
-        date_tv.setText(diaryPresenter.getDateString());
+        dateTv.setText(diaryPresenter.getDateString());
 
         addFoodFab.show();
 
-        follow_day_iv.setOnClickListener(this);
-        next_day_iv.setOnClickListener(this);
-        date_tv.setOnClickListener(this);
+        followDayIv.setOnClickListener(this);
+        nextDayIv.setOnClickListener(this);
+        dateTv.setOnClickListener(this);
         addFoodFab.setOnClickListener(this);
 
         simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -187,7 +187,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onClick(View v) {
-        if (v == follow_day_iv) {
+        if (v == followDayIv) {
             diaryPresenter.setFollowDate();
             Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
                     R.id.fragment_conteiner,
@@ -196,7 +196,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                     R.anim.slide_in_right_exit,
                     false);
 
-        } else if (v == next_day_iv) {
+        } else if (v == nextDayIv) {
                 diaryPresenter.setNextDate();
                 Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
                         R.id.fragment_conteiner,
@@ -205,7 +205,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                         R.anim.slide_in_left_exit,
                         false);
 
-        } else if (v == date_tv) {
+        } else if (v == dateTv) {
             showDatePicker();
 
         } else if (v == addFoodFab) {
@@ -247,14 +247,14 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void updateCalories(String eat, String remaining, int color) {
-        eat_daily_calories_tv.setText(eat);
-        remaining_calories_tv.setText(remaining);
-        remaining_calories_tv.setTextColor(color);
+        eatDailyCaloriesTv.setText(eat);
+        remainingCaloriesTv.setText(remaining);
+        remainingCaloriesTv.setTextColor(color);
     }
 
     @Override
     public void setGoalCalories(String goalCalories) {
-        goal_calories_tv.setText(goalCalories);
+        goalCaloriesTv.setText(goalCalories);
     }
 
     @Override
@@ -350,13 +350,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_meal);
-        date_tv = (TextView) view.findViewById(R.id.date_diary_tv);
+        dateTv = (TextView) view.findViewById(R.id.date_diary_tv);
         addFoodFab = (FloatingActionButton) getActivity().findViewById(R.id.addFood_fab);
-        goal_calories_tv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
-        eat_daily_calories_tv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
-        remaining_calories_tv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
-        follow_day_iv = (ImageView) view.findViewById(R.id.follow_day_iv);
-        next_day_iv = (ImageView) view.findViewById(R.id.next_day_iv);
+        goalCaloriesTv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
+        eatDailyCaloriesTv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
+        remainingCaloriesTv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
+        followDayIv = (ImageView) view.findViewById(R.id.follow_day_iv);
+        nextDayIv = (ImageView) view.findViewById(R.id.next_day_iv);
         hintCircleAddFood = getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);

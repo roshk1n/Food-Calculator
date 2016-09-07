@@ -1,16 +1,13 @@
 package com.example.roshk1n.foodcalculator;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.firebase.client.Firebase;
 import com.google.firebase.database.FirebaseDatabase;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 
 public class MyApplication extends Application {
 

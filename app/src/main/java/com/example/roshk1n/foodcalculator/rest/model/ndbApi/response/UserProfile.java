@@ -1,7 +1,5 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
-
 /**
  * Created by roshk1n on 8/12/2016.
  */

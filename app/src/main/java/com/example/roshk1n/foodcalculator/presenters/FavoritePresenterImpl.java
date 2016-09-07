@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.views.FavoriteView;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;

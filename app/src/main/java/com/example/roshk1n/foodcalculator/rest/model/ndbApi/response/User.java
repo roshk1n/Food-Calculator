@@ -1,9 +1,9 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-import com.example.roshk1n.foodcalculator.realm.DayRealm;
-import com.example.roshk1n.foodcalculator.realm.FoodRealm;
-import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
-import com.example.roshk1n.foodcalculator.realm.UserRealm;
+import com.example.roshk1n.foodcalculator.realmModel.DayRealm;
+import com.example.roshk1n.foodcalculator.realmModel.FoodRealm;
+import com.example.roshk1n.foodcalculator.realmModel.ReminderReaml;
+import com.example.roshk1n.foodcalculator.realmModel.UserRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.model.DayFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.ReminderFirebase;

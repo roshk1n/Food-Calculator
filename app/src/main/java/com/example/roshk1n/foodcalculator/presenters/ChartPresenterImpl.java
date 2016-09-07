@@ -2,7 +2,7 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.util.Log;
 
-import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.EntryEatChart;

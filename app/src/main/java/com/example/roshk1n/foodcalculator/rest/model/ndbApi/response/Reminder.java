@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
-import com.example.roshk1n.foodcalculator.realm.ReminderReaml;
+import com.example.roshk1n.foodcalculator.realmModel.ReminderReaml;
 import com.example.roshk1n.foodcalculator.remoteDB.model.ReminderFirebase;
 
 /**

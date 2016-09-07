@@ -27,10 +27,10 @@ public class SingUpActivity extends Activity implements SingUpView {
     private static final int MAKE_PHOTO = 1;
     private static final String TAG = "MyLog";
 
-    private EditText surname;
-    private EditText email;
-    private EditText password;
-    private EditText confirmPassword;
+    private EditText surnameEt;
+    private EditText emailEt;
+    private EditText passwordEt;
+    private EditText confirmPasswordEt;
     private TextView alreadyAccoutTv;
     private CircleImageView userIv;
     private ProgressDialog singUpProgress;
@@ -96,15 +96,15 @@ public class SingUpActivity extends Activity implements SingUpView {
         singUpProgress = ProgressDialog.show(this, "", "Wait please...");
         singUpProgress.setCanceledOnTouchOutside(false);
         singUpProgress.setCancelable(false);
-        singUpPresenter.singUp(surname.getText().toString(), email.getText().toString()
-                , password.getText().toString(), confirmPassword.getText().toString());
+        singUpPresenter.singUp(surnameEt.getText().toString(), emailEt.getText().toString()
+                , passwordEt.getText().toString(), confirmPasswordEt.getText().toString());
     }
 
     private void initUI() {
-        surname = (EditText) findViewById(R.id.edit_text_username);
-        email = (EditText) findViewById(R.id.edit_text_new_email);
-        password = (EditText) findViewById(R.id.edit_text_new_password);
-        confirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
+        surnameEt = (EditText) findViewById(R.id.edit_text_username);
+        emailEt = (EditText) findViewById(R.id.edit_text_new_email);
+        passwordEt = (EditText) findViewById(R.id.edit_text_new_password);
+        confirmPasswordEt = (EditText) findViewById(R.id.edit_text_confirm_password);
         userIv = (CircleImageView) findViewById(R.id.ivUser);
         alreadyAccoutTv = (TextView) findViewById(R.id.already_account_tv);
     }

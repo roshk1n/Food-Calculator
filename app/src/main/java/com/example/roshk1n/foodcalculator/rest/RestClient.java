@@ -9,9 +9,6 @@ import com.google.gson.GsonBuilder;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-/**
- * Created by roshk1n on 7/14/2016.
- */
 public class RestClient {
     private LoginService loginService;
     private NdbService ndbService;

@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
 import com.example.roshk1n.foodcalculator.interfaces.RetrofitCallback;
-import com.example.roshk1n.foodcalculator.RetrofitManager;
+import com.example.roshk1n.foodcalculator.manageres.RetrofitManager;
 import com.example.roshk1n.foodcalculator.views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 

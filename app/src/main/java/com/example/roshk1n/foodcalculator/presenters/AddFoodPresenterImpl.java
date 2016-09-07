@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
+import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.AddFoodView;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;

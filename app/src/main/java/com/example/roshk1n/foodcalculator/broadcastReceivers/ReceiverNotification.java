@@ -11,10 +11,8 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.roshk1n.foodcalculator.activities.LoginActivity;
-import com.example.roshk1n.foodcalculator.interfaces.LocalManagerCallback;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.activities.MainActivity;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.util.Calendar;

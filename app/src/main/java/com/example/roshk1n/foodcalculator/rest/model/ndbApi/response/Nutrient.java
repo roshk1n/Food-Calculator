@@ -3,7 +3,7 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.roshk1n.foodcalculator.realm.NutrientRealm;
+import com.example.roshk1n.foodcalculator.realmModel.NutrientRealm;
 import com.example.roshk1n.foodcalculator.remoteDB.model.NutrientFirebase;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;

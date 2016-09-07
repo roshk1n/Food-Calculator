@@ -1,6 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 

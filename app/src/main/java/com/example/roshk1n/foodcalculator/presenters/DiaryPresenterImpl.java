@@ -2,10 +2,9 @@ package com.example.roshk1n.foodcalculator.presenters;
 
 import android.graphics.Color;
 
-import com.example.roshk1n.foodcalculator.interfaces.DataDiaryCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
-import com.example.roshk1n.foodcalculator.DataManager;
-import com.example.roshk1n.foodcalculator.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
+import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 

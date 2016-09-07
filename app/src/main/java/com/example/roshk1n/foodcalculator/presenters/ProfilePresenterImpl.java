@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.example.roshk1n.foodcalculator.DataManager;
+import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
