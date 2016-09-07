@@ -39,7 +39,7 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
             this.callbackDiaryAdapter = callbackDiaryAdapter;
             nameFoodTv = (TextView) v.findViewById(R.id.t_view_food_name);
             valuePorTv = (TextView) v.findViewById(R.id.tv_value_por_diary);
-            amountCalTv = (TextView) v.findViewById(R.id.tv_amout_cal_diary);
+            amountCalTv = (TextView) v.findViewById(R.id.tv_amount_cal_diary);
             contentCv = (CardView) v.findViewById(R.id.item_diary_card_view);
         }
 

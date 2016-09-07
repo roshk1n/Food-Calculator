@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.RecyclerViewItemDecoration;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
@@ -115,6 +116,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+    //    mRecyclerView.addItemDecoration(new RecyclerViewItemDecoration(30,0));
         diaryPresenter.loadDay();
         diaryPresenter.calculateCalories();
         dateTv.setText(diaryPresenter.getDateString());

@@ -5,8 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="top"
     android:layout_marginBottom="1dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
@@ -17,7 +15,7 @@
         android:padding="15dp">
 
         <TextView
-            android:id="@+id/tv_amout_cal_diary"
+            android:id="@+id/tv_amount_cal_diary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -32,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:layout_marginRight="30dp"
-            android:layout_toLeftOf="@id/tv_amout_cal_diary"
+            android:layout_toLeftOf="@id/tv_amount_cal_diary"
             android:text="@string/Potato"
             android:textColor="@color/colorPrimaryText"
             android:textSize="17sp" />
