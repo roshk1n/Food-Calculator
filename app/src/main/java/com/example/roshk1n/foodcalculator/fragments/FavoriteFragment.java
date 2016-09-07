@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -68,7 +66,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favorite, container, false);
-
         initUI();
 
         if (mFragmentListener != null) {

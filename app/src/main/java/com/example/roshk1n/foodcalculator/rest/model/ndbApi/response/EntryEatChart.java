@@ -2,6 +2,7 @@ package com.example.roshk1n.foodcalculator.rest.model.ndbApi.response;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 public class EntryEatChart implements Comparable<EntryEatChart> {
     private int eatCalories;
@@ -33,7 +34,7 @@ public class EntryEatChart implements Comparable<EntryEatChart> {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
-    public int compareTo(EntryEatChart another) {
+    public int compareTo(@NonNull EntryEatChart another) {
         return Integer.compare(this.date, another.date);
     }
 }

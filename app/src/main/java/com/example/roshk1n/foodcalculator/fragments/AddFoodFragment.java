@@ -1,11 +1,11 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.AddFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -27,6 +28,7 @@ import java.io.IOException;
 public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener {
 
     private AddFoodPresenterImpl presenter;
+    private OnFragmentListener mFragmentListener;
     private Food food;
     private boolean isExistFavorite;
 
@@ -53,8 +55,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         return new AddFoodFragment();
     }
 
-    public AddFoodFragment() {
-    }
+    public AddFoodFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +68,11 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_food, container, false);
-
         initUI();
+
+        if(mFragmentListener != null) {
+            mFragmentListener.setTitle("Add Food");
+        }
 
         if (getArguments() != null) {
             food = getArguments().getParcelable("food");
@@ -89,12 +93,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
-                    try {
-                        presenter.updateUI(food, Integer.valueOf(s.toString()));
-
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    presenter.updateUI(food, Integer.valueOf(s.toString()));
                 }
             }
 
@@ -102,14 +101,26 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             public void afterTextChanged(Editable s) {
             }
         });
-
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentListener) {
+            mFragmentListener = (OnFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFragmentListener = null;
     }
 
     @Override
     public void navigateToDiary() {
         Utils.clearBackStack(getActivity().getSupportFragmentManager());
-
         Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
         Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
     }
@@ -179,6 +190,5 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
         addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_add_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Food");
     }
 }

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import com.example.roshk1n.foodcalculator.presenters.InfoFoodPresenterImpl;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnClickListener {
-
     private final static String FOOD_KEY = "food";
     private InfoFoodPresenterImpl presenter;
     private Food food;
@@ -142,6 +140,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_info_food);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
     }
+
     private void setNutrients() {
         nameFoodTv.setText(food.getName());
         caloriesFoodTv.setText(food.getNutrients().get(1).getValue());

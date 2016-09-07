@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -42,10 +41,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         DatePickerDialog.OnDateSetListener, View.OnClickListener {
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
-    private boolean checkUndo = true;
     private RecyclerView mRecyclerView;
     private RecyclerDiaryAdapter mAdapter;
     private OnFragmentListener mFragmentListener;
+    private boolean checkUndo = true;
+    private boolean checkDayRemote = false;
 
     private ItemTouchHelper itemTouchHelper;
     private View view;
@@ -95,7 +95,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
-
+        checkDayRemote = false;
         initUI();
 
         if (mFragmentListener != null) {
@@ -174,7 +174,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onClick(View v) {
         if (v == followDayIv) {
-
             if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
             } else {
@@ -298,11 +297,14 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void setDay(Day day) {
+        diaryPresenter.getGoalCalories();
+        if (checkDayRemote)
+            diaryPresenter.calculateCalories();
         this.day = day;
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
         mRecyclerView.setAdapter(mAdapter);
 
-        diaryPresenter.getGoalCalories();
+        checkDayRemote = true;
     }
 
     @Override

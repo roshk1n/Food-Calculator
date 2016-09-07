@@ -179,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp">
+              >
 
                 <ImageView
                     android:id="@+id/weight_ico_profile_iv"
@@ -212,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="17dp">
+               >
 
                 <ImageView
                     android:id="@+id/sex_ico_profile_iv"
@@ -226,7 +226,7 @@
                     android:id="@+id/sex_profile_sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+
                     android:entries="@array/sex"
                     android:textColor="@color/colorPrimaryText" />
             </LinearLayout>
@@ -234,7 +234,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+
                 android:orientation="horizontal">
 
                 <ImageView
@@ -255,5 +255,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </android.support.design.widget.CoordinatorLayout>

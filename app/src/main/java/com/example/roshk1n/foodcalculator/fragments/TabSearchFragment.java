@@ -1,6 +1,5 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -38,8 +36,7 @@ public class TabSearchFragment extends Fragment {
 
     private ViewPagerAdapter adapter;
 
-    public TabSearchFragment() {
-    }
+    public TabSearchFragment() {}
 
     public static TabSearchFragment newInstance() {
         return new TabSearchFragment();
@@ -63,27 +60,23 @@ public class TabSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tab_search, container, false);
-
         initUI();
-
-        if(mFragmentListener != null) {
-            mFragmentListener.hideToolbar();
-        }
 
         if (getArguments() != null) {
             date = getArguments().getLong("date");
         }
 
-
-
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
         Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbarSearchTab);
+        mToolbar.setTitle("Search");
 
-       mToolbar.setTitle("Search");
+        if(mFragmentListener != null) {
+            mFragmentListener.hideToolbar();
+            mFragmentListener.setSupportActionBar(mToolbar);
+        }
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(getContext(), R.drawable.arrow_back_white));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

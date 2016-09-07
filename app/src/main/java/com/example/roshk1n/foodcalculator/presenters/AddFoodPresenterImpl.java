@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
-
     private DataManager dataManager = new DataManager();
 
     private AddFoodView foodView;
@@ -34,7 +33,7 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         calendar.setTimeInMillis(food.getTime());
         int indexDay = LocalDataBaseManager.dayIsExist(calendar);
         LocalDataBaseManager.loadDayData(calendar); //TODO check if need
-        if(indexDay!=-1) {
+        if (indexDay != -1) {
             LocalDataBaseManager.addFood(food);
 
         } else {
@@ -46,34 +45,45 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     }
 
     @Override
-    public void updateUI(Food food, int numberOfServing) throws IOException, ClassNotFoundException {
+    public void updateUI(Food food, int numberOfServing) {
+        Food cloneFood = null;
+        try {
+            cloneFood = cloneFood(food);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (cloneFood != null) {
+            DecimalFormat format = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+            format.setDecimalSeparatorAlwaysShown(false);
+
+            for (int i = 0; i < food.getNutrients().size(); i++) {
+                if (isFloat(food.getNutrients().get(i).getValue())) {
+                    float value = Float.valueOf(food.getNutrients().get(i).getValue()) * numberOfServing;
+                    cloneFood.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
+                }
+            }
+
+            foodView.setNutrients(cloneFood.getNutrients().get(1).getValue()
+                    , cloneFood.getNutrients().get(2).getValue()
+                    , cloneFood.getNutrients().get(3).getValue()
+                    , cloneFood.getNutrients().get(4).getValue()
+                    , cloneFood.getName());
+        }
+    }
+
+    private Food cloneFood(Food food) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream  ous = new ObjectOutputStream(baos);
+        ObjectOutputStream ous = new ObjectOutputStream(baos);
         ous.writeObject(food);
 
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bais);
-        Food clonFood = (Food)ois.readObject();
-
-        DecimalFormat format = new DecimalFormat("#0.0",new DecimalFormatSymbols(Locale.US));
-        format.setDecimalSeparatorAlwaysShown(false);
-
-        for (int i = 0; i< food.getNutrients().size(); i++) {
-            if (isFloat(food.getNutrients().get(i).getValue())) {
-                float value = Float.valueOf(food.getNutrients().get(i).getValue()) * numberOfServing;
-                clonFood.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
-            }
-        }
-
-        foodView.setNutrients(clonFood.getNutrients().get(1).getValue()
-                ,clonFood.getNutrients().get(2).getValue()
-                ,clonFood.getNutrients().get(3).getValue()
-                ,clonFood.getNutrients().get(4).getValue()
-                ,clonFood.getName());
+        return (Food) ois.readObject();
     }
 
     @Override
-    public Food updateFood(Food foodForUpdate,String calories, String protein, String fat, String cabs, String name, String number) {
+    public Food updateFood(Food foodForUpdate, String calories, String protein, String fat, String cabs, String name, String number) {
 
         foodForUpdate.getNutrients().get(1).setValue(calories);
         foodForUpdate.getNutrients().get(2).setValue(protein);
@@ -114,7 +124,7 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         });
     }
 
-   private boolean isFloat(String str) {
+    private boolean isFloat(String str) {
         try {
             Float.parseFloat(str);
             return true;

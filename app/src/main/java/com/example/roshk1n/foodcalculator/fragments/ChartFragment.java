@@ -1,11 +1,9 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +53,6 @@ public class ChartFragment extends Fragment implements ChartView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_chart, container, false);
-
         initUI();
 
         if (mFragmentListener != null) {
@@ -92,6 +89,50 @@ public class ChartFragment extends Fragment implements ChartView {
     public void onDetach() {
         super.onDetach();
         mFragmentListener = null;
+    }
+
+    @Override
+    public void setEntry(ArrayList<Entry> entriesChart, int period) {
+        ArrayList<Entry> entries = entriesChart;
+        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
+        dataSet = new LineDataSet(entries, "");
+        if (period == 0) {
+            ArrayList<String> labels = new ArrayList<>(); // list for week labels
+            labels.add("Sun");
+            labels.add("Mon");
+            labels.add("Tue");
+            labels.add("Wed");
+            labels.add("Thu");
+            labels.add("Fri");
+            labels.add("Sat");
+            data = new LineData(labels, dataSet);
+            dayTv.setText("Days");
+            configureChart(true, 0, 0, 0, 0);
+
+        } else if (period == 1) {
+            ArrayList<String> labelsMonth = presenter.formatLabelsMonth();
+            data = new LineData(labelsMonth, dataSet);
+            dayTv.setText("Days");
+            configureChart(true, 5, 0, 0, 0);
+
+        } else if (period == 2) {
+            dayTv.setText("Months");
+            ArrayList<String> labelsMonth = new ArrayList<>(); // list for week labels
+            labelsMonth.add("Jan");
+            labelsMonth.add("Feb");
+            labelsMonth.add("Mar");
+            labelsMonth.add("Apr");
+            labelsMonth.add("May");
+            labelsMonth.add("Jun");
+            labelsMonth.add("Jul");
+            labelsMonth.add("Aug");
+            labelsMonth.add("Sept");
+            labelsMonth.add("Oct");
+            labelsMonth.add("Nov");
+            labelsMonth.add("Dec");
+            data = new LineData(labelsMonth, dataSet);
+            configureChart(false, 0, 0, 0, 0);
+        }
     }
 
     private void initUI() {
@@ -147,50 +188,6 @@ public class ChartFragment extends Fragment implements ChartView {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setYOffset(10f);
         lineChart.invalidate();
-    }
-
-    @Override
-    public void setEntry(ArrayList<Entry> entriesChart, int period) {
-        ArrayList<Entry> entries = entriesChart;
-        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
-        dataSet = new LineDataSet(entries, "");
-        if (period == 0) {
-            ArrayList<String> labels = new ArrayList<>(); // list for week labels
-            labels.add("Sun");
-            labels.add("Mon");
-            labels.add("Tue");
-            labels.add("Wed");
-            labels.add("Thu");
-            labels.add("Fri");
-            labels.add("Sat");
-            data = new LineData(labels, dataSet);
-            dayTv.setText("Days");
-            configureChart(true, 0, 0, 0, 0);
-
-        } else if (period == 1) {
-            ArrayList<String> labelsMonth = presenter.formatLabelsMonth();
-            data = new LineData(labelsMonth, dataSet);
-            dayTv.setText("Days");
-            configureChart(true, 5, 0, 0, 0);
-
-        } else if (period == 2) {
-            dayTv.setText("Months");
-            ArrayList<String> labelsMonth = new ArrayList<>(); // list for week labels
-            labelsMonth.add("Jan");
-            labelsMonth.add("Feb");
-            labelsMonth.add("Mar");
-            labelsMonth.add("Apr");
-            labelsMonth.add("May");
-            labelsMonth.add("Jun");
-            labelsMonth.add("Jul");
-            labelsMonth.add("Aug");
-            labelsMonth.add("Sept");
-            labelsMonth.add("Oct");
-            labelsMonth.add("Nov");
-            labelsMonth.add("Dec");
-            data = new LineData(labelsMonth, dataSet);
-            configureChart(false, 0, 0, 0, 0);
-        }
     }
 }
 

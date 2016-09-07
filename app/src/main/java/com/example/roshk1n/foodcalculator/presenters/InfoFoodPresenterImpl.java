@@ -6,6 +6,11 @@ import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -22,20 +27,29 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
     @Override
     public void addToFavorite(Food food) {
-        DecimalFormat format = new DecimalFormat("#0.0",new DecimalFormatSymbols(Locale.US));
-        format.setDecimalSeparatorAlwaysShown(false);
-
-        for (int i = 0; i < food.getNutrients().size(); i++) { // add to Favorite one portion
-            float value = Float.valueOf(food.getNutrients().get(i).getValue())/food.getPortion();
-            food.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
+        Food cloneFood = null;
+        try {
+            cloneFood = cloneFood(food);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        dataManager.addFavoriteFood(food, new StateItemCallback() {
-            @Override
-            public void updateImageFavorite(boolean state) {
-                infoFoodView.updateFavoriteImage(state);
+        if (cloneFood != null) {
+            DecimalFormat format = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+            format.setDecimalSeparatorAlwaysShown(false);
+
+            for (int i = 0; i < cloneFood.getNutrients().size(); i++) { // add to Favorite one portion
+                float value = Float.valueOf(cloneFood.getNutrients().get(i).getValue()) / cloneFood.getPortion();
+                cloneFood.getNutrients().get(i).setValue(String.valueOf(format.format(value)));
             }
-        });
+
+            dataManager.addFavoriteFood(cloneFood, new StateItemCallback() {
+                @Override
+                public void updateImageFavorite(boolean state) {
+                    infoFoodView.updateFavoriteImage(state);
+                }
+            });
+        }
     }
 
     @Override
@@ -59,4 +73,15 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
 
         //  infoFoodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
     }
+
+    private Food cloneFood(Food food) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream ous = new ObjectOutputStream(baos);
+        ous.writeObject(food);
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        return (Food) ois.readObject();
+    }
+
 }

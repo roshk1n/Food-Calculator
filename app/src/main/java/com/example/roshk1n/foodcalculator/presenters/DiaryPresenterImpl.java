@@ -120,7 +120,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     private int checkLimit(int remaining) {
-
         int checkLimit = 1;// if limit not reached
 
         if (remaining <= 300) checkLimit = 2; // if almost reach limit
