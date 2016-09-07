@@ -19,7 +19,6 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
-//TODO progress dialog
 public class LoginActivity extends Activity implements LoginView {
 
     private final static String TAG = LoginActivity.class.getSimpleName();
@@ -29,7 +28,6 @@ public class LoginActivity extends Activity implements LoginView {
     private EditText etPassword;
     private LoginButton btnLogInFacebook;
     private ProgressDialog loginProgress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

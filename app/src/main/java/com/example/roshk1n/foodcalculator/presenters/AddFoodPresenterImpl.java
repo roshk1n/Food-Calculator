@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddFoodPresenterImpl implements AddFoodPresenter {
 
@@ -53,7 +55,7 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         ObjectInputStream ois = new ObjectInputStream(bais);
         Food clonFood = (Food)ois.readObject();
 
-        DecimalFormat format = new DecimalFormat("#0.0");
+        DecimalFormat format = new DecimalFormat("#0.0",new DecimalFormatSymbols(Locale.US));
         format.setDecimalSeparatorAlwaysShown(false);
 
         for (int i = 0; i< food.getNutrients().size(); i++) {

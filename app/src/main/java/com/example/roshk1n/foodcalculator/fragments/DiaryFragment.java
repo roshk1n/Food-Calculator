@@ -1,5 +1,4 @@
 package com.example.roshk1n.foodcalculator.fragments;
-//TODO fix bag with snackbar is show change day
 //TODO need twice change day for see update remote
 
 import android.content.Context;
@@ -40,7 +39,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
-        DatePickerDialog.OnDateSetListener, View.OnClickListener{
+        DatePickerDialog.OnDateSetListener, View.OnClickListener {
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
     private boolean checkUndo = true;
@@ -49,7 +48,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private OnFragmentListener mFragmentListener;
 
     private ItemTouchHelper itemTouchHelper;
-
     private View view;
     private TextView dateTv;
     private TextView goalCaloriesTv;
@@ -58,6 +56,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private ImageView followDayIv;
     private ImageView nextDayIv;
     private View hintCircleAddFood;
+    private Snackbar snackbar;
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorLayout;
     private CoordinatorLayout HintAddFoodLayout;
@@ -99,7 +98,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         initUI();
 
-        if(mFragmentListener != null) {
+        if (mFragmentListener != null) {
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
         }
@@ -123,20 +122,20 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
-                Food removedFood = day.getFoods().remove(position);
-                mAdapter.notifyItemRemoved(position);
-                diaryPresenter.calculateCalories();
-                makeSnackBarAction(position, removedFood);
-            }
-        };
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        int position = viewHolder.getAdapterPosition();
+                        Food removedFood = day.getFoods().remove(position);
+                        mAdapter.notifyItemRemoved(position);
+                        diaryPresenter.calculateCalories();
+                        makeSnackBarAction(position, removedFood);
+                    }
+                };
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
@@ -174,15 +173,24 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onClick(View v) {
         if (v == followDayIv) {
-            diaryPresenter.setFollowDate();
-            Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
-                    R.id.fragment_conteiner,
-                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
-                    R.anim.slide_in_right_enter,
-                    R.anim.slide_in_right_exit,
-                    false);
+
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+            } else {
+                diaryPresenter.setFollowDate();
+                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                        R.id.fragment_conteiner,
+                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
+                        R.anim.slide_in_right_enter,
+                        R.anim.slide_in_right_exit,
+                        false);
+            }
 
         } else if (v == nextDayIv) {
+            if (snackbar != null && snackbar.isShown()) {
+                snackbar.dismiss();
+
+            } else {
                 diaryPresenter.setNextDate();
                 Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
                         R.id.fragment_conteiner,
@@ -190,6 +198,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                         R.anim.slide_in_left_enter,
                         R.anim.slide_in_left_exit,
                         false);
+            }
 
         } else if (v == dateTv) {
             showDatePicker();
@@ -220,9 +229,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Calendar date = Calendar.getInstance();
-        date.set(Calendar.MONTH,monthOfYear);
-        date.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-        date.set(Calendar.YEAR,year);
+        date.set(Calendar.MONTH, monthOfYear);
+        date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        date.set(Calendar.YEAR, year);
 
         Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
                 R.id.fragment_conteiner,
@@ -248,7 +257,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle(getString(R.string.title_limit));
 
-        if(checkLimit == 2) alertDialog.setMessage(getString(R.string.alert2,remaining));
+        if (checkLimit == 2) alertDialog.setMessage(getString(R.string.alert2, remaining));
 
         if (checkLimit == 3) alertDialog.setMessage(getString(R.string.alert3));
 
@@ -289,7 +298,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void setDay(Day day) {
         this.day = day;
-
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -298,39 +306,39 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showHintAddAnim() {
-            Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                    , R.anim.show_hint_add_food);
-            hintCircleAddFood.startAnimation(animation1);
-            HintAddFoodLayout.setVisibility(View.VISIBLE);
+        Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                , R.anim.show_hint_add_food);
+        hintCircleAddFood.startAnimation(animation1);
+        HintAddFoodLayout.setVisibility(View.VISIBLE);
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {
         checkUndo = true;
-        Snackbar snackbar = Snackbar
+        snackbar = Snackbar
                 .make(coordinatorLayout,
-                "Item was removed successfully.",
-                Snackbar.LENGTH_LONG)
+                        "Item was removed successfully.",
+                        Snackbar.LENGTH_LONG)
                 .setCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    diaryPresenter.removeFoodDB(position, removedFood.getTime());
-                }
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            diaryPresenter.removeFoodDB(position, removedFood.getTime());
+                        }
 
-            }
-        }).setAction("Undo", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkUndo) {
-                    day.getFoods().add(position, removedFood);
-                    mAdapter.notifyItemInserted(position);
-                    diaryPresenter.calculateCalories();
-                    itemTouchHelper.attachToRecyclerView(mRecyclerView);
-                    checkUndo = false;
-                }
-            }
-        }).setActionTextColor(Color.YELLOW);
+                    }
+                }).setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkUndo) {
+                            day.getFoods().add(position, removedFood);
+                            mAdapter.notifyItemInserted(position);
+                            diaryPresenter.calculateCalories();
+                            itemTouchHelper.attachToRecyclerView(mRecyclerView);
+                            checkUndo = false;
+                        }
+                    }
+                }).setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 

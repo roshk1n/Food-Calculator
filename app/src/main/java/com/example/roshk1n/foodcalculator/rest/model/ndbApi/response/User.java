@@ -39,10 +39,6 @@ public class User {
         setSex(userRealm.getSex());
         setActiveLevel(userRealm.getActiveLevel());
 
-        for (FoodRealm foodRealm : userRealm.getFavoriteList().getFoods()) {
-            favoriteFood.add(new Food(foodRealm));
-        }
-
         for (DayRealm dayRealm : userRealm.getDayRealms()) {
             days.add(new Day(dayRealm));
         }
