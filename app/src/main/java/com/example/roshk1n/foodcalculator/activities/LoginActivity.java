@@ -13,14 +13,12 @@ import android.widget.Toast;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.LoginView;
-import com.example.roshk1n.foodcalculator.manageres.FirebaseManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
 public class LoginActivity extends Activity implements LoginView {
-
     private final static String TAG = LoginActivity.class.getSimpleName();
 
     private LoginPresenterImpl loginPresenter;
@@ -34,13 +32,10 @@ public class LoginActivity extends Activity implements LoginView {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-
         initUI();
 
-        Log.d("onCreate","onCreate");
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
-
         loginPresenter.checkLogin();
 
         btnLogInFacebook.setReadPermissions(Arrays.asList(
@@ -48,25 +43,9 @@ public class LoginActivity extends Activity implements LoginView {
         btnLogInFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseManager.getInstance().removeListener();
-                loginPresenter.loginFacebookListner(btnLogInFacebook);
+                loginPresenter.loginFacebookListener(btnLogInFacebook);
             }
         });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(FirebaseManager.getInstance().getAuthListener() != null)
-            Log.d("LoginActivity", "remove OnStop listener");
-            FirebaseManager.getInstance().removeListener();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("LoginActivity", "OnStart add listener");
-        FirebaseManager.getInstance().addListener();
     }
 
     @Override
@@ -80,23 +59,18 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     public void setEmailError() {
-        FirebaseManager.getInstance().addListener();
-        Log.d(TAG, "setEmailError will hide loader");
         loginProgress.dismiss();
         emailEt.setError("Enter email please");
     }
 
     @Override
     public void setPasswordError() {
-        FirebaseManager.getInstance().addListener();
-        Log.d(TAG, "setPasswordError will hide loader");
         loginProgress.dismiss();
         etPassword.setError("Enter password please");
     }
 
     @Override
     public void navigateToHome() {
-        Log.d(TAG, "loginSuccess will hide loader");
         loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
@@ -105,8 +79,6 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     public void showToast(String message) {
-        FirebaseManager.getInstance().addListener();
-        Log.d(TAG, "showToastLogin will hide loader");
         loginProgress.dismiss();
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
@@ -116,18 +88,9 @@ public class LoginActivity extends Activity implements LoginView {
         return getApplicationContext();
     }
 
-    @Override
-    public void loginSuccessFacebook() {
-        Log.d("LoginActivity", "facebook success add listener");
-        FirebaseManager.getInstance().addListener();
-    }
-
     public void onLogIn(View view) {
-        FirebaseManager.getInstance().removeListener();
         loginProgress.setMessage("Wait please...");
-        Log.d(TAG, "onLogIn will show loader");
         loginProgress.show();
-//        loginPresenter.login(emailEt.getText().toString(), etPassword.getText().toString());
         loginPresenter.login("ee@gmail.com", "132132132");
     }
 

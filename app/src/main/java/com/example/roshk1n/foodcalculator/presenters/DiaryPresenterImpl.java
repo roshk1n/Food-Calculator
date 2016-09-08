@@ -7,6 +7,7 @@ import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -19,9 +20,9 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     public Calendar getDate() {
         Calendar dateNow = Calendar.getInstance();
-        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
-        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
-        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
+        date.set(Calendar.HOUR_OF_DAY, dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE, dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND, dateNow.get(Calendar.SECOND));
         return date;
     }
 
@@ -57,11 +58,11 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void setFollowDate() {
         Calendar dateNow = Calendar.getInstance();
-        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
-        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
-        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
+        date.set(Calendar.HOUR_OF_DAY, dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE, dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND, dateNow.get(Calendar.SECOND));
 
-        date.set(Calendar.DAY_OF_MONTH,date.get(Calendar.DAY_OF_MONTH)-1);
+        date.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH) - 1);
 /*        date.setHours(d.getHours());
         date.setMinutes(d.getMinutes());
         date.setSeconds(d.getSeconds());
@@ -71,11 +72,11 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     @Override
     public void setNextDate() {
         Calendar dateNow = Calendar.getInstance();
-        date.set(Calendar.HOUR_OF_DAY,dateNow.get(Calendar.HOUR_OF_DAY));
-        date.set(Calendar.MINUTE,dateNow.get(Calendar.MINUTE));
-        date.set(Calendar.SECOND,dateNow.get(Calendar.SECOND));
+        date.set(Calendar.HOUR_OF_DAY, dateNow.get(Calendar.HOUR_OF_DAY));
+        date.set(Calendar.MINUTE, dateNow.get(Calendar.MINUTE));
+        date.set(Calendar.SECOND, dateNow.get(Calendar.SECOND));
 
-        date.set(Calendar.DAY_OF_MONTH,date.get(Calendar.DAY_OF_MONTH)+1);
+        date.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH) + 1);
     }
 
     @Override
@@ -99,7 +100,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         int goalCalories = dataManager.loadGoalCalories();
 
         day.setRemainingCalories(goalCalories - eat_calories);
-
         dataManager.updateCalories(eat_calories, day.getRemainingCalories(), day.getDate());
 
         String remainingCalories = String.valueOf(day.getRemainingCalories());
@@ -107,7 +107,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         int checkLimit = checkLimit(day.getRemainingCalories());
         int color = getColor(checkLimit);
 
-        if (checkLimit != 1 && day.getEatDailyCalories() != 0) { //if need dialog for limit
+        if (checkLimit != 1 && day.getEatDailyCalories() != 0 && goalCalories != 0) { //if need dialog for limit
             diaryView.showDialog(remainingCalories, checkLimit);
         }
         diaryView.updateCalories(eatCalories, remainingCalories, color);

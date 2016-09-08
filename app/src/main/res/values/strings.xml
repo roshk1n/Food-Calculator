@@ -89,5 +89,6 @@
     <string name="chart">Chart</string>
     <string name="protein">Protein</string>
     <string name="_6_38g">6.38g</string>
+    <string name="no_favorite_foods">No favorite foods.</string>
 
 </resources>

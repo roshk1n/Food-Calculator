@@ -31,6 +31,14 @@ public class UserRealm extends RealmObject {
         this.photoUrl = photo;
     }
 
+    public UserRealm(String fullname, String email, String photoUrl, int age, String sex) {
+        this.fullname = fullname;
+        this.email = email;
+        this.photoUrl = photoUrl;
+        this.age = age;
+        this.sex = sex;
+    }
+
     public UserRealm(User user) {
         setEmail(user.getEmail());
         setFullname(user.getFullname());

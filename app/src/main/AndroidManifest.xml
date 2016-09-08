@@ -31,8 +31,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".activities.LoginActivity"
-            android:noHistory="true">
+            android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +52,6 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

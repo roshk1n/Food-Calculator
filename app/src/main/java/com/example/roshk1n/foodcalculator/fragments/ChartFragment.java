@@ -31,7 +31,6 @@ public class ChartFragment extends Fragment implements ChartView {
     private int userLimit;
 
     private OnFragmentListener mFragmentListener;
-
     private View view;
     private MaterialSpinner periodSp;
     private TextView dayTv;
@@ -62,10 +61,8 @@ public class ChartFragment extends Fragment implements ChartView {
         userLimit = presenter.getLimitCalories();
         periodSp.setItems("Week", "Month", "Year");
 
-
         presenter.loadData(0);
         amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
-
 
         periodSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
@@ -143,15 +140,12 @@ public class ChartFragment extends Fragment implements ChartView {
     }
 
     private void configureChart(boolean enableLimitLine, float scaleX, float scaleY, float x, float y) {
-        dataSet.setDrawCubic(true);
         dataSet.setDrawFilled(true);
         dataSet.setColor(getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
         dataSet.setFillColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataSet.setDrawFilled(true);
         dataSet.setValueTextSize(10);
-
 
         lineChart.setDescription("");
         lineChart.setGridBackgroundColor(getResources().getColor(R.color.mdtp_white));

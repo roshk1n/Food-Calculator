@@ -45,6 +45,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,14 +68,12 @@ public class FirebaseManager {
     private static FirebaseManager instance;
 
     private ArrayList<Day> listDay = new ArrayList<>();
-
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mFirebaseUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseCallback firebaseCallback;
-    private boolean flag = true;
 
     private FirebaseManager() {
     }
@@ -117,24 +116,12 @@ public class FirebaseManager {
         return mAuthListener;
     }
 
-    public void setAuthListener(FirebaseAuth.AuthStateListener mAuthListner) {
-        this.mAuthListener = mAuthListner;
-    }
-
     public FirebaseUser getFirebaseUser() {
         return mFirebaseUser;
     }
 
     public void setFirebaseUser(FirebaseUser mFirebaseUser) {
         this.mFirebaseUser = mFirebaseUser;
-    }
-
-    public void removeListener() {
-        mAuth.removeAuthStateListener(mAuthListener);
-    }
-
-    public void addListener() {
-        mAuth.addAuthStateListener(mAuthListener);
     }
 
     public void logInWithEmail(String email, final String password) {
@@ -147,7 +134,6 @@ public class FirebaseManager {
                     Session.getInstance().setEmail(getFirebaseUser().getEmail());
                     Session.getInstance().setFullname(getFirebaseUser().getDisplayName());
                     Session.getInstance().setUrlPhoto(String.valueOf(getFirebaseUser().getPhotoUrl()));
-                    Log.d("LoginActivity", "login success");
                     firebaseCallback.loginSuccessful();
 
                 } else {
@@ -267,18 +253,18 @@ public class FirebaseManager {
         return user;
     }
 
-    public void createProfileFacebook(final JSONObject object, final OnCompleteCallback callback) {
+    public void createProfileFacebook(final JSONObject object, final UserProfileCallback callback) {
         final User user = buildUserByJSON(object);
         final UserFirebase userFirebase = new UserFirebase(user);
         final DatabaseReference reference = database.getReference()
                 .child("users");
         reference.keepSynced(true);
+
         final DatabaseReference userRef = reference.child(getAuth().getCurrentUser().getUid());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean check = false;
-                Log.d("Myy", dataSnapshot.getChildrenCount() + "");
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (data.getKey().equals(getAuth().getCurrentUser().getUid())) {
                         check = true;
@@ -288,11 +274,11 @@ public class FirebaseManager {
                 if (!check) {
                     userRef.setValue(userFirebase);
                 }
-//                Session.startSession();
-//                Session.getInstance().setFullname(user.getFullname());
-//                Session.getInstance().setEmail(user.getEmail());
-//                Session.getInstance().setUrlPhoto(user.getPhotoUrl());
-                callback.success();
+                callback.loadProfileSuccess(user);
+                Session.startSession();
+                Session.getInstance().setEmail(user.getEmail());
+                Session.getInstance().setFullname(user.getFullname());
+                Session.getInstance().setUrlPhoto(user.getPhotoUrl());
             }
 
             @Override
@@ -300,13 +286,20 @@ public class FirebaseManager {
 
             }
         });
-
     }
 
     public void checkLogin(final LoginCallback callback) {
-        flag = true;
         setAuth(FirebaseAuth.getInstance());
-        setAuthListener(new FirebaseAuth.AuthStateListener() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            setFirebaseUser(getAuth().getCurrentUser());
+            Session.startSession();
+            Session.getInstance().setEmail(user.getEmail());
+            Session.getInstance().setFullname(user.getDisplayName());
+            Session.getInstance().setUrlPhoto(String.valueOf(user.getPhotoUrl()));
+            callback.loginSuccess();
+        }
+ /*       setAuthListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -320,7 +313,7 @@ public class FirebaseManager {
                     flag = false;
                 }
             }
-        });
+        });*/
     }
 
     public void uploadImage(Bitmap image, String email, final ResponseListenerUpload upload) {
@@ -548,7 +541,6 @@ public class FirebaseManager {
         });
     }
 
-
     public void loginFacebook(AccessToken access, final CreateUserFirebaseCallback callback) {
         AuthCredential credential = FacebookAuthProvider.getCredential(access.getToken());
         mAuth.signInWithCredential(credential)
@@ -578,9 +570,9 @@ public class FirebaseManager {
                     Day day = new Day();
                     String[] s = oneDay.getKey().split("_");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.YEAR,Integer.valueOf(s[0]));
-                    calendar.set(Calendar.MONTH,Integer.valueOf(s[1]));
-                    calendar.set(Calendar.DAY_OF_MONTH,Integer.valueOf(s[2]));
+                    calendar.set(Calendar.YEAR, Integer.valueOf(s[0]));
+                    calendar.set(Calendar.MONTH, Integer.valueOf(s[1]));
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(s[2]));
                     day.setDate(calendar.getTime().getTime());
                     day.setEatDailyCalories(Integer.valueOf(oneDay.child(EAT_CALORIES).getValue().toString()));
                     day.setRemainingCalories(Integer.valueOf(oneDay.child(REMAINING_CALORIES).getValue().toString()));
@@ -599,19 +591,30 @@ public class FirebaseManager {
         });
     }
 
-    public void updateCalories(int eat_calories, int remainingCalories, long date) {
+    public void updateCalories(final int eat_calories, final int remainingCalories, long date) {
         Calendar dateFood = Calendar.getInstance();
         dateFood.setTimeInMillis(date);
         DatabaseReference reference = database.getReference(USERS_CHILD);
-        reference.child(getAuth().getCurrentUser().getUid())
+        final DatabaseReference refDay = reference.child(getAuth().getCurrentUser().getUid())
                 .child(DAYS_CHILD)
-                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
-                .child(EAT_CALORIES).setValue(eat_calories+"");
+                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH));
+        refDay.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    refDay.child(EAT_CALORIES).setValue(eat_calories + "");
+                    refDay.child(REMAINING_CALORIES).setValue(remainingCalories + "");
+                    if (dataSnapshot.getChildrenCount() == 2) {
+                        refDay.setValue(null);
+                    }
+                }
+            }
 
-        reference.child(getAuth().getCurrentUser().getUid())
-                .child(DAYS_CHILD)
-                .child(dateFood.get(Calendar.YEAR) + "_" + dateFood.get(Calendar.MONTH) + "_" + dateFood.get(Calendar.DAY_OF_MONTH))
-                .child(REMAINING_CALORIES).setValue(remainingCalories+"");
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 

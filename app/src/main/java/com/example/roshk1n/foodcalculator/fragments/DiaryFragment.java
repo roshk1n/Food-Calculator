@@ -303,7 +303,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         this.day = day;
         mAdapter = new RecyclerDiaryAdapter(day.getFoods(), this);
         mRecyclerView.setAdapter(mAdapter);
-
         checkDayRemote = true;
     }
 

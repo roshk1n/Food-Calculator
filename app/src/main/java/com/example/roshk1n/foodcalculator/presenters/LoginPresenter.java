@@ -9,7 +9,7 @@ public interface LoginPresenter {
 
     void checkLogin();
 
-    void loginFacebookListner(LoginButton loginButton);
+    void loginFacebookListener(LoginButton loginButton);
 
     void login(String email, String password);
 

@@ -93,50 +93,6 @@ public class LocalDataBaseManager {
         });
     }
 
-/*    public static ArrayList<Food> loadFavoriteFood() {
-        if (getCurrentUserRealm().getFavoriteList() != null) {
-            favoriteListRealm = getCurrentUserRealm().getFavoriteList();
-        }
-
-        ArrayList<Food> favoriteList = new ArrayList<>(); //convert to base model
-        for (FoodRealm foodRealm : favoriteListRealm.getFoods()) {
-            favoriteList.add(new Food(foodRealm));
-        }
-        return favoriteList;
-    }
-
-    public static void addFavoriteFood(final Food food) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().getFavoriteList().getFoods().add(new FoodRealm(food));
-            }
-        });
-    }
-
-    public static void removeFavoriteFoodDB(final int position) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                favoriteListRealm.getFoods().get(position).deleteFromRealm();
-            }
-        });
-    }
-
-    public static void removeFavoriteFoodDB(String ndbno) {
-        for (int i = 0; i < getCurrentUserRealm().getFavoriteList().getFoods().size(); i++) {
-            if (ndbno.equals(getCurrentUserRealm().getFavoriteList().getFoods().get(i).getNdbno())) {
-                final int finalI = i;
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        getCurrentUserRealm().getFavoriteList().getFoods().remove(finalI);
-                    }
-                });
-            }
-        }
-    }*/
-
     public static int loadGoalCalories() {
         return getCurrentUserRealm().getGoalCalories();
     }
@@ -152,10 +108,6 @@ public class LocalDataBaseManager {
             }
         });
     }
-/*
-    public static boolean isExistInFavotite(Food food) {
-        return new FoodRealm(food).isExistIn(getCurrentUserRealm().getFavoriteList().getFoods());
-    }*/
 
     public ArrayList<Reminder> loadReminders() {
         remindersRealm = getCurrentUserRealm().getReminders();
@@ -266,6 +218,24 @@ public class LocalDataBaseManager {
         callback.success();
     }
 
+    public static void checkFacebookLocalUser(User user, OnCompleteCallback callback) {
+        UserRealm userRealm = realm.where(UserRealm.class)
+                .equalTo("email", user.getEmail())
+                .findFirst();
+        if (userRealm == null) {
+            final UserRealm userR = new UserRealm(user.getFullname(),user.getEmail(), user.getPhotoUrl(),
+                    user.getAge(),user.getSex());
+
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealm(userR);
+                }
+            });
+        }
+        callback.success();
+    }
+
     public static void addLocalUserImage(final String image) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -285,19 +255,11 @@ public class LocalDataBaseManager {
         Calendar userDayDate = Calendar.getInstance();
         userDayDate.setTimeInMillis(UserDate);
         return (userDayDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                && userDayDate.get(Calendar.YEAR)== date.get(Calendar.YEAR)
-                && userDayDate.get(Calendar.MONTH)== date.get(Calendar.MONTH));
+                && userDayDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                && userDayDate.get(Calendar.MONTH) == date.get(Calendar.MONTH));
     }
 
     public static String getLocalUserImage() {
         return getCurrentUserRealm().getPhotoUrl();
     }
-
-/*    public static ArrayList<Day> loadDataForChart() {
-        ArrayList<Day> listDay = new ArrayList<>();
-        for (DayRealm day : getCurrentUserRealm().getDayRealms()) {
-            listDay.add(new Day(day));
-        }
-        return listDay;
-    }*/
 }

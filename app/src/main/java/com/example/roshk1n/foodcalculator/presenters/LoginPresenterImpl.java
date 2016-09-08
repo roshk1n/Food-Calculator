@@ -43,7 +43,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     }
 
     @Override
-    public void loginFacebookListner(LoginButton loginButton) {
+    public void loginFacebookListener(LoginButton loginButton) {
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -56,7 +56,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                                 dataManager.loginFacebook(loginResult.getAccessToken(),object, new OnCompleteCallback() {
                                     @Override
                                     public void success() {
-                                        loginVew.loginSuccessFacebook();
+                                        loginVew.navigateToHome();
                                     }
                                 });
                             }

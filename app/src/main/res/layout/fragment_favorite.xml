@@ -16,5 +16,29 @@
             android:layout_height="match_parent"
             android:splitMotionEvents="true"/>
 
+        <LinearLayout
+            android:id="@+id/no_favorite_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_favorite_second_24dp"
+                />
+            <TextView
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondaryText"
+                android:text="@string/no_favorite_foods"
+                />
+        </LinearLayout>
+
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

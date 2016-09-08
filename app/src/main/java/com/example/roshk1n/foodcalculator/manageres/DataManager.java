@@ -204,7 +204,12 @@ public class DataManager implements FirebaseCallback {
         firebaseManager.loginFacebook(access, new CreateUserFirebaseCallback() {
             @Override
             public void createSuccess() {
-                firebaseManager.createProfileFacebook(object,callback);
+                firebaseManager.createProfileFacebook(object, new UserProfileCallback() {
+                    @Override
+                    public void loadProfileSuccess(User user) {
+                        LocalDataBaseManager.checkFacebookLocalUser(user,callback);
+                    }
+                });
             }
 
             @Override

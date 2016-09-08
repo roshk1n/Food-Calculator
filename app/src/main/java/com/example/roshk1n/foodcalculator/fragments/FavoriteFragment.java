@@ -14,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAddAdapter;
@@ -33,6 +34,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     private OnFragmentListener mFragmentListener;
     private RecyclerView mRecyclerView;
     private RecyclerFavoriteAdapter mAdapter;
+    private LinearLayout noItemLayout;
     private boolean addOrInfo = false;
     private long date;
 
@@ -50,7 +52,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         FavoriteFragment favoriteFragment = new FavoriteFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("check", addOrInfo);
-        bundle.putLong("date",date);
+        bundle.putLong("date", date);
         favoriteFragment.setArguments(bundle);
         return favoriteFragment;
     }
@@ -66,8 +68,8 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favorite, container, false);
-        initUI();
 
+        initUI();
         if (mFragmentListener != null) {
             mFragmentListener.setTitle("Favorite");
             mFragmentListener.setDrawerMenu();
@@ -126,12 +128,16 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     @Override
     public void setFavoriteList(ArrayList<Food> favFoods) {
         favoriteList = favFoods;
-        if (!addOrInfo) {
-            mAdapter = new RecyclerFavoriteAdapter(favoriteList, this);
-            mRecyclerView.setAdapter(mAdapter);
+        if (favoriteList.size() != 0) {
+            if (!addOrInfo) {
+                mAdapter = new RecyclerFavoriteAdapter(favoriteList, this);
+                mRecyclerView.setAdapter(mAdapter);
+            } else {
+                RecyclerFavoriteAddAdapter mAddAdapter = new RecyclerFavoriteAddAdapter(favoriteList, this);
+                mRecyclerView.setAdapter(mAddAdapter);
+            }
         } else {
-            RecyclerFavoriteAddAdapter mAddAdapter = new RecyclerFavoriteAddAdapter(favoriteList, this);
-            mRecyclerView.setAdapter(mAddAdapter);
+            noItemLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -160,6 +166,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
         favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
+        noItemLayout = (LinearLayout) view.findViewById(R.id.no_favorite_container);
     }
 
     @Override
