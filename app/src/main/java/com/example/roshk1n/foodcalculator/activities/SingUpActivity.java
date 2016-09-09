@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,11 +18,12 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.SingUpPresenterImpl;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.example.roshk1n.foodcalculator.views.SingUpView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SingUpActivity extends Activity implements SingUpView {
+public class SingUpActivity extends Activity implements SingUpView, View.OnFocusChangeListener {
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
@@ -43,6 +45,11 @@ public class SingUpActivity extends Activity implements SingUpView {
         setContentView(R.layout.activity_sing_up);
 
         initUI();
+
+        surnameEt.setOnFocusChangeListener(this);
+        emailEt.setOnFocusChangeListener(this);
+        passwordEt.setOnFocusChangeListener(this);
+        confirmPasswordEt.setOnFocusChangeListener(this);
 
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
@@ -92,8 +99,13 @@ public class SingUpActivity extends Activity implements SingUpView {
         Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
     public void onSignUpClicked(View view) {
-        singUpProgress = ProgressDialog.show(this, "", "Wait please...");
+        singUpProgress = ProgressDialog.show(this, "", getString(R.string.wait_please));
         singUpProgress.setCanceledOnTouchOutside(false);
         singUpProgress.setCancelable(false);
         singUpPresenter.singUp(surnameEt.getText().toString(), emailEt.getText().toString()
@@ -111,7 +123,7 @@ public class SingUpActivity extends Activity implements SingUpView {
 
     public void onChoosePhoto(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Photo")
+        builder.setTitle(R.string.photo)
                 .setItems(R.array.photo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -122,7 +134,7 @@ public class SingUpActivity extends Activity implements SingUpView {
                                     , android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             pickIntent.setType("image/*");
 
-                            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                            Intent chooserIntent = Intent.createChooser(getIntent, getString(R.string.select_image));
                             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
                             startActivityForResult(chooserIntent, PICK_PHOTO_FOR_AVATAR);
@@ -134,5 +146,11 @@ public class SingUpActivity extends Activity implements SingUpView {
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus)
+            Utils.hideKeyboard(getApplicationContext(), v);
     }
 }

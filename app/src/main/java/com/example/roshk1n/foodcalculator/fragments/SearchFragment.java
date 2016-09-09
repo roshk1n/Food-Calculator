@@ -28,6 +28,8 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment implements SearchView, CallbackSearchAdapter {
+    private final static String DATE_KEY = "date";
+    private final static String QUERY_KEY = "query";
 
     private SearchPresenterImpl searchPresenter;
     private RecyclerView mRecyclerView;
@@ -49,8 +51,8 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     public static SearchFragment newInstance(long date, String query) {
         SearchFragment searchFragment = new SearchFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("date", date);
-        bundle.putString("query", query);
+        bundle.putLong(DATE_KEY, date);
+        bundle.putString(QUERY_KEY, query);
         searchFragment.setArguments(bundle);
         return searchFragment;
     }
@@ -72,14 +74,14 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         initUI();
 
         if(mFragmentListener != null) {
-            mFragmentListener.setTitle("Search");
+            mFragmentListener.setTitle(getString(R.string.search));
             mFragmentListener.setArrowToolbar();
             mFragmentListener.disabledMenuSwipe();
         }
 
         if(getArguments() != null) {
-            mdate = getArguments().getLong("date");
-            querySearch = getArguments().getString("query");
+            mdate = getArguments().getLong(DATE_KEY);
+            querySearch = getArguments().getString(QUERY_KEY);
         }
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -89,10 +91,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         mRecyclerView.setAdapter(mAdapter);
 
         if(querySearch != null) {
-            Log.d("Myy",querySearch);
             foods.clear();
             mAdapter.notifyDataSetChanged();
-            searchProgress.setMessage("Wait please...");
+            searchProgress.setMessage(getString(R.string.wait_please));
             searchProgress.show();
             searchPresenter.searchFood(querySearch);
             Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());

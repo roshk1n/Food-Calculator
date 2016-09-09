@@ -3,13 +3,13 @@
     <string name="log_in">Log In</string>
     <string name="or">OR</string>
     <string name="password">Password</string>
-    <string name="facebook_app_id">724657607672906</string>
+    <string name="facebook_app_id" translatable="false">724657607672906</string>
     <string name="sing_up"><u>Sing up</u></string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <string name="diary">Diary</string>
     <string name="my_favorites">My Favorites</string>
@@ -17,36 +17,36 @@
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
     <string name="breakfast">Breakfast</string>
-    <string name="Potato">Картопля</string>
-    <string name="_247">247</string>
-    <string name="username">UserName</string>
+    <string name="Potato" translatable="false">Картопля</string>
+    <string name="_247" translatable="false">247</string>
+    <string name="username" translatable="false">UserName</string>
     <string name="_100_g">100 g,</string>
-    <string name="_08_45">08:45</string>
-    <string name="milk_dessert">Milk dessert</string>
+    <string name="_08_45" translatable="false">08:45</string>
+    <string name="milk_dessert" translatable="false">Milk dessert</string>
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
     <string name="_320_cal">320 cal</string>
-    <string name="date">date</string>
+    <string name="date" translatable="false">date</string>
     <string name="serving_size">Serving size:</string>
     <string name="add_a_new_food_for_your_day">Add a new food for your day.</string>
-    <string name="_100">100</string>
+    <string name="_100" translatable="false">100</string>
     <string name="add_food">Add Food</string>
     <string name="g">g.</string>
     <string name="age">Age</string>
     <string name="number_of_servings">Number of Servings:</string>
-    <string name="_1">1</string>
+    <string name="_1" translatable="false">1</string>
     <string name="goal">Goal</string>
     <string name="food">Food</string>
-    <string name="_0">0</string>
+    <string name="_0" translatable="false">0</string>
     <string name="remaining">Remaining</string>
     <string name="height">Height</string>
-    <string name="slide">-</string>
-    <string name="_1_0">1,0</string>
+    <string name="slide" translatable="false">-</string>
+    <string name="_1_0" translatable="false">1,0</string>
     <string name="sign_up_now">Sign up Now</string>
     <string name="carbs_g">Carbs (g)</string>
     <string name="weight">Weight</string>
-    <string name="_17_0">17,0</string>
-    <string name="equals">=</string>
+    <string name="_17_0" translatable="false">17,0</string>
+    <string name="equals" translatable="false">=</string>
     <string name="fat_g">Fat (g)</string>
     <string name="protein_g">Protein (g)</string>
     <string name="calories">Calories</string>
@@ -54,7 +54,7 @@
     <string name="alert2">     You almost reached the limit today.\n     You have %1$s calories.</string>
     <string name="alert3">     You reached the limit today.\n     Recommend will not eat today :(</string>
     <string name="alert4">     You exceeded the limit greatly today!"</string>
-    <string name="title_limit">Limit of calories</string>
+    <string name="title_limit" translatable="false">Limit of calories</string>
 
     <array name="photo">
         <item>Choose from Gallery</item>
@@ -78,7 +78,7 @@
     <string name="search">Search</string>
     <string name="days">Days</string>
     <string name="amount_calories">Amount calories:</string>
-    <string name="_2500">2500</string>
+    <string name="_2500" translatable="false">2500</string>
     <string name="reset_password"><u>reset password</u></string>
     <string name="reset_password1">Reset password</string>
     <string name="enter_your_email">Enter your email</string>
@@ -90,5 +90,52 @@
     <string name="protein">Protein</string>
     <string name="_6_38g">6.38g</string>
     <string name="no_favorite_foods">No favorite foods.</string>
+    <string name="wait_please">Wait please...</string>
+    <string name="error_email">Enter email please</string>
+    <string name="error_password">Enter password please</string>
+    <string name="email_incorrect">Your email is incorrect.</string>
+    <string name="photo">Photo</string>
+    <string name="select_image">Select Image</string>
+    <string name="add_food_success">Food added successfully.</string>
+    <string name="add_food_favorite">Adding a food to favorites...</string>
+    <string name="delete_food_favorite">Deleting a food from favorites...</string>
+    <string name="error_number_sevings">Enter number of servings please.</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="sunday">Sun</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="months">Months</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sept">Sept</string>
+    <string name="Oct">Oct</string>
+    <string name="Nov">Nov</string>
+    <string name="Dec">Dec</string>
+    <string name="limit">Limit</string>
+    <string name="item_was_removed">Item was removed successfully.</string>
+    <string name="undo">Undo</string>
+    <string name="ok">OK</string>
+    <string name="favorites">Favorite</string>
+    <string name="info_food">Info Food</string>
+    <string name="turn_edit_mode">First, turn on editing mode.</string>
+    <string name="need_connection_update">You need internet connection for update profile.</string>
+    <string name="user_saved">User data saved successfully.</string>
+    <string name="remember_enter_field">Remember, enter all fields.</string>
+    <string name="all">All</string>
+    <string name="enter_all_field">Enter all fields, please !</string>
+    <string name="password_dont_match">Password and confirm password don`t match.</string>
+    <string name="password_short">Your password must be at least 6 characters long.</string>
 
 </resources>

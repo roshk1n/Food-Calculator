@@ -69,7 +69,7 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         initUI();
 
         if(mFragmentListener != null) {
-            mFragmentListener.setTitle("Info Food");
+            mFragmentListener.setTitle(getString(R.string.info_food));
             mFragmentListener.setArrowToolbar();
             mFragmentListener.disabledMenuSwipe();
         }
@@ -109,11 +109,11 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
             if (!isExistFavorite) {
                 favoritesIv.setClickable(false);
                 presenter.addToFavorite(food);
-                Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getString(R.string.add_food_favorite), Snackbar.LENGTH_SHORT).show();
             } else {
                 favoritesIv.setClickable(false);
                 presenter.removeFromFavorite(food.getNdbno());
-                Snackbar.make(coordinatorLayout, "Deleting a food from favorites...", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, getString(R.string.delete_food_favorite), Snackbar.LENGTH_SHORT).show();
             }
         }
     }

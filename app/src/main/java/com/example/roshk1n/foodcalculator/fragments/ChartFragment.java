@@ -55,11 +55,11 @@ public class ChartFragment extends Fragment implements ChartView {
         initUI();
 
         if (mFragmentListener != null) {
-            mFragmentListener.setTitle("Chart");
+            mFragmentListener.setTitle(getString(R.string.chart));
         }
 
         userLimit = presenter.getLimitCalories();
-        periodSp.setItems("Week", "Month", "Year");
+        periodSp.setItems(getString(R.string.week), getString(R.string.month), getString(R.string.year));
 
         presenter.loadData(0);
         amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
@@ -95,38 +95,38 @@ public class ChartFragment extends Fragment implements ChartView {
         dataSet = new LineDataSet(entries, "");
         if (period == 0) {
             ArrayList<String> labels = new ArrayList<>(); // list for week labels
-            labels.add("Sun");
-            labels.add("Mon");
-            labels.add("Tue");
-            labels.add("Wed");
-            labels.add("Thu");
-            labels.add("Fri");
-            labels.add("Sat");
+            labels.add(getString(R.string.sunday));
+            labels.add(getString(R.string.monday));
+            labels.add(getString(R.string.tuesday));
+            labels.add(getString(R.string.wednesday));
+            labels.add(getString(R.string.thursday));
+            labels.add(getString(R.string.friday));
+            labels.add(getString(R.string.saturday));
             data = new LineData(labels, dataSet);
-            dayTv.setText("Days");
+            dayTv.setText(getString(R.string.days));
             configureChart(true, 0, 0, 0, 0);
 
         } else if (period == 1) {
             ArrayList<String> labelsMonth = presenter.formatLabelsMonth();
             data = new LineData(labelsMonth, dataSet);
-            dayTv.setText("Days");
+            dayTv.setText(getString(R.string.days));
             configureChart(true, 5, 0, 0, 0);
 
         } else if (period == 2) {
-            dayTv.setText("Months");
+            dayTv.setText(R.string.months);
             ArrayList<String> labelsMonth = new ArrayList<>(); // list for week labels
-            labelsMonth.add("Jan");
-            labelsMonth.add("Feb");
-            labelsMonth.add("Mar");
-            labelsMonth.add("Apr");
-            labelsMonth.add("May");
-            labelsMonth.add("Jun");
-            labelsMonth.add("Jul");
-            labelsMonth.add("Aug");
-            labelsMonth.add("Sept");
-            labelsMonth.add("Oct");
-            labelsMonth.add("Nov");
-            labelsMonth.add("Dec");
+            labelsMonth.add(getString(R.string.jan));
+            labelsMonth.add(getString(R.string.feb));
+            labelsMonth.add(getString(R.string.mar));
+            labelsMonth.add(getString(R.string.apr));
+            labelsMonth.add(getString(R.string.may));
+            labelsMonth.add(getString(R.string.jun));
+            labelsMonth.add(getString(R.string.jul));
+            labelsMonth.add(getString(R.string.aug));
+            labelsMonth.add(getString(R.string.sept));
+            labelsMonth.add(getString(R.string.Oct));
+            labelsMonth.add(getString(R.string.Nov));
+            labelsMonth.add(getString(R.string.Dec));
             data = new LineData(labelsMonth, dataSet);
             configureChart(false, 0, 0, 0, 0);
         }
@@ -154,7 +154,7 @@ public class ChartFragment extends Fragment implements ChartView {
         lineChart.setData(data);
         lineChart.zoom(scaleX, scaleY, x, y);
 
-        LimitLine ll1 = new LimitLine(userLimit, "Limit");
+        LimitLine ll1 = new LimitLine(userLimit, getString(R.string.limit));
         ll1.setLineWidth(2f);
         ll1.enableDashedLine(20f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);

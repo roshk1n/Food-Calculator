@@ -238,12 +238,13 @@ public class MainActivity extends AppCompatActivity
             }
     }
 
-
     @Override
     public void updateDrawerLight() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
-        Bitmap imageUser = presenter.getLocalImage();
-        icoUserDrawerIv.setImageBitmap(imageUser);
+        Glide
+                .with(getApplicationContext())
+                .load(Session.getInstance().getUrlPhoto())
+                .into(icoUserDrawerIv);
     }
 
     @Override
@@ -282,6 +283,6 @@ public class MainActivity extends AppCompatActivity
         fullNameDrawerTv = (TextView) mHeader.findViewById(R.id.tvNameDrawer);
         addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
-        mToolbar.setTitle("Diary");
+        mToolbar.setTitle(getString(R.string.diary));
     }
 }

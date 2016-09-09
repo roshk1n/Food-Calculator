@@ -10,9 +10,10 @@ import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.ResetPasswordPresenterImpl;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.example.roshk1n.foodcalculator.views.ResetPasswordView;
 
-public class ResetPasswordActivity extends AppCompatActivity implements ResetPasswordView {
+public class ResetPasswordActivity extends AppCompatActivity implements ResetPasswordView, View.OnFocusChangeListener {
     private Button resetPasswordBtn;
     private EditText emailEt;
     private TextView backLoginTv;
@@ -26,6 +27,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
 
         presenter = new ResetPasswordPresenterImpl();
         presenter.setView(this);
+
+        emailEt.setOnFocusChangeListener(this);
 
         resetPasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +51,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
 
     @Override
     public void errorEmail() {
-        emailEt.setError("Your email is incorrect.");
+        emailEt.setError(getString(R.string.email_incorrect));
     }
 
     private void initUI() {
@@ -56,5 +59,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
         resetPasswordBtn = (Button) findViewById(R.id.reset_password_btn);
         emailEt = (EditText) findViewById(R.id.email_reset_password_et);
         backLoginTv = (TextView) findViewById(R.id.back_login_tv);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus)
+            Utils.hideKeyboard(getApplicationContext(), v);
     }
 }

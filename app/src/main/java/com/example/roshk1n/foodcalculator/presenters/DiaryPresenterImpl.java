@@ -63,10 +63,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         date.set(Calendar.SECOND, dateNow.get(Calendar.SECOND));
 
         date.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH) - 1);
-/*        date.setHours(d.getHours());
-        date.setMinutes(d.getMinutes());
-        date.setSeconds(d.getSeconds());
-        date.setDate(date.getDate() - 1);*/
     }
 
     @Override

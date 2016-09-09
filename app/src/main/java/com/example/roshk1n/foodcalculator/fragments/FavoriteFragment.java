@@ -29,6 +29,8 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment implements FavoriteView, CallbackFavoriteAdapter {
+    private static final String DATE_KEY = "date";
+    private static final String CHECK_KEY = "check";
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
     private OnFragmentListener mFragmentListener;
@@ -51,8 +53,8 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     public static Fragment newInstance(long date, boolean addOrInfo) {
         FavoriteFragment favoriteFragment = new FavoriteFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("check", addOrInfo);
-        bundle.putLong("date", date);
+        bundle.putBoolean(CHECK_KEY, addOrInfo);
+        bundle.putLong(DATE_KEY, date);
         favoriteFragment.setArguments(bundle);
         return favoriteFragment;
     }
@@ -71,14 +73,14 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
         initUI();
         if (mFragmentListener != null) {
-            mFragmentListener.setTitle("Favorite");
+            mFragmentListener.setTitle(getString(R.string.favorites));
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
         }
 
         if (getArguments() != null) {
-            addOrInfo = getArguments().getBoolean("check");
-            date = getArguments().getLong("date");
+            addOrInfo = getArguments().getBoolean(CHECK_KEY);
+            date = getArguments().getLong(DATE_KEY);
         }
 
         favoritePresenter.getFavoriteList();
@@ -121,11 +123,6 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
     }
 
     @Override
-    public void makeSnackBar(String text) {
-        Snackbar.make(favoriteCoordinatorLayout, text, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void setFavoriteList(ArrayList<Food> favFoods) {
         favoriteList = favFoods;
         if (favoriteList.size() != 0) {
@@ -143,7 +140,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
     private void makeSnackBarAction(final int position, final Food removed) {
         Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout,
-                "Item was removed successfully.",
+                getString(R.string.item_was_removed),
                 Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
@@ -152,7 +149,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
                     favoritePresenter.removeFavoriteFoodDB(removed.getNdbno());
                 }
             }
-        }).setAction("Undo", new View.OnClickListener() {
+        }).setAction(getString(R.string.undo), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 favoriteList.add(position, removed);

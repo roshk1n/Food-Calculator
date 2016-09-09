@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabSearchFragment extends Fragment {
-
+    private final static String DATE_KEY = "date";
     private OnFragmentListener mFragmentListener;
     private long date = 0;
 
@@ -45,7 +45,7 @@ public class TabSearchFragment extends Fragment {
     public static TabSearchFragment newInstance(long date) {
         TabSearchFragment tabSearchFragment = new TabSearchFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("date", date);
+        bundle.putLong(DATE_KEY, date);
         tabSearchFragment.setArguments(bundle);
         return tabSearchFragment;
     }
@@ -63,14 +63,14 @@ public class TabSearchFragment extends Fragment {
         initUI();
 
         if (getArguments() != null) {
-            date = getArguments().getLong("date");
+            date = getArguments().getLong(DATE_KEY);
         }
 
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
         Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbarSearchTab);
-        mToolbar.setTitle("Search");
+        mToolbar.setTitle(getString(R.string.search));
 
         if(mFragmentListener != null) {
             mFragmentListener.hideToolbar();
@@ -132,7 +132,7 @@ public class TabSearchFragment extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     adapter.removeFragment(0);
-                    adapter.addFragment(SearchFragment.newInstance(date, query),"All",0);
+                    adapter.addFragment(SearchFragment.newInstance(date, query),getString(R.string.all),0);
                     viewPager.setAdapter(adapter);
                     mQuery =  query;
                     return false;
@@ -150,8 +150,8 @@ public class TabSearchFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(SearchFragment.newInstance(), "All");
-        adapter.addFragment(FavoriteFragment.newInstance(date,true), "Favorites");
+        adapter.addFragment(SearchFragment.newInstance(),getString(R.string.all));
+        adapter.addFragment(FavoriteFragment.newInstance(date,true), getString(R.string.favorites));
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(1);
     }

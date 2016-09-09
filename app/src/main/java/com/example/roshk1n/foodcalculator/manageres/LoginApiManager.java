@@ -1,7 +1,5 @@
 package com.example.roshk1n.foodcalculator.manageres;
 
-import android.util.Log;
-
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.ActivateUser;
 import com.example.roshk1n.foodcalculator.rest.model.loginApi.LoginUser;
@@ -31,14 +29,11 @@ public  class LoginApiManager {
             @Override
             public void success(RegistrationResponse registrationResponse, Response response) {
                 registrationResponse.getSucceeded();
-
                 registrationResponse.getDataRegistration();
-                Log.d("TAG", "success");
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("TAG", "fail");
             }
         });
     }

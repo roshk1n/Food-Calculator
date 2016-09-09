@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.views;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 public interface SingUpView {
@@ -11,4 +12,6 @@ public interface SingUpView {
     void showToast(String message);
 
     void navigateToLogin();
+
+    Context getContext();
 }

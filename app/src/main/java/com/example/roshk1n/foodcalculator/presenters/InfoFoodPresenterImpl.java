@@ -70,8 +70,6 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
                 infoFoodView.updateFavoriteImage(existInFavotite);
             }
         });
-
-        //  infoFoodView.updateFavoriteImage(localDataBaseManager.isExistInFavotite(food));
     }
 
     private Food cloneFood(Food food) throws IOException, ClassNotFoundException {

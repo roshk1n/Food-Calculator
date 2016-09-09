@@ -25,7 +25,8 @@ import com.example.roshk1n.foodcalculator.utils.Utils;
 
 import java.io.IOException;
 
-public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener {
+public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener, View.OnFocusChangeListener {
+    private static final String FOOD_KEY = "food";
 
     private AddFoodPresenterImpl presenter;
     private OnFragmentListener mFragmentListener;
@@ -40,13 +41,13 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     private TextView fatFoodTv;
     private TextView proteinFoodTv;
     private TextView caloriesFoodTv;
-    private TextView numberOfServingsEt;
+    private EditText numberOfServingsEt;
     private ImageView addFavoriteIv;
 
     public static AddFoodFragment newInstance(Food food) {
         AddFoodFragment addFoodFragment = new AddFoodFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("food", food);
+        bundle.putParcelable(FOOD_KEY, food);
         addFoodFragment.setArguments(bundle);
         return addFoodFragment;
     }
@@ -69,13 +70,13 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_food, container, false);
         initUI();
-
+        numberOfServingsEt.setOnFocusChangeListener(this);
         if(mFragmentListener != null) {
-            mFragmentListener.setTitle("Add Food");
+            mFragmentListener.setTitle(getString(R.string.add_food));
         }
 
         if (getArguments() != null) {
-            food = getArguments().getParcelable("food");
+            food = getArguments().getParcelable(FOOD_KEY);
             presenter.isExistFavorite(food);
             setNutrients(food.getNutrients().get(1).getValue(), food.getNutrients().get(2).getValue(),
                     food.getNutrients().get(3).getValue(), food.getNutrients().get(4).getValue(),
@@ -122,7 +123,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
     public void navigateToDiary() {
         Utils.clearBackStack(getActivity().getSupportFragmentManager());
         Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
-        Snackbar.make(coordinatorLayout, "Food added successfully.", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, R.string.add_food_success, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -153,12 +154,12 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
             if (!isExistFavorite) {
                 addFavoriteIv.setClickable(false);
                 presenter.addToFavorite(food);
-                Snackbar.make(coordinatorLayout, "Adding a food to favorites...", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, R.string.add_food_favorite, Snackbar.LENGTH_SHORT).show();
 
             } else {
                 addFavoriteIv.setClickable(false);
                 presenter.removeFromFavorite(food.getNdbno());
-                Snackbar.make(coordinatorLayout, "Deleting a food from favorites...", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, R.string.delete_food_favorite, Snackbar.LENGTH_SHORT).show();
             }
 
         } else if (v == mAddFoodBtn) {
@@ -174,7 +175,7 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
                     Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
                     presenter.addNewFood(food);
                 } else {
-                    numberOfServingsEt.setError("Enter number of servings please.");
+                    numberOfServingsEt.setError(getString(R.string.error_number_sevings));
                 }
             }
         }
@@ -190,5 +191,11 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
         addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_add_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+            Utils.hideKeyboard(getContext(),v);
     }
 }

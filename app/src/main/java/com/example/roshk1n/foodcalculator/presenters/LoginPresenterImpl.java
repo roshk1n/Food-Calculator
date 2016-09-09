@@ -19,8 +19,6 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONObject;
 
 public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
-
-    private final static String TAG = "MyLog";
     private DataManager dataManager = new DataManager(this);
     private CallbackManager callbackManager;
     private LoginView loginVew;

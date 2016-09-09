@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,7 +70,6 @@ public class FirebaseManager {
 
     private ArrayList<Day> listDay = new ArrayList<>();
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mFirebaseUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -110,10 +110,6 @@ public class FirebaseManager {
 
     public void setAuth(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
-    }
-
-    public FirebaseAuth.AuthStateListener getAuthListener() {
-        return mAuthListener;
     }
 
     public FirebaseUser getFirebaseUser() {
@@ -166,9 +162,7 @@ public class FirebaseManager {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("MyLog", "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        if (task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                             mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(fullname)
@@ -299,21 +293,6 @@ public class FirebaseManager {
             Session.getInstance().setUrlPhoto(String.valueOf(user.getPhotoUrl()));
             callback.loginSuccess();
         }
- /*       setAuthListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null && flag) {
-                    setFirebaseUser(getAuth().getCurrentUser());
-                    Session.startSession();
-                    Session.getInstance().setEmail(user.getEmail());
-                    Session.getInstance().setFullname(user.getDisplayName());
-                    Session.getInstance().setUrlPhoto(String.valueOf(user.getPhotoUrl()));
-                    callback.loginSuccess();
-                    flag = false;
-                }
-            }
-        });*/
     }
 
     public void uploadImage(Bitmap image, String email, final ResponseListenerUpload upload) {
@@ -407,18 +386,17 @@ public class FirebaseManager {
                 Session.getInstance().setFullname(user.getFullname());
                 Session.getInstance().setUrlPhoto(s);
                 callback.success();
-     /*           mFirebaseUser.updateEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                mFirebaseUser.updateEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("myyy",task+"");
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
                     }
-                });*/
+                });
+
             }
         });
     }

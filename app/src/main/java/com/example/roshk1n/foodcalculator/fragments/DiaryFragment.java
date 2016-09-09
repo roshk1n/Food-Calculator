@@ -1,5 +1,4 @@
 package com.example.roshk1n.foodcalculator.fragments;
-//TODO need twice change day for see update remote
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,6 +38,7 @@ import java.util.Calendar;
 
 public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryAdapter,
         DatePickerDialog.OnDateSetListener, View.OnClickListener {
+    private static final String DATE_KEY = "date";
     private DiaryPresenterImpl diaryPresenter;
     private Day day;
     private RecyclerView mRecyclerView;
@@ -71,15 +71,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     public static DiaryFragment newInstance(long date) {
         DiaryFragment diaryFragment = new DiaryFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("date", date);
-        diaryFragment.setArguments(bundle);
-        return diaryFragment;
-    }
-
-    public static DiaryFragment newInstance(int ndbno) {
-        DiaryFragment diaryFragment = new DiaryFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("ndbno", ndbno);
+        bundle.putLong(DATE_KEY, date);
         diaryFragment.setArguments(bundle);
         return diaryFragment;
     }
@@ -99,13 +91,13 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         initUI();
 
         if (mFragmentListener != null) {
-            mFragmentListener.setTitle("Diary");
+            mFragmentListener.setTitle(getString(R.string.diary));
             mFragmentListener.setDrawerMenu();
             mFragmentListener.enableMenuSwipe();
         }
 
         if (getArguments() != null) {
-            diaryPresenter.setDate(getArguments().getLong("date"));
+            diaryPresenter.setDate(getArguments().getLong(DATE_KEY));
         }
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -263,7 +255,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         if (checkLimit == 4) alertDialog.setMessage(getString(R.string.alert4));
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -318,7 +310,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         checkUndo = true;
         snackbar = Snackbar
                 .make(coordinatorLayout,
-                        "Item was removed successfully.",
+                        R.string.item_was_removed,
                         Snackbar.LENGTH_LONG)
                 .setCallback(new Snackbar.Callback() {
                     @Override
@@ -329,7 +321,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                         }
 
                     }
-                }).setAction("Undo", new View.OnClickListener() {
+                }).setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (checkUndo) {

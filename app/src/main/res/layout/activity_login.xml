@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingBottom="16dp"
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/email"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:textColor="@drawable/edit_text_sing_up_state" />
 
@@ -44,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:textColor="@drawable/edit_text_sing_up_state" />
     </android.support.design.widget.TextInputLayout>
@@ -83,8 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:clickable="true"
+            android:gravity="center"
             android:onClick="onSingInActivityClicked"
             android:text="@string/sing_up"
             android:textColor="#FFFFFF"
@@ -99,30 +103,29 @@
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:layout_centerInParent="true"
-            android:background="@color/mdtp_white">
-        </View>
+            android:background="@color/mdtp_white" />
 
         <TextView
             android:id="@+id/tbOR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginBottom="10dp"
-            android:textSize="20sp"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:background="@color/colorPrimary"
-            android:layout_centerInParent="true"
             android:text="@string/or"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnLogInFacebook"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

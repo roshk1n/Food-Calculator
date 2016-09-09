@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
+import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.SingUpView;
 import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
@@ -28,21 +29,20 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
 
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(fullname)
                 || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            singUpView.showToast("Enter all fields, please.");
+            singUpView.showToast(singUpView.getContext().getString(R.string.enter_all_field));
             error = true;
 
         }   else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 error = true;
-                singUpView.showToast("Your email is incorrect.");
+                singUpView.showToast(singUpView.getContext().getString(R.string.email_incorrect));
 
         } else if (!password.equals(confirmPassword)) {
-            singUpView.showToast("Password and confirm password don`t match.");
+            singUpView.showToast(singUpView.getContext().getString(R.string.password_dont_match));
             error = true;
 
         } else if(password.length()<6) {
-            singUpView.showToast("Your password must be at least 6 characters long.");
+            singUpView.showToast(singUpView.getContext().getString(R.string.password_short));
             error = true;
-
         }
 
         if (!error) {

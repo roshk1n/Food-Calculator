@@ -27,7 +27,7 @@ import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
-public class ProfileFragment extends Fragment implements ProfileView, View.OnClickListener {
+public class ProfileFragment extends Fragment implements ProfileView, View.OnClickListener, View.OnFocusChangeListener {
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
@@ -53,7 +53,6 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private ImageView activeLevelIcoIv;
     private ImageView sexIcoProfileIv;
     private ProgressDialog saveDatePd;
-
     private FloatingActionButton editProfileFab;
 
     public ProfileFragment() {
@@ -77,8 +76,14 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         initUI();
 
+        fullNameEt.setOnFocusChangeListener(this);
+        ageEt.setOnFocusChangeListener(this);
+        heightEt.setOnFocusChangeListener(this);
+        weightEt.setOnFocusChangeListener(this);
+        emailEt.setOnFocusChangeListener(this);
+
         if (mFragmentListener != null) {
-            mFragmentListener.setTitle("Profile");
+            mFragmentListener.setTitle(getString(R.string.profile));
         }
 
         profilePresenter.loadUser();
@@ -121,7 +126,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             if (fullNameEt.isEnabled()) {
                 createPickerPhoto();
             } else {
-                Snackbar.make(coordinatorLayout, "First, turn on editing mode.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, R.string.turn_edit_mode, Snackbar.LENGTH_SHORT).show();
             }
 
         } else if (v == editProfileFab) {
@@ -132,7 +137,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                 changeEnable(fullNameEt.isEnabled());
                 changeIcon();
             } else {
-                Snackbar.make(coordinatorLayout, "You need internet connection for update profile.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(coordinatorLayout, R.string.need_connection_update, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -147,21 +152,21 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                            String sex,
                            String activeLevel) {
 
-      /*  if(isVisible()) {*/
-        fullNameEt.setText(fullname);
-        weightEt.setText(String.valueOf(weight));
-        heightEt.setText(String.valueOf(height));
-        ageEt.setText(String.valueOf(age));
-        emailEt.setText(email);
-        int positionActive = profilePresenter.getPositionInArray(activeLevel,
-                getResources().getStringArray(R.array.active_level));
+       // if(isVisible()) { // local data load faster than create fragment
+            fullNameEt.setText(fullname);
+            weightEt.setText(String.valueOf(weight));
+            heightEt.setText(String.valueOf(height));
+            ageEt.setText(String.valueOf(age));
+            emailEt.setText(email);
+            int positionActive = profilePresenter.getPositionInArray(activeLevel,
+                    getResources().getStringArray(R.array.active_level));
 
-        int positionSex = profilePresenter.getPositionInArray(sex,
-                getResources().getStringArray(R.array.sex));
-        activeLevelProfileSp.setSelection(positionActive);
-        sexProfileSp.setSelection(positionSex);
-        profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
-        //  }
+            int positionSex = profilePresenter.getPositionInArray(sex,
+                    getResources().getStringArray(R.array.sex));
+            activeLevelProfileSp.setSelection(positionActive);
+            sexProfileSp.setSelection(positionSex);
+            profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
+     //   }
     }
 
     @Override
@@ -173,7 +178,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     public void CompleteUpdateAndRefreshDrawer() {
         mFragmentListener.updateDrawerLight();
         saveDatePd.dismiss();
-        Snackbar.make(coordinatorLayout, "User data saved successfully.", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(coordinatorLayout, R.string.user_saved, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -186,7 +191,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     private void createPickerPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Photo")
+        builder.setTitle(getString(R.string.photo))
                 .setItems(R.array.photo, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -197,7 +202,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                                     , android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             pickIntent.setType("image/*");
 
-                            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                            Intent chooserIntent = Intent.createChooser(getIntent, getString(R.string.select_image));
                             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
                             startActivityForResult(chooserIntent, PICK_PHOTO_FOR_AVATAR);
@@ -212,7 +217,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     }
 
     private void saveUserProfile() {
-        saveDatePd.setMessage("Wait please...");
+        saveDatePd.setMessage(getString(R.string.wait_please));
         saveDatePd.show();
         Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
         profilePresenter.updateUserProfile(
@@ -258,7 +263,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         if (!isEnable) {
             editProfileFab.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-            Snackbar.make(coordinatorLayout, "Remember, enter all fields.", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout, R.string.remember_enter_field, Snackbar.LENGTH_SHORT).show();
+
         } else {
             fullNameEt.clearFocus(); // clear focus after saving
             weightEt.clearFocus();
@@ -301,5 +307,11 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         saveDatePd = new ProgressDialog(getContext());
         saveDatePd.setCanceledOnTouchOutside(false);
         saveDatePd.setCancelable(false);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+            Utils.hideKeyboard(getContext(),v);
     }
 }

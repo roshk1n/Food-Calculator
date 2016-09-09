@@ -4,26 +4,28 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
+import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
+import java.util.Locale;
 
-public class LoginActivity extends Activity implements LoginView {
+public class LoginActivity extends Activity implements LoginView, View.OnFocusChangeListener {
     private final static String TAG = LoginActivity.class.getSimpleName();
-
     private LoginPresenterImpl loginPresenter;
     private EditText emailEt;
-    private EditText etPassword;
+    private EditText passwordEt;
     private LoginButton btnLogInFacebook;
     private ProgressDialog loginProgress;
 
@@ -33,6 +35,17 @@ public class LoginActivity extends Activity implements LoginView {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         initUI();
+
+        emailEt.setOnFocusChangeListener(this);
+        passwordEt.setOnFocusChangeListener(this);
+
+        String languageToLoad  = "uk"; // your language
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
 
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
@@ -50,8 +63,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        loginProgress.setMessage("Wait please...");
-        Log.d(TAG, "onActivityResult will show loader");
+        loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
 
@@ -60,13 +72,13 @@ public class LoginActivity extends Activity implements LoginView {
     @Override
     public void setEmailError() {
         loginProgress.dismiss();
-        emailEt.setError("Enter email please");
+        emailEt.setError(getString(R.string.error_email));
     }
 
     @Override
     public void setPasswordError() {
         loginProgress.dismiss();
-        etPassword.setError("Enter password please");
+        passwordEt.setError(getString(R.string.error_password));
     }
 
     @Override
@@ -74,7 +86,6 @@ public class LoginActivity extends Activity implements LoginView {
         loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
-        Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
     @Override
@@ -89,7 +100,7 @@ public class LoginActivity extends Activity implements LoginView {
     }
 
     public void onLogIn(View view) {
-        loginProgress.setMessage("Wait please...");
+        loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.login("ee@gmail.com", "132132132");
     }
@@ -100,7 +111,7 @@ public class LoginActivity extends Activity implements LoginView {
 
     private void initUI() {
         emailEt = (EditText) findViewById(R.id.etLogin);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        passwordEt = (EditText) findViewById(R.id.etPassword);
         btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
         loginProgress = new ProgressDialog(this);
         loginProgress.setCanceledOnTouchOutside(false);
@@ -109,5 +120,11 @@ public class LoginActivity extends Activity implements LoginView {
 
     public void onResetPassword(View view) {
         startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+            Utils.hideKeyboard(getApplicationContext(),v);
     }
 }

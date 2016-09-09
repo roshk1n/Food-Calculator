@@ -34,7 +34,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
     private int positionAdapter;
     private int hour, minute;
 
-    private TimePickerDialog timePickerDialog;
     private View view;
 
     private RecyclerView mRecyclerView;
@@ -61,7 +60,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         initUI();
 
         if(mFragmentListener != null) {
-            mFragmentListener.setTitle("Reminders");
+            mFragmentListener.setTitle(getString(R.string.reminders));
         }
 
         reminders = remindersPresenter.loadReminder();
@@ -105,7 +104,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         Calendar calendar = Calendar.getInstance();
         calendar.set(0, 0,0,hour,minute);
 
-        timePickerDialog = TimePickerDialog.newInstance(
+        TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(
                 this,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),

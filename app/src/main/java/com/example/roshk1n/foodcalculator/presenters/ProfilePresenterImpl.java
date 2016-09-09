@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
@@ -90,27 +91,30 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final String active_level) {
           if (!fullname.isEmpty() && !weight.isEmpty() && !height.isEmpty()
                 && !age.isEmpty() && !email.isEmpty()) {
-
-            final String image_profile = bitmapToString(image);//convert to string
-            int goalCalories = updateLimitCalories(sex, active_level, weight, height, age);
-            User user = new User();
-            user.setFullname(fullname);
-            user.setWeight(Integer.parseInt(weight));
-            user.setHeight(Integer.parseInt(height));
-            user.setAge(Integer.parseInt(age));
-            user.setEmail(email);
-            user.setPhotoUrl(image_profile);
-            user.setSex(sex);
-            user.setActiveLevel(active_level);
-            user.setGoalCalories(goalCalories);
-            dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
-                @Override
-                public void success() {
-                    profileView.CompleteUpdateAndRefreshDrawer();
-                }
-            });
+              if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                  final String image_profile = bitmapToString(image);//convert to string
+                  int goalCalories = updateLimitCalories(sex, active_level, weight, height, age);
+                  User user = new User();
+                  user.setFullname(fullname);
+                  user.setWeight(Integer.parseInt(weight));
+                  user.setHeight(Integer.parseInt(height));
+                  user.setAge(Integer.parseInt(age));
+                  user.setEmail(email);
+                  user.setPhotoUrl(image_profile);
+                  user.setSex(sex);
+                  user.setActiveLevel(active_level);
+                  user.setGoalCalories(goalCalories);
+                  dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
+                      @Override
+                      public void success() {
+                          profileView.CompleteUpdateAndRefreshDrawer();
+                      }
+                  });
+              } else {
+                  profileView.showToast(profileView.getContext().getString(R.string.email_incorrect));
+              }
         } else {
-            profileView.showToast("Enter all fields, please !");
+            profileView.showToast(profileView.getContext().getString(R.string.enter_all_field));
         }
     }
 

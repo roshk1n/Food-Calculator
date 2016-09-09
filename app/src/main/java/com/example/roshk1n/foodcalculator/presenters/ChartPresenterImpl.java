@@ -80,7 +80,6 @@ public class ChartPresenterImpl implements ChartPresenter {
         Calendar date = Calendar.getInstance();
         Calendar dateNow = Calendar.getInstance();
         int monthNow = dateNow.get(Calendar.MONTH);
-        Log.d("Calendar", date.getActualMaximum(Calendar.DAY_OF_MONTH) + "");
         for (Day day : listDay) {
             date.setTimeInMillis(day.getDate());
             int month = date.get(Calendar.MONTH);
