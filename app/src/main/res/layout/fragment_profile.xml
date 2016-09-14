@@ -73,6 +73,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:hint="@string/full_name"
+                        android:imeOptions="actionDone"
                         android:inputType="textPersonName"
                         android:textColor="@color/colorPrimaryText" />
 
@@ -105,6 +106,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:hint="@string/email"
+                        android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/colorPrimaryText" />
 
@@ -138,6 +140,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:hint="@string/age"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:textColor="@color/colorPrimaryText" />
 
@@ -171,6 +174,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:hint="@string/height"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:textColor="@color/colorPrimaryText" />
 
@@ -203,6 +207,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:hint="@string/weight"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:textColor="@color/colorPrimaryText" />
 

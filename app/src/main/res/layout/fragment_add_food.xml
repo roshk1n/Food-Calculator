@@ -208,7 +208,7 @@
                 android:layout_below="@id/content_layout"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10dp"
-                android:text="@string/add_food"
+                android:text="@string/add_food_btn"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryText" />
 

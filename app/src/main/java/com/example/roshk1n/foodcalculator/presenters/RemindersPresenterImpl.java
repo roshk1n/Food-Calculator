@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.RemindersView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
@@ -33,10 +34,10 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     }
 
     private void setDefaultReminders() {
-        reminders.add(createReminder(false,"8:45","Breakfast"));
-        reminders.add(createReminder(false,"14:00","Lunch"));
-        reminders.add(createReminder(false,"18:00","Dinner"));
-        reminders.add(createReminder(false,"17:00","Snack"));
+        reminders.add(createReminder(false,"8:45",remindersView.getContext().getString(R.string.breakfast)));
+        reminders.add(createReminder(false,"14:00",remindersView.getContext().getString(R.string.lunch)));
+        reminders.add(createReminder(false,"18:00",remindersView.getContext().getString(R.string.dinner)));
+        reminders.add(createReminder(false,"17:00",remindersView.getContext().getString(R.string.snack)));
     }
 
     @Override

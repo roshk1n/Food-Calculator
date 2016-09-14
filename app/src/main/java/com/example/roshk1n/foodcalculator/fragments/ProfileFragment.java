@@ -14,6 +14,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.bumptech.glide.Glide;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.ProfilePresenterImpl;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
@@ -132,6 +135,8 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         } else if (v == editProfileFab) {
             if (Utils.isConnectNetwork(getActivity().getApplicationContext())) {
                 if (fullNameEt.isEnabled()) {
+                    saveDatePd.setMessage(getString(R.string.wait_please));
+                    saveDatePd.show();
                     saveUserProfile();
                 }
                 changeEnable(fullNameEt.isEnabled());
@@ -143,7 +148,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     }
 
     @Override
-    public void setProfile(String photoUrl,
+    public void setProfile(Bitmap BitmapImage,
                            String email,
                            String fullname,
                            int age,
@@ -152,21 +157,21 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
                            String sex,
                            String activeLevel) {
 
-       // if(isVisible()) { // local data load faster than create fragment
-            fullNameEt.setText(fullname);
-            weightEt.setText(String.valueOf(weight));
-            heightEt.setText(String.valueOf(height));
-            ageEt.setText(String.valueOf(age));
-            emailEt.setText(email);
-            int positionActive = profilePresenter.getPositionInArray(activeLevel,
-                    getResources().getStringArray(R.array.active_level));
+        // if(isVisible()) { // local data load faster than create fragment
+        fullNameEt.setText(fullname);
+        weightEt.setText(String.valueOf(weight));
+        heightEt.setText(String.valueOf(height));
+        ageEt.setText(String.valueOf(age));
+        emailEt.setText(email);
+        int positionActive = profilePresenter.getPositionInArray(activeLevel,
+                getResources().getStringArray(R.array.active_level));
 
-            int positionSex = profilePresenter.getPositionInArray(sex,
-                    getResources().getStringArray(R.array.sex));
-            activeLevelProfileSp.setSelection(positionActive);
-            sexProfileSp.setSelection(positionSex);
-            profileIv.setImageBitmap(profilePresenter.stringToBitmap(photoUrl)); //convert to Bitmap
-     //   }
+        int positionSex = profilePresenter.getPositionInArray(sex,
+                getResources().getStringArray(R.array.sex));
+        activeLevelProfileSp.setSelection(positionActive);
+        sexProfileSp.setSelection(positionSex);
+        profileIv.setImageBitmap(BitmapImage);
+//        }
     }
 
     @Override
@@ -217,19 +222,25 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     }
 
     private void saveUserProfile() {
-        saveDatePd.setMessage(getString(R.string.wait_please));
-        saveDatePd.show();
         Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
-        profilePresenter.updateUserProfile(
-                fullNameEt.getText().toString(),
-                weightEt.getText().toString(),
-                heightEt.getText().toString(),
-                ageEt.getText().toString(),
-                emailEt.getText().toString(),
-                bitmap,
-                sexProfileSp.getSelectedItem().toString(),
-                activeLevelProfileSp.getSelectedItem().toString()
-        );
+        if (bitmap != null) {
+            profilePresenter.updateUserProfile(
+                    fullNameEt.getText().toString(),
+                    weightEt.getText().toString(),
+                    heightEt.getText().toString(),
+                    ageEt.getText().toString(),
+                    emailEt.getText().toString(),
+                    bitmap,
+                    sexProfileSp.getSelectedItem().toString(),
+                    activeLevelProfileSp.getSelectedItem().toString()
+            );
+
+        } else {
+            saveDatePd.dismiss();
+            showToast(getString(R.string.image_incorrect));
+            profileIv.setImageDrawable(getResources().getDrawable(R.drawable.profile_default));
+        }
+
     }
 
     private void changeIcon() {
@@ -311,7 +322,11 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus)
-            Utils.hideKeyboard(getContext(),v);
+        if (!hasFocus) {
+            Utils.hideKeyboard(getContext(), v);
+            v.clearFocus();
+        }
+        if (hasFocus)
+            Utils.showKeyboard(getContext(), v);
     }
 }

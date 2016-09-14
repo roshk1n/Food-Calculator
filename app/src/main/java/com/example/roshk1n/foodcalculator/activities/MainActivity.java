@@ -2,6 +2,8 @@ package com.example.roshk1n.foodcalculator.activities;
 //TODO detach fragment view
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,16 +17,22 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.fragments.ChartFragment;
@@ -45,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnClickListener,
-        OnFragmentListener, MainView {
+        OnFragmentListener, MainView, View.OnFocusChangeListener {
 
     private MainPresenterImpl presenter;
     private Toolbar mToolbar;
@@ -55,6 +63,9 @@ public class MainActivity extends AppCompatActivity
     private TextView fullNameDrawerTv;
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorHintAdd;
+    private View.OnClickListener clickLanguage;
+    private LinearLayout uk_layout;
+    private LinearLayout en_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_chart) {
-            if(!(fr instanceof ChartFragment)) {
+            if (!(fr instanceof ChartFragment)) {
                 Utils.navigateToFragment(getSupportFragmentManager(),
                         R.id.fragment_conteiner,
                         ChartFragment.newInstance(),
@@ -173,17 +184,75 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
-            if(AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null)
+            if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null)
                 LoginManager.getInstance().logOut();
             Session.destroy();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+        } else if (id == R.id.nav_about) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.about));
+            builder.setView(R.layout.about_app);
+            builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
+        } else if (id == R.id.nav_languages) {
+            final LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.language_alert, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.choose_language));
+            builder.setView(view);
+            builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Localization.setLocale(getContext());
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
+            uk_layout = (LinearLayout) view.findViewById(R.id.ukraine_liner);
+            en_layout = (LinearLayout) view.findViewById(R.id.english_liner);
+
+            if (Localization.getLanguage().equals("uk")) {
+                uk_layout.requestFocus();
+                en_layout.setSelected(true);
+            } else {
+                en_layout.requestFocus();
+                en_layout.setSelected(true);
+            }
+            uk_layout.setOnFocusChangeListener(this);
+            en_layout.setOnFocusChangeListener(this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     public void onClick(View v) { // back for arrow item menu
         onBackPressed();
@@ -214,33 +283,33 @@ public class MainActivity extends AppCompatActivity
     public void updateDrawer() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
         if (Utils.isConnectNetwork(getApplicationContext())) {
-                Glide
-                        .with(getApplicationContext())
-                        .load(Session.getInstance().getUrlPhoto())
-                        .asBitmap()
-                        .fitCenter()
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                icoUserDrawerIv.setImageBitmap(resource);
-                                final Bitmap bitmap = ((BitmapDrawable)icoUserDrawerIv.getDrawable()).getBitmap();
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                       presenter.updateInfoUser(bitmap);
-                                    }
-                                }).start();
-                            }
-                        });
-            } else {
-                Bitmap imageUser = presenter.getLocalImage();
-                icoUserDrawerIv.setImageBitmap(imageUser);
-            }
+            Glide
+                    .with(getApplicationContext())
+                    .load(Session.getInstance().getUrlPhoto())
+                    .asBitmap()
+                    .fitCenter()
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            icoUserDrawerIv.setImageBitmap(resource);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    presenter.updateInfoUser(resource);
+                                }
+                            }).start();
+                        }
+                    });
+        } else {
+            Bitmap imageUser = presenter.getLocalImage();
+            icoUserDrawerIv.setImageBitmap(imageUser);
+        }
     }
 
     @Override
     public void updateDrawerLight() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
+        Log.d("My", Session.getInstance().getUrlPhoto());
         Glide
                 .with(getApplicationContext())
                 .load(Session.getInstance().getUrlPhoto())
@@ -284,5 +353,19 @@ public class MainActivity extends AppCompatActivity
         addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
         mToolbar.setTitle(getString(R.string.diary));
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == uk_layout) {
+            Localization.setLanguage("uk");
+        } else if (v == en_layout) {
+            Localization.setLanguage("en");
+        }
     }
 }

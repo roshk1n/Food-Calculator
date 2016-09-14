@@ -150,7 +150,11 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus)
-            Utils.hideKeyboard(getApplicationContext(), v);
+        if(!hasFocus) {
+            Utils.hideKeyboard(getApplicationContext(),v);
+            v.clearFocus();
+        }
+        if(hasFocus)
+            Utils.showKeyboard(getApplicationContext(),v);
     }
 }

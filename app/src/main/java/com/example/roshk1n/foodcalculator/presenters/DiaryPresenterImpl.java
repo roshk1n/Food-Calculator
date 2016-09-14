@@ -44,13 +44,11 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 day = d;
                 diaryView.setDay(d);
                 if (day.getFoods().size() == 0) {
-                    if (checkForAnim) {
-                        checkForAnim = false;
+                    if (!checkForAnim) {
                         diaryView.showHintAddAnim();
                     }
-                } else {
-                    diaryView.hideHintAddAnim();
                 }
+                checkForAnim = false;
             }
         });
     }
@@ -61,7 +59,6 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         date.set(Calendar.HOUR_OF_DAY, dateNow.get(Calendar.HOUR_OF_DAY));
         date.set(Calendar.MINUTE, dateNow.get(Calendar.MINUTE));
         date.set(Calendar.SECOND, dateNow.get(Calendar.SECOND));
-
         date.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH) - 1);
     }
 

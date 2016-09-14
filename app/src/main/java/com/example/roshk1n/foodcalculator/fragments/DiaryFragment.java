@@ -150,6 +150,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        hideHintAddAnim();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentListener) {
@@ -166,6 +172,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     @Override
     public void onClick(View v) {
         if (v == followDayIv) {
+            hideHintAddAnim();
             if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
             } else {
@@ -179,6 +186,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             }
 
         } else if (v == nextDayIv) {
+            hideHintAddAnim();
             if (snackbar != null && snackbar.isShown()) {
                 snackbar.dismiss();
 
@@ -284,7 +292,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
             public void onAnimationRepeat(Animation animation) {
             }
         });
-
     }
 
     @Override

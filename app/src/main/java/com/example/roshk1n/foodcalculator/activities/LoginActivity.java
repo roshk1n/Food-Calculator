@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.roshk1n.foodcalculator.Localization;
+import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
@@ -39,16 +42,9 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
         emailEt.setOnFocusChangeListener(this);
         passwordEt.setOnFocusChangeListener(this);
 
-        String languageToLoad  = "uk"; // your language
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
+        Log.d(TAG,"OnCreate");
         loginPresenter.checkLogin();
 
         btnLogInFacebook.setReadPermissions(Arrays.asList(
@@ -63,10 +59,10 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG,"result");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
@@ -83,6 +79,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     public void navigateToHome() {
+        Log.d(TAG,"navigate to home");
         loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
@@ -90,6 +87,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     public void showToast(String message) {
+        Log.d(TAG,"showToast");
         loginProgress.dismiss();
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
@@ -100,6 +98,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     }
 
     public void onLogIn(View view) {
+        Log.d(TAG,"OnLogin");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.login("ee@gmail.com", "132132132");
@@ -124,7 +123,11 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus)
+        if(!hasFocus) {
             Utils.hideKeyboard(getApplicationContext(),v);
+            v.clearFocus();
+        }
+        if(hasFocus)
+            Utils.showKeyboard(getApplicationContext(),v);
     }
 }

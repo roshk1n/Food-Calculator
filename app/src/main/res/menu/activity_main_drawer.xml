@@ -18,13 +18,31 @@
             android:id="@+id/nav_reminders"
             android:icon="@drawable/ic_notifications_none_black_24dp"
             android:title="@string/reminders" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_person_primary_24dp"
-            android:title="@string/profile" />
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit_to_app_primary_24dp"
-            android:title="@string/log_out" />
     </group>
+
+    <item android:title="@string/group2">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_person_primary_24dp"
+                android:title="@string/profile" />
+            </group>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/nav_languages"
+                    android:icon="@drawable/ic_language_primary_24dp"
+                    android:title="@string/language"/>
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_about_24dp"
+                    android:title="@string/about"/>
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_exit_to_app_primary_24dp"
+                    android:title="@string/log_out" />
+
+            </group>
+        </menu>
+    </item>
 </menu>

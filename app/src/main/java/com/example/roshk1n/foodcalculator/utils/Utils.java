@@ -61,6 +61,12 @@ public class Utils {
         imm.hideSoftInputFromWindow(field.getWindowToken(), 0);
     }
 
+    public static void showKeyboard(Context context, View field) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInputFromInputMethod(field.getWindowToken(), 0);
+    }
+
     public static void clearBackStack(FragmentManager supportFragmentManager) {
         FragmentManager.BackStackEntry first = supportFragmentManager.getBackStackEntryAt(0);
         supportFragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);

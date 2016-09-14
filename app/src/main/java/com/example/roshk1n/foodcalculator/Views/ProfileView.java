@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 public interface ProfileView {
-    void setProfile(String photoUrl,
+    void setProfile(Bitmap bitImage,
                     String email,
                     String fullname,
                     int age,

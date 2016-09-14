@@ -74,9 +74,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         initUI();
 
         if(mFragmentListener != null) {
-            mFragmentListener.setTitle(getString(R.string.search));
+ /*           mFragmentListener.setTitle(getString(R.string.search));
             mFragmentListener.setArrowToolbar();
-            mFragmentListener.disabledMenuSwipe();
+            mFragmentListener.disabledMenuSwipe();*/
         }
 
         if(getArguments() != null) {
@@ -116,15 +116,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     public void onDetach() {
         super.onDetach();
         mFragmentListener = null;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case android.R.id.home:
-                getActivity().onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

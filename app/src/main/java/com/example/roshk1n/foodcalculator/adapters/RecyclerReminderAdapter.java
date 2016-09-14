@@ -28,7 +28,6 @@ public class RecyclerReminderAdapter extends RecyclerView.Adapter<RecyclerRemind
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             CompoundButton.OnCheckedChangeListener {
-
         private final CallbackReminderAdapter callbackReminderAdapter;
         private final TextView title_reminder_tv;
         private final TextView time_reminder_tv;

@@ -3,10 +3,12 @@ package com.example.roshk1n.foodcalculator.manageres;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
+import android.util.Patterns;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
@@ -167,9 +169,9 @@ public class DataManager implements FirebaseCallback {
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
                                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    callback.loadProfileSuccess(user);
                                     user.setPhotoUrl(bitmapToString(resource));
                                     LocalDataBaseManager.updateUserProfile(user);
-                                    callback.loadProfileSuccess(user);
                                 }
                             });
                 }
@@ -186,15 +188,14 @@ public class DataManager implements FirebaseCallback {
 
     public void updateUserProfile(User user, Bitmap image, OnCompleteCallback callback) {
         LocalDataBaseManager.updateUserProfile(user);
-
         firebaseManager.updateUserProfile(user, image, callback);
     }
 
-    public void updateInfoUser(final String image) {
+    public void updateInfoUser(final String imageString) {
         firebaseManager.loadUserProfile(new UserProfileCallback() {
             @Override
             public void loadProfileSuccess(User user) {
-                user.setPhotoUrl(image);
+                user.setPhotoUrl(imageString);
                 LocalDataBaseManager.updateUserProfile(user);
             }
         });

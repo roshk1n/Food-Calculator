@@ -4,11 +4,11 @@
     <string name="Dec">Грудень</string>
     <string name="Nov">Листопад</string>
     <string name="Oct">Жовтень</string>
-    <string name="_320_cal">320 кал.</string>
-    <string name="_100_g">100 г.</string>
-    <string name="_6_38g">6.38 г.</string>
+    <string name="_320_cal">320 cal.</string>
+    <string name="_100_g">100 g.</string>
+    <string name="_6_38g">6.38 g.</string>
     <string name="add_a_new_food_for_your_day">Додати нову їжу до вашого дня.</string>
-    <string name="add_food">Додати їжу</string>
+    <string name="add_food">Додавання</string>
     <string name="add_food_favorite">Додавання їжі до улюблених</string>
     <string name="add_food_success">Їжа додана успішно</string>
     <string name="age">Вік</string>
@@ -82,7 +82,7 @@
     <string name="info_food">Деталі</string>
     <string name="height">Ріст</string>
     <string name="goal">Ціль</string>
-    <string name="g">г.</string>
+    <string name="g">g.</string>
     <string name="full_name">Прізвище та Ім\'я</string>
     <string name="friday">Пт</string>
     <string name="forgot_your_password">Забув пароль?</string>
@@ -91,10 +91,20 @@
     <string name="favorites">Улюблені</string>
     <string name="email_incorrect">Невірний формат електроної адреси. </string>
     <string name="enter_all_field">Заповніть усі поля, будь-ласка.</string>
-    <string name="enter_your_email">Введіть свою електронну адресу</string>
+    <string name="enter_your_email">Введіть електронну адресу</string>
     <string name="error_email">Введіть свою електронну адресу.</string>
     <string name="error_number_sevings">Вкажіть кількість порцій.</string>
     <string name="error_password">Введіть пароль, будь-ласка.</string>
     <string name="fat_g">Жири (g)</string>
-
+    <string name="languages">Мова</string>
+    <string name="group2">Налаштування</string>
+    <string name="language">Мова</string>
+    <string name="choose_language">Оберіть мову :</string>
+    <string name="cancel">Скасувати</string>
+    <string name="save">Зберегти</string>
+    <string name="image_incorrect">Це зображення не підтримується. Оберіть інше зображення.</string>
+    <string name="add_food_btn">Додати</string>
+    <string name="dinner">Вечеря</string>
+    <string name="lunch">Обід</string>
+    <string name="snack">Закуска</string>
 </resources>

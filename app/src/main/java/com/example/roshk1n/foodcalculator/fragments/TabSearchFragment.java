@@ -33,6 +33,7 @@ public class TabSearchFragment extends Fragment {
     private ViewPager viewPager;
     private SearchView searchView;
     private String mQuery;
+    private Toolbar mToolbar;
 
     private ViewPagerAdapter adapter;
 
@@ -66,16 +67,12 @@ public class TabSearchFragment extends Fragment {
             date = getArguments().getLong(DATE_KEY);
         }
 
+
         setupViewPager(viewPager);
 
         tabLayout.setupWithViewPager(viewPager);
-        Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbarSearchTab);
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbarSearchTab);
         mToolbar.setTitle(getString(R.string.search));
-
-        if(mFragmentListener != null) {
-            mFragmentListener.hideToolbar();
-            mFragmentListener.setSupportActionBar(mToolbar);
-        }
 
         mToolbar.setNavigationIcon(ContextCompat.getDrawable(getContext(), R.drawable.arrow_back_white));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -87,9 +84,16 @@ public class TabSearchFragment extends Fragment {
         return view;
     }
 
-    private void initUI() {
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mFragmentListener != null) {
+            mFragmentListener.hideToolbar();
+            mFragmentListener.setSupportActionBar(mToolbar);
+            mFragmentListener.setTitle(getString(R.string.search));
+            mFragmentListener.setArrowToolbar();
+            mFragmentListener.disabledMenuSwipe();
+        }
     }
 
     @Override
@@ -146,6 +150,20 @@ public class TabSearchFragment extends Fragment {
         }
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initUI() {
+        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
     }
 
     private void setupViewPager(ViewPager viewPager) {

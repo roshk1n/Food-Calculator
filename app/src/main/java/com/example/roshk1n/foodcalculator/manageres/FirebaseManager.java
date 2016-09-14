@@ -326,7 +326,6 @@ public class FirebaseManager {
                 DatabaseReference reference = database.getReference(USERS_CHILD);
                 final DatabaseReference userRef = reference
                         .child(getAuth().getCurrentUser().getUid());
-
                 userRef.keepSynced(true);
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -385,7 +384,7 @@ public class FirebaseManager {
                 Session.getInstance().setEmail(user.getEmail());
                 Session.getInstance().setFullname(user.getFullname());
                 Session.getInstance().setUrlPhoto(s);
-                callback.success();
+
                 mFirebaseUser.updateEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -396,7 +395,7 @@ public class FirebaseManager {
                         e.printStackTrace();
                     }
                 });
-
+                callback.success();
             }
         });
     }
@@ -457,7 +456,7 @@ public class FirebaseManager {
         DatabaseReference userRef = reference
                 .child(getAuth().getCurrentUser().getUid());
         final DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
-        userRef.keepSynced(true);
+        favoriteRef.keepSynced(true);
         favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -478,8 +477,8 @@ public class FirebaseManager {
         DatabaseReference reference = database.getReference(USERS_CHILD);
         DatabaseReference userRef = reference
                 .child(getAuth().getCurrentUser().getUid());
-        userRef.keepSynced(true);
         final DatabaseReference favoriteRef = userRef.child(FAVORITE_FOOD_CHILD);
+        favoriteRef.keepSynced(true);
         favoriteRef.child(food.getNdbno()).setValue(food);
         callback.updateImageFavorite(true);
     }

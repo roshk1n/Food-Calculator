@@ -73,6 +73,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         numberOfServingsEt.setOnFocusChangeListener(this);
         if(mFragmentListener != null) {
             mFragmentListener.setTitle(getString(R.string.add_food));
+            mFragmentListener.setArrowToolbar();
+            mFragmentListener.disabledMenuSwipe();
         }
 
         if (getArguments() != null) {
@@ -195,7 +197,9 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus)
+        if(!hasFocus) {
             Utils.hideKeyboard(getContext(),v);
+            v.clearFocus();
+        }
     }
 }

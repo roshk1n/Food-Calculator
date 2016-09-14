@@ -5,8 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Patterns;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
@@ -29,7 +34,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     private final String LIGHTLY_ACTIVE_LEVEL = "Lightly Active";
     private final String ACTIVE_LEVEL = "Active";
     private final String VERY_ACTIVE_LEVEL = "Very Active";
-
+    private boolean checkLocal = true;
 
     private ProfileView profileView;
 
@@ -42,9 +47,28 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public void loadUser() {
         dataManager.loadUserProfile(profileView.getContext(), new UserProfileCallback() {
             @Override
-            public void loadProfileSuccess(User user) {
-                profileView.setProfile(user.getPhotoUrl(), user.getEmail(), user.getFullname(), user.getAge(),
-                        user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+            public void loadProfileSuccess(final User user) {
+                if(checkLocal) {
+                    Bitmap image = stringToBitmap(user.getPhotoUrl());
+                    profileView.setProfile(image, user.getEmail(), user.getFullname(), user.getAge(),
+                            user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+                    checkLocal = false;
+
+                } else {
+                    Glide
+                        .with(profileView.getContext())
+                        .load(user.getPhotoUrl())
+                        .asBitmap()
+                        .fitCenter()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                profileView.setProfile(resource, user.getEmail(), user.getFullname(), user.getAge(),
+                                        user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+                            }
+                        });
+                }
+
             }
         });
 

@@ -16,7 +16,6 @@
     <string name="reminders">Reminders</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
-    <string name="breakfast">Breakfast</string>
     <string name="Potato" translatable="false">Картопля</string>
     <string name="_247" translatable="false">247</string>
     <string name="username" translatable="false">UserName</string>
@@ -75,6 +74,13 @@
         <item>Female</item>
     </string-array>
 
+
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="snack">Snack</string>
+
+
     <string name="search">Search</string>
     <string name="days">Days</string>
     <string name="amount_calories">Amount calories:</string>
@@ -127,7 +133,7 @@
     <string name="item_was_removed">Item was removed successfully.</string>
     <string name="undo">Undo</string>
     <string name="ok">OK</string>
-    <string name="favorites">Favorite</string>
+    <string name="favorites">Favorites</string>
     <string name="info_food">Info Food</string>
     <string name="turn_edit_mode">First, turn on editing mode.</string>
     <string name="need_connection_update">You need internet connection for update profile.</string>
@@ -137,5 +143,16 @@
     <string name="enter_all_field">Enter all fields, please !</string>
     <string name="password_dont_match">Password and confirm password don`t match.</string>
     <string name="password_short">Your password must be at least 6 characters long.</string>
-
+    <string name="languages">Languages</string>
+    <string name="group2">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="language">Language</string>
+    <string name="choose_language">Choose language:</string>
+    <string name="ukraine" translatable="false">Українська</string>
+    <string name="english" translatable="false">English</string>
+    <string name="image_incorrect">This image is incorrect. Change image.</string>
+    <string name="add_food_btn">Add food</string>
+    <string name="about">About</string>
+    <string name="application_nam">Food Calculator</string>
 </resources>

@@ -1,16 +1,12 @@
 package com.example.roshk1n.foodcalculator;
 
 import android.app.Application;
-import android.util.Log;
-
-import com.example.roshk1n.foodcalculator.realmModel.UserRealm;
 import com.example.roshk1n.foodcalculator.rest.RestClient;
 import com.firebase.client.Firebase;
 import com.google.firebase.database.FirebaseDatabase;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 
 public class MyApplication extends Application {
 
@@ -26,11 +22,13 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
 
-       Realm.setDefaultConfiguration(realmConfig);
-  /*       FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        Realm realm = Realm.getDefaultInstance();
+        Realm.setDefaultConfiguration(realmConfig);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Localization.onCreate(getApplicationContext(),"en");
 
-        realm.executeTransaction(new Realm.Transaction() {
+    /*  Realm realm = Realm.getDefaultInstance();
+
+          realm.executeTransaction(new Realm.Transaction() {
                                      @Override
                                      public void execute(Realm realm) {
                                          realm.deleteAll();

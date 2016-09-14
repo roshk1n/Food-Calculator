@@ -24,8 +24,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RemindersFragment extends Fragment  implements RemindersView, CallbackReminderAdapter, TimePickerDialog.OnTimeSetListener/* , DialogInterface.OnCancelListener,*/  {
-
+public class RemindersFragment extends Fragment  implements RemindersView, CallbackReminderAdapter, TimePickerDialog.OnTimeSetListener  {
     private RemindersPresenterImpl remindersPresenter;
     private OnFragmentListener mFragmentListener;
     private ArrayList<Reminder> reminders;
