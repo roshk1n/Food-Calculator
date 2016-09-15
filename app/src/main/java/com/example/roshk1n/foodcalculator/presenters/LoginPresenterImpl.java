@@ -3,6 +3,7 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
@@ -69,7 +70,9 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
             public void onCancel() {}
             @Override
             public void onError(FacebookException error) {
-                loginVew.showToast("Login attempt failed.");
+              // loginVew.showToast("Login attempt failed.");
+               loginVew.showToast(error.getMessage());
+
             }
         });
     }

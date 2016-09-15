@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.roshk1n.foodcalculator.Localization;
-import com.example.roshk1n.foodcalculator.MyApplication;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.presenters.LoginPresenterImpl;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.example.roshk1n.foodcalculator.views.LoginView;
@@ -22,7 +18,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 public class LoginActivity extends Activity implements LoginView, View.OnFocusChangeListener {
     private final static String TAG = LoginActivity.class.getSimpleName();
@@ -59,7 +54,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG,"result");
+        Log.d(TAG,"activityResult");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
@@ -67,12 +62,14 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     public void setEmailError() {
+        Log.d(TAG,"errorEmail");
         loginProgress.dismiss();
         emailEt.setError(getString(R.string.error_email));
     }
 
     @Override
     public void setPasswordError() {
+        Log.d(TAG,"errorPassword");
         loginProgress.dismiss();
         passwordEt.setError(getString(R.string.error_password));
     }
@@ -89,7 +86,8 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     public void showToast(String message) {
         Log.d(TAG,"showToast");
         loginProgress.dismiss();
-        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+        Log.d(TAG,message);
     }
 
     @Override
@@ -101,17 +99,18 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
         Log.d(TAG,"OnLogin");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
-        loginPresenter.login("ee@gmail.com", "132132132");
+      //  loginPresenter.login("ee@gmail.com", "132132132");
+        loginPresenter.login(emailEt.getText().toString(),passwordEt.getText().toString());
     }
 
     public void onSingInActivityClicked(View view) {
-        startActivity(new Intent(getApplicationContext(), SingUpActivity.class));
+        startActivity(new Intent(LoginActivity.this, SingUpActivity.class));
     }
 
     private void initUI() {
-        emailEt = (EditText) findViewById(R.id.etLogin);
-        passwordEt = (EditText) findViewById(R.id.etPassword);
-        btnLogInFacebook = (LoginButton) findViewById(R.id.btnLogInFacebook);
+        emailEt = (EditText) findViewById(R.id.login_et);
+        passwordEt = (EditText) findViewById(R.id.password_et);
+        btnLogInFacebook = (LoginButton) findViewById(R.id.login_facebook_btn);
         loginProgress = new ProgressDialog(this);
         loginProgress.setCanceledOnTouchOutside(false);
         loginProgress.setCancelable(false);

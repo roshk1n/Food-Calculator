@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Base64;
 import android.util.Patterns;
 
@@ -95,13 +96,13 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             e.printStackTrace();
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
-        profileView.setUserPhoto(photo);
+        profileView.setUserPhoto(scaleBitmap(photo,500,500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        profileView.setUserPhoto(photo);
+        profileView.setUserPhoto(scaleBitmap(photo,500,500));
     }
 
     @Override
@@ -113,6 +114,7 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final Bitmap image,
                                   final String sex,
                                   final String active_level) {
+
           if (!fullname.isEmpty() && !weight.isEmpty() && !height.isEmpty()
                 && !age.isEmpty() && !email.isEmpty()) {
               if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
@@ -207,5 +209,15 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] b = outputStream.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    private Bitmap scaleBitmap(Bitmap bitmapToScale, float newWidth, float newHeight) {
+        if(bitmapToScale == null)
+            return null;
+        int width = bitmapToScale.getWidth();
+        int height = bitmapToScale.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.postScale(newWidth / width, newHeight / height);
+        return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
     }
 }

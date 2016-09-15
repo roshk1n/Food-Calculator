@@ -189,9 +189,10 @@ public class MainActivity extends AppCompatActivity
             Session.destroy();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+
         } else if (id == R.id.nav_about) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.about));
+
             builder.setView(R.layout.about_app);
             builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                 @Override

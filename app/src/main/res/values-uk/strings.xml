@@ -105,6 +105,9 @@
     <string name="image_incorrect">Це зображення не підтримується. Оберіть інше зображення.</string>
     <string name="add_food_btn">Додати</string>
     <string name="dinner">Вечеря</string>
+    <string name="about">Про програму</string>
     <string name="lunch">Обід</string>
     <string name="snack">Закуска</string>
+    <string name="created_by">Авторські права 2016, Розробник Олег Рошка.</string>
+    <string name="version_1_0">Версія 1.0</string>
 </resources>

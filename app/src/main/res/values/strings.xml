@@ -155,4 +155,6 @@
     <string name="add_food_btn">Add food</string>
     <string name="about">About</string>
     <string name="application_nam">Food Calculator</string>
+    <string name="created_by">Copyright 2016, Created by Oleh Roshka.</string>
+    <string name="version_1_0">Version 1.0</string>
 </resources>

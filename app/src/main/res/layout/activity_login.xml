@@ -26,7 +26,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/etLogin"
+            android:id="@+id/login_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
@@ -123,7 +123,7 @@
     </RelativeLayout>
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/btnLogInFacebook"
+        android:id="@+id/login_facebook_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />

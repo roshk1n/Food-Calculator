@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.text.TextUtils;
 
 import com.example.roshk1n.foodcalculator.R;
@@ -61,13 +62,13 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
 
-        singUpView.setUserPhoto(photo);
+        singUpView.setUserPhoto(scaleBitmap(photo,500,500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        singUpView.setUserPhoto(photo);
+        singUpView.setUserPhoto(scaleBitmap(photo,500,500));
     }
 
     @Override
@@ -78,5 +79,15 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
     @Override
     public void createUserError(String message) {
         singUpView.showToast(message);
+    }
+
+    private Bitmap scaleBitmap(Bitmap bitmapToScale, float newWidth, float newHeight) {
+        if(bitmapToScale == null)
+            return null;
+        int width = bitmapToScale.getWidth();
+        int height = bitmapToScale.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.postScale(newWidth / width, newHeight / height);
+        return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
     }
 }

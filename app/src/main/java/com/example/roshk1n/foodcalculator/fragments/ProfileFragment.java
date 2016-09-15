@@ -76,7 +76,6 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         initUI();
 
         fullNameEt.setOnFocusChangeListener(this);
@@ -90,7 +89,6 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         }
 
         profilePresenter.loadUser();
-
         profileIv.setOnClickListener(this);
         editProfileFab.setOnClickListener(this);
 
@@ -136,6 +134,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             if (Utils.isConnectNetwork(getActivity().getApplicationContext())) {
                 if (fullNameEt.isEnabled()) {
                     saveDatePd.setMessage(getString(R.string.wait_please));
+                    saveDatePd.setIndeterminate(true);
                     saveDatePd.show();
                     saveUserProfile();
                 }
@@ -240,7 +239,6 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             showToast(getString(R.string.image_incorrect));
             profileIv.setImageDrawable(getResources().getDrawable(R.drawable.profile_default));
         }
-
     }
 
     private void changeIcon() {
