@@ -75,13 +75,13 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
 
-        singUpView.setUserPhoto(scaleBitmap(photo, 500, 500));
+        singUpView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        singUpView.setUserPhoto(scaleBitmap(photo, 500, 500));
+        singUpView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
@@ -94,14 +94,13 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
         singUpView.showToast(message);
     }
 
-    private Bitmap scaleBitmap(Bitmap bitmapToScale, float newWidth, float newHeight) {
-        if (bitmapToScale == null)
-            return null;
-        int width = bitmapToScale.getWidth();
-        int height = bitmapToScale.getHeight();
-        Matrix matrix = new Matrix();
-        matrix.postScale(newWidth / width, newHeight / height);
-        return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
+    private Bitmap scaleBitmap(Bitmap bitmapToScale, float maxImageSize) {
+        float ratio = Math.min(maxImageSize / bitmapToScale.getWidth(),
+                maxImageSize / bitmapToScale.getHeight());
+        int width = Math.round(ratio * bitmapToScale.getWidth());
+        int height = Math.round(ratio * bitmapToScale.getHeight());
+
+        return Bitmap.createScaledBitmap(bitmapToScale, width, height, true);
     }
 
     public void getPermissions() {

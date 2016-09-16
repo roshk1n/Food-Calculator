@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.bumptech.glide.Glide;
@@ -100,13 +101,13 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             e.printStackTrace();
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
-        profileView.setUserPhoto(scaleBitmap(photo,500,500));
+        profileView.setUserPhoto(scaleBitmap(photo,500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        profileView.setUserPhoto(scaleBitmap(photo,500,500));
+        profileView.setUserPhoto(scaleBitmap(photo,500));
     }
 
     @Override
@@ -215,15 +216,13 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    private Bitmap scaleBitmap(Bitmap bitmapToScale, float newWidth, float newHeight) {
-        if(bitmapToScale == null)
-            return null;
-        int width = bitmapToScale.getWidth();
-        int height = bitmapToScale.getHeight();
-        Matrix matrix = new Matrix();
+    private Bitmap scaleBitmap(Bitmap bitmapToScale, float maxImageSize) {
+        float ratio = Math.min(maxImageSize / bitmapToScale.getWidth(),
+                    maxImageSize / bitmapToScale.getHeight());
+        int width = Math.round(ratio * bitmapToScale.getWidth());
+        int height = Math.round(ratio * bitmapToScale.getHeight());
 
-        matrix.postScale(newWidth / width, newHeight / height);
-        return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
+        return Bitmap.createScaledBitmap(bitmapToScale, width, height, true);
     }
 
     public void getPermissions() {
