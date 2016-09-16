@@ -270,9 +270,9 @@ public class FirebaseManager {
                 }
                 callback.loadProfileSuccess(user);
                 Session.startSession();
-                Session.getInstance().setEmail(user.getEmail());
-                Session.getInstance().setFullname(user.getFullname());
-                Session.getInstance().setUrlPhoto(user.getPhotoUrl());
+                Session.getInstance().setEmail(getAuth().getCurrentUser().getEmail());
+                Session.getInstance().setFullname(getAuth().getCurrentUser().getDisplayName());
+                Session.getInstance().setUrlPhoto(getAuth().getCurrentUser().getPhotoUrl().toString());
             }
 
             @Override
