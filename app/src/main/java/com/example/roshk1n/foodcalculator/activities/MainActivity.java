@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("TAG", "MainActivity OnCreate");
+
         setContentView(R.layout.activity_main);
         initUI();
 
@@ -110,6 +112,12 @@ public class MainActivity extends AppCompatActivity
             addFoodFab.hide();
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e("TAG", "MAIN destroy");
+        super.onDestroy();
     }
 
     @Override

@@ -42,6 +42,8 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "SingUpActivity");
+
         setContentView(R.layout.activity_sing_up);
         initUI();
 
@@ -105,6 +107,8 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
 
     @Override
     public Activity getActivity() {
+//        TODO: recursion, change to @this
+        Log.e(TAG, "GetAc");
         return getActivity();
     }
 

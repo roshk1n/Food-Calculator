@@ -3,12 +3,11 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
+import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.LoginView;
-import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;

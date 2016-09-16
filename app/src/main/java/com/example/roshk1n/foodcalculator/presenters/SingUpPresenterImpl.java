@@ -6,15 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.example.roshk1n.foodcalculator.R;
+import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.SingUpView;
-import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -109,11 +108,14 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
                 != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(singUpView.getContext(),
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
+//             TODO: singUpView.getActivity() - causes OutOfMemory
             if (ActivityCompat.shouldShowRequestPermissionRationale(singUpView.getActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//         TODO:   Why it's empty ?
             }
             if (ActivityCompat.shouldShowRequestPermissionRationale(singUpView.getActivity(),
                     Manifest.permission.CAMERA)) {
+//         TODO:   Why it's empty ?
             } else {
                 ActivityCompat.requestPermissions(singUpView.getActivity(),
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);

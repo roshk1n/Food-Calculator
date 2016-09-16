@@ -55,8 +55,9 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private ProgressDialog saveDatePd;
     private FloatingActionButton editProfileFab;
 
-    public ProfileFragment() {
-    }
+//    TODO: don't create constructor for fragments
+//    public ProfileFragment() {
+//    }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();

@@ -28,9 +28,12 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     private LoginButton btnLogInFacebook;
     private ProgressDialog loginProgress;
 
+    //  TODO: The reason why you return to login screen after onBackPressed in main - Memory leak
+    //  http://www.theshiftingbit.com/Fixing-Memory-Leaks-in-Android-Studio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "LoginActivity OnCreate");
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         initUI();
@@ -41,7 +44,6 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
-        Log.d(TAG,"OnCreate");
         loginPresenter.checkLogin();
 
         btnLogInFacebook.setReadPermissions(Arrays.asList(
@@ -56,7 +58,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG,"activityResult");
+        Log.d(TAG, "activityResult");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
@@ -65,7 +67,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     @Override
     public void setEmailError() {
         emailEt.setErrorEnabled(true);
-        Log.d(TAG,"errorEmail");
+        Log.d(TAG, "errorEmail");
         loginProgress.dismiss();
         emailEt.setError(getString(R.string.empty_email));
     }
@@ -73,25 +75,31 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     @Override
     public void setPasswordError() {
         passwordEt.setErrorEnabled(true);
-        Log.d(TAG,"errorPassword");
+        Log.d(TAG, "errorPassword");
         loginProgress.dismiss();
         passwordEt.setError(getString(R.string.empty_password));
     }
 
     @Override
     public void navigateToHome() {
-        Log.d(TAG,"navigate to home");
+        Log.d(TAG, "navigate to home");
         loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
     @Override
+    protected void onDestroy() {
+        Log.e(TAG, "Login destroy");
+        super.onDestroy();
+    }
+
+    @Override
     public void showToast(String message) {
-        Log.d(TAG,"showToast");
+        Log.d(TAG, "showToast");
         loginProgress.dismiss();
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-        Log.d(TAG,message);
+        Log.d(TAG, message);
     }
 
     @Override
@@ -102,11 +110,11 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     public void onLogIn(View view) {
         passwordEt.setErrorEnabled(false);
         emailEt.setErrorEnabled(false);
-        Log.d(TAG,"OnLogin");
+        Log.d(TAG, "OnLogin");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
-      //  loginPresenter.login("ee@gmail.com", "132132132");
-        loginPresenter.login(emailEt.getEditText().getText().toString(),passwordEt.getEditText().getText().toString());
+        //  loginPresenter.login("ee@gmail.com", "132132132");
+        loginPresenter.login(emailEt.getEditText().getText().toString(), passwordEt.getEditText().getText().toString());
     }
 
     public void onSingInActivityClicked(View view) {
@@ -128,11 +136,11 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus) {
-            Utils.hideKeyboard(getApplicationContext(),v);
+        if (!hasFocus) {
+            Utils.hideKeyboard(getApplicationContext(), v);
             v.clearFocus();
         }
-        if(hasFocus)
-            Utils.showKeyboard(getApplicationContext(),v);
+        if (hasFocus)
+            Utils.showKeyboard(getApplicationContext(), v);
     }
 }
