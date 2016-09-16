@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodCalculator</string>
+    <string name="app_name">Food Calculator</string>
     <string name="log_in">Log In</string>
     <string name="or">OR</string>
     <string name="password">Password</string>
@@ -97,9 +97,9 @@
     <string name="_6_38g">6.38g</string>
     <string name="no_favorite_foods">No favorite foods.</string>
     <string name="wait_please">Wait please...</string>
-    <string name="error_email">Enter email please</string>
-    <string name="error_password">Enter password please</string>
-    <string name="email_incorrect">Your email is incorrect.</string>
+    <string name="empty_email">Enter email please.</string>
+    <string name="empty_password">Enter password please.</string>
+    <string name="email_incorrect">Email is incorrect.</string>
     <string name="photo">Photo</string>
     <string name="select_image">Select Image</string>
     <string name="add_food_success">Food added successfully.</string>
@@ -141,8 +141,8 @@
     <string name="remember_enter_field">Remember, enter all fields.</string>
     <string name="all">All</string>
     <string name="enter_all_field">Enter all fields, please !</string>
-    <string name="password_dont_match">Password and confirm password don`t match.</string>
-    <string name="password_short">Your password must be at least 6 characters long.</string>
+    <string name="password_dont_match">Confirm password don`t match.</string>
+    <string name="password_short">Password must be longer than 6 symbols.</string>
     <string name="languages">Languages</string>
     <string name="group2">Settings</string>
     <string name="cancel">Cancel</string>
@@ -154,7 +154,12 @@
     <string name="image_incorrect">This image is incorrect. Change image.</string>
     <string name="add_food_btn">Add food</string>
     <string name="about">About</string>
-    <string name="application_nam">Food Calculator</string>
+    <string name="application_nam" translatable="false">Food Calculator</string>
     <string name="created_by">Copyright 2016, Created by Oleh Roshka.</string>
     <string name="version_1_0">Version 1.0</string>
+    <string name="empty_full_name">Enter Full Name please.</string>
+    <string name="empty_confirm">Enter confirm password please.</string>
+    <string name="cal">" cal."</string>
+    <string name="login_facebook">Log in with Facebook</string>
+    <string name="logout_facebook">Log out</string>
 </resources>

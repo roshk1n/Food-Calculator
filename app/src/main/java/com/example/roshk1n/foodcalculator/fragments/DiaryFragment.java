@@ -307,10 +307,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showHintAddAnim() {
-        Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
-                , R.anim.show_hint_add_food);
-        hintCircleAddFood.startAnimation(animation1);
-        HintAddFoodLayout.setVisibility(View.VISIBLE);
+        if(isVisible()) {
+            Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                    , R.anim.show_hint_add_food);
+            hintCircleAddFood.startAnimation(animation1);
+            HintAddFoodLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void makeSnackBarAction(final int position, final Food removedFood) {
@@ -358,7 +360,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     public void showDatePicker() {
         Calendar calendar = Calendar.getInstance();
-
+        calendar.setTimeInMillis(diaryPresenter.getDate().getTimeInMillis());
         DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                 this,
                 calendar.get(Calendar.YEAR),

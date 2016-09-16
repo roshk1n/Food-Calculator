@@ -27,37 +27,37 @@ public class RecyclerFavoriteAdapter extends RecyclerView.Adapter<RecyclerFavori
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CallbackFavoriteAdapter callbackFavoriteAdapter;
         private ArrayList<Food> favoriteList;
-        private TextView name_tv;
-        private TextView value_por_tv;
-        private TextView amount_cal_tv;
-        private CardView item_cv;
+        private TextView nameTv;
+        private TextView valuePorTv;
+        private TextView amountCalTv;
+        private CardView itemCv;
 
 
         public ViewHolder(View v, ArrayList<Food> favoriteList, CallbackFavoriteAdapter callback) {
             super(v);
             this.favoriteList = favoriteList;
             this.callbackFavoriteAdapter = callback;
-            name_tv = (TextView) v.findViewById(R.id.name_favorite_tv);
-            value_por_tv = (TextView) v.findViewById(R.id.value_por_favorite_tv);
-            amount_cal_tv = (TextView) v.findViewById(R.id.amount_cal_favorite_tv);
-            item_cv = (CardView) v.findViewById(R.id.favorite_card_view);
+            nameTv = (TextView) v.findViewById(R.id.name_favorite_tv);
+            valuePorTv = (TextView) v.findViewById(R.id.value_por_favorite_tv);
+            amountCalTv = (TextView) v.findViewById(R.id.amount_cal_favorite_tv);
+            itemCv = (CardView) v.findViewById(R.id.favorite_card_view);
         }
 
         @Override
         public void onClick(View v) {
-            if (v == item_cv) {
+            if (v == itemCv) {
                 callbackFavoriteAdapter.navigateToInfoFood(favoriteList.get(getAdapterPosition()));
             }
         }
 
         public void setDate() {
-            name_tv.setText(favoriteList.get(getAdapterPosition()).getName());
-            amount_cal_tv.setText(favoriteList.get(getAdapterPosition()).getNutrients().get(1).getValue() + " cal.");
-            value_por_tv.setText("100" + " g, ");
+            nameTv.setText(favoriteList.get(getAdapterPosition()).getName());
+            amountCalTv.setText(favoriteList.get(getAdapterPosition()).getNutrients().get(1).getValue() + " cal.");
+            valuePorTv.setText("100" + " g, ");
         }
 
         public void setUpListener() {
-            item_cv.setOnClickListener(this);
+            itemCv.setOnClickListener(this);
         }
     }
 

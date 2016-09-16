@@ -10,9 +10,9 @@ import android.graphics.Bitmap;
 
 import android.os.Bundle;
 
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +27,13 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
 
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
-    private static final String TAG = "MyLog";
+    private static final String TAG = SingUpActivity.class.getSimpleName();
 
-    private EditText surnameEt;
-    private EditText emailEt;
-    private EditText passwordEt;
-    private EditText confirmPasswordEt;
-    private TextView alreadyAccoutTv;
+    private TextInputLayout surnameEt;
+    private TextInputLayout emailEt;
+    private TextInputLayout passwordEt;
+    private TextInputLayout confirmPasswordEt;
+    private TextView alreadyAccountTv;
     private CircleImageView userIv;
     private ProgressDialog singUpProgress;
 
@@ -43,7 +43,6 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
-
         initUI();
 
         surnameEt.setOnFocusChangeListener(this);
@@ -54,7 +53,7 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
 
-        alreadyAccoutTv.setOnClickListener(new View.OnClickListener() {
+        alreadyAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -104,24 +103,62 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         return this;
     }
 
+    @Override
+    public Activity getActivity() {
+        return getActivity();
+    }
+
+    @Override
+    public void setEmailError(String message) {
+        singUpProgress.dismiss();
+        emailEt.setErrorEnabled(true);
+        emailEt.setError(message);
+    }
+
+    @Override
+    public void setPasswordError(String message) {
+        singUpProgress.dismiss();
+        passwordEt.setErrorEnabled(true);
+        passwordEt.setError(message);
+    }
+
+    @Override
+    public void setConfirmError(String message) {
+        singUpProgress.dismiss();
+        confirmPasswordEt.setErrorEnabled(true);
+        confirmPasswordEt.setError(message);
+    }
+
+    @Override
+    public void serFullNameError(String message) {
+        singUpProgress.dismiss();
+        surnameEt.setErrorEnabled(true);
+        surnameEt.setError(message);
+    }
     public void onSignUpClicked(View view) {
+        surnameEt.setErrorEnabled(false);
+        emailEt.setErrorEnabled(false);
+        passwordEt.setErrorEnabled(false);
+        confirmPasswordEt.setErrorEnabled(false);
+
         singUpProgress = ProgressDialog.show(this, "", getString(R.string.wait_please));
         singUpProgress.setCanceledOnTouchOutside(false);
         singUpProgress.setCancelable(false);
-        singUpPresenter.singUp(surnameEt.getText().toString(), emailEt.getText().toString()
-                , passwordEt.getText().toString(), confirmPasswordEt.getText().toString());
+        singUpPresenter.singUp(surnameEt.getEditText().getText().toString(), emailEt.getEditText().getText().toString()
+                , passwordEt.getEditText().getText().toString(), confirmPasswordEt.getEditText().getText().toString());
     }
 
     private void initUI() {
-        surnameEt = (EditText) findViewById(R.id.edit_text_username);
-        emailEt = (EditText) findViewById(R.id.edit_text_new_email);
-        passwordEt = (EditText) findViewById(R.id.edit_text_new_password);
-        confirmPasswordEt = (EditText) findViewById(R.id.edit_text_confirm_password);
+        surnameEt = (TextInputLayout) findViewById(R.id.username_et);
+        emailEt = (TextInputLayout) findViewById(R.id.new_email_et);
+        passwordEt = (TextInputLayout) findViewById(R.id.password_sing_up_et);
+        confirmPasswordEt = (TextInputLayout) findViewById(R.id.confirm_password_et);
         userIv = (CircleImageView) findViewById(R.id.ivUser);
-        alreadyAccoutTv = (TextView) findViewById(R.id.already_account_tv);
+        alreadyAccountTv = (TextView) findViewById(R.id.already_account_tv);
     }
 
     public void onChoosePhoto(View view) {
+        singUpPresenter.getPermissions();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.photo)
                 .setItems(R.array.photo, new DialogInterface.OnClickListener() {

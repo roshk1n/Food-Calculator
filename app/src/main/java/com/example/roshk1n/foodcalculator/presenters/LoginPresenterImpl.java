@@ -84,9 +84,8 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
             if (TextUtils.isEmpty(email)) {
                 loginVew.setEmailError();
                 error = true;
-            }
 
-            if (TextUtils.isEmpty(password)) {
+            } else if (TextUtils.isEmpty(password)) {
                 loginVew.setPasswordError();
                 error = true;
             }

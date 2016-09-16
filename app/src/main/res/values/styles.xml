@@ -28,5 +28,6 @@
 
     <style name="StyledTilEditText">
         <item name="android:theme">@style/StyledTilEditTextTheme</item>
+        <item name="android:textColor">@color/colorError</item>
     </style>
 </resources>

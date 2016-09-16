@@ -30,9 +30,9 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         private ArrayList<Food> foods;
         private CallbackSearchAdapter callbackSearchAdapter;
         private long date;
-        private TextView tvName;
-        private TextView tvValuePor;
-        private TextView tvAmountCal;
+        private TextView nameTv;
+        private TextView valuePorTv;
+        private TextView amountCalTv;
         private CardView searchCardView;
 
         public ViewHolder(View v, ArrayList<Food> foods, long date, CallbackSearchAdapter callback) {
@@ -40,20 +40,20 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
             this.foods = foods;
             this.callbackSearchAdapter = callback;
             this.date = date;
-            tvName = (TextView) v.findViewById(R.id.tvSearchName);
-            tvValuePor = (TextView) v.findViewById(R.id.tv_value_por_search);
-            tvAmountCal = (TextView) v.findViewById(R.id.tv_amout_cal_search);
+            nameTv = (TextView) v.findViewById(R.id.tvSearchName);
+            valuePorTv = (TextView) v.findViewById(R.id.tv_value_por_search);
+            amountCalTv = (TextView) v.findViewById(R.id.tv_amout_cal_search);
             searchCardView = (CardView) v.findViewById(R.id.item_search_card_view);
         }
 
         public void setDate() {
-            tvName.setText(foods.get(getAdapterPosition()).getName());
-            tvAmountCal.setText(String.valueOf(foods.get(getAdapterPosition())
+            nameTv.setText(foods.get(getAdapterPosition()).getName());
+            amountCalTv.setText(String.valueOf(foods.get(getAdapterPosition())
                     .getNutrients()
                     .get(1)
                     .getValue() + " cal"));
 
-            tvValuePor.setText("100" + " g, ");
+            valuePorTv.setText("100" + " g, ");
         }
 
         public void setUpListener() {

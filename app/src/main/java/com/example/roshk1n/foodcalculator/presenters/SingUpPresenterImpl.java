@@ -1,10 +1,14 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.example.roshk1n.foodcalculator.R;
@@ -27,25 +31,34 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
     @Override
     public void singUp(final String fullname, final String email, final String password, final String confirmPassword) {
         boolean error = false;
-
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(fullname)
-                || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            singUpView.showToast(singUpView.getContext().getString(R.string.enter_all_field));
+        if (TextUtils.isEmpty(fullname)) {
+            singUpView.serFullNameError(singUpView.getContext().getString(R.string.empty_full_name));
             error = true;
 
-        }   else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                error = true;
-                singUpView.showToast(singUpView.getContext().getString(R.string.email_incorrect));
+        } else if (TextUtils.isEmpty(email)) {
+            singUpView.setEmailError(singUpView.getContext().getString(R.string.empty_email));
+            error = true;
+
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = true;
+            singUpView.setEmailError(singUpView.getContext().getString(R.string.email_incorrect));
+
+        } else if (TextUtils.isEmpty(password)) {
+            singUpView.setPasswordError(singUpView.getContext().getString(R.string.empty_password));
+            error = true;
+
+        } else if (TextUtils.isEmpty(confirmPassword)) {
+            singUpView.setConfirmError(singUpView.getContext().getString(R.string.empty_confirm));
+            error = true;
 
         } else if (!password.equals(confirmPassword)) {
-            singUpView.showToast(singUpView.getContext().getString(R.string.password_dont_match));
+            singUpView.setConfirmError(singUpView.getContext().getString(R.string.password_dont_match));
             error = true;
 
-        } else if(password.length()<6) {
-            singUpView.showToast(singUpView.getContext().getString(R.string.password_short));
+        } else if (password.length() < 6) {
+            singUpView.setPasswordError(singUpView.getContext().getString(R.string.password_short));
             error = true;
         }
-
         if (!error) {
             final Bitmap imageUser = singUpView.getBitmapIv();
             dataManager.createUser(email, password, fullname, imageUser);
@@ -62,13 +75,13 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
 
-        singUpView.setUserPhoto(scaleBitmap(photo,500,500));
+        singUpView.setUserPhoto(scaleBitmap(photo, 500, 500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        singUpView.setUserPhoto(scaleBitmap(photo,500,500));
+        singUpView.setUserPhoto(scaleBitmap(photo, 500, 500));
     }
 
     @Override
@@ -82,12 +95,32 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
     }
 
     private Bitmap scaleBitmap(Bitmap bitmapToScale, float newWidth, float newHeight) {
-        if(bitmapToScale == null)
+        if (bitmapToScale == null)
             return null;
         int width = bitmapToScale.getWidth();
         int height = bitmapToScale.getHeight();
         Matrix matrix = new Matrix();
         matrix.postScale(newWidth / width, newHeight / height);
         return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
+    }
+
+    public void getPermissions() {
+        if (ContextCompat.checkSelfPermission(singUpView.getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(singUpView.getContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(singUpView.getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            }
+            if (ActivityCompat.shouldShowRequestPermissionRationale(singUpView.getActivity(),
+                    Manifest.permission.CAMERA)) {
+            } else {
+                ActivityCompat.requestPermissions(singUpView.getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(singUpView.getActivity(),
+                        new String[]{Manifest.permission.CAMERA}, 2);
+            }
+        }
     }
 }

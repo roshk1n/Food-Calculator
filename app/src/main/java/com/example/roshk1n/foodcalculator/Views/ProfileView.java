@@ -1,5 +1,6 @@
 package com.example.roshk1n.foodcalculator.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -18,6 +19,8 @@ public interface ProfileView {
     void CompleteUpdateAndRefreshDrawer();
 
     Context getContext();
+
+    Activity getActivity();
 
     void showToast(String s);
 }

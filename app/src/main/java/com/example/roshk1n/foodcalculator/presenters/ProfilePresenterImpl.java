@@ -1,10 +1,14 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Patterns;
 
@@ -217,7 +221,29 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         int width = bitmapToScale.getWidth();
         int height = bitmapToScale.getHeight();
         Matrix matrix = new Matrix();
+
         matrix.postScale(newWidth / width, newHeight / height);
         return Bitmap.createBitmap(bitmapToScale, 0, 0, bitmapToScale.getWidth(), bitmapToScale.getHeight(), matrix, true);
+    }
+
+    public void getPermissions() {
+        if (ContextCompat.checkSelfPermission(profileView.getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(profileView.getContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            }
+            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
+                    Manifest.permission.CAMERA)) {
+            } else {
+                ActivityCompat.requestPermissions(profileView.getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(profileView.getActivity(),
+                        new String[]{Manifest.permission.CAMERA}, 2);
+
+            }
+        }
     }
 }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 public class FavoriteFragment extends Fragment implements FavoriteView, CallbackFavoriteAdapter {
     private static final String DATE_KEY = "date";
     private static final String CHECK_KEY = "check";
+
     private FavoritePresenterImpl favoritePresenter;
     private ArrayList<Food> favoriteList = new ArrayList<>();
     private OnFragmentListener mFragmentListener;

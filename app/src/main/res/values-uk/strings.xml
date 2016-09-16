@@ -59,7 +59,7 @@
     <string name="profile">Профіль</string>
     <string name="photo">Фото</string>
     <string name="password_short">Ваш пароль надто короткий (Потрібно 6 символів).</string>
-    <string name="password_dont_match">Пароль та підтвердження паролю не співпадають.</string>
+    <string name="password_dont_match">Підтвердження паролю не співпадає.</string>
     <string name="password">Пароль</string>
     <string name="or">АБО</string>
     <string name="ok">ОК</string>
@@ -89,12 +89,12 @@
     <string name="food">Їжа</string>
     <string name="feb">Лют</string>
     <string name="favorites">Улюблені</string>
-    <string name="email_incorrect">Невірний формат електроної адреси. </string>
+    <string name="email_incorrect">Невірний формат електроної адреси.</string>
     <string name="enter_all_field">Заповніть усі поля, будь-ласка.</string>
     <string name="enter_your_email">Введіть електронну адресу</string>
-    <string name="error_email">Введіть свою електронну адресу.</string>
+    <string name="empty_email">Введіть електронну адресу.</string>
     <string name="error_number_sevings">Вкажіть кількість порцій.</string>
-    <string name="error_password">Введіть пароль, будь-ласка.</string>
+    <string name="empty_password">Введіть пароль, будь-ласка.</string>
     <string name="fat_g">Жири (g)</string>
     <string name="languages">Мова</string>
     <string name="group2">Налаштування</string>
@@ -110,4 +110,9 @@
     <string name="snack">Закуска</string>
     <string name="created_by">Авторські права 2016, Розробник Олег Рошка.</string>
     <string name="version_1_0">Версія 1.0</string>
+    <string name="empty_confirm">Введіть підтвердження паролю.</string>
+    <string name="empty_full_name">Введіть ваше ім\'я.</string>
+    <string name="cal">" кал."</string>
+    <string name="login_facebook">Увійти через Facebook</string>
+    <string name="logout_facebook">Вийти</string>
 </resources>

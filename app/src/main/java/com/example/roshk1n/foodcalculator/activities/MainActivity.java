@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -25,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,9 +61,8 @@ public class MainActivity extends AppCompatActivity
     private TextView fullNameDrawerTv;
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorHintAdd;
-    private View.OnClickListener clickLanguage;
-    private LinearLayout uk_layout;
-    private LinearLayout en_layout;
+    private LinearLayout ukLayout;
+    private LinearLayout enLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,18 +232,18 @@ public class MainActivity extends AppCompatActivity
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
 
-            uk_layout = (LinearLayout) view.findViewById(R.id.ukraine_liner);
-            en_layout = (LinearLayout) view.findViewById(R.id.english_liner);
+            ukLayout = (LinearLayout) view.findViewById(R.id.ukraine_liner);
+            enLayout = (LinearLayout) view.findViewById(R.id.english_liner);
 
             if (Localization.getLanguage().equals("uk")) {
-                uk_layout.requestFocus();
-                en_layout.setSelected(true);
+                ukLayout.requestFocus();
+                enLayout.setSelected(true);
             } else {
-                en_layout.requestFocus();
-                en_layout.setSelected(true);
+                enLayout.requestFocus();
+                enLayout.setSelected(true);
             }
-            uk_layout.setOnFocusChangeListener(this);
-            en_layout.setOnFocusChangeListener(this);
+            ukLayout.setOnFocusChangeListener(this);
+            enLayout.setOnFocusChangeListener(this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -363,9 +360,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (v == uk_layout) {
+        if (v == ukLayout) {
             Localization.setLanguage("uk");
-        } else if (v == en_layout) {
+        } else if (v == enLayout) {
             Localization.setLanguage("en");
         }
     }

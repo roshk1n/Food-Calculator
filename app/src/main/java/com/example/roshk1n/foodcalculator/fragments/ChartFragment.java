@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
@@ -35,6 +37,7 @@ public class ChartFragment extends Fragment implements ChartView {
     private MaterialSpinner periodSp;
     private TextView dayTv;
     private TextView amountCalTv;
+    private ImageView calendarIv;
     private LineChart lineChart;
 
     public static ChartFragment newInstance() {
@@ -62,12 +65,19 @@ public class ChartFragment extends Fragment implements ChartView {
         periodSp.setItems(getString(R.string.week), getString(R.string.month), getString(R.string.year));
 
         presenter.loadData(0);
-        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
+        amountCalTv.setText(String.valueOf(presenter.getAmountCalories())+getContext().getString(R.string.cal));
 
         periodSp.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 presenter.loadData(position);
+            }
+        });
+
+        calendarIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                periodSp.expand();
             }
         });
 
@@ -91,7 +101,7 @@ public class ChartFragment extends Fragment implements ChartView {
     @Override
     public void setEntry(ArrayList<Entry> entriesChart, int period) {
         ArrayList<Entry> entries = entriesChart;
-        amountCalTv.setText(String.valueOf(presenter.getAmountCalories()));
+        amountCalTv.setText(String.valueOf(presenter.getAmountCalories())+getContext().getString(R.string.cal));
         dataSet = new LineDataSet(entries, "");
         if (period == 0) {
             ArrayList<String> labels = new ArrayList<>(); // list for week labels
@@ -137,29 +147,31 @@ public class ChartFragment extends Fragment implements ChartView {
         periodSp = (MaterialSpinner) view.findViewById(R.id.period_sp);
         dayTv = (TextView) view.findViewById(R.id.day_chart_tv);
         amountCalTv = (TextView) view.findViewById(R.id.amount_calories_chart_tv);
+        calendarIv = (ImageView) view.findViewById(R.id.calendar_iv);
     }
 
     private void configureChart(boolean enableLimitLine, float scaleX, float scaleY, float x, float y) {
         dataSet.setDrawFilled(true);
-        dataSet.setColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataSet.setCircleColor(getResources().getColor(R.color.colorPrimaryDark));
-        dataSet.setCircleColorHole(getResources().getColor(R.color.colorPrimaryDark));
-        dataSet.setFillColor(getResources().getColor(R.color.colorPrimaryDark));
+        dataSet.setColor(ContextCompat.getColor(getContext(),R.color.colorPrimaryDark));
+        dataSet.setCircleColor(ContextCompat.getColor(getContext(),R.color.colorPrimaryDark));
+        dataSet.setCircleColorHole(ContextCompat.getColor(getContext(),R.color.colorPrimaryDark));
+        dataSet.setFillColor(ContextCompat.getColor(getContext(),R.color.colorPrimaryDark));
         dataSet.setValueTextSize(10);
 
         lineChart.setDescription("");
-        lineChart.setGridBackgroundColor(getResources().getColor(R.color.mdtp_white));
+        lineChart.setGridBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorWhite));
         lineChart.getLegend().setEnabled(false);
         lineChart.animateY(1000);
         lineChart.setData(data);
         lineChart.zoom(scaleX, scaleY, x, y);
 
-        LimitLine ll1 = new LimitLine(userLimit, getString(R.string.limit));
-        ll1.setLineWidth(2f);
-        ll1.enableDashedLine(20f, 10f, 0f);
+        LimitLine ll1 = new LimitLine(userLimit, getString(R.string.limit)+" ("+userLimit+" "+getContext().getString(R.string.cal)+")");
+        ll1.setLineWidth(1.7f);
+        ll1.enableDashedLine(20f, 20f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(11f);
-        ll1.setTextColor(getResources().getColor(R.color.colorPrimary));
+        ll1.setLineColor(ContextCompat.getColor(getContext(),R.color.colorError));
+        ll1.setTextColor(ContextCompat.getColor(getContext(),R.color.colorError));
 
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines();

@@ -21,12 +21,13 @@
         android:src="@drawable/ic_app" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/email_et"
         style="@style/StyledTilEditText"
+        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/login_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -38,12 +39,12 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_et"
         style="@style/StyledTilEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
@@ -118,12 +119,13 @@
             android:text="@string/or"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
-
-
     </RelativeLayout>
 
     <com.facebook.login.widget.LoginButton
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"
         android:id="@+id/login_facebook_btn"
+        facebook:com_facebook_login_text="@string/login_facebook"
+        facebook:com_facebook_logout_text="@string/logout_facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />

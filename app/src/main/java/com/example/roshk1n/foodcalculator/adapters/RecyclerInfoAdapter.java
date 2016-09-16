@@ -20,21 +20,21 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title_nutrients_tv;
-        private TextView value_nutrients_tv;
+        private TextView titleNutrientsTv;
+        private TextView valueNutrientsTv;
         private ArrayList<Nutrient> nutrients;
 
         public ViewHolder(View view, ArrayList<Nutrient> nutrients) {
             super(view);
             this.nutrients = nutrients;
-            title_nutrients_tv = (TextView) view.findViewById(R.id.title_nutrients_tv);
-            value_nutrients_tv = (TextView) view.findViewById(R.id.value_nutrients_tv);
+            titleNutrientsTv = (TextView) view.findViewById(R.id.title_nutrients_tv);
+            valueNutrientsTv = (TextView) view.findViewById(R.id.value_nutrients_tv);
         }
 
         public void setDate() {
             Nutrient nutrient = nutrients.get(getAdapterPosition());
-            title_nutrients_tv.setText(nutrient.getName());
-            value_nutrients_tv.setText(nutrient.getValue() + " " + nutrient.getUnit());
+            titleNutrientsTv.setText(nutrient.getName());
+            valueNutrientsTv.setText(nutrient.getValue() + " " + nutrient.getUnit());
         }
     }
 

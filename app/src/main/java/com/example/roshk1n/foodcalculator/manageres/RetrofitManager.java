@@ -23,23 +23,27 @@ public class RetrofitManager {
                 , restClient.getApi_key(), new Callback<ListFoodResponse>() {// get list id product
                     @Override
                     public void success(final ListFoodResponse listFoodResponse, Response response) {
-                        for (int i = 0; i < listFoodResponse.getList().getItem().size(); i++) {
-                            MyApplication
-                                    .getRestClient()
-                                    .getNdbService()
-                                    .getNutrientsFood(restClient.getApi_key(),
-                                            listFoodResponse.getList().getItem().get(i).getNdbno(),
-                                            "b", new Callback<FoodResponse>() {
-                                                @Override
-                                                public void success(FoodResponse foodResponse,
-                                                                    Response response) {
-                                                    retrofitCallback.addFood(foodResponse);
-                                                }
+                        if(listFoodResponse.getList() != null) {
+                            for (int i = 0; i < listFoodResponse.getList().getItem().size(); i++) {
+                                MyApplication
+                                        .getRestClient()
+                                        .getNdbService()
+                                        .getNutrientsFood(restClient.getApi_key(),
+                                                listFoodResponse.getList().getItem().get(i).getNdbno(),
+                                                "b", new Callback<FoodResponse>() {
+                                                    @Override
+                                                    public void success(FoodResponse foodResponse,
+                                                                        Response response) {
+                                                        retrofitCallback.addFood(foodResponse);
+                                                    }
 
-                                                @Override
-                                                public void failure(RetrofitError error) {
-                                                }
-                                            });
+                                                    @Override
+                                                    public void failure(RetrofitError error) {
+                                                    }
+                                                });
+                            }
+                        } else {
+                            retrofitCallback.error("Result is empty, change search parameter.");
                         }
                     }
 

@@ -32,10 +32,6 @@ public class Localization {
         updateResources(context,language);
     }
 
-    public static String getLocale(Context context) {
-        return getPersistedData(context,Locale.getDefault().getLanguage());
-    }
-
     private static String getPersistedData(Context context, String defaultLanguage) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(LANGUAGE_KEY, defaultLanguage);
