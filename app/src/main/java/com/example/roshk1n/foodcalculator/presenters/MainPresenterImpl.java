@@ -8,6 +8,7 @@ import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.MainView;
+import com.firebase.client.Firebase;
 
 import java.io.ByteArrayOutputStream;
 
