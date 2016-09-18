@@ -11,7 +11,7 @@ public interface AddFoodPresenter {
 
     void addNewFood(Food food);
 
-    void updateUI(Food food, int numberOfServing) throws IOException, ClassNotFoundException;
+    void updateUI(Food food, int numberOfServing);
 
     Food updateFood(Food foodForUpdate,String protein, String calories, String fat, String cabs, String name, String number);
 
@@ -20,4 +20,6 @@ public interface AddFoodPresenter {
     void removeFromFavorite(String ndbno);
 
     void isExistFavorite(Food food);
+
+    void destroy();
 }

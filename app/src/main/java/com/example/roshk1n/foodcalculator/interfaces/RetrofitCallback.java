@@ -6,5 +6,5 @@ public interface RetrofitCallback {
 
     void addFood(FoodResponse nutrientBasic);
 
-    void error(String message);
+    void setError(String message);
 }

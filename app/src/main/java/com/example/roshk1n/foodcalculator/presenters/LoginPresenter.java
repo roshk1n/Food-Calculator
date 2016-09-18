@@ -13,4 +13,5 @@ public interface LoginPresenter {
 
     void login(String email, String password);
 
+    void destroy();
 }

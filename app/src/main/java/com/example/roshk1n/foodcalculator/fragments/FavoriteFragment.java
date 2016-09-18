@@ -119,8 +119,9 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        favoritePresenter.destroy();
+        super.onDetach();
     }
 
     @Override

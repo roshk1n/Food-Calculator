@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -165,8 +166,9 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        diaryPresenter.destroy();
+        super.onDetach();
     }
 
     @Override
@@ -367,7 +369,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
-        datePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        datePickerDialog.setAccentColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
     }
 }

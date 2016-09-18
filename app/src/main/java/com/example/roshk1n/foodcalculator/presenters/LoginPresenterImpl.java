@@ -66,12 +66,12 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
             }
 
             @Override
-            public void onCancel() {}
+            public void onCancel() {
+                loginVew.showMessage("Login was canceled.");
+            }
             @Override
             public void onError(FacebookException error) {
-              // loginVew.showToast("Login attempt failed.");
-               loginVew.showToast(error.getMessage());
-
+               loginVew.showMessage(error.getMessage());
             }
         });
     }
@@ -96,18 +96,29 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     }
 
     @Override
+    public void destroy() {
+        loginVew = null;
+    }
+
+    @Override
     public void loginError(String text) {
-        loginVew.showToast(text);
+        loginVew.showMessage(text);
     }
 
     @Override
     public void loginSuccess() {
-        loginVew.navigateToHome();
+        dataManager.checkLocalUser(new OnCompleteCallback() {
+            @Override
+            public void success() {
+                loginVew.navigateToHome();
+            }
+        });
     }
 
     @Override
     public Context getContext() {
         return loginVew.getContext();
     }
+
 
 }

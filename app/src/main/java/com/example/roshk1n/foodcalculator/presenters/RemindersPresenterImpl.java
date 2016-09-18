@@ -24,20 +24,20 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     }
 
 
-    private Reminder createReminder(boolean isChecked,String time, String tag) {
+    private Reminder createReminder(String time, String tag) {
         Date date = stringToTime(time);
         Reminder reminder = new Reminder();
         reminder.setName(tag);
         reminder.setTime(date.getTime());
-        reminder.setState(isChecked);
+        reminder.setState(false);
         return reminder;
     }
 
     private void setDefaultReminders() {
-        reminders.add(createReminder(false,"8:45",remindersView.getContext().getString(R.string.breakfast)));
-        reminders.add(createReminder(false,"14:00",remindersView.getContext().getString(R.string.lunch)));
-        reminders.add(createReminder(false,"18:00",remindersView.getContext().getString(R.string.dinner)));
-        reminders.add(createReminder(false,"17:00",remindersView.getContext().getString(R.string.snack)));
+        reminders.add(createReminder("8:45",remindersView.getContext().getString(R.string.breakfast)));
+        reminders.add(createReminder("14:00",remindersView.getContext().getString(R.string.lunch)));
+        reminders.add(createReminder("18:00",remindersView.getContext().getString(R.string.dinner)));
+        reminders.add(createReminder("17:00",remindersView.getContext().getString(R.string.snack)));
     }
 
     @Override
@@ -64,6 +64,11 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     @Override
     public void updateSwitchState(boolean check, int position) {
         localDataBaseManager.updateReminderState(check,position);
+    }
+
+    @Override
+    public void destroy() {
+        remindersView = null;
     }
 
     private Date stringToTime(String time) {

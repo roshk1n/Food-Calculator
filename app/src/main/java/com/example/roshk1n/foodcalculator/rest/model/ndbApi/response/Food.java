@@ -23,8 +23,7 @@ public class Food implements Parcelable, Serializable {
     private long time;
     private ArrayList<Nutrient> nutrients = new ArrayList<>();
 
-    public Food() {
-    }
+    public Food() {}
 
     public Food(FoodRealm foodRealm) {
         setName(foodRealm.getName());
@@ -122,29 +121,5 @@ public class Food implements Parcelable, Serializable {
         dest.writeInt(portion);
         dest.writeLong(time);
         dest.writeTypedList(nutrients);
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-
-        HashMap<String, String> nutrientMap = new HashMap<>();
-        HashMap<String, Object> nutrient = new HashMap<>();
-        result.put("ndbno", ndbno);
-        result.put("name", name);
-        result.put("portion", portion);
-        result.put("time", time);
-
-        for (Nutrient nut : nutrients) {
-            nutrientMap.put("nutrient_id", nut.getNutrient_id());
-            nutrientMap.put("name", nut.getName());
-            nutrientMap.put("value", nut.getValue());
-            nutrientMap.put("unit", nut.getUnit());
-            nutrient.put(nut.getNutrient_id(),nutrientMap);
-        }
-
-        result.put("nutrients", nutrient);
-
-        return result;
     }
 }

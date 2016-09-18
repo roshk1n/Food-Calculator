@@ -12,4 +12,6 @@ public interface MainPresenter {
     void updateInfoUser(Bitmap resource);
 
     Bitmap getLocalImage();
+
+    void destroy();
 }

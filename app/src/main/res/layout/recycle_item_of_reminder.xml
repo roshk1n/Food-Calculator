@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_reminders_tv"
-            android:paddingLeft="2dp"
+            android:paddingStart="2dp"
             android:paddingTop="3dp"
             android:text="@string/_08_45"
             android:textColor="@color/colorSecondaryText"
@@ -40,7 +40,7 @@
             android:id="@+id/reminder_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:text="" />
 

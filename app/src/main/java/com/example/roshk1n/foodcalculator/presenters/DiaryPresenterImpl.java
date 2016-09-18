@@ -73,6 +73,11 @@ public class DiaryPresenterImpl implements DiaryPresenter {
     }
 
     @Override
+    public void destroy() {
+        diaryView = null;
+    }
+
+    @Override
     public void removeFoodDB(int index, long time) {
         dataManager.removeFood(index, time);
     }

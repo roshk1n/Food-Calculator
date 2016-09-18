@@ -112,8 +112,8 @@ public class TabSearchFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        super.onDetach();
     }
 
     @Override

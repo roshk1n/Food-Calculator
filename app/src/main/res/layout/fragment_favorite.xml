@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/favorite_coordinator_layout"
     android:layout_width="match_parent"
-    android:background="@color/colorBackground"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".fragments.FavoriteFragment">
 
     <RelativeLayout
@@ -14,29 +14,29 @@
             android:id="@+id/recycler_view_favorite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:splitMotionEvents="true"/>
+            android:splitMotionEvents="true" />
 
         <LinearLayout
             android:id="@+id/no_favorite_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_favorite_second_24dp"
-                />
+                android:src="@drawable/ic_favorite_second_24dp" />
+
             <TextView
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondaryText"
+                android:gravity="center"
                 android:text="@string/no_favorite_foods"
-                />
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </RelativeLayout>

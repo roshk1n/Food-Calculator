@@ -22,12 +22,17 @@ public class SearchPresenterImpl implements SearchPresenter, RetrofitCallback {
     }
 
     @Override
+    public void destroy() {
+        searchView = null;
+    }
+
+    @Override
     public void addFood(FoodResponse foodResponse) {
         searchView.setFoodNutrients(foodResponse.getReport().getFood());
     }
 
     @Override
-    public void error(String message) {
-        searchView.showToast(message);
+    public void setError(String message) {
+        searchView.showSnackBar(message);
     }
 }

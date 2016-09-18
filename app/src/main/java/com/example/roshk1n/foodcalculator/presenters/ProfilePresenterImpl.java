@@ -6,18 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
-import android.util.Log;
-import android.util.Patterns;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
@@ -158,6 +153,11 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             }
         }
         return position;
+    }
+
+    @Override
+    public void destroy() {
+        profileView = null;
     }
 
     private int updateLimitCalories(String sex, String active_level, String _weight, String _height, String _age) {

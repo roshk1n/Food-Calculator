@@ -43,16 +43,16 @@ public class RetrofitManager {
                                                 });
                             }
                         } else {
-                            retrofitCallback.error("Result is empty, change search parameter.");
+                            retrofitCallback.setError("Result is empty, change search parameter.");
                         }
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         if(error.isNetworkError())
-                            retrofitCallback.error("Error network connection.");
+                            retrofitCallback.setError("Error network connection.");
                         else
-                            retrofitCallback.error("Result is empty, change search parameter.");
+                            retrofitCallback.setError("Result is empty, change search parameter.");
                     }
                 });
     }

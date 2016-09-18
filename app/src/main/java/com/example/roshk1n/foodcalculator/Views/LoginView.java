@@ -9,7 +9,7 @@ public interface LoginView {
 
     void navigateToHome();
 
-    void showToast(String message);
+    void showMessage(String message);
 
     Context getContext();
 }

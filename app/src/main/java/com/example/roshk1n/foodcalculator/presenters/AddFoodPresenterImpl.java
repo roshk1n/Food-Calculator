@@ -32,7 +32,6 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(food.getTime());
         int indexDay = LocalDataBaseManager.dayIsExist(calendar);
-        LocalDataBaseManager.loadDayData(calendar); //TODO check if need
         if (indexDay != -1) {
             LocalDataBaseManager.addFood(food);
 
@@ -122,6 +121,11 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
                 foodView.updateFavoriteImage(existInFavotite);
             }
         });
+    }
+
+    @Override
+    public void destroy() {
+        foodView = null;
     }
 
     private boolean isFloat(String str) {

@@ -11,4 +11,6 @@ public interface InfoFoodPresenter {
     void removeFromFavorite(String ndbno);
 
     void isExistFavorite(Food food);
+
+    void destroy();
 }

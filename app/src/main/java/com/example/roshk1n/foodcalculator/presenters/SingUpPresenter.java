@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.example.roshk1n.foodcalculator.views.SingUpView;
 
 public interface SingUpPresenter {
-
     void setView(SingUpView view);
 
     void singUp(String surname, String email, String password, String congirmPassword);
@@ -14,4 +13,6 @@ public interface SingUpPresenter {
     void setUserPhotoSD(Intent data, ContentResolver context);
 
     void setUserPhotoCamera(Intent data);
+
+    void destroy();
 }

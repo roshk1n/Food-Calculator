@@ -94,13 +94,13 @@ public class ChartFragment extends Fragment implements ChartView {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        presenter.destroy();
+        super.onDetach();
     }
 
     @Override
-    public void setEntry(ArrayList<Entry> entriesChart, int period) {
-        ArrayList<Entry> entries = entriesChart;
+    public void setEntry(ArrayList<Entry> entries, int period) {
         amountCalTv.setText(String.valueOf(presenter.getAmountCalories())+getContext().getString(R.string.cal));
         dataSet = new LineDataSet(entries, "");
         if (period == 0) {

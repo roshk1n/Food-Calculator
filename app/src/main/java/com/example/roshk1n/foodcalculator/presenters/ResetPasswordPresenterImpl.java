@@ -18,17 +18,22 @@ public class ResetPasswordPresenterImpl implements ResetPasswordPresenter{
             FirebaseManager.getInstance().resetPassword(email, new ResetPasswordCallback() {
                 @Override
                 public void resetSuccess(String message) {
-                    resetView.showToast(message);
+                    resetView.showSnackBar(message);
                 }
 
                 @Override
                 public void resetError(String message) {
-                    resetView.showToast(message);
+                    resetView.showSnackBar(message);
                 }
             });
 
         } else {
             resetView.errorEmail();
         }
+    }
+
+    @Override
+    public void destroy() {
+        resetView = null;
     }
 }

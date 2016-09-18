@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import com.example.roshk1n.foodcalculator.views.ProfileView;
 
 public interface ProfilePresenter {
-
     void setView (ProfileView view);
 
     void loadUser();
@@ -21,4 +20,6 @@ public interface ProfilePresenter {
     void updateUserProfile(String fullname, String weight, String height, String age, String email,Bitmap image, String sex, String active_level);
 
     int getPositionInArray(String active, String [] array);
+
+    void destroy();
 }

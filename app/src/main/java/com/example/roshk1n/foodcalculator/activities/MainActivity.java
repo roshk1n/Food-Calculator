@@ -1,5 +1,4 @@
 package com.example.roshk1n.foodcalculator.activities;
-//TODO detach fragment view
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -67,8 +66,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("TAG", "MainActivity OnCreate");
-
         setContentView(R.layout.activity_main);
         initUI();
 
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        Log.e("TAG", "MAIN destroy");
+        presenter.destroy();
         super.onDestroy();
     }
 
@@ -276,7 +273,7 @@ public class MainActivity extends AppCompatActivity
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close) {
         };
-        mDrawer.setDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
     }
 
@@ -363,7 +360,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     @Override

@@ -3,13 +3,10 @@ package com.example.roshk1n.foodcalculator.manageres;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
-import com.example.roshk1n.foodcalculator.interfaces.FirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
 import com.example.roshk1n.foodcalculator.interfaces.ResetPasswordCallback;
@@ -30,7 +27,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,25 +69,12 @@ public class FirebaseManager {
     private FirebaseUser mFirebaseUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private FirebaseCallback firebaseCallback;
 
-    private FirebaseManager() {
-    }
-
-    private FirebaseManager(FirebaseCallback callback) {
-        this.firebaseCallback = callback;
-    }
+    private FirebaseManager() {}
 
     public static FirebaseManager getInstance() {
         if (instance == null) {
             instance = new FirebaseManager();
-        }
-        return instance;
-    }
-
-    public static FirebaseManager getInstance(FirebaseCallback callback) {
-        if (instance == null) {
-            instance = new FirebaseManager(callback);
         }
         return instance;
     }
@@ -120,7 +103,7 @@ public class FirebaseManager {
         this.mFirebaseUser = mFirebaseUser;
     }
 
-    public void logInWithEmail(String email, final String password) {
+    public void logInWithEmail(String email, final String password, final LoginCallback callback) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -130,10 +113,10 @@ public class FirebaseManager {
                     Session.getInstance().setEmail(getFirebaseUser().getEmail());
                     Session.getInstance().setFullname(getFirebaseUser().getDisplayName());
                     Session.getInstance().setUrlPhoto(String.valueOf(getFirebaseUser().getPhotoUrl()));
-                    firebaseCallback.loginSuccessful();
+                    callback.loginSuccess();
 
                 } else {
-                    firebaseCallback.loginError("Authentication failed. Try again please!");
+                    callback.loginError("Authentication failed. Try again please!");
                 }
             }
         });

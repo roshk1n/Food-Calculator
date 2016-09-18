@@ -40,4 +40,9 @@ public class FavoritePresenterImpl implements FavoritePresenter{
             }
         });
     }
+
+    @Override
+    public void destroy() {
+        favoriteView = null;
+    }
 }

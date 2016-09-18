@@ -23,7 +23,6 @@ import com.example.roshk1n.foodcalculator.views.AddFoodView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
-import java.io.IOException;
 
 public class AddFoodFragment extends Fragment implements AddFoodView, View.OnClickListener, View.OnFocusChangeListener {
     private static final String FOOD_KEY = "food";
@@ -117,8 +116,9 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        presenter.destroy();
+        super.onDetach();
     }
 
     @Override

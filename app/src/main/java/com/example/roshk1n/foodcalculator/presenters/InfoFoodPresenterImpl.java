@@ -72,6 +72,11 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
         });
     }
 
+    @Override
+    public void destroy() {
+        infoFoodView = null;
+    }
+
     private Food cloneFood(Food food) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream ous = new ObjectOutputStream(baos);

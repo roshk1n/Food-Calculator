@@ -6,4 +6,6 @@ public interface ResetPasswordPresenter {
     void setView(ResetPasswordView view);
 
     void resetPassword(String email);
+
+    void destroy();
 }

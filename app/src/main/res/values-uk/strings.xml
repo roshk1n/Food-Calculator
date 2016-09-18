@@ -34,7 +34,7 @@
     <string name="weight">Вага</string>
     <string name="week">Тиждень</string>
     <string name="wednesday">Сер</string>
-    <string name="wait_please">Зачекайте, будь-ласка...</string>
+    <string name="wait_please">Зачекайте, будь-ласка…</string>
     <string name="user_saved">Дані збережні успішно.</string>
     <string name="undo">Повернути</string>
     <string name="turn_edit_mode">Включіть режим редагування.</string>
@@ -96,7 +96,6 @@
     <string name="error_number_sevings">Вкажіть кількість порцій.</string>
     <string name="empty_password">Введіть пароль, будь-ласка.</string>
     <string name="fat_g">Жири (g)</string>
-    <string name="languages">Мова</string>
     <string name="group2">Налаштування</string>
     <string name="language">Мова</string>
     <string name="choose_language">Оберіть мову :</string>

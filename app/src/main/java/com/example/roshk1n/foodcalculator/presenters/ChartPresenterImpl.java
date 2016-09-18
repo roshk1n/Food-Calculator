@@ -1,7 +1,5 @@
 package com.example.roshk1n.foodcalculator.presenters;
 
-import android.util.Log;
-
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
@@ -59,7 +57,6 @@ public class ChartPresenterImpl implements ChartPresenter {
     }
 
     private ArrayList<EntryEatChart> getCurrentYearEntry(ArrayList<Day> listDay) {
-
         ArrayList<EntryEatChart> entryEatCharts = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             entryEatCharts.add(new EntryEatChart(0, i));
@@ -141,6 +138,11 @@ public class ChartPresenterImpl implements ChartPresenter {
     @Override
     public int getLimitCalories() {
         return dataManager.loadGoalCalories();
+    }
+
+    @Override
+    public void destroy() {
+        chartView = null;
     }
 
     private boolean contains(int day, ArrayList<EntryEatChart> list) {

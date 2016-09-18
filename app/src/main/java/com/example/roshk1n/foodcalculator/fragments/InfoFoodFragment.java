@@ -27,7 +27,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private Food food;
     private OnFragmentListener mFragmentListener;
     private boolean isExistFavorite;
-
     private RecyclerView mRecyclerView;
 
     private View view;
@@ -99,8 +98,9 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        presenter.destroy();
+        super.onDetach();
     }
 
     @Override

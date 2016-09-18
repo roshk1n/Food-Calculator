@@ -84,13 +84,18 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
     }
 
     @Override
-    public void createUserSuccess() {
+    public void destroy() {
+        singUpView = null;
+    }
+
+    @Override
+    public void singUpSuccess() {
         singUpView.navigateToLogin();
     }
 
     @Override
-    public void createUserError(String message) {
-        singUpView.showToast(message);
+    public void singUpError(String message) {
+        singUpView.showSnackBar(message);
     }
 
     private Bitmap scaleBitmap(Bitmap bitmapToScale, float maxImageSize) {

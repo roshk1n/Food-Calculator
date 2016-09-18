@@ -3,16 +3,13 @@ package com.example.roshk1n.foodcalculator.manageres;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
-import android.util.Patterns;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
-import com.example.roshk1n.foodcalculator.interfaces.FirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
@@ -32,14 +29,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class DataManager implements FirebaseCallback {
-    private FirebaseManager firebaseManager = FirebaseManager.getInstance(this);
-
+public class DataManager {
+    private FirebaseManager firebaseManager = FirebaseManager.getInstance();
     private LoginCallback loginCallback;
     private DataSingUpCallback dataSingUpCallback;
 
-    public DataManager() {
-    }
+    public DataManager() {}
 
     public DataManager(LoginCallback loginCallback) {
         this.loginCallback = loginCallback;
@@ -62,12 +57,12 @@ public class DataManager implements FirebaseCallback {
                         String image = Base64.encodeToString(b, Base64.DEFAULT);
 
                         LocalDataBaseManager.createUser(fullname, email, image);
-                        dataSingUpCallback.createUserSuccess();
+                        dataSingUpCallback.singUpSuccess();
                     }
 
                     @Override
                     public void createError(String message) {
-                        dataSingUpCallback.createUserError(message);
+                        dataSingUpCallback.singUpError(message);
                     }
                 });
             }
@@ -76,7 +71,7 @@ public class DataManager implements FirebaseCallback {
 
     public void login(String email, String password) {
         if (Utils.isConnectNetwork(loginCallback.getContext())) {
-            firebaseManager.logInWithEmail(email, password);
+            firebaseManager.logInWithEmail(email, password,loginCallback);
         } else {
             loginCallback.loginError("Error: No internet connection.");
         }
@@ -86,26 +81,11 @@ public class DataManager implements FirebaseCallback {
         firebaseManager.checkLogin(loginCallback);
     }
 
-    @Override
-    public void loginSuccessful() {
-        LocalDataBaseManager.checkLocalUser(new OnCompleteCallback() {
-            @Override
-            public void success() {
-                loginCallback.loginSuccess();
-            }
-        });
-    }
-
-    @Override
-    public void loginError(String text) {
-        loginCallback.loginError(text);
-    }
-
     public void loadDayData(final Calendar date, final LoadDayCallback callback) {
         Day day = LocalDataBaseManager.loadDayData(date);
         callback.loadComplete(day);
 
-        firebaseManager.loadDay(date, new LoadDayCallback() { //TODO need new thread
+        firebaseManager.loadDay(date, new LoadDayCallback() {
             @Override
             public void loadComplete(Day dayFire) {
                 LocalDataBaseManager.updateDays(dayFire);
@@ -222,5 +202,9 @@ public class DataManager implements FirebaseCallback {
 
     public void loadDataForChart(LoadDaysCallback callback) {
            firebaseManager.loadDataForChart(callback);
+    }
+
+    public void checkLocalUser(OnCompleteCallback callback) {
+        LocalDataBaseManager.checkLocalUser(callback);
     }
 }

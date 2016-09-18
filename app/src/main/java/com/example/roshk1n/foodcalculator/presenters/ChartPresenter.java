@@ -11,4 +11,6 @@ public interface ChartPresenter {
     ArrayList<String> formatLabelsMonth();
 
     int getLimitCalories();
+
+    void destroy();
 }

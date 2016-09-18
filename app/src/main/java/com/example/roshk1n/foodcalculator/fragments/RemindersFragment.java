@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -83,8 +84,9 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        remindersPresenter.destroy();
+        super.onDetach();
     }
 
     @Override
@@ -109,7 +111,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
                 calendar.get(Calendar.MINUTE),
                 true
         );
-        timePickerDialog.setAccentColor(getActivity().getResources().getColor(R.color.colorPrimary));
+        timePickerDialog.setAccentColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         timePickerDialog.show(getActivity().getFragmentManager(), title);
     }
 

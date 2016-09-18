@@ -55,10 +55,6 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private ProgressDialog saveDatePd;
     private FloatingActionButton editProfileFab;
 
-//    TODO: don't create constructor for fragments
-//    public ProfileFragment() {
-//    }
-
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -103,8 +99,9 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mFragmentListener = null;
+        profilePresenter.destroy();
+        super.onDetach();
     }
 
     @Override

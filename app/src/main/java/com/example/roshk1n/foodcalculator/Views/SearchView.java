@@ -5,5 +5,5 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 public interface SearchView {
     void setFoodNutrients(Food foods);
 
-    void showToast(String message);
+    void showSnackBar(String message);
 }

@@ -1,7 +1,6 @@
 package com.example.roshk1n.foodcalculator.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -10,14 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
@@ -37,7 +32,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private ArrayList<Food> foods = new ArrayList<>();
     private long mdate=0;
     private String querySearch;
-    private OnFragmentListener mFragmentListener;
     private ProgressDialog searchProgress;
 
     private View view;
@@ -73,12 +67,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
 
         initUI();
 
-        if(mFragmentListener != null) {
- /*           mFragmentListener.setTitle(getString(R.string.search));
-            mFragmentListener.setArrowToolbar();
-            mFragmentListener.disabledMenuSwipe();*/
-        }
-
         if(getArguments() != null) {
             mdate = getArguments().getLong(DATE_KEY);
             querySearch = getArguments().getString(QUERY_KEY);
@@ -105,17 +93,9 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentListener) {
-            mFragmentListener = (OnFragmentListener) context;
-        }
-    }
-
-    @Override
     public void onDetach() {
+        searchPresenter.destroy();
         super.onDetach();
-        mFragmentListener = null;
     }
 
     @Override
@@ -126,7 +106,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void showToast(String message) {
+    public void showSnackBar(String message) {
         Snackbar.make(view,message,Snackbar.LENGTH_SHORT).show();
         searchProgress.dismiss();
     }

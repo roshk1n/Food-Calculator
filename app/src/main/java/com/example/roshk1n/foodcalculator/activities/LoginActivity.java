@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
@@ -27,13 +27,11 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     private TextInputLayout passwordEt;
     private LoginButton btnLogInFacebook;
     private ProgressDialog loginProgress;
+    private LinearLayout parentLinear;
 
-    //  TODO: The reason why you return to login screen after onBackPressed in main - Memory leak
-    //  http://www.theshiftingbit.com/Fixing-Memory-Leaks-in-Android-Studio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "LoginActivity OnCreate");
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         initUI();
@@ -58,7 +56,6 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "activityResult");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
         loginPresenter.getCallbackManager().onActivityResult(requestCode, resultCode, data);
@@ -67,7 +64,6 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     @Override
     public void setEmailError() {
         emailEt.setErrorEnabled(true);
-        Log.d(TAG, "errorEmail");
         loginProgress.dismiss();
         emailEt.setError(getString(R.string.empty_email));
     }
@@ -75,14 +71,12 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     @Override
     public void setPasswordError() {
         passwordEt.setErrorEnabled(true);
-        Log.d(TAG, "errorPassword");
         loginProgress.dismiss();
         passwordEt.setError(getString(R.string.empty_password));
     }
 
     @Override
     public void navigateToHome() {
-        Log.d(TAG, "navigate to home");
         loginProgress.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
@@ -90,30 +84,26 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     @Override
     protected void onDestroy() {
-        Log.e(TAG, "Login destroy");
+        loginPresenter.destroy();
         super.onDestroy();
     }
 
     @Override
-    public void showToast(String message) {
-        Log.d(TAG, "showToast");
+    public void showMessage(String message) {
         loginProgress.dismiss();
-        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-        Log.d(TAG, message);
+        Snackbar.make(parentLinear, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     public void onLogIn(View view) {
         passwordEt.setErrorEnabled(false);
         emailEt.setErrorEnabled(false);
-        Log.d(TAG, "OnLogin");
         loginProgress.setMessage(getString(R.string.wait_please));
         loginProgress.show();
-        //  loginPresenter.login("ee@gmail.com", "132132132");
         loginPresenter.login(emailEt.getEditText().getText().toString(), passwordEt.getEditText().getText().toString());
     }
 
@@ -125,6 +115,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
         emailEt = (TextInputLayout) findViewById(R.id.email_et);
         passwordEt = (TextInputLayout) findViewById(R.id.password_et);
         btnLogInFacebook = (LoginButton) findViewById(R.id.login_facebook_btn);
+        parentLinear = (LinearLayout) findViewById(R.id.parent_login_layout);
         loginProgress = new ProgressDialog(this);
         loginProgress.setCanceledOnTouchOutside(false);
         loginProgress.setCancelable(false);

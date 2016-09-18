@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import java.util.Locale;
@@ -14,8 +13,7 @@ public class Localization {
     private static String language;
 
     public static void onCreate(Context context, String defaultLanguage) {
-        String lang = getPersistedData(context, defaultLanguage);
-        language = lang;
+        language = getPersistedData(context, defaultLanguage);
         setLocale(context);
     }
 

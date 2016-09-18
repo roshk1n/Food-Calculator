@@ -3,13 +3,9 @@ package com.example.roshk1n.foodcalculator.presenters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
-import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.views.MainView;
-import com.firebase.client.Firebase;
-
 import java.io.ByteArrayOutputStream;
 
 public class MainPresenterImpl implements MainPresenter {
@@ -46,5 +42,10 @@ public class MainPresenterImpl implements MainPresenter {
     public Bitmap getLocalImage() {
         String image = LocalDataBaseManager.getLocalUserImage();
         return stringToBitmap(image);
+    }
+
+    @Override
+    public void destroy() {
+        mainView = null;
     }
 }

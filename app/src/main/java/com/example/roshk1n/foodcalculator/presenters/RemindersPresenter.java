@@ -6,7 +6,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import java.util.ArrayList;
 
 public interface RemindersPresenter {
-
     void setView(RemindersView view);
 
     ArrayList<Reminder> loadReminder();
@@ -16,4 +15,6 @@ public interface RemindersPresenter {
     boolean getStateSwitch(int positionAdapter);
 
     void updateSwitchState(boolean check, int position);
+
+    void destroy();
 }

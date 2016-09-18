@@ -19,4 +19,6 @@ public interface DiaryPresenter  {
     void setFollowDate();
 
     void setNextDate();
+
+    void destroy();
 }

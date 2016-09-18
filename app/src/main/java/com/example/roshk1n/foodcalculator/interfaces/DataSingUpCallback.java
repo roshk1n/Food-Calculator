@@ -1,7 +1,7 @@
 package com.example.roshk1n.foodcalculator.interfaces;
 
 public interface DataSingUpCallback {
-    void createUserSuccess();
+    void singUpSuccess();
 
-    void createUserError(String message);
+    void singUpError(String message);
 }

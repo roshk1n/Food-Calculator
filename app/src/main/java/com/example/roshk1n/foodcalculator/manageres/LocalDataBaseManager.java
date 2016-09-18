@@ -36,7 +36,7 @@ public class LocalDataBaseManager {
         Day day = new Day();
         boolean checkDay = false;
         for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) { //TODO dayIsExist
+            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
                 dayRealm = getCurrentUserRealm().getDayRealms().get(i);
                 checkDay = true;
             }
@@ -157,8 +157,7 @@ public class LocalDataBaseManager {
     }
 
     public static User loadUser() {
-        User user = new User(getCurrentUserRealm());
-        return user;
+        return new User(getCurrentUserRealm());
     }
 
     public static void updateUserProfile(final User user) {
@@ -200,7 +199,7 @@ public class LocalDataBaseManager {
         });
     }
 
-    public static void checkLocalUser(final OnCompleteCallback callback) {
+    public static void checkLocalUser(OnCompleteCallback callback) {
         UserRealm user = realm.where(UserRealm.class)
                 .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();

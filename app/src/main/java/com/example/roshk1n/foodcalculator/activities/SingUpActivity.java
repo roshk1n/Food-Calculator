@@ -10,12 +10,12 @@ import android.graphics.Bitmap;
 
 import android.os.Bundle;
 
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.presenters.SingUpPresenterImpl;
 import com.example.roshk1n.foodcalculator.utils.Utils;
@@ -28,6 +28,7 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private static final int MAKE_PHOTO = 1;
     private static final String TAG = SingUpActivity.class.getSimpleName();
+    private SingUpPresenterImpl singUpPresenter;
 
     private TextInputLayout surnameEt;
     private TextInputLayout emailEt;
@@ -36,8 +37,8 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     private TextView alreadyAccountTv;
     private CircleImageView userIv;
     private ProgressDialog singUpProgress;
+    private RelativeLayout parentLayout;
 
-    private SingUpPresenterImpl singUpPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,12 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     }
 
     @Override
+    protected void onDestroy() {
+        singUpPresenter.destroy();
+        super.onDestroy();
+    }
+
+    @Override
     public void setUserPhoto(Bitmap bitmap) {
         userIv.setImageBitmap(bitmap);
     }
@@ -87,9 +94,9 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     }
 
     @Override
-    public void showToast(String message) {
+    public void showSnackBar(String message) {
         singUpProgress.dismiss();
-        Toast.makeText(SingUpActivity.this, message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(parentLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -97,7 +104,6 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         singUpProgress.dismiss();
         startActivity(new Intent(SingUpActivity.this, LoginActivity.class));
         finish();
-        Log.d(TAG, "onAuthStateChanged:signed_in");
     }
 
     @Override
@@ -107,9 +113,7 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
 
     @Override
     public Activity getActivity() {
-//        TODO: recursion, change to @this
-        Log.e(TAG, "GetAc");
-        return getActivity();
+        return this;
     }
 
     @Override
@@ -159,6 +163,7 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         confirmPasswordEt = (TextInputLayout) findViewById(R.id.confirm_password_et);
         userIv = (CircleImageView) findViewById(R.id.ivUser);
         alreadyAccountTv = (TextView) findViewById(R.id.already_account_tv);
+        parentLayout = (RelativeLayout) findViewById(R.id.parent_sing_up_layout);
     }
 
     public void onChoosePhoto(View view) {

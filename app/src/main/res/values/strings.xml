@@ -60,7 +60,7 @@
         <item>Take a picture</item>
     </array>
 
-    <string-array name="active_level">
+    <string-array name="active_level" translatable="false">
         <item>None</item>
         <item>Not Very Active</item>
         <item>Lightly Active</item>
@@ -68,7 +68,7 @@
         <item>Very Active</item>
     </string-array>
 
-    <string-array name="sex">
+    <string-array name="sex" translatable="false">
         <item>None</item>
         <item>Male</item>
         <item>Female</item>
@@ -96,15 +96,15 @@
     <string name="protein">Protein</string>
     <string name="_6_38g">6.38g</string>
     <string name="no_favorite_foods">No favorite foods.</string>
-    <string name="wait_please">Wait please...</string>
+    <string name="wait_please">Wait please…</string>
     <string name="empty_email">Enter email please.</string>
     <string name="empty_password">Enter password please.</string>
     <string name="email_incorrect">Email is incorrect.</string>
     <string name="photo">Photo</string>
     <string name="select_image">Select Image</string>
     <string name="add_food_success">Food added successfully.</string>
-    <string name="add_food_favorite">Adding a food to favorites...</string>
-    <string name="delete_food_favorite">Deleting a food from favorites...</string>
+    <string name="add_food_favorite">Adding a food to favorites…</string>
+    <string name="delete_food_favorite">Deleting a food from favorites…</string>
     <string name="error_number_sevings">Enter number of servings please.</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
@@ -143,7 +143,6 @@
     <string name="enter_all_field">Enter all fields, please !</string>
     <string name="password_dont_match">Confirm password don`t match.</string>
     <string name="password_short">Password must be longer than 6 symbols.</string>
-    <string name="languages">Languages</string>
     <string name="group2">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
