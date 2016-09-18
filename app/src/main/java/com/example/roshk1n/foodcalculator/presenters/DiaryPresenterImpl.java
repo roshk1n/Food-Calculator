@@ -37,20 +37,22 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void loadDay() {
-        checkForAnim = true;
-        dataManager.loadDayData(date, new LoadDayCallback() {
-            @Override
-            public void loadComplete(Day d) {
-                day = d;
-                diaryView.setDay(d);
-                if (day.getFoods().size() == 0) {
-                    if (!checkForAnim) {
-                        diaryView.showHintAddAnim();
+        if(diaryView != null) {
+            checkForAnim = true;
+            dataManager.loadDayData(date, new LoadDayCallback() {
+                @Override
+                public void loadComplete(Day d) {
+                    day = d;
+                    diaryView.setDay(d);
+                    if (day.getFoods().size() == 0) {
+                        if (!checkForAnim) {
+                            diaryView.showHintAddAnim();
+                        }
                     }
+                    checkForAnim = false;
                 }
-                checkForAnim = false;
-            }
-        });
+            });
+        }
     }
 
     @Override

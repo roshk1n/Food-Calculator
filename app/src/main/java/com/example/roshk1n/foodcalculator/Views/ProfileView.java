@@ -22,5 +22,5 @@ public interface ProfileView {
 
     Activity getActivity();
 
-    void showToast(String s);
+    void showSnackBar(String s);
 }
