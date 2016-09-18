@@ -14,7 +14,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.util.ArrayList;
 
 public class RecyclerFavoriteAdapter extends RecyclerView.Adapter<RecyclerFavoriteAdapter.ViewHolder> {
-
     private ArrayList<Food> favoriteList;
     private CallbackFavoriteAdapter callbackFavoriteAdapter;
     private View v;

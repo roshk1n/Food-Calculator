@@ -14,7 +14,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.util.ArrayList;
 
 public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAdapter.ViewHolder> {
-
     private ArrayList<Food> foods;
     private CallbackSearchAdapter callbackSearchAdapter;
     private long date;

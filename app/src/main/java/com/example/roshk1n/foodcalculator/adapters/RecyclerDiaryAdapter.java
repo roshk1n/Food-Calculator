@@ -15,7 +15,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.util.ArrayList;
 
 public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdapter.ViewHolder> {
-
     private ArrayList<Food> foods;
     private CallbackDiaryAdapter callbackDiaryAdapter;
     private View v;
