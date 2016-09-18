@@ -68,10 +68,8 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                             }
                         });
                 }
-
             }
         });
-
     }
 
     @Override

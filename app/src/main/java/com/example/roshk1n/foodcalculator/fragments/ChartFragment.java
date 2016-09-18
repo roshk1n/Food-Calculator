@@ -175,7 +175,7 @@ public class ChartFragment extends Fragment implements ChartView {
 
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.removeAllLimitLines();
-        if (enableLimitLine) {
+        if (enableLimitLine && userLimit != 0) {
             leftAxis.addLimitLine(ll1);
         }
 
