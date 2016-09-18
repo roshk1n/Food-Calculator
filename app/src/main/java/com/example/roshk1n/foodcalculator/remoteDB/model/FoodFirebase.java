@@ -13,8 +13,7 @@ public class FoodFirebase {
     private Long portion = 1L;
     private List<NutrientFirebase> nutrients = new ArrayList<>();
 
-    public FoodFirebase() {
-    }
+    public FoodFirebase() {}
 
     public FoodFirebase(String ndbno, String name) {
         this.ndbno = ndbno;

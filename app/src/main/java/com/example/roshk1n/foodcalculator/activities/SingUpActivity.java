@@ -39,7 +39,6 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
     private ProgressDialog singUpProgress;
     private RelativeLayout parentLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +142,17 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         surnameEt.setErrorEnabled(true);
         surnameEt.setError(message);
     }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus) {
+            Utils.hideKeyboard(getApplicationContext(),v);
+            v.clearFocus();
+        }
+        if(hasFocus)
+            Utils.showKeyboard(getApplicationContext(),v);
+    }
+
     public void onSignUpClicked(View view) {
         surnameEt.setErrorEnabled(false);
         emailEt.setErrorEnabled(false);
@@ -192,15 +202,5 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus) {
-            Utils.hideKeyboard(getApplicationContext(),v);
-            v.clearFocus();
-        }
-        if(hasFocus)
-            Utils.showKeyboard(getApplicationContext(),v);
     }
 }

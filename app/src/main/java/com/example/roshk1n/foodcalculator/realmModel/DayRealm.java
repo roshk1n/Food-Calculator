@@ -7,7 +7,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class DayRealm extends RealmObject {
-
     private long date;
     private int eatDailyCalories;
     private int remainingCalories;

@@ -55,8 +55,6 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         return new AddFoodFragment();
     }
 
-    public AddFoodFragment() {}
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +181,14 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         }
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus) {
+            Utils.hideKeyboard(getContext(),v);
+            v.clearFocus();
+        }
+    }
+
     private void initUI() {
         cabsFoodTv = (TextView) view.findViewById(R.id.tv_cabs_food_add);
         fatFoodTv = (TextView) view.findViewById(R.id.tv_fat_food_add);
@@ -193,13 +199,5 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         mAddFoodBtn = (Button) view.findViewById(R.id.add_food_btn);
         addFavoriteIv = (ImageView) view.findViewById(R.id.favorites_add_iv);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if(!hasFocus) {
-            Utils.hideKeyboard(getContext(),v);
-            v.clearFocus();
-        }
     }
 }

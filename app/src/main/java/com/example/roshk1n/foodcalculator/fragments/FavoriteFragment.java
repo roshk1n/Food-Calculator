@@ -22,7 +22,7 @@ import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.presenters.FavoritePresenterImpl;
 import com.example.roshk1n.foodcalculator.views.FavoriteView;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackFavoriteAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 
@@ -140,6 +140,25 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         }
     }
 
+    @Override
+    public void navigateToInfoFood(Food food) {
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                InfoFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
+    }
+
+    @Override
+    public void navigateToAddFood(Food food) {
+        food.setTime(date);
+        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
+                R.id.fragment_conteiner,
+                AddFoodFragment.newInstance(food),
+                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
+                true);
+    }
+
     private void makeSnackBarAction(final int position, final Food removed) {
         Snackbar snackbar = Snackbar.make(favoriteCoordinatorLayout,
                 getString(R.string.item_was_removed),
@@ -166,24 +185,5 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Callback
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_favorite);
         favoriteCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.favorite_coordinator_layout);
         noItemLayout = (LinearLayout) view.findViewById(R.id.no_favorite_container);
-    }
-
-    @Override
-    public void navigateToInfoFood(Food food) {
-        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
-                R.id.fragment_conteiner,
-                InfoFoodFragment.newInstance(food),
-                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
-                true);
-    }
-
-    @Override
-    public void navigateToAddFood(Food food) {
-        food.setTime(date);
-        Utils.navigateToFragment(getActivity().getSupportFragmentManager(),
-                R.id.fragment_conteiner,
-                AddFoodFragment.newInstance(food),
-                FragmentTransaction.TRANSIT_FRAGMENT_OPEN,
-                true);
     }
 }

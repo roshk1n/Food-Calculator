@@ -4,14 +4,12 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
 
 public class NutrientFirebase {
-
     private String nutrient_id;
     private String name;
     private String unit;
     private String value;
 
-    public NutrientFirebase() {
-    }
+    public NutrientFirebase() {}
 
     public NutrientFirebase(Nutrient name) {
         setNutrient_id(name.getNutrient_id());

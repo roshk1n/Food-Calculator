@@ -7,7 +7,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class FoodRealm extends RealmObject {
-
     private String ndbno;
     private String name;
     private long time;
@@ -70,16 +69,5 @@ public class FoodRealm extends RealmObject {
 
     public void setPortion(int portion) {
         this.portion = portion;
-    }
-
-    public boolean isExistIn(RealmList<FoodRealm> foods) {
-        boolean check = false;
-        for (int i = 0; i < foods.size(); i++) {
-            if(this.getNdbno().equals(foods.get(i).getNdbno())) {
-                check= true;
-                break;
-            }
-        }
-        return check;
     }
 }

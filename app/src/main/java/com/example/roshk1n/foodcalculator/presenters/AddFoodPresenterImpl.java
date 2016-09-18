@@ -71,16 +71,6 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         }
     }
 
-    private Food cloneFood(Food food) throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream ous = new ObjectOutputStream(baos);
-        ous.writeObject(food);
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        return (Food) ois.readObject();
-    }
-
     @Override
     public Food updateFood(Food foodForUpdate, String calories, String protein, String fat, String cabs, String name, String number) {
 
@@ -126,6 +116,16 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     @Override
     public void destroy() {
         foodView = null;
+    }
+
+    private Food cloneFood(Food food) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream ous = new ObjectOutputStream(baos);
+        ous.writeObject(food);
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        return (Food) ois.readObject();
     }
 
     private boolean isFloat(String str) {

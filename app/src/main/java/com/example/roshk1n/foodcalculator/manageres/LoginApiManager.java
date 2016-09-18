@@ -17,7 +17,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public  class LoginApiManager {
-
     private static RestClient restClient;
 
     public LoginApiManager() {}

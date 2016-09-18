@@ -17,7 +17,7 @@ import com.example.roshk1n.foodcalculator.broadcastReceivers.ReceiverNotificatio
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.presenters.RemindersPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.RemindersView;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -29,17 +29,13 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
     private RemindersPresenterImpl remindersPresenter;
     private OnFragmentListener mFragmentListener;
     private ArrayList<Reminder> reminders;
-
     private ReceiverNotification receiverNotification;
     private int positionAdapter;
     private int hour, minute;
 
     private View view;
-
     private RecyclerView mRecyclerView;
     private RecyclerReminderAdapter mAdapter;
-
-    public RemindersFragment() {}
 
     public static Fragment newInstance() { return new RemindersFragment(); }
 
@@ -129,6 +125,15 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
         reminders.get(positionAdapter).setState(check);
     }
 
+    @Override
+    public void setTime(int positionAdapter, long time) {
+        reminders.get(positionAdapter).setTime(time);
+        mAdapter.notifyDataSetChanged();
+        if(remindersPresenter.getStateSwitch(positionAdapter)) {
+            receiverNotification.createNotification(getContext(),positionAdapter);
+        }
+    }
+
     private void initDateTimeData(){
         Calendar c = Calendar.getInstance();
         hour = c.get(Calendar.HOUR_OF_DAY);
@@ -137,15 +142,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_reminders);
-    }
-
-    @Override
-    public void setTime(int positionAdapter, long time) {
-        reminders.get(positionAdapter).setTime(time);
-        mAdapter.notifyDataSetChanged();
-        if(remindersPresenter.getStateSwitch(positionAdapter)) {
-            receiverNotification.createNotification(getContext(),positionAdapter);
-        }
     }
 }
 

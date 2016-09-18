@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.responseAdapter;
+package com.example.roshk1n.foodcalculator.interfaces.responseAdapter;
 
 public interface CallbackReminderAdapter {
     void createPicker(int position,String tag);

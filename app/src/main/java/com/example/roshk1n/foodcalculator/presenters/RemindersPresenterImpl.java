@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RemindersPresenterImpl implements RemindersPresenter {
-
     private LocalDataBaseManager localDataBaseManager = new LocalDataBaseManager();
-
     private ArrayList<Reminder> reminders = new ArrayList<>();
 
     private RemindersView remindersView;
@@ -21,23 +19,6 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     @Override
     public void setView(RemindersView view) {
         this.remindersView = view;
-    }
-
-
-    private Reminder createReminder(String time, String tag) {
-        Date date = stringToTime(time);
-        Reminder reminder = new Reminder();
-        reminder.setName(tag);
-        reminder.setTime(date.getTime());
-        reminder.setState(false);
-        return reminder;
-    }
-
-    private void setDefaultReminders() {
-        reminders.add(createReminder("8:45",remindersView.getContext().getString(R.string.breakfast)));
-        reminders.add(createReminder("14:00",remindersView.getContext().getString(R.string.lunch)));
-        reminders.add(createReminder("18:00",remindersView.getContext().getString(R.string.dinner)));
-        reminders.add(createReminder("17:00",remindersView.getContext().getString(R.string.snack)));
     }
 
     @Override
@@ -69,6 +50,22 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     @Override
     public void destroy() {
         remindersView = null;
+    }
+
+    private Reminder createReminder(String time, String tag) {
+        Date date = stringToTime(time);
+        Reminder reminder = new Reminder();
+        reminder.setName(tag);
+        reminder.setTime(date.getTime());
+        reminder.setState(false);
+        return reminder;
+    }
+
+    private void setDefaultReminders() {
+        reminders.add(createReminder("8:45",remindersView.getContext().getString(R.string.breakfast)));
+        reminders.add(createReminder("14:00",remindersView.getContext().getString(R.string.lunch)));
+        reminders.add(createReminder("18:00",remindersView.getContext().getString(R.string.dinner)));
+        reminders.add(createReminder("17:00",remindersView.getContext().getString(R.string.snack)));
     }
 
     private Date stringToTime(String time) {

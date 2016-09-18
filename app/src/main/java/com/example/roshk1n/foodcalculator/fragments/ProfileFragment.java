@@ -179,11 +179,21 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     }
 
     @Override
-    public void showToast(String s) {
+    public void showSnackBar(String s) {
         saveDatePd.dismiss();
         changeEnable(fullNameEt.isEnabled());
         changeIcon();
         Snackbar.make(coordinatorLayout, s, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            Utils.hideKeyboard(getContext(), v);
+            v.clearFocus();
+        }
+        if (hasFocus)
+            Utils.showKeyboard(getContext(), v);
     }
 
     private void createPickerPhoto() {
@@ -230,7 +240,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
 
         } else {
             saveDatePd.dismiss();
-            showToast(getString(R.string.image_incorrect));
+            showSnackBar(getString(R.string.image_incorrect));
             profileIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.profile_default));
         }
     }
@@ -308,15 +318,5 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
         saveDatePd = new ProgressDialog(getContext());
         saveDatePd.setCanceledOnTouchOutside(false);
         saveDatePd.setCancelable(false);
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            Utils.hideKeyboard(getContext(), v);
-            v.clearFocus();
-        }
-        if (hasFocus)
-            Utils.showKeyboard(getContext(), v);
     }
 }

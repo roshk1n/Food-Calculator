@@ -53,7 +53,32 @@ public class ChartPresenterImpl implements ChartPresenter {
                 chartView.setEntry(entriesChart, period);
 
             }
-        }); //load day user
+        });
+    }
+
+    @Override
+    public ArrayList<String> formatLabelsMonth() {
+        ArrayList<String> labels = new ArrayList<>();
+        Calendar date = Calendar.getInstance();
+        int month = date.get(Calendar.MONTH) + 1; // start with 0
+        for (int i = 0; i < date.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+            labels.add(i + 1 + "/" + month);
+        }
+        return labels;
+    }
+
+    @Override
+    public int getLimitCalories() {
+        return dataManager.loadGoalCalories();
+    }
+
+    @Override
+    public void destroy() {
+        chartView = null;
+    }
+
+    public int getAmountCalories() {
+        return amountCalories;
     }
 
     private ArrayList<EntryEatChart> getCurrentYearEntry(ArrayList<Day> listDay) {
@@ -124,37 +149,12 @@ public class ChartPresenterImpl implements ChartPresenter {
         return entryEatCharts;
     }
 
-    @Override
-    public ArrayList<String> formatLabelsMonth() {
-        ArrayList<String> labels = new ArrayList<>();
-        Calendar date = Calendar.getInstance();
-        int month = date.get(Calendar.MONTH) + 1; // start with 0
-        for (int i = 0; i < date.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            labels.add(i + 1 + "/" + month);
-        }
-        return labels;
-    }
-
-    @Override
-    public int getLimitCalories() {
-        return dataManager.loadGoalCalories();
-    }
-
-    @Override
-    public void destroy() {
-        chartView = null;
-    }
-
     private boolean contains(int day, ArrayList<EntryEatChart> list) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getDate() == day)
                 return true;
         }
         return false;
-    }
-
-    public int getAmountCalories() {
-        return amountCalories;
     }
 }
 

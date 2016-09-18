@@ -10,7 +10,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackReminderAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackReminderAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 
 import java.util.ArrayList;

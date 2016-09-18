@@ -182,54 +182,6 @@ public class FirebaseManager {
         });
     }
 
-    private User buildUserByJSON(JSONObject object) {
-        User user = new User();
-        String gender = "none";
-        String birthday = "0";
-        int old = 0;
-        try {
-            if (object.has("email"))
-                user.setEmail(object.getString("email"));
-            if (object.has("picture"))
-                user.setPhotoUrl(object.getJSONObject("picture").getJSONObject("data").getString("url"));
-            if (object.has("name"))
-                user.setFullname(object.getString("name"));
-            if (object.has("gender"))
-                gender = object.getString("gender");
-            if (object.has("birthday"))
-                birthday = object.getString("birthday");
-
-            if (gender != null && gender.equals("male")) {
-                gender = "Male";
-            } else if (gender != null) {
-                gender = "Female";
-            }
-
-            if (!birthday.equals("0")) {
-                SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy");
-                Calendar date = Calendar.getInstance();
-                try {
-                    date.setTime(format.parse(birthday));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Calendar dateNow = Calendar.getInstance();
-
-                old = dateNow.get(Calendar.YEAR) - date.get(Calendar.YEAR);
-            }
-            user.setSex(gender);
-            user.setAge(old);
-            user.setActiveLevel("none");
-            user.setHeight(0);
-            user.setWeight(0);
-            user.setGoalCalories(0);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
     public void createProfileFacebook(final JSONObject object, final UserProfileCallback callback) {
         final User user = buildUserByJSON(object);
         final UserFirebase userFirebase = new UserFirebase(user);
@@ -575,6 +527,54 @@ public class FirebaseManager {
 
             }
         });
+    }
+
+    private User buildUserByJSON(JSONObject object) {
+        User user = new User();
+        String gender = "none";
+        String birthday = "0";
+        int old = 0;
+        try {
+            if (object.has("email"))
+                user.setEmail(object.getString("email"));
+            if (object.has("picture"))
+                user.setPhotoUrl(object.getJSONObject("picture").getJSONObject("data").getString("url"));
+            if (object.has("name"))
+                user.setFullname(object.getString("name"));
+            if (object.has("gender"))
+                gender = object.getString("gender");
+            if (object.has("birthday"))
+                birthday = object.getString("birthday");
+
+            if (gender != null && gender.equals("male")) {
+                gender = "Male";
+            } else if (gender != null) {
+                gender = "Female";
+            }
+
+            if (!birthday.equals("0")) {
+                SimpleDateFormat format = new SimpleDateFormat("M/d/yyyy");
+                Calendar date = Calendar.getInstance();
+                try {
+                    date.setTime(format.parse(birthday));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Calendar dateNow = Calendar.getInstance();
+
+                old = dateNow.get(Calendar.YEAR) - date.get(Calendar.YEAR);
+            }
+            user.setSex(gender);
+            user.setAge(old);
+            user.setActiveLevel("none");
+            user.setHeight(0);
+            user.setWeight(0);
+            user.setGoalCalories(0);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
 

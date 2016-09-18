@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.roshk1n.foodcalculator.R;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackFavoriteAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackFavoriteAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 
 import java.util.ArrayList;

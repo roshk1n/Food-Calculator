@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackSearchAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.presenters.SearchPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -35,8 +35,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private ProgressDialog searchProgress;
 
     private View view;
-
-    public SearchFragment() {}
 
     public  static SearchFragment newInstance() {
         return new SearchFragment();
@@ -64,7 +62,6 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
-
         initUI();
 
         if(getArguments() != null) {

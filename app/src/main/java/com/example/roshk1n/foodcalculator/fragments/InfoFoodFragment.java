@@ -38,8 +38,6 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     private TextView fatFoodTv;
     private ImageView favoritesIv;
 
-    public InfoFoodFragment() {}
-
     public static InfoFoodFragment newInstance() {
         return new InfoFoodFragment();
     }
@@ -130,6 +128,14 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         }
     }
 
+    private void setNutrients() {
+        nameFoodTv.setText(food.getName());
+        caloriesFoodTv.setText(food.getNutrients().get(1).getValue());
+        proteinFoodTv.setText(food.getNutrients().get(2).getValue());
+        fatFoodTv.setText(food.getNutrients().get(3).getValue());
+        cabsFoodTv.setText(food.getNutrients().get(4).getValue());
+    }
+
     private void initUI() {
         nameFoodTv = (TextView) view.findViewById(R.id.name_food_info_tv);
         caloriesFoodTv = (TextView) view.findViewById(R.id.calories_food_info_tv);
@@ -139,13 +145,5 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
         favoritesIv = (ImageView) view.findViewById(R.id.favorites_add_info_iv);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_info_food);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-    }
-
-    private void setNutrients() {
-        nameFoodTv.setText(food.getName());
-        caloriesFoodTv.setText(food.getNutrients().get(1).getValue());
-        proteinFoodTv.setText(food.getNutrients().get(2).getValue());
-        fatFoodTv.setText(food.getNutrients().get(3).getValue());
-        cabsFoodTv.setText(food.getNutrients().get(4).getValue());
     }
 }

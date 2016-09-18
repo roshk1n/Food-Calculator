@@ -119,6 +119,4 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
     public Context getContext() {
         return loginVew.getContext();
     }
-
-
 }

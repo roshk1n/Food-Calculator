@@ -34,10 +34,7 @@ public class TabSearchFragment extends Fragment {
     private SearchView searchView;
     private String mQuery;
     private Toolbar mToolbar;
-
     private ViewPagerAdapter adapter;
-
-    public TabSearchFragment() {}
 
     public static TabSearchFragment newInstance() {
         return new TabSearchFragment();

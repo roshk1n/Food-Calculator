@@ -104,7 +104,6 @@ public class DataManager {
     }
 
     public int loadGoalCalories() {
-        //dataDiaryCallback.loadCaloriesSuccess(goal);
         return LocalDataBaseManager.loadGoalCalories();
     }
 
@@ -159,13 +158,6 @@ public class DataManager {
         }
     }
 
-    private String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        byte[] b = outputStream.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
-    }
-
     public void updateUserProfile(User user, Bitmap image, OnCompleteCallback callback) {
         LocalDataBaseManager.updateUserProfile(user);
         firebaseManager.updateUserProfile(user, image, callback);
@@ -206,5 +198,12 @@ public class DataManager {
 
     public void checkLocalUser(OnCompleteCallback callback) {
         LocalDataBaseManager.checkLocalUser(callback);
+    }
+
+    private String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] b = outputStream.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 }

@@ -16,7 +16,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class InfoFoodPresenterImpl implements InfoFoodPresenter {
-
     private DataManager dataManager = new DataManager();
     private InfoFoodView infoFoodView;
 

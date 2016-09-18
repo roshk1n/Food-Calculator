@@ -4,7 +4,6 @@ import com.example.roshk1n.foodcalculator.views.LoginView;
 import com.facebook.login.widget.LoginButton;
 
 public interface LoginPresenter {
-
     void setView(LoginView view);
 
     void checkLogin();

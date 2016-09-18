@@ -235,13 +235,8 @@ public class LocalDataBaseManager {
         callback.success();
     }
 
-    public static void addLocalUserImage(final String image) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                getCurrentUserRealm().setPhotoUrl(image);
-            }
-        });
+    public static String getLocalUserImage() {
+        return getCurrentUserRealm().getPhotoUrl();
     }
 
     private static UserRealm getCurrentUserRealm() {
@@ -256,9 +251,5 @@ public class LocalDataBaseManager {
         return (userDayDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
                 && userDayDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
                 && userDayDate.get(Calendar.MONTH) == date.get(Calendar.MONTH));
-    }
-
-    public static String getLocalUserImage() {
-        return getCurrentUserRealm().getPhotoUrl();
     }
 }

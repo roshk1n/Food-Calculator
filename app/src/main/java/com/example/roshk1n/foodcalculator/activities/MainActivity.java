@@ -310,6 +310,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == ukLayout) {
+            Localization.setLanguage("uk");
+        } else if (v == enLayout) {
+            Localization.setLanguage("en");
+        }
+    }
+
+    @Override
     public void updateDrawerLight() {
         fullNameDrawerTv.setText(Session.getInstance().getFullname());
         Log.d("My", Session.getInstance().getUrlPhoto());
@@ -356,19 +370,5 @@ public class MainActivity extends AppCompatActivity
         addFoodFab = (FloatingActionButton) findViewById(R.id.addFood_fab);
         coordinatorHintAdd = (CoordinatorLayout) findViewById(R.id.hint_add_food_coordinator);
         mToolbar.setTitle(getString(R.string.diary));
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (v == ukLayout) {
-            Localization.setLanguage("uk");
-        } else if (v == enLayout) {
-            Localization.setLanguage("en");
-        }
     }
 }

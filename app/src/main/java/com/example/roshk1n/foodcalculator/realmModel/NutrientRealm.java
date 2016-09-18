@@ -5,7 +5,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 import io.realm.RealmObject;
 
 public class NutrientRealm extends RealmObject {
-
     private String nutrient_id;
     private String name;
     private String unit;

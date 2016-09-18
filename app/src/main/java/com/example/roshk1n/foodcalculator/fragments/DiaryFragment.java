@@ -29,7 +29,7 @@ import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
 import com.example.roshk1n.foodcalculator.presenters.DiaryPresenterImpl;
 import com.example.roshk1n.foodcalculator.views.DiaryView;
-import com.example.roshk1n.foodcalculator.responseAdapter.CallbackDiaryAdapter;
+import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.utils.Utils;
@@ -61,9 +61,6 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorLayout;
     private CoordinatorLayout HintAddFoodLayout;
-
-    public DiaryFragment() {
-    }
 
     public static DiaryFragment newInstance() {
         return new DiaryFragment();
@@ -317,6 +314,19 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         }
     }
 
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(diaryPresenter.getDate().getTimeInMillis());
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.setAccentColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
+    }
+
     private void makeSnackBarAction(final int position, final Food removedFood) {
         checkUndo = true;
         snackbar = Snackbar
@@ -358,18 +368,5 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         hintCircleAddFood = getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-    }
-
-    public void showDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(diaryPresenter.getDate().getTimeInMillis());
-        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.setAccentColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
-        datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
     }
 }

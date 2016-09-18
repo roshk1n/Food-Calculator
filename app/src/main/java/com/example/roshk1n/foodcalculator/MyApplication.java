@@ -9,7 +9,6 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MyApplication extends Application {
-
     private static RestClient restClient;
 
     @Override
@@ -25,19 +24,6 @@ public class MyApplication extends Application {
         Realm.setDefaultConfiguration(realmConfig);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Localization.onCreate(getApplicationContext(),"en");
-
-    /*  Realm realm = Realm.getDefaultInstance();
-
-          realm.executeTransaction(new Realm.Transaction() {
-                                     @Override
-                                     public void execute(Realm realm) {
-                                         realm.deleteAll();
-                                     }
-                                 }
-        );
-
-        RealmResults r = realm.where(UserRealm.class).findAll();
-        Log.d("fasfsas",r.size()+"safas");*/
     }
 
     public static RestClient getRestClient() { return restClient; }

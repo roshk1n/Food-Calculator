@@ -6,7 +6,6 @@ import com.example.roshk1n.foodcalculator.views.SearchView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 
 public class SearchPresenterImpl implements SearchPresenter, RetrofitCallback {
-
     private RetrofitManager retrofitManager = new RetrofitManager(this);
     private SearchView searchView;
 

@@ -6,7 +6,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.io.IOException;
 
 public interface AddFoodPresenter {
-
     void setView(AddFoodView view);
 
     void addNewFood(Food food);

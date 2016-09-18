@@ -6,7 +6,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import java.util.ArrayList;
 
 public interface FavoritePresenter {
-
     void setView(FavoriteView view);
 
     ArrayList<Food> getFavoriteList();

@@ -62,17 +62,17 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
         emailEt.setError(getString(R.string.email_incorrect));
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus)
+            Utils.hideKeyboard(getApplicationContext(), v);
+    }
+
     private void initUI() {
         getSupportActionBar().hide();
         parentLayout = (LinearLayout) findViewById(R.id.parent_reset_layout);
         resetPasswordBtn = (Button) findViewById(R.id.reset_password_btn);
         emailEt = (EditText) findViewById(R.id.email_reset_et);
         backLoginTv = (TextView) findViewById(R.id.back_login_tv);
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus)
-            Utils.hideKeyboard(getApplicationContext(), v);
     }
 }

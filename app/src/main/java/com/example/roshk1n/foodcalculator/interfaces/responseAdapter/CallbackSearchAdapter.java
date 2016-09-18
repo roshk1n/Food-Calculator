@@ -1,4 +1,4 @@
-package com.example.roshk1n.foodcalculator.responseAdapter;
+package com.example.roshk1n.foodcalculator.interfaces.responseAdapter;
 
 
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;

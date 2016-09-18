@@ -99,6 +99,16 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
         return this;
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            Utils.hideKeyboard(getApplicationContext(), v);
+            v.clearFocus();
+        }
+        if (hasFocus)
+            Utils.showKeyboard(getApplicationContext(), v);
+    }
+
     public void onLogIn(View view) {
         passwordEt.setErrorEnabled(false);
         emailEt.setErrorEnabled(false);
@@ -123,15 +133,5 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
 
     public void onResetPassword(View view) {
         startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-            Utils.hideKeyboard(getApplicationContext(), v);
-            v.clearFocus();
-        }
-        if (hasFocus)
-            Utils.showKeyboard(getApplicationContext(), v);
     }
 }

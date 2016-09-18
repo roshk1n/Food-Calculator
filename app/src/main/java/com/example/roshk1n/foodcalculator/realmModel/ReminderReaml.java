@@ -5,7 +5,6 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
 import io.realm.RealmObject;
 
 public class ReminderReaml extends RealmObject {
-
     private String name;
     private long time;
     private boolean state;

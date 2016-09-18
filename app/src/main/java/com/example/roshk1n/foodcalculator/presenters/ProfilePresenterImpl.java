@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ProfilePresenterImpl implements ProfilePresenter {
-
     private DataManager dataManager = new DataManager();
     private final String SEX_NONE = "None";
     private final String SEX_MALE = "Male";
@@ -137,10 +136,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                       }
                   });
               } else {
-                  profileView.showToast(profileView.getContext().getString(R.string.email_incorrect));
+                  profileView.showSnackBar(profileView.getContext().getString(R.string.email_incorrect));
               }
         } else {
-            profileView.showToast(profileView.getContext().getString(R.string.enter_all_field));
+            profileView.showSnackBar(profileView.getContext().getString(R.string.enter_all_field));
         }
     }
 
@@ -158,6 +157,27 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     @Override
     public void destroy() {
         profileView = null;
+    }
+
+    public void getPermissions() {
+        if (ContextCompat.checkSelfPermission(profileView.getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(profileView.getContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            }
+            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
+                    Manifest.permission.CAMERA)) {
+            } else {
+                ActivityCompat.requestPermissions(profileView.getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(profileView.getActivity(),
+                        new String[]{Manifest.permission.CAMERA}, 2);
+
+            }
+        }
     }
 
     private int updateLimitCalories(String sex, String active_level, String _weight, String _height, String _age) {
@@ -218,31 +238,10 @@ public class ProfilePresenterImpl implements ProfilePresenter {
 
     private Bitmap scaleBitmap(Bitmap bitmapToScale, float maxImageSize) {
         float ratio = Math.min(maxImageSize / bitmapToScale.getWidth(),
-                    maxImageSize / bitmapToScale.getHeight());
+                maxImageSize / bitmapToScale.getHeight());
         int width = Math.round(ratio * bitmapToScale.getWidth());
         int height = Math.round(ratio * bitmapToScale.getHeight());
 
         return Bitmap.createScaledBitmap(bitmapToScale, width, height, true);
-    }
-
-    public void getPermissions() {
-        if (ContextCompat.checkSelfPermission(profileView.getContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(profileView.getContext(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            }
-            if (ActivityCompat.shouldShowRequestPermissionRationale(profileView.getActivity(),
-                    Manifest.permission.CAMERA)) {
-            } else {
-                ActivityCompat.requestPermissions(profileView.getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                ActivityCompat.requestPermissions(profileView.getActivity(),
-                        new String[]{Manifest.permission.CAMERA}, 2);
-
-            }
-        }
     }
 }
