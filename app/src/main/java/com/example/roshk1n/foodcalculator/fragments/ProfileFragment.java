@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
     private ImageView fullNameIcoIv;
     private ImageView emailIcoIv;
     private ImageView ageIcoIv;
+
     private ImageView weightIcoIv;
     private ImageView heightIcoIv;
     private ImageView activeLevelIcoIv;

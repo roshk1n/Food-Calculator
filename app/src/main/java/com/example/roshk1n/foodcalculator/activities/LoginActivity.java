@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.roshk1n.foodcalculator.Localization;
@@ -37,8 +38,8 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
         initUI();
         Localization.setLocale(getContext());
 
-        emailEt.setOnFocusChangeListener(this);
-        passwordEt.setOnFocusChangeListener(this);
+        emailEt.getEditText().setOnFocusChangeListener(this);
+        passwordEt.getEditText().setOnFocusChangeListener(this);
 
         loginPresenter = new LoginPresenterImpl();
         loginPresenter.setView(this);
@@ -122,7 +123,7 @@ public class LoginActivity extends Activity implements LoginView, View.OnFocusCh
     }
 
     private void initUI() {
-        emailEt = (TextInputLayout) findViewById(R.id.email_et);
+        emailEt = (TextInputLayout) findViewById(R.id.email_til);
         passwordEt = (TextInputLayout) findViewById(R.id.password_et);
         btnLogInFacebook = (LoginButton) findViewById(R.id.login_facebook_btn);
         parentLinear = (LinearLayout) findViewById(R.id.parent_login_layout);

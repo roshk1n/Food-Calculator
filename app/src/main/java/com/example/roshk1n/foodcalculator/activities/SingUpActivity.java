@@ -47,10 +47,10 @@ public class SingUpActivity extends Activity implements SingUpView, View.OnFocus
         setContentView(R.layout.activity_sing_up);
         initUI();
 
-        surnameEt.setOnFocusChangeListener(this);
-        emailEt.setOnFocusChangeListener(this);
-        passwordEt.setOnFocusChangeListener(this);
-        confirmPasswordEt.setOnFocusChangeListener(this);
+        surnameEt.getEditText().setOnFocusChangeListener(this);
+        emailEt.getEditText().setOnFocusChangeListener(this);
+        passwordEt.getEditText().setOnFocusChangeListener(this);
+        confirmPasswordEt.getEditText().setOnFocusChangeListener(this);
 
         singUpPresenter = new SingUpPresenterImpl();
         singUpPresenter.setView(this);
