@@ -221,20 +221,23 @@ public class LocalDataBaseManager {
 
     public static void checkFacebookLocalUser(User user, final OnCompleteCallback callback) {
         UserRealm userRealm = realm.where(UserRealm.class)
-                .equalTo("email", user.getEmail())
+                .equalTo("email", Session.getInstance().getEmail())
                 .findFirst();
         if (userRealm == null) {
-            final UserRealm userR = new UserRealm(user.getFullname(), user.getEmail(), user.getPhotoUrl(),
-                    user.getAge(), user.getSex());
+            final UserRealm userR = new UserRealm(Session.getInstance().getFullname(),
+                    Session.getInstance().getEmail(),
+                    Session.getInstance().getUrlPhoto(),
+                    user.getAge(),
+                    user.getSex());
 
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     realm.copyToRealm(userR);
-                    callback.success();
                 }
             });
         }
+        callback.success();
     }
 
     public static String getLocalUserImage() {

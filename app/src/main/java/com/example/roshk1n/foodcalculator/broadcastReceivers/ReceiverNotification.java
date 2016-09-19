@@ -49,7 +49,6 @@ public class ReceiverNotification extends BroadcastReceiver {
     }
 
     public void createNotification(Context context, int positionAdapter) {
-
         Reminder reminder = LocalDataBaseManager.getNotification(positionAdapter);
         Calendar timeNotify = Calendar.getInstance();
         timeNotify.setTimeInMillis(reminder.getTime());

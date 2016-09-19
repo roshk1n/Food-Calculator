@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -48,25 +49,27 @@ public class ProfilePresenterImpl implements ProfilePresenter {
         dataManager.loadUserProfile(profileView.getContext(), new UserProfileCallback() {
             @Override
             public void loadProfileSuccess(final User user) {
-                if(checkLocal) {
-                    Bitmap image = stringToBitmap(user.getPhotoUrl());
-                    profileView.setProfile(image, user.getEmail(), user.getFullname(), user.getAge(),
-                            user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
-                    checkLocal = false;
+                if (profileView != null) {
+                    if (checkLocal) {
+                        Bitmap image = stringToBitmap(user.getPhotoUrl());
+                        profileView.setProfile(image, user.getEmail(), user.getFullname(), user.getAge(),
+                                user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+                        checkLocal = false;
 
-                } else {
-                    Glide
-                        .with(profileView.getContext())
-                        .load(user.getPhotoUrl())
-                        .asBitmap()
-                        .fitCenter()
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                profileView.setProfile(resource, user.getEmail(), user.getFullname(), user.getAge(),
-                                        user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
-                            }
-                        });
+                    } else {
+                        Glide
+                                .with(profileView.getContext())
+                                .load(user.getPhotoUrl())
+                                .asBitmap()
+                                .fitCenter()
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                        profileView.setProfile(resource, user.getEmail(), user.getFullname(), user.getAge(),
+                                                user.getHeight(), user.getWeight(), user.getSex(), user.getActiveLevel());
+                                    }
+                                });
+                    }
                 }
             }
         });
@@ -93,13 +96,13 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             e.printStackTrace();
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
-        profileView.setUserPhoto(scaleBitmap(photo,500));
+        profileView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        profileView.setUserPhoto(scaleBitmap(photo,500));
+        profileView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
@@ -112,30 +115,30 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                                   final String sex,
                                   final String active_level) {
 
-          if (!fullname.isEmpty() && !weight.isEmpty() && !height.isEmpty()
+        if (!fullname.isEmpty() && !weight.isEmpty() && !height.isEmpty()
                 && !age.isEmpty() && !email.isEmpty()) {
-              if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                  final String image_profile = bitmapToString(image);//convert to string
-                  int goalCalories = updateLimitCalories(sex, active_level, weight, height, age);
-                  User user = new User();
-                  user.setFullname(fullname);
-                  user.setWeight(Integer.parseInt(weight));
-                  user.setHeight(Integer.parseInt(height));
-                  user.setAge(Integer.parseInt(age));
-                  user.setEmail(email);
-                  user.setPhotoUrl(image_profile);
-                  user.setSex(sex);
-                  user.setActiveLevel(active_level);
-                  user.setGoalCalories(goalCalories);
-                  dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
-                      @Override
-                      public void success() {
-                          profileView.CompleteUpdateAndRefreshDrawer();
-                      }
-                  });
-              } else {
-                  profileView.showSnackBar(profileView.getContext().getString(R.string.email_incorrect));
-              }
+            if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                final String image_profile = bitmapToString(image);//convert to string
+                int goalCalories = updateLimitCalories(sex, active_level, weight, height, age);
+                User user = new User();
+                user.setFullname(fullname);
+                user.setWeight(Integer.parseInt(weight));
+                user.setHeight(Integer.parseInt(height));
+                user.setAge(Integer.parseInt(age));
+                user.setEmail(email);
+                user.setPhotoUrl(image_profile);
+                user.setSex(sex);
+                user.setActiveLevel(active_level);
+                user.setGoalCalories(goalCalories);
+                dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
+                    @Override
+                    public void success() {
+                        profileView.CompleteUpdateAndRefreshDrawer();
+                    }
+                });
+            } else {
+                profileView.showSnackBar(profileView.getContext().getString(R.string.email_incorrect));
+            }
         } else {
             profileView.showSnackBar(profileView.getContext().getString(R.string.enter_all_field));
         }

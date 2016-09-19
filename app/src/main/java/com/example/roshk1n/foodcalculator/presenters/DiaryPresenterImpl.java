@@ -37,11 +37,11 @@ public class DiaryPresenterImpl implements DiaryPresenter {
 
     @Override
     public void loadDay() {
-        if(diaryView != null) {
-            checkForAnim = true;
-            dataManager.loadDayData(date, new LoadDayCallback() {
-                @Override
-                public void loadComplete(Day d) {
+        checkForAnim = true;
+        dataManager.loadDayData(date, new LoadDayCallback() {
+            @Override
+            public void loadComplete(Day d) {
+                if (diaryView != null) {
                     day = d;
                     diaryView.setDay(d);
                     if (day.getFoods().size() == 0) {
@@ -51,12 +51,12 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                     }
                     checkForAnim = false;
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
-    public void setFollowDate() {
+    public void setPreviousDate() {
         Calendar dateNow = Calendar.getInstance();
         date.set(Calendar.HOUR_OF_DAY, dateNow.get(Calendar.HOUR_OF_DAY));
         date.set(Calendar.MINUTE, dateNow.get(Calendar.MINUTE));

@@ -255,8 +255,9 @@ public class ProfileFragment extends Fragment implements ProfileView, View.OnCli
             heightIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_ruler_accent_24dp));
             activeLevelIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_active_level_accent_24dp));
             sexIcoProfileIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_male_female_accent_24dp));
+
         } else {
-            fullNameIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_person_primary_24dp));
+            fullNameIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_person_light_24dp));
             emailIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_mail_primary_24dp));
             ageIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_age_primary_24dp));
             weightIcoIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_weight_primary_24dp));

@@ -50,10 +50,10 @@
     <string name="protein_g">Protein (g)</string>
     <string name="calories">Calories</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="alert2">     You almost reached the limit today.\n     You have %1$s calories.</string>
-    <string name="alert3">     You reached the limit today.\n     Recommend will not eat today :(</string>
+    <string name="alert2">     You almost reached the limit today.\nYou have %1$s calories.</string>
+    <string name="alert3">     You reached the limit today.\nRecommend will not eat today :(</string>
     <string name="alert4">     You exceeded the limit greatly today!"</string>
-    <string name="title_limit" translatable="false">Limit of calories</string>
+    <string name="title_limit">Limit of calories</string>
 
     <array name="photo">
         <item>Choose from Gallery</item>
@@ -75,10 +75,10 @@
     </string-array>
 
 
-    <string name="breakfast">Breakfast</string>
-    <string name="lunch">Lunch</string>
-    <string name="dinner">Dinner</string>
-    <string name="snack">Snack</string>
+    <string name="breakfast" translatable="false">Breakfast</string>
+    <string name="lunch" translatable="false">Lunch</string>
+    <string name="dinner" translatable="false">Dinner</string>
+    <string name="snack" translatable="false">Snack</string>
 
 
     <string name="search">Search</string>
@@ -161,6 +161,6 @@
     <string name="cal">" cal."</string>
     <string name="login_facebook">Log in with Facebook</string>
     <string name="logout_facebook">Log out</string>
-    <string name="time_to_eat">Time to eat :)</string>
+    <string name="time_to_eat" translatable="false">Time to eat :)</string>
     <string name="notification">%1$s. Time to eat :)</string>
 </resources>

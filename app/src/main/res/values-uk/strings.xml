@@ -12,7 +12,7 @@
     <string name="add_food_favorite">Додавання їжі до улюблених</string>
     <string name="add_food_success">Їжа додана успішно</string>
     <string name="age">Вік</string>
-    <string name="alert2">Ви близькі до ліміту сьогодні.\n У вас залишилося %1$s калорій.</string>
+    <string name="alert2">Ви близькі до ліміту сьогодні.\nУ вас залишилося %1$s калорій.</string>
     <string name="alert3">Ви досягли ліміт сьогодні.(</string>
     <string name="alert4">Ви перевищили ліміт.</string>
     <string name="all">Усі</string>
@@ -21,7 +21,7 @@
     <string name="apr">Квітень</string>
     <string name="aug">Серпень</string>
     <string name="back_to_login"><u>Повернутися на логін</u></string>
-    <string name="breakfast">Сніданок</string>
+    <string name="title_limit">Ліміт</string>
     <string name="calories">Калорії</string>
     <string name="carbs_g">Вугливоди (g)</string>
     <string name="chart">Графіки</string>
@@ -103,10 +103,7 @@
     <string name="save">Зберегти</string>
     <string name="image_incorrect">Це зображення не підтримується. Оберіть інше зображення.</string>
     <string name="add_food_btn">Додати</string>
-    <string name="dinner">Вечеря</string>
     <string name="about">Про програму</string>
-    <string name="lunch">Обід</string>
-    <string name="snack">Закуска</string>
     <string name="created_by">Авторські права 2016, Розробник Олег Рошка.</string>
     <string name="version_1_0">Версія 1.0</string>
     <string name="empty_confirm">Введіть підтвердження паролю.</string>
@@ -114,6 +111,4 @@
     <string name="cal">" кал."</string>
     <string name="login_facebook">Увійти через Facebook</string>
     <string name="logout_facebook">Вийти</string>
-    <string name="time_to_eat">Час поїсти :)</string>
-    <string name="notification">%1$s. Час поїсти :)</string>
 </resources>

@@ -203,11 +203,12 @@ public class FirebaseManager {
                 if (!check) {
                     userRef.setValue(userFirebase);
                 }
-                callback.loadProfileSuccess(user);
                 Session.startSession();
                 Session.getInstance().setEmail(getAuth().getCurrentUser().getEmail());
                 Session.getInstance().setFullname(getAuth().getCurrentUser().getDisplayName());
                 Session.getInstance().setUrlPhoto(getAuth().getCurrentUser().getPhotoUrl().toString());
+                callback.loadProfileSuccess(user);
+
             }
 
             @Override

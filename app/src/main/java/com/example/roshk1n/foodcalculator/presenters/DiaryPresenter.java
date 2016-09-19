@@ -15,7 +15,7 @@ public interface DiaryPresenter  {
 
     void loadDay();
 
-    void setFollowDate();
+    void setPreviousDate();
 
     void setNextDate();
 

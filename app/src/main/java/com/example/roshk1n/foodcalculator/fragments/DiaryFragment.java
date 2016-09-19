@@ -22,8 +22,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.OnSwipeTouchListener;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerDiaryAdapter;
@@ -54,13 +56,15 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
     private TextView goalCaloriesTv;
     private TextView eatDailyCaloriesTv;
     private TextView remainingCaloriesTv;
-    private ImageView followDayIv;
+    private ImageView previousDayIv;
     private ImageView nextDayIv;
     private View hintCircleAddFood;
     private Snackbar snackbar;
     private FloatingActionButton addFoodFab;
     private CoordinatorLayout coordinatorLayout;
     private CoordinatorLayout HintAddFoodLayout;
+    private LinearLayout limitDiaryLayout;
+    private LinearLayout dateDiaryLayout;
 
     public static DiaryFragment newInstance() {
         return new DiaryFragment();
@@ -106,7 +110,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
         addFoodFab.show();
 
-        followDayIv.setOnClickListener(this);
+        previousDayIv.setOnClickListener(this);
         nextDayIv.setOnClickListener(this);
         dateTv.setOnClickListener(this);
         addFoodFab.setOnClickListener(this);
@@ -144,6 +148,20 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 }
             }
         });
+
+        OnSwipeTouchListener touchListener = new OnSwipeTouchListener(getContext()) {
+            public void onSwipeRight() {
+                previousDay();
+            }
+
+            public void onSwipeLeft() {
+                nextDay();
+            }
+        };
+
+        limitDiaryLayout.setOnTouchListener(touchListener);
+        dateDiaryLayout.setOnTouchListener(touchListener);
+
         return view;
     }
 
@@ -170,34 +188,11 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void onClick(View v) {
-        if (v == followDayIv) {
-            hideHintAddAnim();
-            if (snackbar != null && snackbar.isShown()) {
-                snackbar.dismiss();
-            } else {
-                diaryPresenter.setFollowDate();
-                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
-                        R.id.fragment_conteiner,
-                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
-                        R.anim.slide_in_right_enter,
-                        R.anim.slide_in_right_exit,
-                        false);
-            }
+        if (v == previousDayIv) {
+            previousDay();
 
         } else if (v == nextDayIv) {
-            hideHintAddAnim();
-            if (snackbar != null && snackbar.isShown()) {
-                snackbar.dismiss();
-
-            } else {
-                diaryPresenter.setNextDate();
-                Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
-                        R.id.fragment_conteiner,
-                        DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
-                        R.anim.slide_in_left_enter,
-                        R.anim.slide_in_left_exit,
-                        false);
-            }
+            nextDay();
 
         } else if (v == dateTv) {
             showDatePicker();
@@ -306,7 +301,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
 
     @Override
     public void showHintAddAnim() {
-        if(isVisible()) {
+        if (isVisible()) {
             Animation animation1 = AnimationUtils.loadAnimation(getActivity().getApplicationContext()
                     , R.anim.show_hint_add_food);
             hintCircleAddFood.startAnimation(animation1);
@@ -323,7 +318,7 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
-        datePickerDialog.setAccentColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+        datePickerDialog.setAccentColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
     }
 
@@ -356,6 +351,37 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         snackbar.show();
     }
 
+    private void previousDay() {
+        hideHintAddAnim();
+        if (snackbar != null && snackbar.isShown()) {
+            snackbar.dismiss();
+        } else {
+            diaryPresenter.setPreviousDate();
+            Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                    R.id.fragment_conteiner,
+                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
+                    R.anim.slide_in_right_enter,
+                    R.anim.slide_in_right_exit,
+                    false);
+        }
+    }
+
+    private void nextDay() {
+        hideHintAddAnim();
+        if (snackbar != null && snackbar.isShown()) {
+            snackbar.dismiss();
+
+        } else {
+            diaryPresenter.setNextDate();
+            Utils.navigateToFragmentCustom(getActivity().getSupportFragmentManager(),
+                    R.id.fragment_conteiner,
+                    DiaryFragment.newInstance(diaryPresenter.getDate().getTime().getTime()),
+                    R.anim.slide_in_left_enter,
+                    R.anim.slide_in_left_exit,
+                    false);
+        }
+    }
+
     private void initUI() {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_meal);
         dateTv = (TextView) view.findViewById(R.id.date_diary_tv);
@@ -363,10 +389,12 @@ public class DiaryFragment extends Fragment implements DiaryView, CallbackDiaryA
         goalCaloriesTv = (TextView) view.findViewById(R.id.goal_cal_diary_tv);
         eatDailyCaloriesTv = (TextView) view.findViewById(R.id.eatdaily_cal_diary_tv);
         remainingCaloriesTv = (TextView) view.findViewById(R.id.remaining_cal_diary_tv);
-        followDayIv = (ImageView) view.findViewById(R.id.follow_day_iv);
+        previousDayIv = (ImageView) view.findViewById(R.id.previous_day_iv);
         nextDayIv = (ImageView) view.findViewById(R.id.next_day_iv);
         hintCircleAddFood = getActivity().findViewById(R.id.hint_add_food_view);
         HintAddFoodLayout = (CoordinatorLayout) getActivity().findViewById(R.id.hint_add_food_coordinator);
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+        limitDiaryLayout = (LinearLayout) view.findViewById(R.id.limit_diary_layout);
+        dateDiaryLayout = (LinearLayout) view.findViewById(R.id.date_diary_layout);
     }
 }
