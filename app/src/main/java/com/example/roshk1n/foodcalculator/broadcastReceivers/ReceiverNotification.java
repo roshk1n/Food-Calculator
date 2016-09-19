@@ -14,10 +14,10 @@ import com.example.roshk1n.foodcalculator.activities.LoginActivity;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Reminder;
+
 import java.util.Calendar;
 
 public class ReceiverNotification extends BroadcastReceiver {
-
     private final static String NOTIFICATION_ID = "notify_id";
     private final static String NOTIFICATION_NAME = "notify_name";
     private final static String ACTION = "android.intent.action.receiverNotification";
@@ -25,23 +25,23 @@ public class ReceiverNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "mytag");
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "myTAG");
         wl.acquire(15000);
 
         int notify_id = intent.getExtras().getInt(NOTIFICATION_ID);
         String name = intent.getExtras().getString(NOTIFICATION_NAME);
 
-        Intent intent1 = new Intent(context,LoginActivity.class);
+        Intent intent1 = new Intent(context, LoginActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 intent1, 0);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setAutoCancel(true)
-                        .setTicker("Time to eat :)")
+                        .setTicker(context.getString(R.string.time_to_eat))
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setSmallIcon(R.drawable.ic_add_white_24dp)
                         .setContentTitle("Food Calculator")
-                        .setContentText("You long time without " + name + ". Time to eat :)")
+                        .setContentText(context.getString(R.string.notification, name))
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -55,7 +55,7 @@ public class ReceiverNotification extends BroadcastReceiver {
         timeNotify.setTimeInMillis(reminder.getTime());
         String nameNotification = reminder.getName();
 
-        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, ReceiverNotification.class);
         intent.setAction(ACTION);
         intent.putExtra(NOTIFICATION_ID, positionAdapter);
@@ -67,11 +67,11 @@ public class ReceiverNotification extends BroadcastReceiver {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY,timeNotify.get(Calendar.HOUR_OF_DAY));
-        calendar.set(Calendar.MINUTE,timeNotify.get(Calendar.MINUTE));
-        calendar.set(Calendar.SECOND,timeNotify.get(Calendar.SECOND));
+        calendar.set(Calendar.HOUR_OF_DAY, timeNotify.get(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, timeNotify.get(Calendar.MINUTE));
+        calendar.set(Calendar.SECOND, timeNotify.get(Calendar.SECOND));
 
-        if(calendarNow.getTime().getTime() >= calendar.getTime().getTime()) {
+        if (calendarNow.getTime().getTime() >= calendar.getTime().getTime()) {
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY
                     , AlarmManager.INTERVAL_DAY, contentIntent);
         } else {
@@ -81,7 +81,7 @@ public class ReceiverNotification extends BroadcastReceiver {
         }
     }
 
-    public void cancelNotification(Context context,int positionAdapter) {
+    public void cancelNotification(Context context, int positionAdapter) {
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, ReceiverNotification.class);

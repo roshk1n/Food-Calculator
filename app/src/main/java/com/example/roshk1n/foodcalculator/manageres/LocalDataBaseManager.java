@@ -35,18 +35,20 @@ public class LocalDataBaseManager {
     public static Day loadDayData(Calendar date) {
         Day day = new Day();
         boolean checkDay = false;
-        for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
-            if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
-                dayRealm = getCurrentUserRealm().getDayRealms().get(i);
-                checkDay = true;
+        if (dayRealm != null) {
+            for (int i = 0; i < getCurrentUserRealm().getDayRealms().size(); i++) {
+                if (compareLongAndDate(getCurrentUserRealm().getDayRealms().get(i).getDate(), date)) {
+                    dayRealm = getCurrentUserRealm().getDayRealms().get(i);
+                    checkDay = true;
+                }
             }
         }
-
         if (checkDay) {
             day = new Day(dayRealm);
         } else {
             dayRealm = null;
         }
+
         return day;
     }
 
@@ -217,22 +219,22 @@ public class LocalDataBaseManager {
         callback.success();
     }
 
-    public static void checkFacebookLocalUser(User user, OnCompleteCallback callback) {
+    public static void checkFacebookLocalUser(User user, final OnCompleteCallback callback) {
         UserRealm userRealm = realm.where(UserRealm.class)
                 .equalTo("email", user.getEmail())
                 .findFirst();
         if (userRealm == null) {
-            final UserRealm userR = new UserRealm(user.getFullname(),user.getEmail(), user.getPhotoUrl(),
-                    user.getAge(),user.getSex());
+            final UserRealm userR = new UserRealm(user.getFullname(), user.getEmail(), user.getPhotoUrl(),
+                    user.getAge(), user.getSex());
 
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     realm.copyToRealm(userR);
+                    callback.success();
                 }
             });
         }
-        callback.success();
     }
 
     public static String getLocalUserImage() {

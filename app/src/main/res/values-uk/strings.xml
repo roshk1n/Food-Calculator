@@ -114,4 +114,6 @@
     <string name="cal">" кал."</string>
     <string name="login_facebook">Увійти через Facebook</string>
     <string name="logout_facebook">Вийти</string>
+    <string name="time_to_eat">Час поїсти :)</string>
+    <string name="notification">%1$s. Час поїсти :)</string>
 </resources>

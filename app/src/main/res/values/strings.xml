@@ -161,4 +161,6 @@
     <string name="cal">" cal."</string>
     <string name="login_facebook">Log in with Facebook</string>
     <string name="logout_facebook">Log out</string>
+    <string name="time_to_eat">Time to eat :)</string>
+    <string name="notification">%1$s. Time to eat :)</string>
 </resources>

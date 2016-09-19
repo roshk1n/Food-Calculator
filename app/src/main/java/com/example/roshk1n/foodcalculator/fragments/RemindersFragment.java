@@ -113,7 +113,6 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
 
     @Override
     public void updateSwitch(Boolean check, int positionAdapter) {
-
         remindersPresenter.updateSwitchState(check,positionAdapter);
 
         this.positionAdapter = positionAdapter;
@@ -137,7 +136,7 @@ public class RemindersFragment extends Fragment  implements RemindersView, Callb
     private void initDateTimeData(){
         Calendar c = Calendar.getInstance();
         hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
+        minute = c.get(Calendar.MINUTE)+1;
     }
 
     private void initUI() {
