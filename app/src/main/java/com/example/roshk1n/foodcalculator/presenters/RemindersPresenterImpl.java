@@ -33,8 +33,9 @@ public class RemindersPresenterImpl implements RemindersPresenter {
 
     @Override
     public void updateTime(final int positionAdapter, String time) {
-        localDataBaseManager.updateReminderTime(positionAdapter,stringToTime(time).getTime());
-        remindersView.setTime(positionAdapter,stringToTime(time).getTime());
+        localDataBaseManager.updateReminderTime(positionAdapter, stringToTime(time).getTime());
+        if (remindersView != null)
+            remindersView.setTime(positionAdapter, stringToTime(time).getTime());
     }
 
     @Override
@@ -44,7 +45,7 @@ public class RemindersPresenterImpl implements RemindersPresenter {
 
     @Override
     public void updateSwitchState(boolean check, int position) {
-        localDataBaseManager.updateReminderState(check,position);
+        localDataBaseManager.updateReminderState(check, position);
     }
 
     @Override
@@ -62,10 +63,10 @@ public class RemindersPresenterImpl implements RemindersPresenter {
     }
 
     private void setDefaultReminders() {
-        reminders.add(createReminder("8:45",remindersView.getContext().getString(R.string.breakfast)));
-        reminders.add(createReminder("14:00",remindersView.getContext().getString(R.string.lunch)));
-        reminders.add(createReminder("18:00",remindersView.getContext().getString(R.string.dinner)));
-        reminders.add(createReminder("17:00",remindersView.getContext().getString(R.string.snack)));
+        reminders.add(createReminder("8:45", remindersView.getContext().getString(R.string.breakfast)));
+        reminders.add(createReminder("14:00", remindersView.getContext().getString(R.string.lunch)));
+        reminders.add(createReminder("18:00", remindersView.getContext().getString(R.string.dinner)));
+        reminders.add(createReminder("17:00", remindersView.getContext().getString(R.string.snack)));
     }
 
     private Date stringToTime(String time) {

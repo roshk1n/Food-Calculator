@@ -30,37 +30,39 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
     @Override
     public void singUp(final String fullname, final String email, final String password, final String confirmPassword) {
         boolean error = false;
-        if (TextUtils.isEmpty(fullname)) {
-            singUpView.serFullNameError(singUpView.getContext().getString(R.string.empty_full_name));
-            error = true;
+        if (singUpView != null) {
+            if (TextUtils.isEmpty(fullname)) {
+                singUpView.serFullNameError(singUpView.getContext().getString(R.string.empty_full_name));
+                error = true;
 
-        } else if (TextUtils.isEmpty(email)) {
-            singUpView.setEmailError(singUpView.getContext().getString(R.string.empty_email));
-            error = true;
+            } else if (TextUtils.isEmpty(email)) {
+                singUpView.setEmailError(singUpView.getContext().getString(R.string.empty_email));
+                error = true;
 
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = true;
-            singUpView.setEmailError(singUpView.getContext().getString(R.string.email_incorrect));
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                error = true;
+                singUpView.setEmailError(singUpView.getContext().getString(R.string.email_incorrect));
 
-        } else if (TextUtils.isEmpty(password)) {
-            singUpView.setPasswordError(singUpView.getContext().getString(R.string.empty_password));
-            error = true;
+            } else if (TextUtils.isEmpty(password)) {
+                singUpView.setPasswordError(singUpView.getContext().getString(R.string.empty_password));
+                error = true;
 
-        } else if (TextUtils.isEmpty(confirmPassword)) {
-            singUpView.setConfirmError(singUpView.getContext().getString(R.string.empty_confirm));
-            error = true;
+            } else if (TextUtils.isEmpty(confirmPassword)) {
+                singUpView.setConfirmError(singUpView.getContext().getString(R.string.empty_confirm));
+                error = true;
 
-        } else if (!password.equals(confirmPassword)) {
-            singUpView.setConfirmError(singUpView.getContext().getString(R.string.password_dont_match));
-            error = true;
+            } else if (!password.equals(confirmPassword)) {
+                singUpView.setConfirmError(singUpView.getContext().getString(R.string.password_dont_match));
+                error = true;
 
-        } else if (password.length() < 6) {
-            singUpView.setPasswordError(singUpView.getContext().getString(R.string.password_short));
-            error = true;
-        }
-        if (!error) {
-            final Bitmap imageUser = singUpView.getBitmapIv();
-            dataManager.createUser(email, password, fullname, imageUser);
+            } else if (password.length() < 6) {
+                singUpView.setPasswordError(singUpView.getContext().getString(R.string.password_short));
+                error = true;
+            }
+            if (!error) {
+                final Bitmap imageUser = singUpView.getBitmapIv();
+                dataManager.createUser(email, password, fullname, imageUser);
+            }
         }
     }
 
@@ -73,14 +75,15 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
             e.printStackTrace();
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
-
-        singUpView.setUserPhoto(scaleBitmap(photo, 500));
+        if (singUpView != null)
+            singUpView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        singUpView.setUserPhoto(scaleBitmap(photo, 500));
+        if (singUpView != null)
+            singUpView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
@@ -90,12 +93,14 @@ public class SingUpPresenterImpl implements SingUpPresenter, DataSingUpCallback 
 
     @Override
     public void singUpSuccess() {
-        singUpView.navigateToLogin();
+        if (singUpView != null)
+            singUpView.navigateToLogin();
     }
 
     @Override
     public void singUpError(String message) {
-        singUpView.showSnackBar(message);
+        if (singUpView != null)
+            singUpView.showSnackBar(message);
     }
 
     private Bitmap scaleBitmap(Bitmap bitmapToScale, float maxImageSize) {

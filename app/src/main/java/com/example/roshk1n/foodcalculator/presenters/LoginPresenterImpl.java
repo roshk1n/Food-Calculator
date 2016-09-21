@@ -51,10 +51,11 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                dataManager.loginFacebook(loginResult.getAccessToken(),object, new OnCompleteCallback() {
+                                dataManager.loginFacebook(loginResult.getAccessToken(), object, new OnCompleteCallback() {
                                     @Override
                                     public void success() {
-                                        loginVew.navigateToHome();
+                                        if (loginVew != null)
+                                            loginVew.navigateToHome();
                                     }
                                 });
                             }
@@ -67,11 +68,14 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
 
             @Override
             public void onCancel() {
-                loginVew.showMessage("Login was canceled.");
+                if (loginVew != null)
+                    loginVew.showMessage("Login was canceled.");
             }
+
             @Override
             public void onError(FacebookException error) {
-               loginVew.showMessage(error.getMessage());
+                if (loginVew != null)
+                    loginVew.showMessage(error.getMessage());
             }
         });
     }
@@ -102,7 +106,8 @@ public class LoginPresenterImpl implements LoginPresenter, LoginCallback {
 
     @Override
     public void loginError(String text) {
-        loginVew.showMessage(text);
+        if (loginVew != null)
+            loginVew.showMessage(text);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.example.roshk1n.foodcalculator.interfaces.ResetPasswordCallback;
 import com.example.roshk1n.foodcalculator.manageres.FirebaseManager;
 import com.example.roshk1n.foodcalculator.views.ResetPasswordView;
 
-public class ResetPasswordPresenterImpl implements ResetPasswordPresenter{
+public class ResetPasswordPresenterImpl implements ResetPasswordPresenter {
     private ResetPasswordView resetView;
 
     @Override
@@ -18,17 +18,20 @@ public class ResetPasswordPresenterImpl implements ResetPasswordPresenter{
             FirebaseManager.getInstance().resetPassword(email, new ResetPasswordCallback() {
                 @Override
                 public void resetSuccess(String message) {
-                    resetView.showSnackBar(message);
+                    if (resetView != null)
+                        resetView.showSnackBar(message);
                 }
 
                 @Override
                 public void resetError(String message) {
-                    resetView.showSnackBar(message);
+                    if (resetView != null)
+                        resetView.showSnackBar(message);
                 }
             });
 
         } else {
-            resetView.errorEmail();
+            if (resetView != null)
+                resetView.errorEmail();
         }
     }
 

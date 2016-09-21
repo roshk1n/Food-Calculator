@@ -25,7 +25,8 @@ public class FavoritePresenterImpl implements FavoritePresenter{
         dataManager.loadFavoriteList(new DataFavoriteCallback() {
             @Override
             public void setFavoriteList(ArrayList<Food> favFoods) {
-                favoriteView.setFavoriteList(favFoods);
+                if(favoriteView != null)
+                    favoriteView.setFavoriteList(favFoods);
             }
         });
         return favoriteFood;

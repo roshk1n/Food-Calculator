@@ -23,7 +23,7 @@ public class ChartPresenterImpl implements ChartPresenter {
 
     @Override
     public void loadData(final int period) {
-       dataManager.loadDataForChart(new LoadDaysCallback() {
+        dataManager.loadDataForChart(new LoadDaysCallback() {
             @Override
             public void loadDaysComplete(ArrayList<Day> days) {
                 ArrayList<EntryEatChart> entryEatCharts;
@@ -50,7 +50,8 @@ public class ChartPresenterImpl implements ChartPresenter {
                         amountCalories += entryEatCharts.get(i).getEatCalories();
                     }
                 }
-                chartView.setEntry(entriesChart, period);
+                if (chartView != null)
+                    chartView.setEntry(entriesChart, period);
 
             }
         });

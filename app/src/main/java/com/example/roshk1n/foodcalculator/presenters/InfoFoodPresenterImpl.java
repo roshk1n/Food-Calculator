@@ -45,7 +45,8 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
             dataManager.addFavoriteFood(cloneFood, new StateItemCallback() {
                 @Override
                 public void updateImageFavorite(boolean state) {
-                    infoFoodView.updateFavoriteImage(state);
+                    if (infoFoodView != null)
+                        infoFoodView.updateFavoriteImage(state);
                 }
             });
         }
@@ -56,7 +57,8 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
         dataManager.removeFavoriteFoodDB(ndbno, new StateItemCallback() {
             @Override
             public void updateImageFavorite(boolean state) {
-                infoFoodView.updateFavoriteImage(state);
+                if (infoFoodView != null)
+                    infoFoodView.updateFavoriteImage(state);
             }
         });
     }
@@ -66,7 +68,8 @@ public class InfoFoodPresenterImpl implements InfoFoodPresenter {
         dataManager.isExistInFavorite(food, new DataAddFoodCallback() {
             @Override
             public void setExistFavorite(boolean existInFavotite) {
-                infoFoodView.updateFavoriteImage(existInFavotite);
+                if (infoFoodView != null)
+                    infoFoodView.updateFavoriteImage(existInFavotite);
             }
         });
     }

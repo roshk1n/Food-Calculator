@@ -9,7 +9,8 @@ public class SearchPresenterImpl implements SearchPresenter, RetrofitCallback {
     private RetrofitManager retrofitManager = new RetrofitManager(this);
     private SearchView searchView;
 
-    public SearchPresenterImpl() {}
+    public SearchPresenterImpl() {
+    }
 
     public void setView(SearchView view) {
         this.searchView = view;
@@ -27,11 +28,14 @@ public class SearchPresenterImpl implements SearchPresenter, RetrofitCallback {
 
     @Override
     public void addFood(FoodResponse foodResponse) {
-        searchView.setFoodNutrients(foodResponse.getReport().getFood());
+        if (searchView != null) {
+            searchView.setFoodNutrients(foodResponse.getReport().getFood());
+        }
     }
 
     @Override
     public void setError(String message) {
-        searchView.showSnackBar(message);
+        if (searchView != null)
+            searchView.showSnackBar(message);
     }
 }

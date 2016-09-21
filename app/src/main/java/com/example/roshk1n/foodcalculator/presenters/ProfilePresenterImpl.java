@@ -96,13 +96,15 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             e.printStackTrace();
         }
         Bitmap photo = BitmapFactory.decodeStream(inputStream);
-        profileView.setUserPhoto(scaleBitmap(photo, 500));
+        if (profileView != null)
+            profileView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
     public void setUserPhotoCamera(Intent data) {
         Bitmap photo = (Bitmap) data.getExtras().get("data");
-        profileView.setUserPhoto(scaleBitmap(photo, 500));
+        if (profileView != null)
+            profileView.setUserPhoto(scaleBitmap(photo, 500));
     }
 
     @Override
@@ -133,14 +135,17 @@ public class ProfilePresenterImpl implements ProfilePresenter {
                 dataManager.updateUserProfile(user, image, new OnCompleteCallback() {
                     @Override
                     public void success() {
-                        profileView.CompleteUpdateAndRefreshDrawer();
+                        if (profileView != null)
+                            profileView.CompleteUpdateAndRefreshDrawer();
                     }
                 });
             } else {
-                profileView.showSnackBar(profileView.getContext().getString(R.string.email_incorrect));
+                if (profileView != null)
+                    profileView.showSnackBar(profileView.getContext().getString(R.string.email_incorrect));
             }
         } else {
-            profileView.showSnackBar(profileView.getContext().getString(R.string.enter_all_field));
+            if (profileView != null)
+                profileView.showSnackBar(profileView.getContext().getString(R.string.enter_all_field));
         }
     }
 

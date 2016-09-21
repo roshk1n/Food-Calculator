@@ -45,7 +45,7 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                     day = d;
                     diaryView.setDay(d);
                     if (day.getFoods().size() == 0) {
-                        if (!checkForAnim) {
+                        if (!checkForAnim && diaryView != null) {
                             diaryView.showHintAddAnim();
                         }
                     }
@@ -106,17 +106,19 @@ public class DiaryPresenterImpl implements DiaryPresenter {
         String eatCalories = String.valueOf(eat_calories);
         int checkLimit = checkLimit(day.getRemainingCalories());
         int color = getColor(checkLimit);
-
-        if (checkLimit != 1 && day.getEatDailyCalories() != 0 && goalCalories != 0) { //if need dialog for limit
-            diaryView.showDialog(remainingCalories, checkLimit);
+        if (diaryView != null) {
+            if (checkLimit != 1 && day.getEatDailyCalories() != 0 && goalCalories != 0) { //if need dialog for limit
+                diaryView.showDialog(remainingCalories, checkLimit);
+            }
+            diaryView.updateCalories(eatCalories, remainingCalories, color);
         }
-        diaryView.updateCalories(eatCalories, remainingCalories, color);
     }
 
     @Override
     public void getGoalCalories() {
         int goalCalories = LocalDataBaseManager.loadGoalCalories();
-        diaryView.setGoalCalories(String.valueOf(goalCalories));
+        if (diaryView != null)
+            diaryView.setGoalCalories(String.valueOf(goalCalories));
     }
 
     private int checkLimit(int remaining) {

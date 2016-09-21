@@ -40,7 +40,8 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
             LocalDataBaseManager.addFood(food);
         }
         dataManager.addFood(food);
-        foodView.navigateToDiary();
+        if (foodView != null)
+            foodView.navigateToDiary();
     }
 
     @Override
@@ -63,11 +64,12 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
                 }
             }
 
-            foodView.setNutrients(cloneFood.getNutrients().get(1).getValue()
-                    , cloneFood.getNutrients().get(2).getValue()
-                    , cloneFood.getNutrients().get(3).getValue()
-                    , cloneFood.getNutrients().get(4).getValue()
-                    , cloneFood.getName());
+            if (foodView != null)
+                foodView.setNutrients(cloneFood.getNutrients().get(1).getValue()
+                        , cloneFood.getNutrients().get(2).getValue()
+                        , cloneFood.getNutrients().get(3).getValue()
+                        , cloneFood.getNutrients().get(4).getValue()
+                        , cloneFood.getName());
         }
     }
 
@@ -88,7 +90,8 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         dataManager.addFavoriteFood(food, new StateItemCallback() {
             @Override
             public void updateImageFavorite(boolean state) {
-                foodView.updateFavoriteImage(state);
+                if (foodView != null)
+                    foodView.updateFavoriteImage(state);
             }
         });
     }
@@ -98,17 +101,19 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
         dataManager.removeFavoriteFoodDB(ndbno, new StateItemCallback() {
             @Override
             public void updateImageFavorite(boolean state) {
-                foodView.updateFavoriteImage(state);
+                if (foodView != null)
+                    foodView.updateFavoriteImage(state);
             }
         });
     }
 
     @Override
-    public void isExistFavorite(Food food) {
+    public void isExistFavorite(final Food food) {
         dataManager.isExistInFavorite(food, new DataAddFoodCallback() {
             @Override
-            public void setExistFavorite(boolean existInFavotite) {
-                foodView.updateFavoriteImage(existInFavotite);
+            public void setExistFavorite(boolean existInFavorite) {
+                if (foodView != null)
+                    foodView.updateFavoriteImage(existInFavorite);
             }
         });
     }
