@@ -487,10 +487,14 @@ public class FirebaseManager {
                     calendar.set(Calendar.MONTH, Integer.valueOf(s[1]));
                     calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(s[2]));
                     day.setDate(calendar.getTime().getTime());
-                    day.setEatDailyCalories(Integer.valueOf(oneDay.child(EAT_CALORIES).getValue().toString()));
-                    day.setRemainingCalories(Integer.valueOf(oneDay.child(REMAINING_CALORIES).getValue().toString()));
-                    for (DataSnapshot food : oneDay.child(FOODS_CHILD).getChildren()) {
-                        day.getFoods().add(new Food(food.getValue(FoodFirebase.class)));
+                    if (oneDay.child(EAT_CALORIES).getValue() != null) {
+                        day.setEatDailyCalories(Integer.valueOf(oneDay.child(EAT_CALORIES).getValue().toString()));
+                        day.setRemainingCalories(Integer.valueOf(oneDay.child(REMAINING_CALORIES).getValue().toString()));
+                    }
+                    if (oneDay.child(FOODS_CHILD).getValue() != null) {
+                        for (DataSnapshot food : oneDay.child(FOODS_CHILD).getChildren()) {
+                            day.getFoods().add(new Food(food.getValue(FoodFirebase.class)));
+                        }
                     }
                     listDay.add(day);
                 }
