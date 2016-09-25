@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "600692827674-kmudeq8g7l5vco42nnj5fjcmcb4rf4ie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roshk1n.foodcalculator",
+            "certificate_hash": "7DC7E99FAF17DC25B66BAFC3E856BFE17F4A2188"
+          }
+        },
+        {
           "client_id": "600692827674-v6be9dblm9p5711h6vk03ure6nqgittf.apps.googleusercontent.com",
           "client_type": 3
         }
