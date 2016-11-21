@@ -19,12 +19,12 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
         this.nutrients = nutrients;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleNutrientsTv;
         private TextView valueNutrientsTv;
         private ArrayList<Nutrient> nutrients;
 
-        public ViewHolder(View view, ArrayList<Nutrient> nutrients) {
+        ViewHolder(View view, ArrayList<Nutrient> nutrients) {
             super(view);
             this.nutrients = nutrients;
             titleNutrientsTv = (TextView) view.findViewById(R.id.title_nutrients_tv);
