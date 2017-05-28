@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 
@@ -19,12 +20,12 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
         this.nutrients = nutrients;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleNutrientsTv;
         private TextView valueNutrientsTv;
         private ArrayList<Nutrient> nutrients;
 
-        ViewHolder(View view, ArrayList<Nutrient> nutrients) {
+        public ViewHolder(View view, ArrayList<Nutrient> nutrients) {
             super(view);
             this.nutrients = nutrients;
             titleNutrientsTv = (TextView) view.findViewById(R.id.title_nutrients_tv);
@@ -33,7 +34,12 @@ public class RecyclerInfoAdapter extends RecyclerView.Adapter<RecyclerInfoAdapte
 
         public void setDate() {
             Nutrient nutrient = nutrients.get(getAdapterPosition());
-            titleNutrientsTv.setText(nutrient.getName());
+            if (Localization.getLanguage().equals("en")) {
+                titleNutrientsTv.setText(nutrient.getNameEng());
+
+            } else {
+                titleNutrientsTv.setText(nutrient.getName());
+            }
             valueNutrientsTv.setText(nutrient.getValue() + " " + nutrient.getUnit());
         }
     }

@@ -5,10 +5,13 @@ import android.graphics.Color;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
 import com.example.roshk1n.foodcalculator.manageres.DataManager;
 import com.example.roshk1n.foodcalculator.manageres.LocalDataBaseManager;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 import com.example.roshk1n.foodcalculator.views.DiaryView;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DiaryPresenterImpl implements DiaryPresenter {
@@ -53,6 +56,47 @@ public class DiaryPresenterImpl implements DiaryPresenter {
                 }
             }
         });
+        dataManager.fillFirebaseFood(generateFood());
+    }
+
+    private ArrayList<Food> generateFood() {
+        ArrayList<Food> foods = new ArrayList<>();
+        ArrayList<Nutrient> nutrients = new ArrayList<>();
+
+        Nutrient nutrientEnergy = new Nutrient("208", "Калорій", "Energy", "kcal", "100");
+        Nutrient nutrientFat = new Nutrient("204", "Жири", "Fat", "g", "9.1");
+        Nutrient nutrientCholesterol = new Nutrient("2", "Холестерин", "Cholesterol", "mg", "9.1");
+        Nutrient nutrientSodium = new Nutrient("3", "Натрій", "Sodium", "mg", "9.1");
+        Nutrient nutrientPotassium = new Nutrient("4", "Калій", "Potassium", "mg", "9.1");
+        Nutrient nutrientCarbohydrate = new Nutrient("291", "Вуглеводи", "Carbohydrate, by difference", "g", "9.1");
+        Nutrient nutrientSugars = new Nutrient("269", "Цукор", "Sugars, total", "g", "9.1");
+        Nutrient nutrientProtein = new Nutrient("203", "Білки", "Protein", "g", "9.1");
+        Nutrient nutrientVitaminA = new Nutrient("5", "Вітамін A", "Vitamin A", "%", "9.1");
+        Nutrient nutrientVitaminC = new Nutrient("6", "Вітамін С", "Vitamin C", "%", "9.1");
+        Nutrient nutrientCalcium = new Nutrient("301", "Кальцій С", "Calcium, Ca", "%", "9.1");
+        Nutrient nutrientIron = new Nutrient("1", "Залізо" ,"Iron, Fe", "%", "9.1");
+
+        nutrients.add(nutrientEnergy);
+        nutrients.add(nutrientProtein);
+        nutrients.add(nutrientFat);
+        nutrients.add(nutrientCarbohydrate);
+        nutrients.add(nutrientSugars);
+        nutrients.add(nutrientCalcium);
+        nutrients.add(nutrientIron);
+        nutrients.add(nutrientCholesterol);
+        nutrients.add(nutrientSodium);
+        nutrients.add(nutrientPotassium);
+        nutrients.add(nutrientVitaminA);
+        nutrients.add(nutrientVitaminC);
+
+        Food food = new Food();
+        food.setName("молоко");
+        food.setNameEng("milk");
+        food.setNdbno("1");
+        food.setNutrients(nutrients);
+        foods.add(food);
+
+        return foods;
     }
 
     @Override

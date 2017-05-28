@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackSearchAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -46,7 +47,11 @@ public class RecyclerSearchAdapter extends RecyclerView.Adapter<RecyclerSearchAd
         }
 
         public void setDate() {
-            nameTv.setText(foods.get(getAdapterPosition()).getName());
+            if (Localization.getLanguage().equals("en")) {
+                nameTv.setText(foods.get(getAdapterPosition()).getNameEng());
+            } else {
+                nameTv.setText(foods.get(getAdapterPosition()).getName());
+            }
             amountCalTv.setText(String.valueOf(foods.get(getAdapterPosition())
                     .getNutrients()
                     .get(1)

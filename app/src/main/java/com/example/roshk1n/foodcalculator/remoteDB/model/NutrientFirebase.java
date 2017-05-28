@@ -6,6 +6,7 @@ import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Nutrient;
 public class NutrientFirebase {
     private String nutrient_id;
     private String name;
+    private String nameEng;
     private String unit;
     private String value;
 
@@ -14,6 +15,7 @@ public class NutrientFirebase {
     public NutrientFirebase(Nutrient name) {
         setNutrient_id(name.getNutrient_id());
         setName(name.getName());
+        setNameEng(name.getNameEng());
         setUnit(name.getUnit());
         setValue(name.getValue());
     }
@@ -50,4 +52,11 @@ public class NutrientFirebase {
         this.value = value;
     }
 
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
 }

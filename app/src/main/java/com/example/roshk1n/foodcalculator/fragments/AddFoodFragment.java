@@ -77,8 +77,8 @@ public class AddFoodFragment extends Fragment implements AddFoodView, View.OnCli
         if (getArguments() != null) {
             food = getArguments().getParcelable(FOOD_KEY);
             presenter.isExistFavorite(food);
-            setNutrients(food.getNutrients().get(1).getValue(), food.getNutrients().get(2).getValue(),
-                    food.getNutrients().get(3).getValue(), food.getNutrients().get(4).getValue(),
+            setNutrients(food.getNutrients().get(0).getValue(), food.getNutrients().get(1).getValue(),
+                    food.getNutrients().get(2).getValue(), food.getNutrients().get(3).getValue(),
                     food.getName());
         }
 

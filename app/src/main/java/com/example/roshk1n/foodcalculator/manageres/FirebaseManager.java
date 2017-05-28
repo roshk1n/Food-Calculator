@@ -1,8 +1,13 @@
 package com.example.roshk1n.foodcalculator.manageres;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+
+import com.example.roshk1n.foodcalculator.Localization;
+import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.Session;
 import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
@@ -10,12 +15,14 @@ import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
 import com.example.roshk1n.foodcalculator.interfaces.ResetPasswordCallback;
+import com.example.roshk1n.foodcalculator.interfaces.SearchFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDayCallback;
 import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
 import com.example.roshk1n.foodcalculator.remoteDB.model.FoodFirebase;
 import com.example.roshk1n.foodcalculator.remoteDB.model.UserFirebase;
+import com.example.roshk1n.foodcalculator.rest.model.loginApi.response.DataRegistration;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
 import com.example.roshk1n.foodcalculator.interfaces.ResponseListenerUpload;
@@ -35,6 +42,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -62,6 +70,7 @@ public class FirebaseManager {
     private static final String FOODS_CHILD = "foods";
     private static final String EAT_CALORIES = "eatCalories";
     private static final String REMAINING_CALORIES = "remainingCalories";
+    private static final String FOOD_CHILD = "foods";
     private static FirebaseManager instance;
 
     private ArrayList<Day> listDay = new ArrayList<>();
@@ -70,7 +79,8 @@ public class FirebaseManager {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private FirebaseManager() {}
+    private FirebaseManager() {
+    }
 
     public static FirebaseManager getInstance() {
         if (instance == null) {
@@ -145,7 +155,7 @@ public class FirebaseManager {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(fullname)
@@ -580,6 +590,45 @@ public class FirebaseManager {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public void fillFirebaseFood(ArrayList<Food> arrayFood) {
+        DatabaseReference reference = database.getReference().child(FOOD_CHILD);
+        for (Food food : arrayFood) {
+            reference.push().setValue(food);
+        }
+
+    }
+
+    public void searchFood(final Context context, String search, final SearchFoodCallback callback) {
+        Query query;
+        if (Localization.getLanguage().equals("en")) {
+            query = database.getReference().child(FOOD_CHILD).orderByChild("nameEng").startAt(search.toLowerCase());
+
+        } else {
+            query = database.getReference().child(FOOD_CHILD).orderByChild("name").startAt(search.toLowerCase());
+        }
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    for (DataSnapshot dataFood : dataSnapshot.getChildren()) {
+                        callback.setFood(dataFood.getValue(Food.class));
+                    }
+                } else {
+                    callback.error(context.getString(R.string.result_empty));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.error(databaseError.getMessage());
+            }
+        };
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+
     }
 }
 

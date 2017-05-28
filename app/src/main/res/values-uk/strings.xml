@@ -22,8 +22,8 @@
     <string name="aug">Серпень</string>
     <string name="back_to_login"><u>Повернутися на логін</u></string>
     <string name="title_limit">Ліміт</string>
-    <string name="calories">Калорії</string>
-    <string name="carbs_g">Вугливоди (g)</string>
+    <string name="calories">Калорій</string>
+    <string name="carbs_g">Вуглеводи (g)</string>
     <string name="chart">Графіки</string>
     <string name="confirm_password">Підтвердження паролю</string>
     <string name="days">Дні</string>
@@ -111,4 +111,5 @@
     <string name="cal">" кал."</string>
     <string name="login_facebook">Увійти через Facebook</string>
     <string name="logout_facebook">Вийти</string>
+    <string name="result_empty">Результат відсутній, спробуйде змінити ім\'я продукту.</string>
 </resources>

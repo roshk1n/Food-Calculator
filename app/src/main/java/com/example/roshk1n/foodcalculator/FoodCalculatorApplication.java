@@ -8,7 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MyApplication extends Application {
+public class FoodCalculatorApplication extends Application {
     private static RestClient restClient;
 
     @Override

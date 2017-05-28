@@ -65,10 +65,10 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
             }
 
             if (foodView != null)
-                foodView.setNutrients(cloneFood.getNutrients().get(1).getValue()
+                foodView.setNutrients(cloneFood.getNutrients().get(0).getValue()
+                        , cloneFood.getNutrients().get(1).getValue()
                         , cloneFood.getNutrients().get(2).getValue()
                         , cloneFood.getNutrients().get(3).getValue()
-                        , cloneFood.getNutrients().get(4).getValue()
                         , cloneFood.getName());
         }
     }
@@ -76,10 +76,10 @@ public class AddFoodPresenterImpl implements AddFoodPresenter {
     @Override
     public Food updateFood(Food foodForUpdate, String calories, String protein, String fat, String cabs, String name, String number) {
 
-        foodForUpdate.getNutrients().get(1).setValue(calories);
-        foodForUpdate.getNutrients().get(2).setValue(protein);
-        foodForUpdate.getNutrients().get(3).setValue(fat);
-        foodForUpdate.getNutrients().get(4).setValue(cabs);
+        foodForUpdate.getNutrients().get(0).setValue(calories);
+        foodForUpdate.getNutrients().get(1).setValue(protein);
+        foodForUpdate.getNutrients().get(2).setValue(fat);
+        foodForUpdate.getNutrients().get(3).setValue(cabs);
         foodForUpdate.setName(name);
         foodForUpdate.setPortion(Integer.valueOf(number));
         return foodForUpdate;

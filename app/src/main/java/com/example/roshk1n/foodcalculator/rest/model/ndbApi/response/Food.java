@@ -19,6 +19,7 @@ import java.util.Map;
 public class Food implements Parcelable, Serializable {
     private String ndbno;
     private String name;
+    private String nameEng;
     private int portion = 1;
     private long time;
     private ArrayList<Nutrient> nutrients = new ArrayList<>();
@@ -27,6 +28,7 @@ public class Food implements Parcelable, Serializable {
 
     public Food(FoodRealm foodRealm) {
         setName(foodRealm.getName());
+        setNameEng(foodRealm.getNameEng());
         setNdbno(foodRealm.getNdbno());
         setTime(foodRealm.getTime());
         setPortion(foodRealm.getPortion());
@@ -39,6 +41,7 @@ public class Food implements Parcelable, Serializable {
 
     public Food(FoodFirebase foodFirebase) {
         setName(foodFirebase.getName());
+        setNameEng(foodFirebase.getNameEng());
         setNdbno(foodFirebase.getNdbno());
         setTime(foodFirebase.getTime());
         setPortion((int)(long)foodFirebase.getPortion());
@@ -49,9 +52,11 @@ public class Food implements Parcelable, Serializable {
         setNutrients(nutrient);
     }
 
-    private Food(Parcel in) {
+
+    protected Food(Parcel in) {
         ndbno = in.readString();
         name = in.readString();
+        nameEng = in.readString();
         portion = in.readInt();
         time = in.readLong();
         nutrients = in.createTypedArrayList(Nutrient.CREATOR);
@@ -118,8 +123,18 @@ public class Food implements Parcelable, Serializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(ndbno);
         dest.writeString(name);
+        dest.writeString(nameEng);
         dest.writeInt(portion);
         dest.writeLong(time);
         dest.writeTypedList(nutrients);
     }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
 }

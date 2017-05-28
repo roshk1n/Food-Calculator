@@ -11,6 +11,7 @@ import com.example.roshk1n.foodcalculator.interfaces.CreateUserFirebaseCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataAddFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataFavoriteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoadDaysCallback;
+import com.example.roshk1n.foodcalculator.interfaces.SearchFoodCallback;
 import com.example.roshk1n.foodcalculator.interfaces.StateItemCallback;
 import com.example.roshk1n.foodcalculator.interfaces.LoginCallback;
 import com.example.roshk1n.foodcalculator.interfaces.DataSingUpCallback;
@@ -20,6 +21,7 @@ import com.example.roshk1n.foodcalculator.interfaces.OnCompleteCallback;
 import com.example.roshk1n.foodcalculator.interfaces.UserProfileCallback;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Day;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
+import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.FoodResponse;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.User;
 import com.example.roshk1n.foodcalculator.utils.Utils;
 import com.facebook.AccessToken;
@@ -205,5 +207,13 @@ public class DataManager {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] b = outputStream.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public void fillFirebaseFood(ArrayList<Food> arrayFood) {
+        firebaseManager.fillFirebaseFood(arrayFood);
+    }
+
+    public void searchFood(Context context, String search, SearchFoodCallback callback) {
+        firebaseManager.searchFood(context, search, callback);
     }
 }

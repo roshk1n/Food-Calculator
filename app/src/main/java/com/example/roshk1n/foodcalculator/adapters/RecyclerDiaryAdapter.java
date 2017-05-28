@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackDiaryAdapter;
 import com.example.roshk1n.foodcalculator.rest.model.ndbApi.response.Food;
@@ -47,7 +48,11 @@ public class RecyclerDiaryAdapter extends RecyclerView.Adapter<RecyclerDiaryAdap
         }
 
         public void setData() {
-            nameFoodTv.setText(foods.get(getAdapterPosition()).getName());
+            if (Localization.getLanguage().equals("en")) {
+                nameFoodTv.setText(foods.get(getAdapterPosition()).getNameEng());
+            } else {
+                nameFoodTv.setText(foods.get(getAdapterPosition()).getName());
+            }
             amountCalTv.setText(String.valueOf(Math.round(Float.parseFloat(foods.get(getAdapterPosition()).getNutrients().get(1).getValue()))));
             valuePorTv.setText(String.valueOf(foods.get(getAdapterPosition()).getPortion()*100) + " g.");
         }

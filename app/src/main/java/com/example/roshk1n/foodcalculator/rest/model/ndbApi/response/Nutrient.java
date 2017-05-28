@@ -13,17 +13,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Nutrient  implements Parcelable, Serializable {
+public class Nutrient implements Parcelable, Serializable {
     private String nutrient_id;
     private String name;
+    private String nameEng;
     private String unit;
     private String value;
 
-    public Nutrient() { }
+    public Nutrient() {
+    }
+
+    public Nutrient(String nutrient_id, String name, String nameEng, String unit, String value) {
+        this.nutrient_id = nutrient_id;
+        this.name = name;
+        this.nameEng = nameEng;
+        this.unit = unit;
+        this.value = value;
+    }
 
     public Nutrient(NutrientRealm nutrientRealm) {
         setValue(nutrientRealm.getValue());
         setName(nutrientRealm.getName());
+        setNameEng(nutrientRealm.getNameEng());
         setNutrient_id(nutrientRealm.getNutrient_id());
         setUnit(nutrientRealm.getUnit());
     }
@@ -31,13 +42,16 @@ public class Nutrient  implements Parcelable, Serializable {
     public Nutrient(NutrientFirebase nutrientFirebase) {
         setValue(nutrientFirebase.getValue());
         setName(nutrientFirebase.getName());
+        setNameEng(nutrientFirebase.getNameEng());
         setNutrient_id(nutrientFirebase.getNutrient_id());
         setUnit(nutrientFirebase.getUnit());
     }
 
-    private Nutrient(Parcel in) {
+
+    protected Nutrient(Parcel in) {
         nutrient_id = in.readString();
         name = in.readString();
+        nameEng = in.readString();
         unit = in.readString();
         value = in.readString();
     }
@@ -62,9 +76,13 @@ public class Nutrient  implements Parcelable, Serializable {
         this.nutrient_id = nutrient_id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUnit() {
         return unit;
@@ -82,6 +100,14 @@ public class Nutrient  implements Parcelable, Serializable {
         this.value = value;
     }
 
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,17 +117,8 @@ public class Nutrient  implements Parcelable, Serializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(nutrient_id);
         dest.writeString(name);
+        dest.writeString(nameEng);
         dest.writeString(unit);
         dest.writeString(value);
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("nutrient_id", nutrient_id);
-        result.put("name", name);
-        result.put("unit", unit);
-        result.put("value", value);
-        return result;
     }
 }

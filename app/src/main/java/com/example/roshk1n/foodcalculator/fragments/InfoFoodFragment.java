@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.roshk1n.foodcalculator.Localization;
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.views.InfoFoodView;
 import com.example.roshk1n.foodcalculator.interfaces.OnFragmentListener;
@@ -129,11 +130,15 @@ public class InfoFoodFragment extends Fragment implements InfoFoodView, View.OnC
     }
 
     private void setNutrients() {
-        nameFoodTv.setText(food.getName());
-        caloriesFoodTv.setText(food.getNutrients().get(1).getValue());
-        proteinFoodTv.setText(food.getNutrients().get(2).getValue());
-        fatFoodTv.setText(food.getNutrients().get(3).getValue());
-        cabsFoodTv.setText(food.getNutrients().get(4).getValue());
+        if (Localization.getLanguage().equals("en")) {
+            nameFoodTv.setText(food.getNameEng());
+        } else {
+            nameFoodTv.setText(food.getName());
+        }
+        caloriesFoodTv.setText(food.getNutrients().get(0).getValue());
+        proteinFoodTv.setText(food.getNutrients().get(1).getValue());
+        fatFoodTv.setText(food.getNutrients().get(2).getValue());
+        cabsFoodTv.setText(food.getNutrients().get(3).getValue());
     }
 
     private void initUI() {

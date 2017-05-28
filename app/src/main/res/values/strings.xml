@@ -154,7 +154,7 @@
     <string name="add_food_btn">Add food</string>
     <string name="about">About</string>
     <string name="application_nam" translatable="false">Food Calculator</string>
-    <string name="created_by">Copyright 2016, Created by Oleh Roshka.</string>
+    <string name="created_by">Copyright 2017, Created by Oleh Roshka.</string>
     <string name="version_1_0">Version 1.0</string>
     <string name="empty_full_name">Enter Full Name please.</string>
     <string name="empty_confirm">Enter confirm password please.</string>
@@ -163,4 +163,5 @@
     <string name="logout_facebook">Log out</string>
     <string name="time_to_eat" translatable="false">Time to eat :)</string>
     <string name="notification">%1$s. Time to eat :)</string>
+    <string name="result_empty">Result is empty, change search parameter.</string>
 </resources>

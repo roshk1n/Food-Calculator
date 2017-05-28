@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.roshk1n.foodcalculator.R;
 import com.example.roshk1n.foodcalculator.adapters.RecyclerSearchAdapter;
 import com.example.roshk1n.foodcalculator.interfaces.responseAdapter.CallbackSearchAdapter;
@@ -30,13 +31,13 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     private RecyclerView mRecyclerView;
     private RecyclerSearchAdapter mAdapter;
     private ArrayList<Food> foods = new ArrayList<>();
-    private long mdate=0;
+    private long mdate = 0;
     private String querySearch;
     private ProgressDialog searchProgress;
 
     private View view;
 
-    public  static SearchFragment newInstance() {
+    public static SearchFragment newInstance() {
         return new SearchFragment();
     }
 
@@ -64,7 +65,7 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         view = inflater.inflate(R.layout.fragment_search, container, false);
         initUI();
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             mdate = getArguments().getLong(DATE_KEY);
             querySearch = getArguments().getString(QUERY_KEY);
         }
@@ -72,16 +73,16 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerSearchAdapter(foods, mdate,this);
+        mAdapter = new RecyclerSearchAdapter(foods, mdate, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        if(querySearch != null) {
+        if (querySearch != null) {
             foods.clear();
             mAdapter.notifyDataSetChanged();
             searchProgress.setMessage(getString(R.string.wait_please));
             searchProgress.show();
-            searchPresenter.searchFood(querySearch);
-            Utils.hideKeyboard(getContext(),getActivity().getCurrentFocus());
+            searchPresenter.searchFood(getContext(), querySearch);
+            Utils.hideKeyboard(getContext(), getActivity().getCurrentFocus());
         }
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -96,15 +97,15 @@ public class SearchFragment extends Fragment implements SearchView, CallbackSear
     }
 
     @Override
-    public void setFoodNutrients(Food foods) {
-        this.foods.add(foods);
-        mAdapter.notifyItemInserted(this.foods.size());
+    public void setFoodNutrients(Food foodList) {
+        foods.add(foodList);
+        mAdapter.notifyItemInserted(foods.size() - 1);
         searchProgress.dismiss();
     }
 
     @Override
     public void showSnackBar(String message) {
-        Snackbar.make(view,message,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
         searchProgress.dismiss();
     }
 

@@ -9,6 +9,7 @@ import io.realm.RealmObject;
 public class FoodRealm extends RealmObject {
     private String ndbno;
     private String name;
+    private String nameEng;
     private long time;
     private int portion = 1;
     private RealmList<NutrientRealm> nutrients = new RealmList<>();
@@ -16,14 +17,10 @@ public class FoodRealm extends RealmObject {
     public FoodRealm() {
     }
 
-    public FoodRealm(String ndbno, String name) {
-        this.ndbno = ndbno;
-        this.name = name;
-    }
-
     public FoodRealm(Food food) {
         setNdbno(food.getNdbno());
         setName(food.getName());
+        setNameEng(food.getNameEng());
         setTime(food.getTime());
         setPortion(food.getPortion());
         for (Nutrient nutrient : food.getNutrients()) {
@@ -69,5 +66,13 @@ public class FoodRealm extends RealmObject {
 
     public void setPortion(int portion) {
         this.portion = portion;
+    }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
     }
 }
